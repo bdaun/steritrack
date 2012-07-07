@@ -1,0 +1,35 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Mobile.master.cs" Inherits="IMDBWeb.Mobile" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="headcontent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="mpage">
+            <div class="title"> 
+            <h3>&nbsp SteriTrack</h3>
+            <asp:ContentPlaceHolder ID="pagename" runat="server"></asp:ContentPlaceHolder>
+            </div>            
+            <div class="loginDisplay">
+                <asp:LinkButton ID="btnMobile" runat="server" Font-Size="x-Small" PostBackUrl="~/secure/mobilepages/mobilepages.aspx" 
+                    ForeColor="#666666">MobileMenu</asp:LinkButton>&nbsp&nbsp
+                <asp:LinkButton ID="btnHome" runat="server" Font-Size="x-Small" PostBackUrl="~/secure/home.aspx" 
+                    ForeColor="#666666">Home</asp:LinkButton>
+            </div>
+    <div class="clear hideSkiplink">
+    </div>
+    <div>
+        <asp:ContentPlaceHolder ID="maincontent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </div>
+    </form>
+</body>
+</html>

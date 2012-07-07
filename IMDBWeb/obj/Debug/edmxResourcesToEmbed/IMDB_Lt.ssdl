@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="IMDB_LocalModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="IMDB_LocalModelStoreContainer">
+    <EntitySet Name="RcvDetail" EntityType="IMDB_LocalModel.Store.RcvDetail" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RcvHdr" EntityType="IMDB_LocalModel.Store.RcvHdr" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_RcvDetail" Association="IMDB_LocalModel.Store.FK_RcvDetail">
+      <End Role="RcvHdr" EntitySet="RcvHdr" />
+      <End Role="RcvDetail" EntitySet="RcvDetail" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="RcvDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="InboundDocNo" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ManifestLineNumber" Type="int" Nullable="false" />
+    <Property Name="RcvHdrID" Type="int" Nullable="false" />
+    <Property Name="InboundProfileID" Type="int" Nullable="false" />
+    <Property Name="InboundContainerType" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="InboundPalletType" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="InboundPalletWeight" Type="int" Nullable="false" />
+    <Property Name="InboundContainerQty" Type="int" Nullable="false" />
+    <Property Name="InboundContainerID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="InventoryLocation" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="BrandCode" Type="bigint" Nullable="false" />
+    <Property Name="Process?" Type="bit" Nullable="false" />
+    <Property Name="ProcessPlan" Type="nvarchar" MaxLength="50" />
+    <Property Name="RcvdAs" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RcvHdr">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OrderNumber" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="WorkOrder" Type="int" />
+    <Property Name="ClientName" Type="int" />
+    <Property Name="TSDF" Type="int" />
+    <Property Name="ReceivedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReceiveDate" Type="datetime" />
+    <Property Name="ReceiveDock" Type="nvarchar" MaxLength="50" />
+    <Property Name="Carrier" Type="int" />
+    <Property Name="Trailer Number" Type="nvarchar" MaxLength="50" />
+    <Property Name="WISE_Updated" Type="bit" />
+    <Property Name="Invoiced" Type="bit" />
+    <Property Name="Reported" Type="bit" />
+    <Property Name="ShipDate" Type="datetime" />
+    <Property Name="Memo" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_RcvDetail">
+    <End Role="RcvHdr" Type="IMDB_LocalModel.Store.RcvHdr" Multiplicity="1" />
+    <End Role="RcvDetail" Type="IMDB_LocalModel.Store.RcvDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RcvHdr">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RcvDetail">
+        <PropertyRef Name="RcvHdrID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
