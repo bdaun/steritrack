@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="IMDB_LocalModelStoreContainer" CdmEntityContainer="IMDB_LocalEntities">
+    <EntitySetMapping Name="RcvHdrs">
+      <EntityTypeMapping TypeName="IMDB_LocalModel.RcvHdr">
+        <MappingFragment StoreEntitySet="RcvHdr">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="WorkOrder" ColumnName="WorkOrder" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="TSDF" ColumnName="TSDF" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+          <ScalarProperty Name="ReceiveDock" ColumnName="ReceiveDock" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="Trailer_Number" ColumnName="Trailer Number" />
+          <ScalarProperty Name="WISE_Updated" ColumnName="WISE_Updated" />
+          <ScalarProperty Name="Invoiced" ColumnName="Invoiced" />
+          <ScalarProperty Name="Reported" ColumnName="Reported" />
+          <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+          <ScalarProperty Name="Memo" ColumnName="Memo" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RcvDetails">
+      <EntityTypeMapping TypeName="IMDB_LocalModel.RcvDetail">
+        <MappingFragment StoreEntitySet="RcvDetail">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="RcvdAs" ColumnName="RcvdAs" />
+          <ScalarProperty Name="ProcessPlan" ColumnName="ProcessPlan" />
+          <ScalarProperty Name="Process_" ColumnName="Process?" />
+          <ScalarProperty Name="BrandCode" ColumnName="BrandCode" />
+          <ScalarProperty Name="InventoryLocation" ColumnName="InventoryLocation" />
+          <ScalarProperty Name="InboundContainerID" ColumnName="InboundContainerID" />
+          <ScalarProperty Name="InboundContainerQty" ColumnName="InboundContainerQty" />
+          <ScalarProperty Name="InboundPalletWeight" ColumnName="InboundPalletWeight" />
+          <ScalarProperty Name="InboundPalletType" ColumnName="InboundPalletType" />
+          <ScalarProperty Name="InboundContainerType" ColumnName="InboundContainerType" />
+          <ScalarProperty Name="InboundProfileID" ColumnName="InboundProfileID" />
+          <ScalarProperty Name="RcvHdrID" ColumnName="RcvHdrID" />
+          <ScalarProperty Name="ManifestLineNumber" ColumnName="ManifestLineNumber" />
+          <ScalarProperty Name="InboundDocNo" ColumnName="InboundDocNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
