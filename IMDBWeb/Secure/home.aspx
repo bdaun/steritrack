@@ -43,6 +43,6 @@ p.MsoTitleCxSpLast
         <p class="MsoTitleCxSpLast" style="font-size: medium; color: #215E1C">
             A SYSTEM FOR INVENTORY MANAGEMENT, PROCESSING, AND REPORTING</p>
     </div>
-    <asp:Label ID="Label1" runat="server" Text="v001052a" Font-Size="X-Small"></asp:Label>
+    <asp:Label ID="Label1" runat="server" Text="v001052b" Font-Size="X-Small"></asp:Label>
     <div class="footer"></div>
 </asp:Content>
