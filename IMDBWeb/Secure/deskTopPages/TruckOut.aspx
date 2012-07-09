@@ -108,26 +108,17 @@ onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
     </EditItemTemplate> 
     </asp:TemplateField>
     <asp:ButtonField ButtonType="Link"  CommandName="Delete" Text="Remove" Visible="true" />
-<%--    <asp:TemplateField HeaderText="Haz?"> 
-    <ItemTemplate> 
-            <asp:Label id="hazardous" runat="server" Text='<%# Eval("hazardous") %>' /> 
-    </ItemTemplate> 
-    <EditItemTemplate> 
-            <asp:Label id="hazardous" runat="server" Text='<%# Eval("hazardous") %>' /> 
-    </EditItemTemplate> 
-    </asp:TemplateField>--%>
     <asp:BoundField DataField="Hazardous" HeaderText="Haz?" SortExpression="Hazardous" />
     </Columns>
     <HeaderStyle HorizontalAlign="Center" />
 </asp:gridview></td>
 <td>
-<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false"
-cellpadding="3" >
+<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3" OnRowDataBound="gvTally_RowDatabound" ShowFooter="True">
     <Columns>
         <asp:BoundField DataField="Name" HeaderText="Profile" SortExpression="Name" />
         <asp:BoundField DataField="NumberofCntrs" HeaderText="Cntr Count" SortExpression="NumberofCntrs" />
         <asp:BoundField DataField="outboundcontainertype" HeaderText="Cntr Type" SortExpression="outboundcontainertype" />
-        <asp:BoundField DataField="TotalWeight" HeaderText="Total Act Weight" SortExpression="TotalWeight" />
+        <asp:BoundField DataField="TotalWeight" HeaderText="Total Act Weight" SortExpression="TotalWeight" DataFormatString="{0:n0}" />
     </Columns>
     <HeaderStyle ForeColor="Green" Font-Bold="true" BackColor="White" />
 </asp:GridView>
