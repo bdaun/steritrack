@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
@@ -12,6 +9,7 @@ namespace IMDBWeb.Secure.deskTopPages
 {
     public partial class TruckOut : System.Web.UI.Page
     {
+        private GridViewHelper helper;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -27,11 +25,21 @@ namespace IMDBWeb.Secure.deskTopPages
                     txbNewCntr.Focus();
                 }
                 GridViewHelper helper = new GridViewHelper(gvTally);
-                helper.RegisterGroup("name", false, false);
-                //  helper.FooterDataBound = true;
-                helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
-                helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+                //helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
+                //helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+
+                GridViewSummary s = helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
+                s.Automatic = false;
+                s = helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+                s.Automatic = false;
+                helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
             }
+        }
+        private void helper_ManualSummary(GridViewRow row)
+        {
+            GridViewRow newRow = helper.InsertGridRow(row);
+            newRow.Cells[0].HorizontalAlign = HorizontalAlign.Right;
+            newRow.Cells[0].Text = String.Format("Total: {0} itens, {1:c}", helper.GeneralSummaries["NumberofCntrs"].Value, helper.GeneralSummaries["TotalWeight"].Value);
         }
         protected void rblFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
