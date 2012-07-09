@@ -27,14 +27,11 @@ namespace IMDBWeb.Secure.deskTopPages
                     txbNewCntr.Focus();
                 }
                 GridViewHelper helper = new GridViewHelper(gvTally);
+                helper.RegisterGroup("name", false, false);
+                //  helper.FooterDataBound = true;
                 helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
                 helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
             }
-        }
-        private void helper_GroupHeader(string groupName, object[] values, GridViewRow row)
-        {
-                row.BackColor = System.Drawing.Color.FromArgb(236, 236, 236);
-                row.Cells[0].Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + row.Cells[0].Text;
         }
         protected void rblFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -130,6 +127,13 @@ namespace IMDBWeb.Secure.deskTopPages
                     e.Row.ForeColor = System.Drawing.Color.Red;
                     e.Row.Font.Bold = true;
                 }
+            }
+        }
+        protected void gvTally_RowDatabound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[0].Text = string.Format("{0:n0}", 9876);
             }
         }
         protected void txbNewCntr_TextChanged(object sender, EventArgs e)
