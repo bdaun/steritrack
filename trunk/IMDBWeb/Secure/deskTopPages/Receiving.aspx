@@ -13,7 +13,8 @@
                 Order Number:
             </td>
             <td>
-                <asp:TextBox ID="txbOrderNum" runat="server" OnTextChanged="txbOrderNum_OnTextChanged" AutoPostBack="true" Width="250px"></asp:TextBox>
+                <asp:TextBox ID="txbOrderNum" runat="server"  
+                        OnTextChanged="txbOrderNum_OnTextChanged" AutoPostBack="true" Width="250px"></asp:TextBox>
                     <ajaxToolkit:AutoCompleteExtender
                         ID="txbOrderNum_AutoCompleteExtender" 
                         runat="server"
@@ -184,12 +185,13 @@
                             AutoGenerateColumns="False"
                             DataKeyNames="ID" HorizontalAlign="Center">
                             <Columns>
+                                <asp:CommandField ShowEditButton="True" />
                                 <asp:BoundField DataField="InboundDocNo" HeaderText="Doc No" 
                                     SortExpression="InboundDocNo" />
                                 <asp:BoundField DataField="ManifestLineNumber" HeaderText="Line Number" 
                                     SortExpression="ManifestLineNumber" />
-                                <asp:BoundField DataField="InboundProfileID" HeaderText="Profile ID" 
-                                    SortExpression="InboundProfileID" />
+                                <asp:BoundField DataField="name" HeaderText="Profile" 
+                                    SortExpression="name" />
                                 <asp:BoundField DataField="InboundContainerType" HeaderText="Container Type"
                                      SortExpression="InboundContainerType" />
                                 <asp:BoundField DataField="InboundPalletType" HeaderText="Pallet Type" 
@@ -202,34 +204,32 @@
                                     SortExpression="InboundContainerID" />
                                 <asp:BoundField DataField="InventoryLocation" HeaderText="Inventory Location" 
                                     SortExpression="InventoryLocation" />
-                                <asp:BoundField DataField="BrandCode" HeaderText="Brand Code" 
-                                    SortExpression="BrandCode" />
+                                <asp:BoundField DataField="BCName" HeaderText="Brand Code" 
+                                    SortExpression="BCName" />
                                 <asp:CheckBoxField DataField="Process?" HeaderText="Process?" 
                                     SortExpression="Process?" />
                                 <asp:BoundField DataField="ProcessPlan" HeaderText="Process Plan" 
                                     SortExpression="ProcessPlan" />
                                 <asp:BoundField DataField="RcvdAs" HeaderText="Rcvd As" 
                                     SortExpression="RcvdAs" />
-                                <asp:BoundField DataField="CreateDate" HeaderText="Create Date" 
-                                    SortExpression="CreateDate" DataFormatString="{0:MM/d/yyyy}"/>
-                                <asp:BoundField DataField="ModDate" HeaderText="Mod Date" 
-                                    SortExpression="ModDate" DataFormatString="{0:MM/d/yyyy}"/>
-                                <asp:BoundField DataField="UserName" HeaderText="User Name" 
-                                    SortExpression="UserName" />
                             </Columns>
                             <HeaderStyle HorizontalAlign="Center" />
                         </asp:GridView>
                      </ContentTemplate>
                 </asp:UpdatePanel>
                 <asp:Panel runat="Server" ID="pnlPopUp" CssClass="PopupPanel" style="display:none">
-                    <asp:UpdatePanel runat="server">
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
                             Select Inbound <br /> Document Number(s) <br />
                             <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="sdsRcvInboundDocs_Sel" DataTextField="InboundDocNo" >
                             </asp:CheckBoxList>
                             <br />
                             <asp:Button runat="server" Id="btnOk" Text="Ok" onclick="btnOk_Click" /> 
-                            <asp:Button runat="server" Id="Edit" Text="Edit" onclick="btnEdit_Click" />          
+
+                            <hr />
+                            <asp:LinkButton ID="Add" runat="server" onclick="btnAdd_Click">Add InBoundDoc</asp:LinkButton>
+                            <br />          
+                            <asp:LinkButton ID="tEdit" runat="server" onclick="btnEdit_Click">Edit Truck</asp:LinkButton>                        
                         </ContentTemplate>
                      </asp:UpdatePanel>
                 </asp:Panel>
@@ -252,7 +252,7 @@
         </tr>
         <tr>
             <td>
-                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                     <ContentTemplate>
                         <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False"
                         DataKeyNames="id" DataSourceID="SqlDataSource1" Height="50px" Width="400px"
@@ -830,17 +830,19 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            &nbsp;</td>
+                                            ModBy</td>
                                         <td>
-                                            &nbsp;</td>
+                                            <asp:Label ID="Label4" runat="server" Text='<%# bind("UserName") %>'></asp:Label>
+                                        </td>
                                         <td>
                                             &nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            &nbsp;</td>
+                                            ModDate</td>
                                         <td>
-                                            &nbsp;</td>
+                                            <asp:Label ID="Label5" runat="server" Text='<%# bind("ModDate") %>'></asp:Label>
+                                        </td>
                                         <td>
                                             &nbsp;</td>
                                     </tr>
@@ -900,10 +902,11 @@
         SelectCommand="Select c.name,v.vendorname as TSDFname,v2.vendorname as CarrierName,r.id,r.OrderNumber,r.WorkOrder,r.ClientName,r.TSDF,r.ReceivedBy,r.ReceiveDate,r.ReceiveDock,r.Carrier,r.[Trailer Number] as Trailer_Number,r.ShipDate,r.Memo,r.ModDate,r.Username From dbo.RcvHdr r left join dbo.client c on c.id = r.ClientName	left join dbo.vendorlist v on v.id = r.carrier left join dbo.vendorlist v2 on v2.id = r.TSDF Where (r.id = @RcvHdrID)"
         ConflictDetection="CompareAllValues" 
         DeleteCommand="DELETE FROM [RcvHdr] WHERE [ID] = @original_ID AND [OrderNumber] = @original_OrderNumber AND (([WorkOrder] = @original_WorkOrder) OR ([WorkOrder] IS NULL AND @original_WorkOrder IS NULL)) AND (([ClientName] = @original_ClientName) OR ([ClientName] IS NULL AND @original_ClientName IS NULL)) AND (([TSDF] = @original_TSDF) OR ([TSDF] IS NULL AND @original_TSDF IS NULL)) AND (([ReceivedBy] = @original_ReceivedBy) OR ([ReceivedBy] IS NULL AND @original_ReceivedBy IS NULL)) AND (([ReceiveDate] = @original_ReceiveDate) OR ([ReceiveDate] IS NULL AND @original_ReceiveDate IS NULL)) AND (([ReceiveDock] = @original_ReceiveDock) OR ([ReceiveDock] IS NULL AND @original_ReceiveDock IS NULL)) AND (([Carrier] = @original_Carrier) OR ([Carrier] IS NULL AND @original_Carrier IS NULL)) AND (([Trailer Number] = @original_Trailer_Number) OR ([Trailer Number] IS NULL AND @original_Trailer_Number IS NULL)) AND (([ShipDate] = @original_ShipDate) OR ([ShipDate] IS NULL AND @original_ShipDate IS NULL)) AND (([Memo] = @original_Memo) OR ([Memo] IS NULL AND @original_Memo IS NULL)) AND (([ModDate] = @original_ModDate) OR ([ModDate] IS NULL AND @original_ModDate IS NULL)) AND (([UserName] = @original_UserName) OR ([UserName] IS NULL AND @original_UserName IS NULL))" 
-        InsertCommand="INSERT INTO [RcvHdr] ([OrderNumber], [WorkOrder], [ClientName], [TSDF], [ReceivedBy], [ReceiveDate], [ReceiveDock], [Carrier], [Trailer Number], [ShipDate], [Memo], [ModDate], [UserName]) VALUES (@OrderNumber, @WorkOrder, @ClientName, @TSDF, @ReceivedBy, @ReceiveDate, @ReceiveDock, @Carrier, @Trailer_Number, @ShipDate, @Memo, @ModDate, @UserName); Select @ID=Scope_Identity();" 
+        InsertCommand="INSERT INTO [RcvHdr] ([OrderNumber], [WorkOrder], [ClientName], [TSDF], [ReceivedBy], [ReceiveDate], [ReceiveDock], [Carrier], [Trailer Number], [ShipDate], [Memo], [ModDate], [UserName]) VALUES (@OrderNumber, @WorkOrder, @ClientName, @TSDF, @ReceivedBy, @ReceiveDate, @ReceiveDock, @Carrier, @Trailer_Number, @ShipDate, @Memo, getdate(), @UserName); Select @ID=Scope_Identity();" 
         oninserted="SqlDataSource1_Inserted"
-        UpdateCommand="UPDATE [RcvHdr] SET [OrderNumber] = @OrderNumber, [WorkOrder] = @WorkOrder, [ClientName] = @ClientName, [TSDF] = @TSDF, [ReceivedBy] = @ReceivedBy, [ReceiveDate] = @ReceiveDate, [ReceiveDock] = @ReceiveDock, [Carrier] = @Carrier, [Trailer Number] = @Trailer_Number, [ShipDate] = @ShipDate, [Memo] = @Memo, [ModDate] = @ModDate, [UserName] = @UserName WHERE [ID] = @Original_id"
-        onupdated="SqlDataSource1_Updated">
+        UpdateCommand="UPDATE [RcvHdr] SET [OrderNumber] = @OrderNumber, [WorkOrder] = @WorkOrder, [ClientName] = @ClientName, [TSDF] = @TSDF, [ReceivedBy] = @ReceivedBy, [ReceiveDate] = @ReceiveDate, [ReceiveDock] = @ReceiveDock, [Carrier] = @Carrier, [Trailer Number] = @Trailer_Number, [ShipDate] = @ShipDate, [Memo] = @Memo, [ModDate] = getdate(), [UserName] = @UserName WHERE [ID] = @Original_id"
+        onupdated="SqlDataSource1_Updated"
+        onupdating="SqlDataSource1_Updating">
         <SelectParameters>
             <asp:SessionParameter Name="RcvHdrID"  SessionField="CurRcvHrdID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
@@ -936,7 +939,6 @@
             <asp:Parameter Name="Trailer_Number" Type="String" />
             <asp:Parameter Name="ShipDate" Type="DateTime" />
             <asp:Parameter Name="Memo" Type="String" />
-            <asp:Parameter Name="ModDate" Type="DateTime" />
             <asp:Parameter Name="UserName" Type="String" />
             <asp:parameter direction="Output" name="ID" type="Int32" />
         </InsertParameters>
@@ -952,7 +954,6 @@
             <asp:Parameter Name="Trailer_Number" Type="String" />
             <asp:Parameter Name="ShipDate" Type="DateTime" />
             <asp:Parameter Name="Memo" Type="String" />
-            <asp:Parameter Name="ModDate" Type="DateTime" />
             <asp:Parameter Name="UserName" Type="String" />
             <asp:Parameter Name="original_ID" Type="Int32" />
         </UpdateParameters>

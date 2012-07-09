@@ -13,7 +13,7 @@ using System.Text;
 
 namespace IMDBWeb.Secure.SPAKpages
 {
-  
+
     public partial class Receiving : System.Web.UI.Page
     {
 
@@ -90,6 +90,13 @@ namespace IMDBWeb.Secure.SPAKpages
             DetailsView1.Visible = true;
 
         }
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            //this.mdlPopup.Hide();
+            //DetailsView1.ChangeMode(DetailsViewMode.Edit);
+            //DetailsView1.Visible = true;
+
+        }
         protected void btnOk_Click(object sender, EventArgs e)
         {
             label2.Text = "'";
@@ -104,29 +111,29 @@ namespace IMDBWeb.Secure.SPAKpages
                     z = i;
                 }
             }
-                switch (z)
-                {
-                    case -1:
-                        Label3.Text = "You must select at least one Inbound Document Number";
-                        label2.Text = null;
-                        this.mdlPopup.Hide();
-                        break;
-                    case 0:
-                        Label3.Text = "Showing Inbound Document Number:  ";
-                        label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
-                        this.mdlPopup.Hide();
-                        break;
-                    default:
-                        Label3.Text = "Showing Inbound Document Numbers:  ";
-                        label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
-                        this.mdlPopup.Hide();
-                        break;
-                }    
+            switch (z)
+            {
+                case -1:
+                    Label3.Text = "You must select at least one Inbound Document Number";
+                    label2.Text = null;
+                    this.mdlPopup.Hide();
+                    break;
+                case 0:
+                    Label3.Text = "Showing Inbound Document Number:  ";
+                    label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
+                    this.mdlPopup.Hide();
+                    break;
+                default:
+                    Label3.Text = "Showing Inbound Document Numbers:  ";
+                    label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
+                    this.mdlPopup.Hide();
+                    break;
+            }
         }
         protected void txbClientName2_OnTextChanged(object sender, EventArgs e)
         {
             string curCntr = ((TextBox)DetailsView1.FindControl("txbClientName2")).Text;
-                       
+
             String sp = "IMDB_Rcv_GetID_Sel";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
@@ -183,6 +190,15 @@ namespace IMDBWeb.Secure.SPAKpages
 
         protected void btnNewTruck_Click(object sender, EventArgs e)
         {
+            gvSearchResults.SelectedIndex = -1;
+            Label1.Text = "";
+            label2.Text = "";
+            Label3.Text = "";
+            txbClientName.Text = "";
+            txbOrderNum.Text = "";
+            Session.Remove("CurClientName");
+            Session.Remove("CurOrderNum");
+            Session.Remove("CurRcvHrdID");
             DetailsView1.Visible = true;
             DetailsView1.DataBind();
         }
@@ -213,29 +229,32 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void gvSearchResults_RowCommand(Object sender, GridViewCommandEventArgs e)
         {
 
-        //    switch (e.CommandName)
-        //    {
-        //    case "Edit":
-        //            Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
-        //            int index = Convert.ToInt32(e.CommandArgument);
-        //            GridViewRow row = gvSearchResults.Rows[index];
-        //            DetailsView1.DataBind();
-        //            DetailsView1.Visible = true;
-        //            DetailsView1.ChangeMode(DetailsViewMode.Edit);
-        //            break;
-        //        case "Cancel":
-        //            DetailsView1.Visible = false;
-        //            break;
-        //    }
+            //    switch (e.CommandName)
+            //    {
+            //    case "Edit":
+            //            Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
+            //            int index = Convert.ToInt32(e.CommandArgument);
+            //            GridViewRow row = gvSearchResults.Rows[index];
+            //            DetailsView1.DataBind();
+            //            DetailsView1.Visible = true;
+            //            DetailsView1.ChangeMode(DetailsViewMode.Edit);
+            //            break;
+            //        case "Cancel":
+            //            DetailsView1.Visible = false;
+            //            break;
+            //    }
 
         }
         protected void SqlDataSource1_Updated(Object source, SqlDataSourceStatusEventArgs e)
         {
             gvSearchResults.DataBind();
         }
+        protected void SqlDataSource1_Updating(Object sender, SqlDataSourceCommandEventArgs e)
+        {
+            e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
+        }
 
 
 
     }
 }
-      

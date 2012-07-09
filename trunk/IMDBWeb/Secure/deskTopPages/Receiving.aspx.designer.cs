@@ -121,6 +121,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Panel pnlPopUp;
         
         /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
         /// CheckBoxList1 control.
         /// </summary>
         /// <remarks>
@@ -139,13 +148,22 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Button btnOk;
         
         /// <summary>
-        /// Edit control.
+        /// Add control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Edit;
+        protected global::System.Web.UI.WebControls.LinkButton Add;
+        
+        /// <summary>
+        /// tEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton tEdit;
         
         /// <summary>
         /// mdlPopup control.
@@ -184,13 +202,13 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Button btnClear;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// DetailsView1 control.
