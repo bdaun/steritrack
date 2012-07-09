@@ -3,10 +3,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<script type="text/javascript">
-    $(document).ready(function () { $('#<%=txbBeginDate.ClientID %>').datepicker(); });
-    $(document).ready(function () { $('#<%=txbEndDate.ClientID %>').datepicker(); });
-</script>
 <script type="text/javascript">function setHeight(txtdesc) {txtdesc.style.height = txtdesc.scrollHeight + "px";}</script>
 <table style="width: 65%;">
     <tr align="center">
@@ -49,8 +45,10 @@
                 <asp:ListItem Text="Target" Value="A20080097" />
             </asp:DropDownList>
         </td>
-        <td><asp:TextBox ID="txbBeginDate" runat="server" Width="100px"></asp:TextBox></td>
-        <td><asp:TextBox ID="txbEndDate" runat="server" Width="100px"></asp:TextBox></td>
+        <td><asp:TextBox ID="txbBeginDate" runat="server" Width="100px"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="calExtBegin" runat="server" TargetControlID="txbBeginDate" /></td>
+        <td><asp:TextBox ID="txbEndDate" runat="server" Width="100px"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="calExtEnd" runat="server" TargetControlID="txbEndDate" /></td>
         <td><asp:Button ID="btnGO" runat="server" onclick="btnGo_Click" Text="Go" /></td>
     </tr>
     <tr align="center"><td></td><td><asp:Label ID="lblPhone" runat="server" Font-Size="X-Small" Text="" />

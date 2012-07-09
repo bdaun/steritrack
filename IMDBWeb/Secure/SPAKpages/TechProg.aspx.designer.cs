@@ -49,6 +49,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.TextBox txbBeginDate;
         
         /// <summary>
+        /// calExtBegin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender calExtBegin;
+        
+        /// <summary>
         /// txbEndDate control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbEndDate;
+        
+        /// <summary>
+        /// calExtEnd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender calExtEnd;
         
         /// <summary>
         /// btnGO control.
