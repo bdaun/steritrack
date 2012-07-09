@@ -2,11 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<script type="text/javascript">
-    $(document).ready(function () { $('#<%=txbBegDate.ClientID %>').datepicker(); });
-    $(document).ready(function () { $('#<%=txbEndDate.ClientID %>').datepicker(); });
-</script>
-<h3>Spak Tech Mgt Reporting</h3>
+    <h3>Spak Tech Mgt Reporting</h3>
 <hr />
 <table width="75%">
 <tr>
@@ -29,8 +25,8 @@
     <td>&nbsp;</td>
     <td align="right"><asp:Label ID="lblBeginDate" runat="server" Text="BeginDate:"></asp:Label>&nbsp</td>
     <td>
-        <asp:TextBox ID="txbBegDate" runat="server" 
-            ontextchanged="txbBegDate_TextChanged" AutoPostBack="true"></asp:TextBox>
+        <asp:TextBox ID="txbBegDate" runat="server" ontextchanged="txbBegDate_TextChanged" AutoPostBack="true"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="calExtBegin" runat="server" TargetControlID="txbBegDate" />
     </td>
     <td>
         </td>
@@ -60,6 +56,7 @@
     <td align="right"><asp:Label ID="lblEndDate" runat="server" Text="EndDate:"></asp:Label>&nbsp</td>
     <td>
         <asp:TextBox ID="txbEndDate" runat="server" ontextchanged="txbEndDate_TextChanged" AutoPostBack="true"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="calExtEnd" runat="server" TargetControlID="txbEndDate" />
     </td>
     <td>
         &nbsp;</td>
