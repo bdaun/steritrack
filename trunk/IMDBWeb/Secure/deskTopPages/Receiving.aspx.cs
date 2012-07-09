@@ -21,10 +21,6 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             if (!IsPostBack)
             {
-                //FormView1.ChangeMode(FormViewMode.Insert);
-                //DateTime dt = DateTime.Now;
-                //txbShipDate.Text = dt.ToShortDateString();
-                //txbReceiveDate.Text = dt.ToShortDateString();
                 Label1.Text = "";
                 Session["CurRcvHrdID"] = null;
                 Session["CurClientName"] = null;
@@ -71,17 +67,19 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
-            gvSearchResults.SelectedIndex = -1;
-            Label1.Text = "";
-            label2.Text = "";
-            Label3.Text = "";
+            //gvSearchResults.SelectedIndex = -1;
+            //Label1.Text = "";
+            //label2.Text = "";
+            //Label3.Text = "";
             txbClientName.Text = "";
             txbOrderNum.Text = "";
-            Session.Remove("CurClientName");
-            Session.Remove("CurOrderNum");
-            Session.Remove("CurRcvHrdID");
-            gvSearchResults.DataBind();
-            return;
+            //Session.Remove("CurClientName");
+            //Session.Remove("CurOrderNum");
+            //Session.Remove("CurRcvHrdID");
+            //gvSearchResults.DataBind();
+            //return;
+            Session.Abandon();
+            Response.Redirect(Request.RawUrl);
         }
         protected void btnEdit_Click(object sender, EventArgs e)
         {
