@@ -141,7 +141,7 @@ namespace IMDBWeb.Secure.deskTopPages
                 e.Row.Attributes.Add("onmouseover", "this.previous_color=this.style.backgroundColor;this.style.backgroundColor='#ceedfc'");
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=this.previous_color");
                 e.Row.Attributes.Add("style", "cursor:pointer;");
-                if (e.Row.Cells[11].Text == "True")
+                if(DataBinder.Eval(e.Row.DataItem,"Hazardous").ToString()=="True")
                 {
                     e.Row.ForeColor = System.Drawing.Color.Red;
                     e.Row.Font.Bold = true;
