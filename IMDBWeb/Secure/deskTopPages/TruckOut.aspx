@@ -28,8 +28,8 @@
 <asp:Panel ID="Panel1" runat="server">
 <table><tr valign="top">
 <td><asp:gridview ID="gvContainers" runat="server" AutoGenerateColumns="False" DataSourceID="sdsTruckOut" 
-onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" OnRowDataBound="gvContainers_RowDatabound" 
-        CellPadding="3" DataKeyNames="outboundcontainerid" >
+        onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
+        OnRowDataBound="gvContainers_RowDatabound" CellPadding="3" DataKeyNames="outboundcontainerid" >
     <Columns>
     <asp:TemplateField> 
         <ItemTemplate> 
@@ -112,7 +112,14 @@ onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
     </EditItemTemplate> 
     </asp:TemplateField>
     <asp:ButtonField ButtonType="Link"  CommandName="Delete" Text="Remove" Visible="true" />
-    <asp:BoundField DataField="Hazardous" HeaderText="Haz?" SortExpression="Hazardous" />
+    <asp:TemplateField HeaderText="Haz?"> 
+    <ItemTemplate> 
+            <asp:Label id="hazardous" runat="server" Text='<%# Eval("hazardous") %>' /> 
+    </ItemTemplate> 
+    <EditItemTemplate> 
+            <asp:Label id="hazardous" runat="server" Text='<%# Eval("hazardous") %>' /> 
+    </EditItemTemplate> 
+    </asp:TemplateField>
     </Columns>
     <HeaderStyle HorizontalAlign="Center" />
 </asp:gridview></td>
