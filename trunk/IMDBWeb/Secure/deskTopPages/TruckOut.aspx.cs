@@ -12,9 +12,6 @@ namespace IMDBWeb.Secure.deskTopPages
         private GridViewHelper helper;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
-            //helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
-  
             if (!IsPostBack)
             {
                 sdsOutBoundDocNo.FilterExpression = "Completed = {0}";
@@ -46,7 +43,6 @@ namespace IMDBWeb.Secure.deskTopPages
             s = helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
             s.Automatic = false;
             helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
-
         }
         private void helper_ManualSummary(GridViewRow row)
         {         
