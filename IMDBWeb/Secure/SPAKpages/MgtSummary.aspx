@@ -163,11 +163,8 @@
         <img src="../../images/progress.gif" alt="" />
     </ProgressTemplate>
 </asp:UpdateProgress>
-<asp:GridView ID="gvSummaryData" runat="server" AutoGenerateColumns="false" 
-    DataSourceID="sdsSummaryData" FontBold="True"  
-    AllowSorting="True"
-    OnRowDataBound="gvSummaryData_RowDataBound"
-     OnPreRender="gvSummaryData_PreRender">
+<asp:GridView ID="gvSummaryData" runat="server" AutoGenerateColumns="false" DataSourceID="sdsSummaryData" 
+    AllowSorting="True" OnRowDataBound="gvSummaryData_RowDataBound" OnPreRender="gvSummaryData_PreRender">
     <Columns>
         <asp:BoundField DataField="SPAKStatus" HeaderText="SPAK Status" SortExpression="SPAKStatus" ItemStyle-HorizontalAlign="Center" >
         <ItemStyle HorizontalAlign="Center" />

@@ -22,6 +22,10 @@
     <tr id="trErrMsg" runat="server"><td colspan="3"><asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" 
             ForeColor="Red" /></td><td></td><td></td></tr>
 </table>
+<asp:Button ID="btnPrint" runat="server" Text="Print" OnClientClick="javascript:window.print();" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" /><br />
+<asp:Panel ID="Panel1" runat="server">
 <table><tr valign="top">
 <td><asp:gridview ID="gvContainers" runat="server" AutoGenerateColumns="False" DataSourceID="sdsTruckOut" 
 onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" OnRowDataBound="gvContainers_RowDatabound" 
@@ -113,7 +117,7 @@ onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
     <HeaderStyle HorizontalAlign="Center" />
 </asp:gridview></td>
 <td>
-<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3" OnRowDataBound="gvTally_RowDatabound" ShowFooter="True">
+<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3">
     <Columns>
         <asp:BoundField DataField="Name" HeaderText="Profile" SortExpression="Name" />
         <asp:BoundField DataField="NumberofCntrs" HeaderText="Cntr Count" SortExpression="NumberofCntrs" />
@@ -124,6 +128,7 @@ onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
 </asp:GridView>
 </td>
 </tr></table> 
+</asp:Panel>
 <asp:SqlDataSource ID="sdsOutBoundDocNo" runat="server" DataSourceMode="DataSet" EnableCaching="false"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SP_IMDB_OutBoundDoc_Sel" SelectCommandType="StoredProcedure" FilterExpression="Completed = '0'" >

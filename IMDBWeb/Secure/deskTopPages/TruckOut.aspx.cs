@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
-
+using System.Web.UI;
 
 namespace IMDBWeb.Secure.deskTopPages
 {
@@ -12,11 +12,16 @@ namespace IMDBWeb.Secure.deskTopPages
         private GridViewHelper helper;
         protected void Page_Load(object sender, EventArgs e)
         {
+            //helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
+            //helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+  
             if (!IsPostBack)
             {
                 sdsOutBoundDocNo.FilterExpression = "Completed = {0}";
                 trAddCntr.Visible = false;
                 trErrMsg.Visible = false;
+                btnExport.Visible = false;
+                btnPrint.Visible = false;
             }
             else
             {
@@ -24,22 +29,32 @@ namespace IMDBWeb.Secure.deskTopPages
                 {
                     txbNewCntr.Focus();
                 }
-                GridViewHelper helper = new GridViewHelper(gvTally);
-                //helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
-                //helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
-
-                GridViewSummary s = helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
-                s.Automatic = false;
-                s = helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
-                s.Automatic = false;
-                helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
+                if (ddDocList.SelectedIndex == 0)
+                {
+                    btnPrint.Visible = false;
+                    btnExport.Visible = false;
+                }
+                else
+                {
+                    btnExport.Visible = true;
+                    btnPrint.Visible = true;
+                }
             }
+            helper = new GridViewHelper(gvTally);
+            GridViewSummary s = helper.RegisterSummary("NumberofCntrs", SummaryOperation.Sum);
+            s.Automatic = false;
+            s = helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+            s.Automatic = false;
+            helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
+
         }
         private void helper_ManualSummary(GridViewRow row)
-        {
+        {         
             GridViewRow newRow = helper.InsertGridRow(row);
             newRow.Cells[0].HorizontalAlign = HorizontalAlign.Right;
-            newRow.Cells[0].Text = String.Format("Total: {0} itens, {1:c}", helper.GeneralSummaries["NumberofCntrs"].Value, helper.GeneralSummaries["TotalWeight"].Value);
+            newRow.Cells[0].Text = String.Format("Total: {0:n0} Containers,&nbsp&nbsp&nbsp&nbsp{1:n0} lbs", helper.GeneralSummaries["NumberofCntrs"].Value, helper.GeneralSummaries["TotalWeight"].Value);
+            newRow.Cells[0].ForeColor = System.Drawing.Color.Black;
+            newRow.Cells[0].Font.Bold = true;
         }
         protected void rblFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -137,12 +152,9 @@ namespace IMDBWeb.Secure.deskTopPages
                 }
             }
         }
-        protected void gvTally_RowDatabound(object sender, GridViewRowEventArgs e)
+        protected void btnExport_Click(object sender, EventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.Footer)
-            {
-                e.Row.Cells[0].Text = string.Format("{0:n0}", 9876);
-            }
+            GridViewExportUtil.Export("TruckOutContainers.xls", gvContainers);
         }
         protected void txbNewCntr_TextChanged(object sender, EventArgs e)
         {

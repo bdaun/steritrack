@@ -239,32 +239,32 @@ ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center" AllowPaging="Tru
     </asp:DetailsView>
     </td>
     <td><asp:Button ID="btnPrint" runat="server" Text="Print" onclick="btnPrint_Click" />
-    <asp:Panel ID="Panel1" runat="server" >
-        <asp:FormView ID="fvLabel" runat="server" BorderColor="Black" BorderStyle="Double" DataSourceID="sdsCntrDetails" Width="4.5in"
-         OnDataBound="fvLabel_OnDataBound" >
-            <ItemTemplate>
-                <div align="center">
-                <asp:Label ID="lblPRP" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# String.Format("{0}{1}",Eval("CompanyPRP"),"-") %>' />
-                <asp:Label ID="lblGridLoc" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# String.Format("{0}{1}",Eval("GridLocation"),"-") %>' />
-                <asp:Label ID="lblcntrid" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# Eval("ContainerID") %>' /><br />
-                <asp:Label ID="lblBarcode" runat="server" Text='<%# String.Format("{0}{1}{2}","*", Eval("ContainerID"),"*") %>' style="font-family: 'Free 3 of 9'; font-size: 72px;" /></div><br /> 
-                Profile:&nbsp;&nbsp;<asp:Label ID="lblProfile" runat="server" Font-Bold="true" Font-Size="Medium" Text='<%# Eval("ProfileName") %>' /><br />
-                Matrix:&nbsp;&nbsp<asp:Label ID="lblMatrix" runat="server" Font-Bold="true" Font-Size="Medium" Text='<%# Eval("Matrix") %>' /><br /><br />
-                <asp:Label ID="lblSampleID" runat="server" Font-Bold="true" Font-Size="32px" Text="" /><br />
-                Date: 
-                <script type="text/javascript"><!--
-                    {
-                        var currentTime = new Date()
-                        var month = currentTime.getMonth() + 1
-                        var day = currentTime.getDate()
-                        var year = currentTime.getFullYear()
-                        document.write(month + "/" + day + "/" + year)
-                    }
-                //-->
-                </script>
-            </ItemTemplate>
-        </asp:FormView>
-        </asp:Panel>
+        <asp:Panel ID="Panel1" runat="server" >
+            <asp:FormView ID="fvLabel" runat="server" BorderColor="Black" BorderStyle="Double" DataSourceID="sdsCntrDetails" Width="4.5in"
+             OnDataBound="fvLabel_OnDataBound" >
+                <ItemTemplate>
+                    <div align="center">
+                    <asp:Label ID="lblPRP" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# String.Format("{0}{1}",Eval("CompanyPRP"),"-") %>' />
+                    <asp:Label ID="lblGridLoc" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# String.Format("{0}{1}",Eval("GridLocation"),"-") %>' />
+                    <asp:Label ID="lblcntrid" runat="server" Font-Bold="true" Font-Size="54px" Text='<%# Eval("ContainerID") %>' /><br />
+                    <asp:Label ID="lblBarcode" runat="server" Text='<%# String.Format("{0}{1}{2}","*", Eval("ContainerID"),"*") %>' style="font-family: 'Free 3 of 9'; font-size: 72px;" /></div><br /> 
+                    Profile:&nbsp;&nbsp;<asp:Label ID="lblProfile" runat="server" Font-Bold="true" Font-Size="Medium" Text='<%# Eval("ProfileName") %>' /><br />
+                    Matrix:&nbsp;&nbsp<asp:Label ID="lblMatrix" runat="server" Font-Bold="true" Font-Size="Medium" Text='<%# Eval("Matrix") %>' /><br /><br />
+                    <asp:Label ID="lblSampleID" runat="server" Font-Bold="true" Font-Size="32px" Text="" /><br />
+                    Date: 
+                    <script type="text/javascript"><!--
+                        {
+                            var currentTime = new Date()
+                            var month = currentTime.getMonth() + 1
+                            var day = currentTime.getDate()
+                            var year = currentTime.getFullYear()
+                            document.write(month + "/" + day + "/" + year)
+                        }
+                    //-->
+                    </script>
+                </ItemTemplate>
+            </asp:FormView>
+            </asp:Panel>
     </td>
 </tr>
 </table>
