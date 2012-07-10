@@ -121,7 +121,6 @@
     <Content Include="Secure\SuperFundPages\PrintLabel.aspx" />
     <Content Include="Secure\SuperFundPages\Shipping.aspx" />
     <Content Include="Secure\SuperFundPages\superfundpages.aspx" />
-    <Content Include="Secure\SuperFundPages\WebForm1.aspx" />
     <Content Include="Styles\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Styles\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Styles\Images\ui-bg_flat_10_000000_40x100.png" />
@@ -369,13 +368,6 @@
     </Compile>
     <Compile Include="Secure\SuperFundPages\superfundpages.aspx.designer.cs">
       <DependentUpon>superfundpages.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Secure\SuperFundPages\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Secure\SuperFundPages\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
