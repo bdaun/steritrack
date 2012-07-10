@@ -117,7 +117,7 @@ onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
     <HeaderStyle HorizontalAlign="Center" />
 </asp:gridview></td>
 <td>
-<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3">
+<asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3" EnableViewState="False">
     <Columns>
         <asp:BoundField DataField="Name" HeaderText="Profile" SortExpression="Name" />
         <asp:BoundField DataField="NumberofCntrs" HeaderText="Cntr Count" SortExpression="NumberofCntrs" />
