@@ -219,16 +219,25 @@ namespace IMDBWeb.Secure
         }
         protected void txbOutCntr_TextChanged(object sender, EventArgs e)
         {
-            //  The txbOutCntr entry is only visible after the user has clicked on the "Add Record" button.  This button is only visible
-            //  when a process record exists.  The ProcHdrID associated with the txbCntrID (the "IN" container) is stored as a session variable.
-            //  This header ID is used when new OUT containers are added as ProcDetail records.
-            //  The steps are as follows:
-            //      1. Validate the txbOutCntr value to exist and begin with "OUT"
-            //      2. Create a process detail record with the outbound cntr and the session variable prochdrid.  Return the user to the current
-            //          record allowing additional process detail records to be added.
+
+            /* ******************************** Algorithm *********************************************
+             *  
+             *  The txbOutCntr entry is only visible after the user has clicked on the "Add Record" button.  
+             *  This button is only visible when a process record exists.  The ProcHdrID associated with 
+             *  the txbCntrID (the "IN" container) is stored as a session variable.
+             *  This header ID is used when new OUT containers are added as ProcDetail records.
+             *  The steps are as follows:
+             *      1. Validate the txbOutCntr value to exist and begin with "OUT"
+             *      2. Create a process detail record with the outbound cntr and the session variable prochdrid.
+             *          Return the user to the current record allowing additional process detail records to be added.
+             *      
+                **************************************************************************************** */
+
 
 
             //  1.  Validate entry
+            #region Entry Validation
+
             if (txbOutCntr.Text == string.Empty)
             {
                 txbOutCntr.Focus();
@@ -247,15 +256,17 @@ namespace IMDBWeb.Secure
                     txbOutCntr.Focus();
                     return;
                 }
-            }
+            } 
+            #endregion
 
             //  2. Create ProcDetail record
 
-            string sqlProcDetailIns = "INSERT INTO ProcDetail (ProcHdrID,OutboundContainerID,OutboundLocation) " +
-                    "VALUES(@prochdrid,@outboundcontainerID,'Processing')";
+            #region Create ProcDetail
+            string sqlProcDetailIns = "IMDB_Processing_InsCntr";
             SqlConnection insConnect1 = new SqlConnection();
             insConnect1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand insCmd1 = new SqlCommand(sqlProcDetailIns, insConnect1);
+            insCmd1.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -264,6 +275,7 @@ namespace IMDBWeb.Secure
                 {
                     insCmd1.Parameters.AddWithValue("@prochdrid", Session["ProcHdrID"]);
                     insCmd1.Parameters.AddWithValue("@outboundcontainerid", txbOutCntr.Text);
+                    insCmd1.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                     insCmd1.ExecuteNonQuery();
                     gvProcDetails.Sort("ID", SortDirection.Ascending);
                     txbOutCntr.Text = string.Empty;
@@ -284,7 +296,8 @@ namespace IMDBWeb.Secure
                 insConnect1.Close();
                 txbOutCntr.Visible = true;
                 txbOutCntr.Focus();
-            }
+            } 
+            #endregion
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
