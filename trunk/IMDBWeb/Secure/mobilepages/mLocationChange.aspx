@@ -6,7 +6,7 @@
 <asp:TextBox ID="txbCntrID" runat="server" AutoPostBack="True" CssClass="style1" ontextchanged="txbCntrID_TextChanged"></asp:TextBox><br />
 <asp:Button ID="BtnSubmit" runat="server" Text="Submit" onclick="BtnSubmit_Click" style="font-size: small" />
 <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click" style="font-size: small" /><br /><br />
-<asp:Label ID="lblCntrErr" runat="server" Text="CntrErrMsg" ForeColor="#FF3300" Visible="False" style="font-size: medium" Font-Size="XX-Small"></asp:Label>
+<asp:Label ID="lblCntrErr" runat="server" Text="CntrErrMsg" ForeColor="#FF3300" Visible="False" style="font-size: medium" Font-Size="XX-Small" Font-Bold="true"></asp:Label>
 <asp:FormView ID="FormView1" runat="server" CellPadding="4" DataSourceID="RcvDetailSQL" ForeColor="#333333" Width="237px">
 <EditItemTemplate>
     US_Brand_Code:
@@ -73,7 +73,7 @@
     <RowStyle BackColor="#E3EAEB" />
 </asp:FormView>        
 <asp:Label ID="lblErrMsg" runat="server" Text="lblErrMsg" ForeColor="#FF3300" 
-    Visible="False" style="font-size: small"></asp:Label>
+    Visible="False" style="font-size: small; font-weight:bold"></asp:Label>
         
 <asp:Label ID="lblNewLocation" runat="server" 
     Text="Please enter a new location" Visible="False"></asp:Label>

@@ -211,13 +211,19 @@ namespace IMDBWeb.Secure
         }
         protected void txbNewLocation_TextChanged(object sender, EventArgs e)
         {
-            // When user selects a new location, system does the following:
-            //      1. Check if the location that was entered is a valid location
-            //      2. Check if the new location is a move, a compactor process, a bailing process, or a truck out process
-            //      3. For Compactor, Bailer, or Truck locations prompt for outbound container.  
+            /*  ********************************** Algorithm ************************************************
+                When user selects a new location, system does the following:
+                1. Check if the location that was entered is a valid location
+                2. Check if the new location is a loc2loc move, an aggrcntr process, or a truck out process
+                3. If new location isL
+                    a. Truck:  prompt for TruckID,
+                    b. AggrCntr:  create and/or update the process record with the aggrcntr value and name
+                    c. Loc2Loc:  Update the location
 
+                ********************************************************************************************** */
 
             // Check to see if the New Location is a valid location
+            #region CheckLocation valid
 
             string checklocation = "SELECT LocationName FROM Locations WHERE LocationName = @locationname";
             SqlConnection LocConnect = new SqlConnection();
@@ -242,121 +248,387 @@ namespace IMDBWeb.Secure
             }
             LocConnect.Close();
 
+            #endregion
 
-            // Determine type of move.  If it is Truck or Compactor, user must supply outbound container ID.  
-            // System will escape from method and prompt for container ID which user will scan in up loading to truck or compactor
+            // Determine type of move.  If it is Truck user must supply the shipping information.
+            #region Type of Move and Location Updates
 
             string[] args = { "COMPACTOR", "TRUCK", "BALER", "TANK 1", "TANK 2" };
             string value = txbNewLocation.Text.ToUpper();
             string found = Array.Find(args, item => item.Contains(value));
-            if (!string.IsNullOrEmpty(found))
-            { 
-                lblOutCntr.Text = "Please scan the " + txbNewLocation.Text +" ID:";
-                lblOutCntr.Visible = true;
-                txbOutCntr.Visible = true;
-                txbOutCntr.Focus();
-                return;
-            }
-
-            // If new location is NOT compactor, baler, or Truck proceed with the update based on the type of container being moved.
-            string strCntr = txbCntrID.Text.ToUpper();
-            if (strCntr.StartsWith("IN"))
-            //  This is the case for Inbound containers that are being moved to storage areas within the building
+            if (!string.IsNullOrEmpty(found))  //new location is Aggregate Container or Truck
             {
-                //Create Command object
-                SqlConnection thisConnection = new SqlConnection();
-                thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand nonqueryCommand = thisConnection.CreateCommand();
-                try
+                if (value == "TRUCK")
                 {
-                    // Open Connection
-                    thisConnection.Open();
-
-                    // Sql Update Statement
-
-                    string updateSql = "UPDATE rcvdetail " +
-                        "SET InventoryLocation = @NewLocation " +
-                        "WHERE InboundContainerID = @InboundcontainerID";
-                    SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
-
-                    //  Map Parameters
-                    UpdateCmd.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
-                    UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
-                    UpdateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
-                    UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
-
-                    UpdateCmd.ExecuteNonQuery();
+                    // new Location is a Truck.  Exit and prompt user for TruckID
+                    #region TruckID Prompt
+                    lblOutCntr.Text = "Please scan the Truck ID:";
+                    lblOutCntr.Visible = true;
+                    txbOutCntr.Visible = true;
+                    txbOutCntr.Focus();
+                    return;
+                    #endregion
                 }
-
-                catch (SqlException ex)
+                else
                 {
-                    // Display error
-                    lblErrMsg.Text = ex.ToString();
-                    lblErrMsg.Visible = true;
-                }
+                // Use AggrCntr current value to auto-process the move and post message back to user.
+                #region AggrCntr AutoProcess
 
-                finally
-                {
-                    // Close Connection
-                    thisConnection.Close();
-                    txbCntrID.Text = string.Empty;
-                    txbOutCntr.Text = string.Empty;
-                    txbCntrID.Focus();
+                    /* *************************** Algorithm ***********************************
+
+                    User arrives here only if they have selected an AggrCntr location (Compactor, Baler, or Tank)
+                    1.. Determine if the cntrid exists in the procdetail table
+                        a. If yes, determine if an aggrcntr line already exists
+                            i. If yes, error msg & exit
+                            ii. If no, update location/cntrid to aggrcntrname and aggrcntrid
+                        b. If no, determine if the cntr exists in rcvdetail
+                            i. If yes, copy rcv info to prochdr/proc detail line w/ aggrcntrname and aggrcntrid
+                            ii. If no, error msg & exit
+
+                     ***************************************************************************** */
+
+
+
+                    // Determine if the cntrID exists in prochdr.  Return ProcHdrID as Session
+                    #region CntrID in ProcDetail
+
+                    SqlConnection Connect = new SqlConnection();
+                    Connect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    string spProcExist = "IMDB_Processing_ProcHdr_Exist";
+                    string cntrID = txbCntrID.Text.ToUpper();
+                    SqlCommand CmdProcExist= new SqlCommand(spProcExist, Connect);
+                    CmdProcExist.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+                        Connect.Open();
+                        using (CmdProcExist)
+                        {
+                            CmdProcExist.Parameters.AddWithValue("@InboundContainerID", cntrID);
+                            object hasID = new object();
+                            hasID = CmdProcExist.ExecuteScalar();
+                            if (hasID != null)  //  this is the case where there is an existing ProcessHdr
+                            {
+                                Session["ProcHdrID"] = hasID;  // will use this value for new process detail record
+                            }
+                            else  // this is the case where new prochdr must be created.
+                            {
+                                string spInsProcHdr = "IMDB_ProcHdr_Ins";
+                                SqlConnection insConnect = new SqlConnection();
+                                insConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                                SqlCommand insCmd = new SqlCommand(spInsProcHdr, insConnect);
+                                insCmd.CommandType = CommandType.StoredProcedure;
+                                int lastID;  //  will be used to capture newly created prochdr for inserts into procdetail table
+
+                                try
+                                {
+                                    insConnect.Open();
+                                    using (insCmd)
+                                    {
+                                        SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHdrId", SqlDbType.Int);
+                                        processHeaderIdParameter.Direction = ParameterDirection.Output;
+                                        insCmd.Parameters.Add(processHeaderIdParameter);
+                                        insCmd.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
+                                        insCmd.Parameters.AddWithValue("@ProcessorName", HttpContext.Current.User.Identity.Name.ToString());   // made change here
+
+                                        insCmd.ExecuteNonQuery();
+                                        lastID = (int)processHeaderIdParameter.Value;
+                                        Session["ProcHdrID"] = lastID;   // will use this value if new process detail record is added
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.ToString();
+                                }
+                                finally
+                                {
+                                    insConnect.Close();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        lblErrMsg.Visible = true;
+                        lblErrMsg.Text = ex.ToString();
+                    }
+                    finally
+                    {
+                        //close up connection
+                        Connect.Close();
+                    }
+
+                    #endregion
+
+                    // Create/update procdetail record
+                    #region Add/Update ProcDetail Record
+                    /* ******************************** Algorithm *********************************************
+                     *  1. Confirm that an AggrCntr record doesn't already exist
+                     *  2. Get the current Aggregate Cntr ID for compactor
+                     * 
+	                   **************************************************************************************** */
+
+                    String spChk = string.Empty;
+                    String sp_ins = string.Empty;
+                    //  Use switch to set storedprocedure values depending on new location
+                    switch (txbNewLocation.Text.ToUpper())
+                    {
+                        case "COMPACTOR":
+                            spChk = "IMDB_Processing_insCompact_Exist";
+                            sp_ins = "IMDB_Processing_InsCompact";
+                            break;
+                        case "BALER":
+                            spChk = "IMDB_Processing_insBale_Exist";
+                            sp_ins = "imdb_processing_insbale";
+                            break;
+                        default:  // Captures both Tank1 and Tank2 Case
+                            spChk = "IMDB_Processing_insTank_Exist";
+                            sp_ins = "IMDB_Processing_InsTank";
+                            break;
+                    }
+                    String spAggrCntr = "IMDB_AggCntr_Select";
+                    Boolean ChkResult = false;  // Default setting assumes new AggrCntr record can be created
+                    SqlConnection con = new SqlConnection();
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand spCmd = new SqlCommand(sp_ins, con);
+                    SqlCommand spChkCmd = new SqlCommand(spChk, con);
+                    SqlCommand spAggrCmd = new SqlCommand(spAggrCntr, con);
+                    spAggrCmd.CommandType = CommandType.StoredProcedure;
+                    spCmd.CommandType = CommandType.StoredProcedure;
+                    spChkCmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    
+                    //check for existing AggrCntr record for this prochdrid
+                    using (spChkCmd)  
+                    {
+                        try
+                        {
+                            spChkCmd.Parameters.AddWithValue("@ProcHdrID", Session["ProcHdrID"]);
+                            object hasRecord = new object();
+                            hasRecord = spChkCmd.ExecuteScalar();
+                            if (hasRecord != null)
+                            {
+                                ChkResult = true;
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = "There is already a " + txbNewLocation.Text + " Record. Please contact your supervisor";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.ToString();
+                        }
+                    }
+
+                    // if ChkResult is false, obtain the aggrCntrID and rcvdetail values for procdetail record to be created/updated
+                    if (ChkResult == false)
+                    {
+                        using (spAggrCmd)
+                        {
+                            try
+                            {
+                                String cntrname = txbNewLocation.Text;
+                                Session["curCntr"] = "";
+                                spAggrCmd.Parameters.AddWithValue("@cntrname", cntrname);
+                                object objCntr = new object();
+                                objCntr = spAggrCmd.ExecuteScalar();
+                                if (objCntr != null)
+                                {
+                                    Session["curCntr"] = objCntr.ToString();
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
+                            }
+                        }
+
+                        //  Obtain the RcvDetail Information for the container
+                        #region RcvDetail Values
+                        String spRcvDetail = "IMDB_Processing_RcvDetail_Sel";
+                        SqlCommand rcvCmd = new SqlCommand(spRcvDetail, con);
+                        rcvCmd.CommandType = CommandType.StoredProcedure;
+
+                        try    //  Determine if the entered value exists in the rcvdetail table.  If existing, get current values.
+                        {
+                            using (rcvCmd)
+                            {
+                                rcvCmd.Parameters.AddWithValue("@inboundcontainerid", cntrID);
+                                SqlDataReader Reader = rcvCmd.ExecuteReader();
+                                if (!Reader.HasRows)
+                                {
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
+                                        "Please receive the container BEFORE attempting to process.";
+                                    return;
+                                }
+                                else
+                                {
+                                    while (Reader.Read())
+                                    {
+                                        Session["RcvID"] = (int)Reader["RcvID"];
+                                        Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
+                                        Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
+                                        Session["InboundContainerType"] = Reader["InboundContainertype"];
+                                        Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
+                                        Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
+                                        Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
+                                        Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                                    }
+                                    Reader.Close();
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Display error
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.ToString();
+                        }
+                        #endregion
+
+                        //  Create Process Detail Record
+                        #region Process Detail Insert
+                        using (spCmd)
+                        {
+                            try
+                            {
+                                spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                                spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
+                                spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
+                                spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
+                                spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
+                                spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
+                                spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
+                                spCmd.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
+                            }
+                            finally
+                            {
+                                con.Close();
+                            }
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        con.Close();
+                    }
+                    #endregion
                 }
+                #endregion
             }
             else
-            //  This is the case for outbound containers
             {
-                //Create Command object
-                SqlConnection thisConnection = new SqlConnection();
-                thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand nonqueryCommand = thisConnection.CreateCommand();
-                try
+            // If new location is not an AggrCntr or Truck proceed with the update based on the type of container being moved.
+            #region Location2Location Move
+
+                string strCntr = txbCntrID.Text.ToUpper();
+                if (strCntr.StartsWith("IN"))
+                //  This is the case for Inbound containers that are being moved to storage areas within the building
                 {
-                    // Open Connection
-                    thisConnection.Open();
+                    //Create Command object
+                    SqlConnection thisConnection = new SqlConnection();
+                    thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+                    try
+                    {
+                        // Open Connection
+                        thisConnection.Open();
 
-                    // Sql Update Statement
+                        // Sql Update Statement
 
-                    string updateSql = "UPDATE ProcDetail " +
-                        "SET Outboundlocation = @NewLocation " +
-                        "WHERE OutboundContainerID = @outboundcontainerid";
-                    SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
+                        string updateSql = "UPDATE rcvdetail " +
+                            "SET InventoryLocation = @NewLocation " +
+                            "WHERE InboundContainerID = @InboundcontainerID";
+                        SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
 
-                    //  Map Parameters
-                    UpdateCmd.Parameters.Add("@outboundcontainerid", SqlDbType.NVarChar, 20, "OutboundContainerID");
-                    UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
-                    UpdateCmd.Parameters["@outboundcontainerid"].Value = txbCntrID.Text;
-                    UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                        //  Map Parameters
+                        UpdateCmd.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
+                        UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
+                        UpdateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
+                        UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
 
-                    UpdateCmd.ExecuteNonQuery();
+                        UpdateCmd.ExecuteNonQuery();
+                    }
+
+                    catch (SqlException ex)
+                    {
+                        // Display error
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
+
+                    finally
+                    {
+                        // Close Connection
+                        thisConnection.Close();
+                        txbCntrID.Text = string.Empty;
+                        txbOutCntr.Text = string.Empty;
+                        txbCntrID.Focus();
+                    }
                 }
-
-                catch (SqlException ex)
+                else  //  This is the case for outbound containers
                 {
-                    // Display error
-                    lblErrMsg.Text = ex.ToString();
-                    lblErrMsg.Visible = true;
-                }
+                    //Create Command object
+                    SqlConnection thisConnection = new SqlConnection();
+                    thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+                    try
+                    {
+                        // Open Connection
+                        thisConnection.Open();
 
-                finally
-                {
-                    // Close Connection
-                    thisConnection.Close();
-                    txbCntrID.Text = string.Empty;
-                    txbOutCntr.Text = string.Empty;
-                    txbCntrID.Focus();
-                }
+                        // Sql Update Statement
 
+                        string updateSql = "UPDATE ProcDetail " +
+                            "SET Outboundlocation = @NewLocation " +
+                            "WHERE OutboundContainerID = @outboundcontainerid";
+                        SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
+
+                        //  Map Parameters
+                        UpdateCmd.Parameters.Add("@outboundcontainerid", SqlDbType.NVarChar, 20, "OutboundContainerID");
+                        UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
+                        UpdateCmd.Parameters["@outboundcontainerid"].Value = txbCntrID.Text;
+                        UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+
+                        UpdateCmd.ExecuteNonQuery();
+                    }
+
+                    catch (SqlException ex)
+                    {
+                        // Display error
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
+
+                    finally
+                    {
+                        // Close Connection
+                        thisConnection.Close();
+                        txbCntrID.Text = string.Empty;
+                        txbOutCntr.Text = string.Empty;
+                        txbCntrID.Focus();
+                    }
+                }
             }
+                #endregion
+            #endregion
         }
         protected void txbOutCntr_TextChanged(object sender, EventArgs e)
         {
-            // User arrives here only if they have selected Truck or Compactor for a location and have supplied an outbound container ID
+            // User arrives here only if they have selected Truck
             //  1. First check if a value has been supplied.  If not, return user to page.
-            //  2. Validate outbound container does not start with "IN" or is in ship table
-            //  3. If container being moved is an "IN" container, update the receive table and create prochdr and procdetail based on New Location value
-            //  4. if container being moved is an "OUT" container, update the procdetail table.
+            //  2. If container being moved is an "IN" container, update the receive table and create prochdr and procdetail based on New Location value
+            //  3. if container being moved is an "OUT" container, update the procdetail table.
 
             if (txbOutCntr.Text == "")
             {
@@ -394,34 +666,28 @@ namespace IMDBWeb.Secure
                 //  Determine if this is an "IN" container move or "OUT" move and perform updates accordingly
                 string strCntr = txbCntrID.Text.ToUpper();
                 if (strCntr.StartsWith("IN"))
-                //  This is the case for "IN" container being moved to TRUCK or COMPACTOR
+                //  This is the case for "IN" container being moved to TRUCK
                 {
                     string strCntr1 = txbOutCntr.Text.ToUpper();
-                    if ((
-                        (strCntr1.StartsWith("ROP") && txbNewLocation.Text.ToUpper() == "BALER") || 
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "BALER") ||
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "TANK") ||
-                        (strCntr1.StartsWith("ROP") && txbNewLocation.Text.ToUpper() == "COMPACTOR") || 
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "COMPACTOR") || 
-                        (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")))
+                    if (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")
                     {
                         // Perform the location update to the RecDetails table
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand nonqueryCommand = thisConnection.CreateCommand();
-                        string procplan = string.Empty;
-                        switch (txbNewLocation.Text.ToUpper())
-                        {
-                            case "COMPACTOR":
-                                procplan = "Compact";
-                                break;
-                            case "BALER":
-                                procplan = "Bale";
-                                break;
-                            case "TRUCK":
-                                procplan = "Truck";
-                                break;
-                        }
+//string procplan = string.Empty;
+//switch (txbNewLocation.Text.ToUpper())
+//{
+//    case "COMPACTOR":
+//        procplan = "Compact";
+//        break;
+//    case "BALER":
+//        procplan = "Bale";
+//        break;
+//    case "TRUCK":
+//        procplan = "Truck";
+//        break;
+//}
                         try
                         {
                             // Open Connection
@@ -436,7 +702,7 @@ namespace IMDBWeb.Secure
                                 updateCmd.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
                                 updateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
                                 updateCmd.Parameters.Add("@processplan", SqlDbType.NVarChar, 20, "ProcessPlan");
-                                updateCmd.Parameters["@processplan"].Value = procplan;
+                                updateCmd.Parameters["@processplan"].Value = "Truck";
                                 updateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
                                 updateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
 
@@ -444,25 +710,25 @@ namespace IMDBWeb.Secure
                             }
 
                             // Sql Insert ProcHdr Statement for new record AND get Identity using Scope_Identity
-                            // Slightly different insert statement for Truck and Compactor.  Note that web login username
-                            // is used for the processor value
+// Slightly different insert statement for Truck and Compactor.  Note that web login username
+// is used for the processor value
 
-                            string insertSQL1 = string.Empty;
-                            switch (txbNewLocation.Text.ToUpper())
-                            {
-                                case "TRUCK":       // Truck which has 0 hrs of labor
-                                    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-                                    "VALUES (@InboundcontainerID,@User,Getdate(),'0'); Set @ProcessHeaderId = Scope_Identity()";
-                                    break;
-                                case "COMPACTOR":    // compactor which has 0.25 hrs of labor
-                                    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-                                    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-                                    break;
-                                case "BALER":       // baler which has 0.25 hrs of labor
-                                    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-                                    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-                                    break;
-                            }
+//string insertSQL1 = string.Empty;
+//switch (txbNewLocation.Text.ToUpper())
+//{
+//case "TRUCK":       // Truck which has 0 hrs of labor
+                            string insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
+                            "VALUES (@InboundcontainerID,@User,Getdate(),'0'); Set @ProcessHeaderId = Scope_Identity()";
+//break;
+//case "COMPACTOR":    // compactor which has 0.25 hrs of labor
+//insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
+//"VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
+//break; 
+//case "BALER":       // baler which has 0.25 hrs of labor
+//    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
+//    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
+//    break;
+//}
 
                             int lastID;     // Create local variable for the identity value
                             SqlCommand insertCmd1 = new SqlCommand(insertSQL1, thisConnection);
@@ -530,82 +796,82 @@ namespace IMDBWeb.Secure
                             int palletwt = 0;
                             int productwt = 0;
                             int palletprofile = 0;
-                            switch (OutboundLocation)
-                            {
-                                case "TRUCK":
-                                    {
-                                        insertSQL2 = "INSERT INTO ProcDetail " +
-                                        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                                        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation,OutboundDocNo) " +
-                                        "VALUES (@lastID,'WTE',@InboundPalletWeight,@InboundProfileID,@InboundContainerType,@InboundContainerID," +
-                                        "@InboundPalletType,'Ship','0','Truck',@OutboundDocNo)";
-                                        break;
-                                    }
-                                case "COMPACTOR":
-                                    {
-                                        //  First determine the weights and profiles based on the type of pallet
-                                        switch (InboundPalletType)
-                                        {
-                                            case "CHEP":
-                                                palletwt = 66;
-                                                palletprofile = 26;
-                                                break;
-                                            case "GMA":
-                                                palletwt = 42;
-                                                palletprofile = 27;
-                                                break;
-                                            default:
-                                                palletwt = 0;
-                                                break;
-                                        }
-                                        productwt = InboundPalletWeight - palletwt;
+//switch (OutboundLocation)
+//{
+//    case "TRUCK":
+//        {
+                            insertSQL2 = "INSERT INTO ProcDetail " +
+                            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+                            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation,OutboundDocNo) " +
+                            "VALUES (@lastID,'WTE',@InboundPalletWeight,@InboundProfileID,@InboundContainerType,@InboundContainerID," +
+                            "@InboundPalletType,'Ship','0','Truck',@OutboundDocNo)";
+//break;
+//    }
+//case "COMPACTOR":
+//    {
+//        //  First determine the weights and profiles based on the type of pallet
+//        switch (InboundPalletType)
+//        {
+//            case "CHEP":
+//                palletwt = 66;
+//                palletprofile = 26;
+//                break;
+//            case "GMA":
+//                palletwt = 42;
+//                palletprofile = 27;
+//                break;
+//            default:
+//                palletwt = 0;
+//                break;
+//        }
+//        productwt = InboundPalletWeight - palletwt;
 
-                                        // Note the insertSQL2 statement for a compactor is actually two sequential insert statements.  
-                                        // One for the pallet, the other for the "product" weight
-                                        insertSQL2 = "INSERT INTO ProcDetail " +
-                                        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                                        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-                                        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-                                        "'None','Compact','0','NA');INSERT INTO ProcDetail " +
-                                        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                                        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-                                        "VALUES (@lastID,'WTE',@productwt,'35','Compactor',@OutboundContainerID," +
-                                        "'None','Compact','0','Compactor')";
-                                        break;
-                                    }
-                                case "BALER":
-                                    {
-                                        //  First determine the weights and profiles based on the type of pallet
-                                        switch (InboundPalletType)
-                                        {
-                                            case "CHEP":
-                                                palletwt = 66;
-                                                palletprofile = 26;
-                                                break;
-                                            case "GMA":
-                                                palletwt = 42;
-                                                palletprofile = 27;
-                                                break;
-                                            default:
-                                                palletwt = 0;
-                                                break;
-                                        }
-                                        productwt = InboundPalletWeight - palletwt;
+//        // Note the insertSQL2 statement for a compactor is actually two sequential insert statements.  
+//        // One for the pallet, the other for the "product" weight
+//        insertSQL2 = "INSERT INTO ProcDetail " +
+//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
+//        "'None','Compact','0','NA');INSERT INTO ProcDetail " +
+//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//        "VALUES (@lastID,'WTE',@productwt,'35','Compactor',@OutboundContainerID," +
+//        "'None','Compact','0','Compactor')";
+//        break;
+//    }
+//case "BALER":
+//    {
+//        //  First determine the weights and profiles based on the type of pallet
+//        switch (InboundPalletType)
+//        {
+//            case "CHEP":
+//                palletwt = 66;
+//                palletprofile = 26;
+//                break;
+//            case "GMA":
+//                palletwt = 42;
+//                palletprofile = 27;
+//                break;
+//            default:
+//                palletwt = 0;
+//                break;
+//        }
+//            productwt = InboundPalletWeight - palletwt;
 
-                                        // Note the insertSQL2 statement for a baler is actually two sequential insert statements.  
-                                        // One for the pallet, the other for the "product" weight
-                                        insertSQL2 = "INSERT INTO ProcDetail " +
-                                        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                                        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-                                        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-                                        "'None','Bale','0','NA');INSERT INTO ProcDetail " +
-                                        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                                        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-                                        "VALUES (@lastID,'Reuse',@productwt,'28','Baler',@OutboundContainerID," +
-                                        "'None','Bale','0','Baler')";
-                                        break;
-                                    }
-                            }
+//            // Note the insertSQL2 statement for a baler is actually two sequential insert statements.  
+//            // One for the pallet, the other for the "product" weight
+//            insertSQL2 = "INSERT INTO ProcDetail " +
+//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//            "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
+//            "'None','Bale','0','NA');INSERT INTO ProcDetail " +
+//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//            "VALUES (@lastID,'Reuse',@productwt,'28','Baler',@OutboundContainerID," +
+//            "'None','Bale','0','Baler')";
+//            break;
+//        }
+//}
                             SqlCommand insertCmd2 = new SqlCommand(insertSQL2, thisConnection);
 
                             using (insertCmd2)
@@ -629,9 +895,17 @@ namespace IMDBWeb.Secure
                         }
                         catch (SqlException ex)
                         {
-                            // Display error
-                            lblErrMsg.Text = ex.ToString();
-                            lblErrMsg.Visible = true;
+                            if (ex.ErrorCode == -2146232060)
+                            {
+                                // there is already a process header for this record
+                                lblErrMsg.Text = "There is already a Process Header for this record.  Please scan the outboundID or contact your supervisor";
+                                lblErrMsg.Visible = true;
+                            }
+                            else
+	                        {
+                                lblErrMsg.Text = ex.ToString();
+                                lblErrMsg.Visible = true;
+	                        }
                         }
 
                         finally
@@ -649,30 +923,16 @@ namespace IMDBWeb.Secure
                         txbOutCntr.Text = string.Empty;
                         txbOutCntr.Focus();
                         lblErrMsg.Visible = true;
-                        if (txbNewLocation.Text.ToUpper() == "TRUCK")
-                        {
-                            lblErrMsg.Text = "The value you entered is not in the ShipHdr Table.  Please re-scan or contact the shipping clerk to create " +
-                                "an outbound shipping record.";
-                            lblOutCntr.Visible = true;
-                        }
-                        else
-                        {
-                            lblErrMsg.Text = "Please enter an OUT or ROPAK container";
-                            lblOutCntr.Visible = true;
-                        }
+                        lblErrMsg.Text = "The value you entered is not in the ShipHdr Table or is marked as already shipped.  Please re-scan or contact the shipping clerk to create " +
+                            "an outbound shipping record.";
+                        lblOutCntr.Visible = true;
                     }
                 }
                 else
-                //  This is the case for "OUT" containers that are being sent to a Special location
+                //  This is the case for "OUT" containers that are being loaded on a Truck
 	            {
                     string strCntr1 = txbOutCntr.Text.ToUpper();
-                    if ((
-                        (strCntr1.StartsWith("ROP") && txbNewLocation.Text.ToUpper() == "BALER") || 
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "BALER") ||
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "TANK") ||
-                        (strCntr1.StartsWith("ROP") && txbNewLocation.Text.ToUpper() == "COMPACTOR") || 
-                        (strCntr1.StartsWith("OUT") && txbNewLocation.Text.ToUpper() == "COMPACTOR") || 
-                        (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")))
+                    if (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")
                     {
                         // Perform the location update to the ProcDetails table
                         SqlConnection thisConnection = new SqlConnection();
@@ -685,29 +945,29 @@ namespace IMDBWeb.Secure
                             thisConnection.Open();
 
                             string updateSQL = string.Empty;
-                            switch (txbNewLocation.Text.ToUpper())
-                            { 
-                                case "TRUCK":
-                                    updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Truck', ModDate = getdate(), " +
-                                    "username = @username, outboundDocNo = @outbounddocno, outboundcontainerID = @outboundtruckid, " +
-                                    "shipped = '0',ProcessMethod = 'Ship' WHERE outboundcontainerid = @outboundcontainerID_old";
-                                    break;
-                                case "COMPACTOR":
-                                    updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Compactor', ModDate = getdate(), " +
-                                    "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Compact' " +
-                                    "WHERE outboundcontainerid = @outboundcontainerID_old";
-                                    break;
-                                case "BALER":
-                                    updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Baler', ModDate = getdate(), " +
-                                    "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Bale' " +
-                                    "WHERE outboundcontainerid = @outboundcontainerID_old";
-                                    break;
-                                case "TANK":
-                                    updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Tank', ModDate = getdate(), " +
-                                    "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Decant' " +
-                                    "WHERE outboundcontainerid = @outboundcontainerID_old";
-                                    break;
-                            }
+//switch (txbNewLocation.Text.ToUpper())
+//{ 
+//    case "TRUCK":
+                            updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Truck', ModDate = getdate(), " +
+                            "username = @username, outboundDocNo = @outbounddocno, outboundcontainerID = @outboundtruckid, " +
+                            "shipped = '0',ProcessMethod = 'Ship' WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//    case "COMPACTOR":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Compactor', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Compact' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//    case "BALER":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Baler', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Bale' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//    case "TANK":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Tank', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Decant' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//}
                             SqlCommand UpdateCmd = new SqlCommand(updateSQL, thisConnection);
                                 
                             //  Map Parameters
@@ -742,17 +1002,17 @@ namespace IMDBWeb.Secure
                         txbOutCntr.Text = string.Empty;
                         txbOutCntr.Focus();
                         lblErrMsg.Visible = true;
-                        if (txbNewLocation.Text.ToUpper() == "TRUCK")
-                        {
-                            lblErrMsg.Text = "The value you entered is not in the ShipHdr Table.  Please re-scan or contact the shipping clerk to create " +
+//if (txbNewLocation.Text.ToUpper() == "TRUCK")
+//{
+                            lblErrMsg.Text = "The value you entered is not in the ShipHdr Table or has already shipped.  Please re-scan or contact the shipping clerk to create " +
                                 "an outbound shipping record.";
                             lblOutCntr.Visible = true;
-                        }
-                        else
-                        {
-                            lblErrMsg.Text = "Please enter an OUT or ROPAK container";
-                            lblOutCntr.Visible = true;
-                        }
+//}
+//else
+//{
+//    lblErrMsg.Text = "Please enter an OUT or ROPAK container";
+//    lblOutCntr.Visible = true;
+//}
                     }
 	            }
             }
