@@ -75,7 +75,7 @@ namespace IMDBWeb.Secure.mobilepages
                     txbNewCntr.Visible = true;
                     txbNewCntr.Focus();
 
-                    string sp = "SP_AggCntr_Select";
+                    string sp = "IMDB_AggCntr_Select";
                     SqlConnection sel = new SqlConnection();
                     sel.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                     SqlCommand selCmd = new SqlCommand(sp, sel);
