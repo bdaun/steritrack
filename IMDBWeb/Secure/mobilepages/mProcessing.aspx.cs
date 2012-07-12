@@ -14,17 +14,20 @@ namespace IMDBWeb.Secure
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            lblHeader.Visible = false;
-            lblProcDetails.Visible = false;
-            lblOutCntr.Visible = false;
-            txbOutCntr.Visible = false;
-            lblDots.Visible = false;
-            btnInsCntr.Visible = false;
-            btnInsBale.Visible = false;
-            btnInsCompact.Visible = false;
-            btnDone.Visible = false;
-            lblErrMsg.Visible = false;
-            txbCntrID.Focus();
+            if (!IsPostBack)
+            {
+                lblHeader.Visible = false;
+                lblProcDetails.Visible = false;
+                lblOutCntr.Visible = false;
+                txbOutCntr.Visible = false;
+                lblDots.Visible = false;
+                btnInsCntr.Visible = false;
+                btnInsBale.Visible = false;
+                btnInsCompact.Visible = false;
+                btnDone.Visible = false;
+                lblErrMsg.Visible = false;
+                txbCntrID.Focus();
+            }
         }
         protected void txbCntrID_TextChanged(object sender, EventArgs e)
         {
@@ -145,7 +148,7 @@ namespace IMDBWeb.Secure
                     }
                     else  // this is the case where new prochdr must be created.
                     {
-                        string spInsProcHdr = "SP_IMDB_ProcHdr_Ins";
+                        string spInsProcHdr = "IMDB_ProcHdr_Ins";
                         SqlConnection insConnect = new SqlConnection();
                         insConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand insCmd = new SqlCommand(spInsProcHdr, insConnect);
@@ -303,14 +306,18 @@ namespace IMDBWeb.Secure
         }
         protected void btnIns_Compact_Click(object sender, EventArgs e)
         {
-            // This button only visible when process record exist
-            // Confirm that compact record doesn't already exist
-            // Get the current Aggregate Cntr ID for compactor
-            // Insert new compact record
+            /* ******************************** Algorithm *********************************************
+             *  Note: This button only visible when process record exist
+             *  1. Confirm that compact record doesn't already exist
+             *  2. Get the current Aggregate Cntr ID for compactor
+             *  3. Get RcvDetail values
+             *  4. Insert new compact record
+                **************************************************************************************** */
 
-            String spAggrCntr = "SP_AggCntr_Select";
-            String spChk = "SP_Processing_insCompact_Exist";
-            String sp = "SP_Processing_InsCompact";
+
+            String spAggrCntr = "IMDB_AggCntr_Select";
+            String spChk = "IMDB_Processing_insCompact_Exist";
+            String sp = "IMDB_Processing_InsCompact";
             Boolean ChkResult = false;
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
@@ -322,7 +329,9 @@ namespace IMDBWeb.Secure
             spChkCmd.CommandType = CommandType.StoredProcedure;
             con.Open();
 
-            using (spChkCmd)  //check for existing Compact record for this prochdrid
+            //check for existing Compact record for this prochdrid
+            #region Check for Existing Compact Record
+            using (spChkCmd)  
             {
                 try
                 {
@@ -344,9 +353,12 @@ namespace IMDBWeb.Secure
                     lblErrMsg.Text = ex.ToString();
                 }
             }
+            #endregion
 
             if (ChkResult == false)
             {
+                //  Get current compactor cntrID
+                #region Cur Compactor CntrID
                 using (spAggrCmd)
                 {
                     try
@@ -368,6 +380,54 @@ namespace IMDBWeb.Secure
                         lblErrMsg.Text = ex.ToString();
                     }
                 }
+                #endregion
+                
+                //  Get RcvDetal Values to populate ProcDetail record
+                #region RcvDetail Values
+                String spRcvDetail = "IMDB_Processing_RcvDetail_Sel";
+                SqlCommand rcvCmd = new SqlCommand(spRcvDetail, con);
+                rcvCmd.CommandType = CommandType.StoredProcedure;
+
+                try    //  Determine if the entered value exists in the rcvdetail table.  If existing, get current values.
+                {
+                    using (rcvCmd)
+                    {
+                        rcvCmd.Parameters.AddWithValue("@inboundcontainerid", txbCntrID.Text);
+                        SqlDataReader Reader = rcvCmd.ExecuteReader();
+                        if (!Reader.HasRows)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
+                                "Please receive the container BEFORE attempting to process.";
+                            return;
+                        }
+                        else
+                        {
+                            while (Reader.Read())
+                            {
+                                Session["RcvID"] = (int)Reader["RcvID"];
+                                Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
+                                Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
+                                Session["InboundContainerType"] = Reader["InboundContainertype"];
+                                Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
+                                Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
+                                Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
+                                Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                            }
+                            Reader.Close();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Display error
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                }
+                #endregion
+
+                #region Insert ProcDetail Record
+                // Insert the new procdetail record
                 using (spCmd)
                 {
                     try
@@ -375,6 +435,11 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                         spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
+                        spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
+                        spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
+                        spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                         spCmd.ExecuteNonQuery();
                     }
                     catch (Exception ex)
@@ -387,6 +452,7 @@ namespace IMDBWeb.Secure
                         con.Close();
                     }
                 }
+                #endregion
                 gvProcDetails.DataBind();
                 lblProcDetails.Visible = true;
                 lblHeader.Visible = true;
@@ -402,9 +468,9 @@ namespace IMDBWeb.Secure
             // Confirm that bale record doesn't already exist
             // Insert new bale record
 
-            String spAggrCntr = "SP_AggCntr_Select";
-            String spChk = "SP_Processing_insBale_Exist";
-            String sp = "SP_Processing_InsBale";
+            String spAggrCntr = "IMDB_AggCntr_Select";
+            String spChk = "IMDB_Processing_insBale_Exist";
+            String sp = "IMDB_Processing_InsBale";
             Boolean ChkResult = false;
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
@@ -416,7 +482,9 @@ namespace IMDBWeb.Secure
             spChkCmd.CommandType = CommandType.StoredProcedure;
             con.Open();
 
-            using (spChkCmd)  //check for existing Bale record for this prochdrid
+            //check for existing Bale record for this prochdrid
+            #region Check Bale Exist
+            using (spChkCmd)  
             {
                 try
                 {
@@ -437,10 +505,12 @@ namespace IMDBWeb.Secure
                     lblErrMsg.Visible = true;
                     lblErrMsg.Text = ex.ToString();
                 }
-            }
+            } 
+            #endregion
 
             if (ChkResult == false)
             {
+                #region Obtain AggrCntrID
                 using (spAggrCmd)
                 {
                     try
@@ -462,6 +532,56 @@ namespace IMDBWeb.Secure
                         lblErrMsg.Text = ex.ToString();
                     }
                 }
+                
+                #endregion
+
+                //  Get RcvDetal Values to populate ProcDetail record
+                #region RcvDetail Values
+                String spRcvDetail = "IMDB_Processing_RcvDetail_Sel";
+                SqlCommand rcvCmd = new SqlCommand(spRcvDetail, con);
+                rcvCmd.CommandType = CommandType.StoredProcedure;
+
+                try    //  Determine if the entered value exists in the rcvdetail table.  If existing, get current values.
+                {
+                    using (rcvCmd)
+                    {
+                        rcvCmd.Parameters.AddWithValue("@inboundcontainerid", txbCntrID.Text);
+                        SqlDataReader Reader = rcvCmd.ExecuteReader();
+                        if (!Reader.HasRows)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
+                                "Please receive the container BEFORE attempting to process.";
+                            return;
+                        }
+                        else
+                        {
+                            while (Reader.Read())
+                            {
+                                Session["RcvID"] = (int)Reader["RcvID"];
+                                Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
+                                Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
+                                Session["InboundContainerType"] = Reader["InboundContainertype"];
+                                Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
+                                Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
+                                Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
+                                Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                            }
+                            Reader.Close();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Display error
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                }
+                #endregion
+
+                //  Using AggrCntrID and RcvDetails, insert new ProcDetail
+                #region Insert ProcDetail Record
+
                 using (spCmd)
                 {
                     try
@@ -469,6 +589,11 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                         spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
+                        spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
+                        spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
+                        spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                         spCmd.ExecuteNonQuery();
                     }
                     catch (Exception ex)
@@ -480,7 +605,8 @@ namespace IMDBWeb.Secure
                     {
                         con.Close();
                     }
-                }
+                } 
+                #endregion
                 gvProcDetails.DataBind();
                 lblProcDetails.Visible = true;
                 lblHeader.Visible = true;
