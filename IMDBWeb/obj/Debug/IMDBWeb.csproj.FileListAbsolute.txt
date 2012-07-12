@@ -50,3 +50,29 @@ C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\zh-C
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\IMDBWeb.dll
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\IMDBWeb.pdb
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\IMDBWeb.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\IMDBWeb.pdb
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\AjaxControlToolkit.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\AntiXSSLibrary.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\HtmlSanitizationLibrary.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\SanitizerProviders.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\AjaxControlToolkit.pdb
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\ar\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\cs\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\de\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\es\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\fr\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\he\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\hi\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\it\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\ja\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\ko\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\nl\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\pt\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\ru\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\tr-TR\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\zh-CHS\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\zh-CHT\AjaxControlToolkit.resources.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\obj\Debug\IMDBWeb.dll
+C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\obj\Debug\IMDBWeb.pdb
