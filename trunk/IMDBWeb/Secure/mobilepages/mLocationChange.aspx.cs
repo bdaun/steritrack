@@ -23,6 +23,13 @@ namespace IMDBWeb.Secure
         }
         protected void txbCntrID_TextChanged(object sender, EventArgs e)
         {
+
+            /* ******************************** Algorithm *********************************************
+             * 
+             * NOTE:   Code for BtnSubmit_Click should be IDENTICAL to code for txbCntrID_Textchanged.
+             * 
+                **************************************************************************************** */
+
             // Based on strCntr value, set control visibility  strCntr = txbCntrID.Text;                       
             if (txbCntrID.Text == "")
             {
@@ -113,9 +120,14 @@ namespace IMDBWeb.Secure
         }
         protected void BtnSubmit_Click(object sender, EventArgs e)
         {
-            //  NOTE:   Code for BtnSubmit_Click should be IDENTICAL to codee for txbCntrID_Textchanged.
+            /* ******************************** Algorithm *********************************************
+             * 
+             * NOTE:   Code for BtnSubmit_Click should be IDENTICAL to code for txbCntrID_Textchanged.
+             * 
+                **************************************************************************************** */
 
-            // Based on strCntr value, set control visibility  strCntr = txbCntrID.Text;                       
+            // Based on strCntr value, set control visibility  strCntr = txbCntrID.Text;    
+                   
             if (txbCntrID.Text == "")
             {
                 txbNewLocation.Visible = false;
