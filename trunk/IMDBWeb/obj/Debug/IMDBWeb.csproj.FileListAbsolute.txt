@@ -24,6 +24,7 @@ C:\Users\billd\documents\visual studio 2010\Projects\IMDBWeb\IMDBWeb\bin\zh-CHT\
 C:\Users\billd\documents\visual studio 2010\Projects\IMDBWeb\IMDBWeb\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\billd\documents\visual studio 2010\Projects\IMDBWeb\IMDBWeb\obj\Debug\IMDBWeb.dll
 C:\Users\billd\documents\visual studio 2010\Projects\IMDBWeb\IMDBWeb\obj\Debug\IMDBWeb.pdb
+C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\IMDBWeb.dll
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\IMDBWeb.pdb
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\AjaxControlToolkit.dll
@@ -47,7 +48,6 @@ C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\ru\A
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\tr-TR\AjaxControlToolkit.resources.dll
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\zh-CHS\AjaxControlToolkit.resources.dll
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\bin\zh-CHT\AjaxControlToolkit.resources.dll
-C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\IMDBWeb.dll
 C:\Users\billd\Documents\Visual Studio 2010\Projects\SteriTrack\IMDBWeb\obj\Debug\IMDBWeb.pdb
 C:\Documents and Settings\Mitzi\My Documents\Visual Studio 2010\Projects\SteriTrack_Working\IMDBWeb\bin\IMDBWeb.dll
