@@ -250,7 +250,7 @@ namespace IMDBWeb.Secure.deskTopPages
             }
             else   //  this is the IN Cntr Case
             {
-                String spRcvDetail = "SP_IMDB_RcvDetail_Sel";
+                String spRcvDetail = "IMDB_Processing_RcvDetail_Sel";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand rcvCmd = new SqlCommand(spRcvDetail, con);
@@ -379,7 +379,7 @@ namespace IMDBWeb.Secure.deskTopPages
                         else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
                         {
                         Reader.Close();
-                        string spInsProcHdr = "SP_IMDB_ProcHdr_Ins";
+                        string spInsProcHdr = "IMDB_ProcHdr_Ins";
                         string spInsProcDetail = "SP_IMDB_ProcDetail_Ins";
                         SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
                         SqlCommand insProcDetail = new SqlCommand(spInsProcDetail,con);
