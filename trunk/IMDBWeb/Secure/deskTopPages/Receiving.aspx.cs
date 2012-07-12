@@ -27,6 +27,8 @@ namespace IMDBWeb.Secure.SPAKpages
                 Session["CurOrderNum"] = null;
 
             }
+            
+
         }
         protected void txbOrderNum_OnTextChanged(object sender, EventArgs e)
         {
@@ -62,7 +64,7 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void gvSearchResults_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
-            //Label1.Text = Session["CurRcvHrdID"].ToString();
+            Label1.Text = Session["CurRcvHrdID"].ToString();
             this.mdlPopup.Show();
         }
         protected void btnClear_Click(object sender, EventArgs e)
@@ -90,7 +92,13 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            //this.mdlPopup.Hide();
+            this.mdlPopup.Hide();
+            //label2.Text = "";
+            //Label3.Text = "";
+            gvRcvDetail.DataBind();
+            DetailsView2.DataBind();
+            DetailsView2.ChangeMode(DetailsViewMode.Insert);
+            DetailsView2.Visible = true;
             //DetailsView1.ChangeMode(DetailsViewMode.Edit);
             //DetailsView1.Visible = true;
 
@@ -106,7 +114,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 if (CheckBoxList1.Items[i].Selected)
                 {
                     label2.Text += CheckBoxList1.Items[i].Text + "','";
-                    z = i;
+                    z++;
                 }
             }
             switch (z)
@@ -185,7 +193,6 @@ namespace IMDBWeb.Secure.SPAKpages
             }
             con.Close();
         }
-
         protected void btnNewTruck_Click(object sender, EventArgs e)
         {
             gvSearchResults.SelectedIndex = -1;
@@ -210,8 +217,13 @@ namespace IMDBWeb.Secure.SPAKpages
                     break;
                 case "Cancel":
                     DetailsView1.Visible = false;
+                    //gvSearchResults.DataBind();
                     break;
                 case "Update":
+                    DetailsView1.Visible = false;
+                    //gvSearchResults.DataBind();
+                    break;
+                case "Delete":
                     DetailsView1.Visible = false;
                     //gvSearchResults.DataBind();
                     break;
@@ -251,8 +263,141 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
+        protected void DetailsView2_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
+        {
 
+            switch (e.CommandName)
+            {
+                case "Insert":
+                    DetailsView2.Visible = false;
+                    break;
+                case "Cancel":
+                    DetailsView2.Visible = false;
+                    break;
+                case "Update":
+                    DetailsView2.Visible = false;
+                    //gvSearchResults.DataBind();
+                    gvRcvDetail.DataBind();
+                    //gvSearchResults.DataBind();
+                    break;
+                case "Duplicate":
+                    String sp = "IMDB_DupeDetail_Ins";
+                    SqlConnection con = new SqlConnection();
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand spCmd = new SqlCommand(sp, con);
+                    spCmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (spCmd)
+                    {
+                        try
+                        {
+                            spCmd.Parameters.AddWithValue("@InboundDocNo", ((TextBox)DetailsView2.FindControl("txbInboundDoc")).Text);
+                            spCmd.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)DetailsView2.FindControl("txbLineNo")).Text));
+                            spCmd.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHrdID"]);
+                            spCmd.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)DetailsView2.FindControl("ddProfile")).Text));
+                            spCmd.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)DetailsView2.FindControl("ddPalletType")).Text);
+                            spCmd.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)DetailsView2.FindControl("txbPalletWeight")).Text));
+                            spCmd.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)DetailsView2.FindControl("txbContainerQty")).Text));
+                            spCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)DetailsView2.FindControl("ddContainerTyper")).Text);
+                            spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)DetailsView2.FindControl("txbContainerID")).Text);
+                            spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)DetailsView2.FindControl("ddLocation")).Text);
+                            spCmd.Parameters.AddWithValue("@BrandCode", Convert.ToInt64(((DropDownList)DetailsView2.FindControl("ddBrandCodes")).Text));
+                            spCmd.Parameters.AddWithValue("@column1", ((CheckBox)DetailsView2.FindControl("cbProcess")).Checked);
+                            spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)DetailsView2.FindControl("ddProcessPlan")).Text);
+                            spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)DetailsView2.FindControl("ddRecAs")).Text);
+                            spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                            spCmd.ExecuteNonQuery();
 
+                        }
+                        catch 
+                        {
+                            
+                        }
+                        finally
+                        {
+                            con.Close();
+                            DetailsView2.Visible = false;
+                            gvRcvDetail.DataBind();
+                              
 
-    }
+                            //ddCompany.SelectedIndex = 0;
+                            //btnAddCntr.Enabled = true;
+                            //btnGo.Visible = false;
+                            //lblInstructions.Text = "";
+                        }
+                    }
+                    break;
+                    //gvGridLoc.SelectedIndex = 0;
+                    //gvGridLoc_SelectedIndexChanged(null, null);
+               }
+        }
+        protected void SqlDataSource2_Inserted(Object source, SqlDataSourceStatusEventArgs e)
+        {
+            gvSearchResults.DataBind();
+            UpdatePanel1.DataBind();
+            gvRcvDetail.DataBind();
+        }
+        protected void sdsRcvDetail_Sel_Ondeleted(Object source, SqlDataSourceStatusEventArgs e)
+        {
+            //Label3.Text = "";
+            //label2.Text = "";
+            //Session.Remove("curDetailID");
+            gvSearchResults.DataBind();
+            UpdatePanel1.DataBind();
+            this.mdlPopup.Show();
+        }
+        protected void SqlDataSource2_Inserting(Object sender, SqlDataSourceCommandEventArgs e)
+        {
+            //label2.Text = e.Command.Parameters["@InboundDocNo"].Value.ToString();
+            //Label3.Text = "Showing Inbound Document Number:  ";
+            label2.Text = "'" + ((TextBox)DetailsView2.FindControl("txbInboundDoc")).Text + "'";
+        }
+        protected void gvRcvDetail_RowCommand(object sender, GridViewCommandEventArgs e)    
+        {      
+            switch (e.CommandName)
+            {
+                case "EditDetail":
+                    int index = Int32.Parse(e.CommandArgument.ToString());
+                    Session["CurDetailID"] = index;
+                    DetailsView2.ChangeMode(DetailsViewMode.Edit);
+                    //Label3.Text = Session["CurDetailID"].ToString() ;
+                    //DetailsView2.ChangeMode(DetailsViewMode.Edit);
+                    DetailsView2.Visible = true;
+                    break;
+                case "DupeDetail":
+                    Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
+                    //DetailsView2.DataBind();
+                    DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
+                    DetailsView2.Visible = true;
+                    //TextBox Control = (TextBox)DetailsView2.FindControl("txbContainerID");
+                    //Control.Text = "";
+                    break;
+            }
+
+         }
+        protected void gvRcvDetail_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Label3.Text = gvRcvDetail.SelectedDataKey.Value.ToString();
+            //Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
+            //Label1.Text = Session["CurRcvHrdID"].ToString();
+            //this.mdlPopup.Show();
+        }
+        protected void SqlDataSource3_Updated(Object source, SqlDataSourceStatusEventArgs e)
+        {
+            gvRcvDetail.DataBind();
+        }
+        protected void SqlDataSource3_Inserted(Object source, SqlDataSourceStatusEventArgs e)
+        {
+            gvSearchResults.DataBind();
+            UpdatePanel1.DataBind();
+            //gvRcvDetail.DataBind();
+            
+        }
+        protected void SqlDataSource3_Inserting(Object source, SqlDataSourceCommandEventArgs e)
+        {
+            Label3.Text = "Showing Inbound Document Number:  "; 
+            label2.Text = "'" + ((TextBox)DetailsView2.FindControl("txbInboundDoc")).Text + "'";
+        }
+        
+     }
 }
