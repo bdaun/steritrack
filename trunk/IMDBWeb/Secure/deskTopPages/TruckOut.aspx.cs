@@ -131,7 +131,6 @@ namespace IMDBWeb.Secure.deskTopPages
                 Session["CurAggrWt"] = UpAggrWt/UpAggrQty;
                 trErrMsg.Visible = true;
                 lblErrMsg.Text = "The actual ship weight has been updated for container: " + Session["CurCntrID"];
-
             }
         }
         protected void gvContainers_RowDatabound(object sender, GridViewRowEventArgs e)
