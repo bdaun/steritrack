@@ -120,6 +120,7 @@ using System.Configuration;
             }
             return CN;
         }
+        
         [WebMethod]
         public string[] GetCarrierName(string prefixText)
         {
@@ -147,6 +148,43 @@ using System.Configuration;
                 foreach (DataRow rdr in dtst.Tables[0].Rows)
                 {
                     CN.SetValue(rdr["VendorName"].ToString(), i);
+                    i++;
+                }
+            }
+            catch { }
+            finally
+            {
+                sqlCon.Close();
+            }
+            return CN;
+        }
+
+        [WebMethod]
+        public string[] GetBrandCodes(string prefixText)
+        {
+            //prefixText = prefixText + "%";
+            DataSet dtst = new DataSet();
+            SqlConnection sqlCon = new SqlConnection();
+            sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            String strSql = "IMDB_GetBrandCodes_Sel";
+            SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
+            sqlComd.CommandType = CommandType.StoredProcedure;
+            sqlCon.Open();
+            using (sqlComd)
+            {
+                sqlComd.Parameters.AddWithValue("@prefixtext", prefixText + "%");
+            }
+            SqlDataAdapter sqlAdpt = new SqlDataAdapter();
+            sqlAdpt.SelectCommand = sqlComd;
+            sqlAdpt.Fill(dtst);
+            string[] CN = new string[dtst.Tables[0].Rows.Count];
+            int i = 0;
+
+            try
+            {
+                foreach (DataRow rdr in dtst.Tables[0].Rows)
+                {
+                    CN.SetValue(rdr["Product"].ToString(), i);
                     i++;
                 }
             }

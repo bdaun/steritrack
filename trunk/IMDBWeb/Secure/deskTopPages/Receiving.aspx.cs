@@ -13,10 +13,10 @@ using System.Text;
 
 namespace IMDBWeb.Secure.SPAKpages
 {
-
     public partial class Receiving : System.Web.UI.Page
     {
-
+        
+// Page Load
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -25,23 +25,53 @@ namespace IMDBWeb.Secure.SPAKpages
                 Session["CurRcvHrdID"] = null;
                 Session["CurClientName"] = null;
                 Session["CurOrderNum"] = null;
-
             }
-            
-
         }
+        
+// Order Number Change
         protected void txbOrderNum_OnTextChanged(object sender, EventArgs e)
         {
             txbClientName.Text = "";
             Session["CurOrderNum"] = txbOrderNum.Text;
-            //Label1.Text = Session["CurOrderNum"].ToString();
         }
+
+// Client Change
         protected void txbClientName_OnTextChanged(object sender, EventArgs e)
         {
             txbOrderNum.Text = "";
             Session["CurClientName"] = txbClientName.Text;
-            //Label1.Text = Session["CurClientName"].ToString();
         }
+
+// Add Truck & Clear Buttons
+        protected void btnNewTruck_Click(object sender, EventArgs e)
+        {
+            gvSearchResults.SelectedIndex = -1;
+            Label1.Text = "";
+            label2.Text = "";
+            Label3.Text = "";
+            txbClientName.Text = "";
+            txbOrderNum.Text = "";
+            Session.Abandon();
+            DetailsView1.Visible = true;
+
+        }
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            txbClientName.Text = "";
+            txbOrderNum.Text = "";
+            Session.Abandon();
+            Response.Redirect(Request.RawUrl);
+        }
+
+// Search Results Grid View Truck/Header view
+        protected void sdsHdrList_OnSelecting(object sender, SqlDataSourceSelectingEventArgs e)
+        {
+            if (Session["CurRcvHrdID"] != null)
+            {
+                Session.Remove("CurClientName");
+                Session.Remove("CurOrderNum");
+            }
+        }        
         protected void gvSearchResults_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -53,36 +83,14 @@ namespace IMDBWeb.Secure.SPAKpages
             }
 
         }
-        protected void sdsHdrList_OnSelecting(object sender, SqlDataSourceSelectingEventArgs e)
-        {
-            if (Session["CurRcvHrdID"] != null)
-            {
-                Session.Remove("CurClientName");
-                Session.Remove("CurOrderNum");
-            }
-        }
         protected void gvSearchResults_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
             Label1.Text = Session["CurRcvHrdID"].ToString();
             this.mdlPopup.Show();
         }
-        protected void btnClear_Click(object sender, EventArgs e)
-        {
-            //gvSearchResults.SelectedIndex = -1;
-            //Label1.Text = "";
-            //label2.Text = "";
-            //Label3.Text = "";
-            txbClientName.Text = "";
-            txbOrderNum.Text = "";
-            //Session.Remove("CurClientName");
-            //Session.Remove("CurOrderNum");
-            //Session.Remove("CurRcvHrdID");
-            //gvSearchResults.DataBind();
-            //return;
-            Session.Abandon();
-            Response.Redirect(Request.RawUrl);
-        }
+        
+// Pop Up
         protected void btnEdit_Click(object sender, EventArgs e)
         {
             this.mdlPopup.Hide();
@@ -93,15 +101,10 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             this.mdlPopup.Hide();
-            //label2.Text = "";
-            //Label3.Text = "";
             gvRcvDetail.DataBind();
             DetailsView2.DataBind();
             DetailsView2.ChangeMode(DetailsViewMode.Insert);
             DetailsView2.Visible = true;
-            //DetailsView1.ChangeMode(DetailsViewMode.Edit);
-            //DetailsView1.Visible = true;
-
         }
         protected void btnOk_Click(object sender, EventArgs e)
         {
@@ -136,6 +139,37 @@ namespace IMDBWeb.Secure.SPAKpages
                     break;
             }
         }
+
+// Inbound Docs / Receive Detail View
+        protected void gvRcvDetail_RowCommand(object sender, GridViewCommandEventArgs e)    
+        {      
+            switch (e.CommandName)
+            {
+                case "EditDetail":
+                    int index = Int32.Parse(e.CommandArgument.ToString());
+                    Session["CurDetailID"] = index;
+                    DetailsView2.ChangeMode(DetailsViewMode.Edit);
+
+                    DetailsView2.Visible = true;
+                    break;
+                case "DupeDetail":
+                    Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
+                    DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
+                    DetailsView2.Visible = true;
+                    break;
+            }
+
+         }
+        protected void sdsRcvDetail_Sel_Ondeleted(Object source, SqlDataSourceStatusEventArgs e)
+        {
+            gvSearchResults.DataBind();
+            UpdatePanel1.DataBind();
+            this.mdlPopup.Show();
+        }
+
+// Details View 1 Header/Truck Details, Adding, & Editing
+
+        // Updates bound fields after using Autocomplete to select
         protected void txbClientName2_OnTextChanged(object sender, EventArgs e)
         {
             string curCntr = ((TextBox)DetailsView1.FindControl("txbClientName2")).Text;
@@ -193,20 +227,7 @@ namespace IMDBWeb.Secure.SPAKpages
             }
             con.Close();
         }
-        protected void btnNewTruck_Click(object sender, EventArgs e)
-        {
-            gvSearchResults.SelectedIndex = -1;
-            Label1.Text = "";
-            label2.Text = "";
-            Label3.Text = "";
-            txbClientName.Text = "";
-            txbOrderNum.Text = "";
-            Session.Remove("CurClientName");
-            Session.Remove("CurOrderNum");
-            Session.Remove("CurRcvHrdID");
-            DetailsView1.Visible = true;
-            DetailsView1.DataBind();
-        }
+
         protected void DetailsView1_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
         {
 
@@ -217,15 +238,12 @@ namespace IMDBWeb.Secure.SPAKpages
                     break;
                 case "Cancel":
                     DetailsView1.Visible = false;
-                    //gvSearchResults.DataBind();
                     break;
                 case "Update":
                     DetailsView1.Visible = false;
-                    //gvSearchResults.DataBind();
                     break;
                 case "Delete":
                     DetailsView1.Visible = false;
-                    //gvSearchResults.DataBind();
                     break;
             }
 
@@ -234,26 +252,6 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             Session["CurRcvHrdID"] = e.Command.Parameters["@id"].Value;
             gvSearchResults.DataBind();
-            //Label1.Text = Session["CurRcvHrdID"].ToString();
-        }
-        protected void gvSearchResults_RowCommand(Object sender, GridViewCommandEventArgs e)
-        {
-
-            //    switch (e.CommandName)
-            //    {
-            //    case "Edit":
-            //            Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
-            //            int index = Convert.ToInt32(e.CommandArgument);
-            //            GridViewRow row = gvSearchResults.Rows[index];
-            //            DetailsView1.DataBind();
-            //            DetailsView1.Visible = true;
-            //            DetailsView1.ChangeMode(DetailsViewMode.Edit);
-            //            break;
-            //        case "Cancel":
-            //            DetailsView1.Visible = false;
-            //            break;
-            //    }
-
         }
         protected void SqlDataSource1_Updated(Object source, SqlDataSourceStatusEventArgs e)
         {
@@ -263,6 +261,30 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
+
+// Details View 2 Inbound Doc Details, Adding & Editing 
+        
+        // Updates bound fields after using Autocomplete to select
+        protected void txbBrandCodes_OnTextChanged(object sender, EventArgs e)
+        {
+            string curCntr = ((TextBox)DetailsView2.FindControl("txbBrandCodes")).Text;
+
+            String sp = "IMDB_GetBrandCodeIDs_Sel";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmd = new SqlCommand(sp, con);
+            spCmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (spCmd)
+            {
+                spCmd.Parameters.AddWithValue("@Product", curCntr);
+                object isValid = new object();
+                isValid = spCmd.ExecuteScalar();
+                ((Label)DetailsView2.FindControl("lblBrandCodeID")).Text = isValid.ToString();
+            }
+            con.Close();
+        }
+
         protected void DetailsView2_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
         {
 
@@ -276,9 +298,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     break;
                 case "Update":
                     DetailsView2.Visible = false;
-                    //gvSearchResults.DataBind();
                     gvRcvDetail.DataBind();
-                    //gvSearchResults.DataBind();
                     break;
                 case "Duplicate":
                     String sp = "IMDB_DupeDetail_Ins";
@@ -301,7 +321,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             spCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)DetailsView2.FindControl("ddContainerTyper")).Text);
                             spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)DetailsView2.FindControl("txbContainerID")).Text);
                             spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)DetailsView2.FindControl("ddLocation")).Text);
-                            spCmd.Parameters.AddWithValue("@BrandCode", Convert.ToInt64(((DropDownList)DetailsView2.FindControl("ddBrandCodes")).Text));
+                            spCmd.Parameters.AddWithValue("@BrandCode", ((Label)DetailsView2.FindControl("lblBrandCodeID")).Text);
                             spCmd.Parameters.AddWithValue("@column1", ((CheckBox)DetailsView2.FindControl("cbProcess")).Checked);
                             spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)DetailsView2.FindControl("ddProcessPlan")).Text);
                             spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)DetailsView2.FindControl("ddRecAs")).Text);
@@ -331,57 +351,6 @@ namespace IMDBWeb.Secure.SPAKpages
                     //gvGridLoc_SelectedIndexChanged(null, null);
                }
         }
-        protected void SqlDataSource2_Inserted(Object source, SqlDataSourceStatusEventArgs e)
-        {
-            gvSearchResults.DataBind();
-            UpdatePanel1.DataBind();
-            gvRcvDetail.DataBind();
-        }
-        protected void sdsRcvDetail_Sel_Ondeleted(Object source, SqlDataSourceStatusEventArgs e)
-        {
-            //Label3.Text = "";
-            //label2.Text = "";
-            //Session.Remove("curDetailID");
-            gvSearchResults.DataBind();
-            UpdatePanel1.DataBind();
-            this.mdlPopup.Show();
-        }
-        protected void SqlDataSource2_Inserting(Object sender, SqlDataSourceCommandEventArgs e)
-        {
-            //label2.Text = e.Command.Parameters["@InboundDocNo"].Value.ToString();
-            //Label3.Text = "Showing Inbound Document Number:  ";
-            label2.Text = "'" + ((TextBox)DetailsView2.FindControl("txbInboundDoc")).Text + "'";
-        }
-        protected void gvRcvDetail_RowCommand(object sender, GridViewCommandEventArgs e)    
-        {      
-            switch (e.CommandName)
-            {
-                case "EditDetail":
-                    int index = Int32.Parse(e.CommandArgument.ToString());
-                    Session["CurDetailID"] = index;
-                    DetailsView2.ChangeMode(DetailsViewMode.Edit);
-                    //Label3.Text = Session["CurDetailID"].ToString() ;
-                    //DetailsView2.ChangeMode(DetailsViewMode.Edit);
-                    DetailsView2.Visible = true;
-                    break;
-                case "DupeDetail":
-                    Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
-                    //DetailsView2.DataBind();
-                    DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
-                    DetailsView2.Visible = true;
-                    //TextBox Control = (TextBox)DetailsView2.FindControl("txbContainerID");
-                    //Control.Text = "";
-                    break;
-            }
-
-         }
-        protected void gvRcvDetail_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Label3.Text = gvRcvDetail.SelectedDataKey.Value.ToString();
-            //Session["CurRcvHrdID"] = gvSearchResults.SelectedDataKey.Value.ToString();
-            //Label1.Text = Session["CurRcvHrdID"].ToString();
-            //this.mdlPopup.Show();
-        }
         protected void SqlDataSource3_Updated(Object source, SqlDataSourceStatusEventArgs e)
         {
             gvRcvDetail.DataBind();
@@ -390,14 +359,11 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             gvSearchResults.DataBind();
             UpdatePanel1.DataBind();
-            //gvRcvDetail.DataBind();
-            
         }
         protected void SqlDataSource3_Inserting(Object source, SqlDataSourceCommandEventArgs e)
         {
             Label3.Text = "Showing Inbound Document Number:  "; 
             label2.Text = "'" + ((TextBox)DetailsView2.FindControl("txbInboundDoc")).Text + "'";
-        }
-        
+        }        
      }
 }
