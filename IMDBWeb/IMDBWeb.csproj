@@ -102,6 +102,7 @@
     <Content Include="Secure\deskTopPages\myAutoComplete.asmx" />
     <Content Include="Secure\deskTopPages\Receiving.aspx" />
     <Content Include="Secure\deskTopPages\TruckOut.aspx" />
+    <Content Include="Secure\deskTopPages\WebForm2.aspx" />
     <Content Include="Secure\mobilepages\mAggregateContainer.aspx" />
     <Content Include="Secure\mobilepages\mobilePages.aspx" />
     <Content Include="Secure\home.aspx" />
@@ -252,6 +253,13 @@
     </Compile>
     <Compile Include="Secure\deskTopPages\TruckOut.aspx.designer.cs">
       <DependentUpon>TruckOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Secure\mobilepages\mAggregateContainer.aspx.cs">
       <DependentUpon>mAggregateContainer.aspx</DependentUpon>
