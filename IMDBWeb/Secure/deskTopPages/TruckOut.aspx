@@ -36,7 +36,8 @@
                 <asp:LinkButton id="btnEdit" runat="server" commandname="Edit" text="Edit" /> 
         </ItemTemplate> 
         <EditItemTemplate> 
-                <asp:LinkButton id="btnUpdate" runat="server" commandname="Update" text="Update" /> 
+                <asp:LinkButton id="btnUpdate" runat="server" commandname="Update" text="Update" />
+                <asp:LinkButton id="btnCancel" runat="server" commandname="Cancel" text="Cancel" /> 
         </EditItemTemplate> 
     </asp:TemplateField>
     <asp:TemplateField HeaderText="CntrID"> 
