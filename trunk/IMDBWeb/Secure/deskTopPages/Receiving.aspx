@@ -274,8 +274,7 @@
                                 ID="CheckBoxList1"
                                 runat="server"
                                 DataSourceID="sdsRcvInboundDocs_Sel"
-                                DataTextField="InboundDocNo"
-                                checked="true" >
+                                DataTextField="InboundDocNo">
                             </asp:CheckBoxList>
                                 <asp:SqlDataSource
                                     ID="sdsRcvInboundDocs_Sel"
@@ -1365,6 +1364,7 @@
         </tr>
         <tr>
             <td>
+            <asp:Panel runat="Server" ID="Panel1" CssClass="PopupPanel" style="display:none">
                 <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                     <ContentTemplate>
                          <asp:DetailsView
@@ -2290,6 +2290,15 @@
                             </asp:SqlDataSource>
                     </ContentTemplate>
                 </asp:UpdatePanel>
+            </asp:Panel>
+                    <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" 
+                                runat="server"
+                                TargetControlID="Button1"
+                                PopupControlID="panel1"
+                                BackgroundCssClass="modalBackground">
+                    </ajaxToolkit:ModalPopupExtender>
+                        <asp:Button runat="server" ID="Button1" Style="display:none"/>
+
             </td>
             <td>&nbsp;</td>
         </tr>
