@@ -149,13 +149,14 @@ namespace IMDBWeb.Secure.SPAKpages
                     int index = Int32.Parse(e.CommandArgument.ToString());
                     Session["CurDetailID"] = index;
                     DetailsView2.ChangeMode(DetailsViewMode.Edit);
-
                     DetailsView2.Visible = true;
+                    this.ModalPopupExtender1.Show();
                     break;
                 case "DupeDetail":
                     Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
                     DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
                     DetailsView2.Visible = true;
+                    this.ModalPopupExtender1.Show();
                     break;
             }
 
@@ -292,13 +293,16 @@ namespace IMDBWeb.Secure.SPAKpages
             {
                 case "Insert":
                     DetailsView2.Visible = false;
+                    this.ModalPopupExtender1.Hide();
                     break;
                 case "Cancel":
                     DetailsView2.Visible = false;
+                    this.ModalPopupExtender1.Hide();
                     break;
                 case "Update":
                     DetailsView2.Visible = false;
                     gvRcvDetail.DataBind();
+                    this.ModalPopupExtender1.Hide();
                     break;
                 case "Duplicate":
                     String sp = "IMDB_DupeDetail_Ins";
@@ -338,17 +342,10 @@ namespace IMDBWeb.Secure.SPAKpages
                             con.Close();
                             DetailsView2.Visible = false;
                             gvRcvDetail.DataBind();
-                              
-
-                            //ddCompany.SelectedIndex = 0;
-                            //btnAddCntr.Enabled = true;
-                            //btnGo.Visible = false;
-                            //lblInstructions.Text = "";
+                            this.ModalPopupExtender1.Hide();
                         }
                     }
                     break;
-                    //gvGridLoc.SelectedIndex = 0;
-                    //gvGridLoc_SelectedIndexChanged(null, null);
                }
         }
         protected void SqlDataSource3_Updated(Object source, SqlDataSourceStatusEventArgs e)
