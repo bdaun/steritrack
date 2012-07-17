@@ -9,7 +9,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <table class="ui-accordion">
-        <tr>
+        <tr runat="server" id="trOrder">
             <td width="100px">
                 Order Number:
             </td>
@@ -76,7 +76,7 @@
                 <asp:Button ID="btnNewTruck" runat="server" Text="New Truck" onclick="btnNewTruck_Click" />
             </td>
         </tr>
-        <tr>
+        <tr runat="server" id="trClient">
             <td width="100px">
                 Client:
             </td>
@@ -147,15 +147,14 @@
     <table class="ui-accordion">
         <tr>
             <td>
-                <asp:UpdatePanel ID="udp_gvSearchResults" runat="server" UpdateMode="always">
+                <asp:UpdatePanel ID="upHdrList" runat="server" UpdateMode="always">
                     <ContentTemplate>
-                        <asp:Label ID="Label1" runat="server" Visible="false"></asp:Label>&nbsp;
                         <asp:GridView
-                            ID="gvSearchResults"
+                            ID="gvHdrList"
                             DataSourceID="sdsHdrList"
                             DataKeyNames="id"
-                            OnSelectedIndexChanged="gvSearchResults_SelectedIndexChanged"
-                            OnRowDataBound="gvSearchResults_RowDataBound"
+                            OnSelectedIndexChanged="gvHdrList_SelectedIndexChanged"
+                            OnRowDataBound="gvHdrList_RowDataBound"
                             AutoGenerateColumns="False" 
                             AllowPaging="True"  
                             AllowSorting="True"
@@ -200,123 +199,128 @@
                                         <asp:SessionParameter Name="ClientName"  SessionField="CurClientName" DefaultValue="null" Type="String" />
                                     </SelectParameters>
                             </asp:SqlDataSource>
-                        <br />
+
+                        <asp:Label ID="Label1" runat="server" Visible="true"></asp:Label>
                         <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                         <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
-                        <br />
-                        <asp:GridView
-                            ID="gvRcvDetail"
-                            DataSourceID="sdsRcvDetail_Sel"  
-                            DataKeyNames="ID" 
-                            Onrowcommand="gvRcvDetail_RowCommand"
-                            AutoGenerateColumns="False"
-                            HorizontalAlign="Center"
-                            runat="server">
-                            <Columns>
-                                <asp:templatefield>
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
-                                    <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
-                                </ItemTemplate>
-                                </asp:templatefield>
-                                <asp:BoundField DataField="InboundDocNo" HeaderText="Doc No" 
-                                    SortExpression="InboundDocNo" />
-                                <asp:BoundField DataField="ManifestLineNumber" HeaderText="Line Number" 
-                                    SortExpression="ManifestLineNumber" />
-                                <asp:BoundField DataField="name" HeaderText="Profile" 
-                                    SortExpression="name" />
-                                <asp:BoundField DataField="InboundContainerType" HeaderText="Container Type"
-                                     SortExpression="InboundContainerType" />
-                                <asp:BoundField DataField="InboundPalletType" HeaderText="Pallet Type" 
-                                    SortExpression="InboundPalletType" />
-                                <asp:BoundField DataField="InboundPalletWeight" HeaderText="Pallet Weight"
-                                     SortExpression="InboundPalletWeight" />
-                                <asp:BoundField DataField="InboundContainerQty" HeaderText="Container Qty"
-                                     SortExpression="InboundContainerQty" />
-                                <asp:BoundField DataField="InboundContainerID" HeaderText="Container ID" 
-                                    SortExpression="InboundContainerID" />
-                                <asp:BoundField DataField="InventoryLocation" HeaderText="Inventory Location" 
-                                    SortExpression="InventoryLocation" />
-                                <asp:BoundField DataField="BCName" HeaderText="Brand Code" 
-                                    SortExpression="BCName" />
-                                <asp:CheckBoxField DataField="Process?" HeaderText="Process?" 
-                                    SortExpression="Process?" />
-                                <asp:BoundField DataField="ProcessPlan" HeaderText="Process Plan" 
-                                    SortExpression="ProcessPlan" />
-                                <asp:BoundField DataField="RcvdAs" HeaderText="Rcvd As" 
-                                    SortExpression="RcvdAs" />
-                                <asp:CommandField ShowDeleteButton="True" />
-                            </Columns>
-                            <HeaderStyle HorizontalAlign="Center" />
-                        </asp:GridView>
-                            <asp:SqlDataSource
-                                ID="sdsRcvDetail_Sel"
-                                runat="server" 
-                                ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-                                SelectCommand="IMDB_Rcv_Detail_Sel"
-                                SelectCommandType="StoredProcedure"
-                                DeleteCommand="DELETE FROM [RcvDetail] WHERE [ID] = @ID"
-                                OnDeleted="sdsRcvDetail_Sel_Ondeleted">
-                                <SelectParameters>
-                                    <asp:ControlParameter ControlID="label2" Name="InboundDocNo" PropertyName="Text" Type="string" />
-                                </SelectParameters>
-                                <DeleteParameters>
-                                    <asp:SessionParameter DefaultValue="0" Name="ID" SessionField="CurDetailID" Type="Int32" />
-                                 </DeleteParameters>
-                            </asp:SqlDataSource>
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                <asp:Panel runat="Server" ID="pnlPopUp" CssClass="PopupPanel" style="display:none">
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            Select Inbound <br /> Document Number(s) <br />
-                            <asp:CheckBoxList
-                                ID="CheckBoxList1"
-                                runat="server"
-                                DataSourceID="sdsRcvInboundDocs_Sel"
-                                DataTextField="InboundDocNo">
-                            </asp:CheckBoxList>
-                                <asp:SqlDataSource
-                                    ID="sdsRcvInboundDocs_Sel"
-                                    runat="server" 
-                                    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-                                    SelectCommand="IMDB_Rcv_InboundDoc_Sel"
-                                    SelectCommandType="StoredProcedure">
-                                    <SelectParameters>
-                                        <asp:ControlParameter ControlID="gvSearchResults" Name="RcvHdrID" PropertyName="SelectedValue" Type="Int32" />
-                                    </SelectParameters>
-                                </asp:SqlDataSource>
-                            <br />
-                            <asp:Button runat="server" Id="btnOk" Text="Ok" onclick="btnOk_Click" /> 
-                            <hr />
-                            <asp:LinkButton ID="Add" runat="server" onclick="btnAdd_Click">Add InBoundDoc</asp:LinkButton>
-                            <br />          
-                            <asp:LinkButton ID="tEdit" runat="server" onclick="btnEdit_Click">Edit Truck</asp:LinkButton>                        
-                        </ContentTemplate>
-                     </asp:UpdatePanel>
-                </asp:Panel>
-                    <ajaxToolkit:ModalPopupExtender ID="mdlPopup" 
-                                runat="server"
-                                TargetControlID="btnModalPopUp"
-                                PopupControlID="pnlPopUp"
-                                BackgroundCssClass="modalBackground">
-                </ajaxToolkit:ModalPopupExtender>
-                        <asp:Button runat="server" ID="btnModalPopUp" Style="display:none"/>
+                <asp:Button ID="btnAddDoc" Visible="true" runat="server" Text="New Inbound Doc" onclick="btnAddDoc_Click" />
+                <asp:UpdatePanel ID="upDocList" runat="server">
+                    <ContentTemplate>
+                        <asp:GridView
+                            Width="45%"
+                            AllowPaging="True"
+                            ID="gvSubCatDocs"
+                            AutoGenerateColumns="False"
+                            GridLines="None"
+                            DataSourceID="sdsSubCatDocs"
+                            runat="server"
+                            ShowHeader="False"
+                            OnRowCreated="gvSubCatDocs_RowCreated"
+                            DataKeyNames="InboundDocNo"
+                            OnSelectedIndexChanged="gvSubCatDocs_SelectedIndexChanged">
+                            <Columns>
+                                <asp:TemplateField>
+                                    <ItemStyle Width="200px" />
+                                    <ItemTemplate>
+                                        <asp:Panel ID="pnlSubCatDocs" runat="server">
+                                            <asp:Image ID="imgCollapsible" Style="margin-right: 5px;" runat="server" />
+                                            <span style="font-weight:bold">Inbound Doc Number: <%#Eval("InboundDocNo")%></span>
+                                        </asp:Panel>
+                                        <asp:Button ID="btnAddContainer" Visible="true" runat="server" Text="New Container" onclick="btnAddContainer_Click" />
+                                        <asp:Panel ID="pnlContainerList" runat="server" Width="75%">
+                                            <asp:GridView
+                                                ID="gvContainerList"
+                                                DataSourceID="sdsContainerList"  
+                                                DataKeyNames="ID" 
+                                                Onrowcommand="gvContainerList_RowCommand"
+                                                AutoGenerateColumns="False"
+                                                HorizontalAlign="Center"
+                                                runat="server">
+                                                <Columns>
+                                                    <asp:templatefield>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
+                                                        <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
+                                                    </ItemTemplate>
+                                                        <ItemStyle Font-Size="XX-Small" HorizontalAlign="Center" VerticalAlign="Middle" />
+                                                    </asp:templatefield>
+                                                    <asp:BoundField DataField="InboundDocNo" HeaderText="Doc No" SortExpression="InboundDocNo" />
+                                                    <asp:BoundField DataField="ManifestLineNumber" HeaderText="Line Number" SortExpression="ManifestLineNumber" />
+                                                    <asp:BoundField DataField="name" HeaderText="Profile" SortExpression="name" />
+                                                    <asp:BoundField DataField="InboundContainerType" HeaderText="Container Type" SortExpression="InboundContainerType" />
+                                                    <asp:BoundField DataField="InboundPalletType" HeaderText="Pallet Type" SortExpression="InboundPalletType" />
+                                                    <asp:BoundField DataField="InboundPalletWeight" HeaderText="Pallet Weight" SortExpression="InboundPalletWeight" />
+                                                    <asp:BoundField DataField="InboundContainerQty" HeaderText="Container Qty" SortExpression="InboundContainerQty" />
+                                                    <asp:BoundField DataField="InboundContainerID" HeaderText="Container ID" SortExpression="InboundContainerID" />
+                                                    <asp:BoundField DataField="InventoryLocation" HeaderText="Inventory Location" SortExpression="InventoryLocation" />
+                                                    <asp:BoundField DataField="BCName" HeaderText="Brand Code" SortExpression="BCName" />
+                                                    <asp:CheckBoxField DataField="Process?" HeaderText="Process?" SortExpression="Process?" />
+                                                    <asp:BoundField DataField="ProcessPlan" HeaderText="Process Plan" SortExpression="ProcessPlan" />
+                                                    <asp:BoundField DataField="RcvdAs" HeaderText="Rcvd As" SortExpression="RcvdAs" />
+                                                    <asp:CommandField ShowDeleteButton="True" >
+                                                        <ItemStyle Font-Size="XX-Small" />
+                                                    </asp:CommandField>
+                                                </Columns>
+                                             </asp:GridView>
+                                            <asp:SqlDataSource
+                                                ID="sdsContainerList"
+                                                runat="server" 
+                                                ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+                                                SelectCommand="IMDB_Rcv_Detail_Sel"
+                                                SelectCommandType="StoredProcedure"
+                                                DeleteCommand="DELETE FROM [RcvDetail] WHERE [ID] = @ID"
+                                                OnDeleted="sdsContainerList_Ondeleted">
+                                                <SelectParameters>
+                                                    <asp:Parameter Name="InboundDocNo" Type="String" DefaultValue="" />
+                                                    <asp:SessionParameter Name="RcvHdrID" SessionField="CurRcvHrdID" Type="Int32" />
+                                                </SelectParameters>
+                                                <DeleteParameters>
+                                                    <asp:SessionParameter DefaultValue="0" Name="ID" SessionField="CurDetailID" Type="Int32" />
+                                                 </DeleteParameters>
+                                            </asp:SqlDataSource>
+                                        </asp:Panel>
+                                            <ajaxtoolkit:CollapsiblePanelExtender
+                                                ID="ctlCollapsiblePanel"
+                                                runat="Server"
+                                                TargetControlID="pnlContainerList"
+                                                CollapsedSize="0" Collapsed="True"
+                                                ExpandControlID="pnlSubCatDocs"
+                                                CollapseControlID="pnlSubCatDocs"
+                                                AutoCollapse="false"
+                                                AutoExpand="false"
+                                                ScrollContents="false"
+                                                ImageControlID="imgCollapsible"
+                                                ExpandedImage="~/images/collapse.gif"
+                                                CollapsedImage="~/images/expand.gif"
+                                                ExpandDirection="Vertical" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                        <asp:SqlDataSource
+                            ID="sdsSubCatDocs"
+                            runat="server"
+                            ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>"
+                            SelectCommand="Select Distinct InboundDocNo from RcvDetail where RcvHdrID = @RcvHdrID">
+                                <SelectParameters>
+                                    <asp:ControlParameter ControlID="gvHdrList" Name="RcvHdrID" PropertyName="SelectedValue" Type="Int32" />
+                                </SelectParameters>
+                        </asp:SqlDataSource>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
             </td>
         </tr>
         <tr>
             <td>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                <asp:UpdatePanel ID="upHdrDetail" runat="server">
                     <ContentTemplate>
                         <asp:DetailsView
-                            ID="DetailsView1"
-                            DataSourceID="SqlDataSource1"
+                            ID="dvHdrDetail"
+                            DataSourceID="sdsHdrDetail"
                             DataKeyNames="id"
-                            OnItemCommand="DetailsView1_ItemCommand"
+                            OnItemCommand="dvHdrDetail_ItemCommand"
                             Defaultmode="Insert"
                             Visible="false"
                             AutoGenerateRows="False"
@@ -1306,9 +1310,13 @@
                                     </asp:TemplateField>
                                     <asp:CommandField ShowInsertButton="True" ShowEditButton="True"/>
                                 </Fields>
+                            <HeaderTemplate>
+                                <asp:Label ID="Label4" runat="server" Text="Enter Truck Information" 
+                                    CssClass="detailheader" Font-Bold="True"></asp:Label>
+                            </HeaderTemplate>
                         </asp:DetailsView>
                             <asp:SqlDataSource
-                                ID="SqlDataSource1"
+                                ID="sdsHdrDetail"
                                 runat="server" 
                                 ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
                                 OldValuesParameterFormatString="original_{0}" 
@@ -1316,10 +1324,10 @@
                                 ConflictDetection="CompareAllValues" 
                                 DeleteCommand="DELETE FROM [RcvHdr] WHERE [ID] = @Original_id" 
                                 InsertCommand="INSERT INTO [RcvHdr] ([OrderNumber], [WorkOrder], [ClientName], [TSDF], [ReceivedBy], [ReceiveDate], [ReceiveDock], [Carrier], [Trailer Number], [ShipDate], [Memo], [ModDate], [UserName]) VALUES (@OrderNumber, @WorkOrder, @ClientName, @TSDF, @ReceivedBy, @ReceiveDate, @ReceiveDock, @Carrier, @Trailer_Number, @ShipDate, @Memo, getdate(), @UserName); Select @ID=Scope_Identity();" 
-                                oninserted="SqlDataSource1_Inserted"
+                                oninserted="sdsHdrDetail_Inserted"
                                 UpdateCommand="UPDATE [RcvHdr] SET [OrderNumber] = @OrderNumber, [WorkOrder] = @WorkOrder, [ClientName] = @ClientName, [TSDF] = @TSDF, [ReceivedBy] = @ReceivedBy, [ReceiveDate] = @ReceiveDate, [ReceiveDock] = @ReceiveDock, [Carrier] = @Carrier, [Trailer Number] = @Trailer_Number, [ShipDate] = @ShipDate, [Memo] = @Memo, [ModDate] = getdate(), [UserName] = @UserName WHERE [ID] = @Original_id"
-                                onupdated="SqlDataSource1_Updated"
-                                onupdating="SqlDataSource1_Updating">
+                                onupdated="sdsHdrDetail_Updated"
+                                onupdating="sdsHdrDetail_Updating">
                                 <SelectParameters>
                                     <asp:SessionParameter Name="RcvHdrID"  SessionField="CurRcvHrdID" DefaultValue="0" Type="Int32" />
                                 </SelectParameters>
@@ -1360,24 +1368,21 @@
                     </ContentTemplate>
                </asp:UpdatePanel>
             </td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>
-            <asp:Panel runat="Server" ID="Panel1" CssClass="PopupPanel" style="display:none">
-                <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                <asp:Panel runat="Server" ID="pnlContainerDetail" CssClass="PopupPanel" style="display:none">
+                    <asp:UpdatePanel ID="upContainerDetail" runat="server">
                     <ContentTemplate>
                          <asp:DetailsView
-                                    ID="DetailsView2"
+                                    ID="dvContainerDetail"
                                     runat="server"
                                     AutoGenerateRows="False" 
                                     DataKeyNames="ID"
-                                    DataSourceID="SqlDataSource3"
+                                    DataSourceID="sdsContainerDetail"
                                     Height="50px"
                                     Width="400px"
-                                    OnItemCommand="DetailsView2_ItemCommand"
-                                    Visible="False" 
-                                    DefaultMode="Insert">
+                                    OnItemCommand="dvContainerDetail_ItemCommand">
                                         <Fields>
                                             <asp:TemplateField>
                                                 <InsertItemTemplate>
@@ -1949,8 +1954,9 @@
                                                     <asp:TextBox
                                                         ID="txbInboundDoc"
                                                         runat="server" 
-                                                        Text='<%# bind("InboundDocNo") %>'
-                                                        Width="250px"></asp:TextBox>
+                                                        Width="250px"
+                                                        Text='<%# bind("InboundDocNo") %>'>
+                                                        </asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1961,7 +1967,8 @@
                                                         ID="txbContainerID"
                                                         runat="server" 
                                                         Text=""
-                                                        Width="250px"></asp:TextBox>
+                                                        Width="250px"
+                                                        tabindex="0"></asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -2234,16 +2241,16 @@
                                         </Fields>
                                 </asp:DetailsView>
                              <asp:SqlDataSource
-                                ID="SqlDataSource3"
+                                ID="sdsContainerDetail"
                                 runat="server" 
                                 ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
                                 DeleteCommand="DELETE FROM [RcvDetail] WHERE [ID] = @ID" 
                                 InsertCommand="INSERT INTO [RcvDetail] ([InboundDocNo], [ManifestLineNumber], [RcvHdrID], [InboundProfileID], [InboundContainerType], [InboundPalletType], [InboundPalletWeight], [InboundContainerQty], [InboundContainerID], [InventoryLocation], [BrandCode], [Process?], [ProcessPlan], [RcvdAs], [ModDate], [UserName]) VALUES (@InboundDocNo, @ManifestLineNumber, @RcvHdrID, @InboundProfileID, @InboundContainerType, @InboundPalletType, @InboundPalletWeight, @InboundContainerQty, @InboundContainerID, @InventoryLocation, @BrandCode, @column1, @ProcessPlan, @RcvdAs, @ModDate, @UserName)" 
-                                SelectCommand="SELECT c.[US_Brand_Code] + ' ' + c.[name] as BrandCodeName, r.[ID], r.[InboundDocNo], r.[ManifestLineNumber], r.[RcvHdrID], r.[InboundProfileID], r.[InboundContainerType], r.[InboundPalletType], r.[InboundPalletWeight], r.[InboundContainerQty], r.[InboundContainerID], r.[InventoryLocation], r.[BrandCode], r.[Process?] AS column1, r.[ProcessPlan], r.[RcvdAs], r.[ModDate], r.[UserName] FROM [RcvDetail] r LEFT JOIN Components c on r.BrandCode = c.ID WHERE (r.[ID] = @ID)" 
+                                SelectCommand="SELECT c.[US_Brand_Code] + ' ' + c.[name] as BrandCodeName, r.[ID], r.[InboundDocNo], r.[ManifestLineNumber], r.[RcvHdrID], r.[InboundProfileID], r.[InboundContainerType], r.[InboundPalletType], r.[InboundPalletWeight], r.[InboundContainerQty], r.[InboundContainerID], r.[InventoryLocation], r.[BrandCode], r.[Process?] AS column1, r.[ProcessPlan], r.[RcvdAs], r.[ModDate], r.[UserName] FROM [RcvDetail] r LEFT JOIN Components c on r.BrandCode = c.ID WHERE (r.[id] = @id)" 
                                 UpdateCommand="UPDATE [RcvDetail] SET [InboundDocNo] = @InboundDocNo, [ManifestLineNumber] = @ManifestLineNumber, [RcvHdrID] = @RcvHdrID, [InboundProfileID] = @InboundProfileID, [InboundContainerType] = @InboundContainerType, [InboundPalletType] = @InboundPalletType, [InboundPalletWeight] = @InboundPalletWeight, [InboundContainerQty] = @InboundContainerQty, [InboundContainerID] = @InboundContainerID, [InventoryLocation] = @InventoryLocation, [BrandCode] = @BrandCode, [Process?] = @column1, [ProcessPlan] = @ProcessPlan, [RcvdAs] = @RcvdAs, [ModDate] = @ModDate, [UserName] = @UserName WHERE [ID] = @ID"
-                                onupdated="SqlDataSource3_Updated"
-                                OnInserting ="SqlDataSource3_Inserting"
-                                oninserted="SqlDataSource3_Inserted">
+                                onupdated="sdsContainerDetail_Updated"
+                                OnInserting ="sdsContainerDetail_Inserting"
+                                oninserted="sdsContainerDetail_Inserted">
                                 <DeleteParameters>
                                     <asp:SessionParameter DefaultValue="0" Name="ID" SessionField="CurDetailID" Type="Int32" />
                                 </DeleteParameters>
@@ -2289,18 +2296,16 @@
                                 </UpdateParameters>
                             </asp:SqlDataSource>
                     </ContentTemplate>
-                </asp:UpdatePanel>
-            </asp:Panel>
+                    </asp:UpdatePanel>
+                </asp:Panel>
                     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" 
                                 runat="server"
                                 TargetControlID="Button1"
-                                PopupControlID="panel1"
+                                PopupControlID="pnlContainerDetail"
                                 BackgroundCssClass="modalBackground">
                     </ajaxToolkit:ModalPopupExtender>
                         <asp:Button runat="server" ID="Button1" Style="display:none"/>
-
             </td>
-            <td>&nbsp;</td>
         </tr>
     </table>
 </asp:Content>    
