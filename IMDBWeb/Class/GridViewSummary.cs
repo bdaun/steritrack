@@ -216,7 +216,8 @@ public class GridViewSummary
                 return null;
         }
 
-        if (b == null)
+        if (b == null || b==DBNull.Value)
+//        if(b == null)
         {
             if (_treatNullAsZero)
                 b = 0;
