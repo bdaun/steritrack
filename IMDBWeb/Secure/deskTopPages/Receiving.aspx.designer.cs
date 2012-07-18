@@ -49,13 +49,13 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::AjaxControlToolkit.AutoCompleteExtender txbOrderNum_AutoCompleteExtender;
         
         /// <summary>
-        /// btnNewTruck control.
+        /// btnClear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNewTruck;
+        protected global::System.Web.UI.WebControls.Button btnClear;
         
         /// <summary>
         /// trClient control.
@@ -85,13 +85,13 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::AjaxControlToolkit.AutoCompleteExtender txbClientName_AutoCompleteExtender;
         
         /// <summary>
-        /// btnClear control.
+        /// btnNewTruck control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClear;
+        protected global::System.Web.UI.WebControls.Button btnNewTruck;
         
         /// <summary>
         /// upHdrList control.
@@ -130,6 +130,24 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label2;
+        
+        /// <summary>
         /// upDocList control.
         /// </summary>
         /// <remarks>
@@ -137,6 +155,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upDocList;
+        
+        /// <summary>
+        /// Label5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
         
         /// <summary>
         /// btnAddDoc control.

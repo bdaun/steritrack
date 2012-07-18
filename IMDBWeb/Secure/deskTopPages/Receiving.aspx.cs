@@ -22,15 +22,14 @@ namespace IMDBWeb.Secure.SPAKpages
             if (!IsPostBack)
             {
                 //Label1.Text = "";
-                Session["CurRcvHrdID"] = null;
-                Session["CurClientName"] = null;
-                Session["CurOrderNum"] = null;
+                Session.Abandon();
             }
         }
         
 // Order Number Change
         protected void txbOrderNum_OnTextChanged(object sender, EventArgs e)
         {
+            Session.Abandon();
             txbClientName.Text = "";
             Session["CurOrderNum"] = txbOrderNum.Text;
         }
@@ -38,6 +37,7 @@ namespace IMDBWeb.Secure.SPAKpages
 // Client Change
         protected void txbClientName_OnTextChanged(object sender, EventArgs e)
         {
+            Session.Abandon(); 
             txbOrderNum.Text = "";
             Session["CurClientName"] = txbClientName.Text;
         }
@@ -88,6 +88,7 @@ namespace IMDBWeb.Secure.SPAKpages
             {
                 Session.Remove("CurClientName");
                 Session.Remove("CurOrderNum");
+                gvSubCatDocs.DataBind();
             }
         }        
         protected void gvHdrList_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -104,7 +105,6 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void gvHdrList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["CurRcvHrdID"] = gvHdrList.SelectedDataKey.Value.ToString();
-            btnAddDoc.Visible = true;
             //this.mdlPopup.Show();
             //Label1.Text = Session["CurRcvHrdID"].ToString();
         }
@@ -331,15 +331,102 @@ namespace IMDBWeb.Secure.SPAKpages
 
             switch (e.CommandName)
             {
-                case "Insert":
+                case "myInsert":
                     //dvContainerDetail.Visible = false;
                     if (Label1.Text == "Doc")
                     {
-                        Session["CurInboundDocNo"] = ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text;
-                        //Session["CurInboundDocNo"] = ((TextBox)pnlContainerDetail.FindControl("txbInboundDoc")).Text;
-                        Label1.Text = Session["CurInboundDoc"].ToString();
+                        String sp = "IMDB_DupeDetail_Ins";
+                        SqlConnection con = new SqlConnection();
+                        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                        SqlCommand spCmd = new SqlCommand(sp, con);
+                        spCmd.CommandType = CommandType.StoredProcedure;
+                        con.Open();
+                        using (spCmd)
+                        {
+                            try
+                            {
+                                spCmd.Parameters.AddWithValue("@InboundDocNo", ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text);
+                                spCmd.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbLineNo")).Text));
+                                spCmd.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHrdID"]);
+                                spCmd.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)dvContainerDetail.FindControl("ddProfile")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)dvContainerDetail.FindControl("ddPalletType")).Text);
+                                spCmd.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbPalletWeight")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbContainerQty")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)dvContainerDetail.FindControl("ddContainerTyper")).Text);
+                                spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
+                                spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
+                                spCmd.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
+                                spCmd.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
+                                spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
+                                spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
+                                spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                spCmd.ExecuteNonQuery();
+
+                            }
+                            catch
+                            {
+
+                            }
+                            finally
+                            {
+                                con.Close();
+                                this.ModalPopupExtender1.Hide();
+                                //dvContainerDetail.Visible = false;
+                                gvHdrList.DataBind();
+                                upContainerDetail.DataBind();
+                                upDocList.DataBind();
+                                gvSubCatDocs.DataBind();
+                            }
+                        }
+
                     }
-                    this.ModalPopupExtender1.Hide();
+                    else
+                    {
+                        String sp = "IMDB_DupeDetail_Ins";
+                        SqlConnection con = new SqlConnection();
+                        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                        SqlCommand spCmd = new SqlCommand(sp, con);
+                        spCmd.CommandType = CommandType.StoredProcedure;
+                        con.Open();
+                        using (spCmd)
+                        {
+                            try
+                            {
+                                spCmd.Parameters.AddWithValue("@InboundDocNo", Session["CurInboundDocNo"]);
+                                spCmd.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbLineNo")).Text));
+                                spCmd.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHrdID"]);
+                                spCmd.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)dvContainerDetail.FindControl("ddProfile")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)dvContainerDetail.FindControl("ddPalletType")).Text);
+                                spCmd.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbPalletWeight")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbContainerQty")).Text));
+                                spCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)dvContainerDetail.FindControl("ddContainerTyper")).Text);
+                                spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
+                                spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
+                                spCmd.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
+                                spCmd.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
+                                spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
+                                spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
+                                spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                spCmd.ExecuteNonQuery();
+
+                            }
+                            catch
+                            {
+
+                            }
+                            finally
+                            {
+                                con.Close();
+                                this.ModalPopupExtender1.Hide();
+                                //dvContainerDetail.Visible = false;
+                                gvHdrList.DataBind();
+                                upContainerDetail.DataBind();
+                                upDocList.DataBind();
+                                gvSubCatDocs.DataBind();
+                                
+                            }
+                        }
+                    }
                     break;
                 case "Cancel":
                     //dvContainerDetail.Visible = false;
@@ -351,32 +438,32 @@ namespace IMDBWeb.Secure.SPAKpages
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Duplicate":
-                    String sp = "IMDB_DupeDetail_Ins";
-                    SqlConnection con = new SqlConnection();
-                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                    SqlCommand spCmd = new SqlCommand(sp, con);
-                    spCmd.CommandType = CommandType.StoredProcedure;
-                    con.Open();
-                    using (spCmd)
+                    String sp1 = "IMDB_DupeDetail_Ins";
+                    SqlConnection con1 = new SqlConnection();
+                    con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand spCmd1 = new SqlCommand(sp1, con1);
+                    spCmd1.CommandType = CommandType.StoredProcedure;
+                    con1.Open();
+                    using (spCmd1)
                     {
                         try
                         {
-                            spCmd.Parameters.AddWithValue("@InboundDocNo", ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text);
-                            spCmd.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbLineNo")).Text));
-                            spCmd.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHrdID"]);
-                            spCmd.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)dvContainerDetail.FindControl("ddProfile")).Text));
-                            spCmd.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)dvContainerDetail.FindControl("ddPalletType")).Text);
-                            spCmd.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbPalletWeight")).Text));
-                            spCmd.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbContainerQty")).Text));
-                            spCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)dvContainerDetail.FindControl("ddContainerTyper")).Text);
-                            spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
-                            spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
-                            spCmd.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
-                            spCmd.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
-                            spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
-                            spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
-                            spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                            spCmd.ExecuteNonQuery();
+                            spCmd1.Parameters.AddWithValue("@InboundDocNo", ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text);
+                            spCmd1.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbLineNo")).Text));
+                            spCmd1.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHrdID"]);
+                            spCmd1.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)dvContainerDetail.FindControl("ddProfile")).Text));
+                            spCmd1.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)dvContainerDetail.FindControl("ddPalletType")).Text);
+                            spCmd1.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbPalletWeight")).Text));
+                            spCmd1.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)dvContainerDetail.FindControl("txbContainerQty")).Text));
+                            spCmd1.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)dvContainerDetail.FindControl("ddContainerTyper")).Text);
+                            spCmd1.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
+                            spCmd1.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
+                            spCmd1.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
+                            spCmd1.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
+                            spCmd1.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
+                            spCmd1.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
+                            spCmd1.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                            spCmd1.ExecuteNonQuery();
 
                         }
                         catch 
@@ -385,10 +472,13 @@ namespace IMDBWeb.Secure.SPAKpages
                         }
                         finally
                         {
-                            con.Close();
-                            dvContainerDetail.Visible = false;
-                            upDocList.DataBind();
+                            con1.Close();
                             this.ModalPopupExtender1.Hide();
+                            //dvContainerDetail.Visible = false;
+                            gvHdrList.DataBind();
+                            upContainerDetail.DataBind();
+                            upDocList.DataBind();
+                            
                         }
                     }
                     break;
@@ -400,9 +490,9 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
-            gvHdrList.DataBind();
-            upContainerDetail.DataBind();
-            upDocList.DataBind();
+            //gvHdrList.DataBind();
+            //upContainerDetail.DataBind();
+            //upDocList.DataBind();
 
         }
         //protected void sdsContainerDetail_Inserting(Object source, SqlDataSourceCommandEventArgs e)
@@ -410,15 +500,11 @@ namespace IMDBWeb.Secure.SPAKpages
         //    //Label3.Text = "Showing Inbound Document Number:  "; 
         //    //label2.Text = "'" + ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text + "'";
         //}
-        protected void dvContainerDetail_OnDataBound(Object sender, EventArgs e)
-        {
-            
 
-        }
-        
         protected void gvSubCatDocs_RowCreated(object sender, GridViewRowEventArgs e)
         {
-            
+            btnAddDoc.Visible = true;
+            Label5.Visible = true;
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 SqlDataSource ctrl = e.Row.FindControl("sdsContainerList") as SqlDataSource;
