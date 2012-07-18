@@ -92,6 +92,7 @@ namespace IMDBWeb.Secure.deskTopPages
             {
                 trAddCntr.Visible = false;
             }
+            trErrMsg.Visible = false;
             gvTally.DataBind();
         }
         protected void gvContainers_onDataBound(object sender, EventArgs e)
@@ -153,6 +154,7 @@ namespace IMDBWeb.Secure.deskTopPages
         }
         protected void txbNewCntr_TextChanged(object sender, EventArgs e)
         {
+        //  Deterimine the outbound stream type for the selected outbounddocno
         //  Determine if scanned cntr is IN or OUT 
             //  if OUT:
                 //  Confirm that the cntrID exists in procdetails table.  If not prompt user to contact supervision.
@@ -167,9 +169,58 @@ namespace IMDBWeb.Secure.deskTopPages
                         //  if yes, create ProcDetail line
                         //  if no, create procHdr, ProcDetail
 
+                string strSP = "IMDB_TruckOut_Stream_sel";
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand StreamCmd = new SqlCommand(strSP, conn);
+                StreamCmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                using (StreamCmd)
+                {
+                    try
+                    {
+                        StreamCmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
+                        SqlDataReader Reader = StreamCmd.ExecuteReader();
+                        if (!Reader.HasRows)
+                        {
+                            trErrMsg.Visible = true;
+                            lblErrMsg.Text = "There is no Stream defined for this Vendor.  Please contact the database administrator to update the record.";
+                            Session["OutStream"] = "NotDefined";
+                            return;
+                        }
+                        else  // ProcDetail record exists.  Collect the current information
+                        {
+                            using (Reader)
+                            {
+                                try
+                                {
+                                    while (Reader.Read())
+                                    {
+                                        Session["OutStream"] = Reader["StreamType"].ToString();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    trErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.ToString();
+                                }
+                                Reader.Close();
+                            }
+                        }
+                    }
+                    catch (Exception x)
+                    {
+                        trErrMsg.Visible = true;
+                        lblErrMsg.Text = x.ToString();
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }
             if (txbNewCntr.Text.StartsWith("O"))   //  Case for OUT containers
             {
-                String sp = "SP_IMDB_TruckOut_Upd";
+                String sp = "IMDB_TruckOut_ChkCmplt";
                 String Curoutbounddocno = String.Empty;
                 String completed = String.Empty;
 
@@ -198,6 +249,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                 while (Reader.Read())
                                 {
                                     completed = Reader["completed"].ToString();
+                                    Curoutbounddocno = Reader["Outbounddocno"].ToString();
                                 }
                             }
                             catch (Exception ex)
@@ -221,7 +273,7 @@ namespace IMDBWeb.Secure.deskTopPages
                 {
                     SqlConnection con = new SqlConnection();
                     con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                    String spUpdate = "SP_TruckOut_UpdOutboundDocNo";
+                    String spUpdate = "IMDB_TruckOut_UpdOutboundDocNo";
                     SqlCommand cmd = new SqlCommand(spUpdate, con);
                     using (cmd)
                     {
@@ -231,6 +283,7 @@ namespace IMDBWeb.Secure.deskTopPages
                             con.Open();
                             cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
                             cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
+                            cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
                             cmd.ExecuteNonQuery();
                         }
                         catch (Exception ex)
@@ -296,7 +349,7 @@ namespace IMDBWeb.Secure.deskTopPages
 
                 try  // Determine if a procDetail record exists for this IN Cntr
                 {
-                    string spProcDetailExists = "SP_IMDB_TruckOUT_pdExist";
+                    string spProcDetailExists = "IMDB_TruckOut_pdExist";
                     SqlCommand pdChk = new SqlCommand(spProcDetailExists,con);
                     pdChk.CommandType = CommandType.StoredProcedure;
                     using (pdChk)
@@ -322,7 +375,7 @@ namespace IMDBWeb.Secure.deskTopPages
                             Reader.Close();
                             if (ProcDetailID == "")  // Need to add record to exising ProcHdr
                             {
-                                string spInsProcDetail = "SP_IMDB_ProcDetail_Ins";
+                                string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
                                 SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
                                 insProcDetail.CommandType = CommandType.StoredProcedure;
                                 using (insProcDetail)
@@ -336,6 +389,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                     insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedItem.ToString());
+                                    insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
 
                                     insProcDetail.ExecuteNonQuery();
                                 }
@@ -348,7 +402,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                 //  First, test to see if the txbNewCntr value exists in the ProcDetail table.  If yes, update record.
                                 if (xOutboundContainerID == txbNewCntr.Text)
                                 {
-                                    String spUpdate = "SP_TruckOut_UpdOutboundDocNo";
+                                    String spUpdate = "IMDB_TruckOut_UpdOutboundDocNo";
                                     SqlCommand cmd = new SqlCommand(spUpdate, con);
                                     using (cmd)
                                     {
@@ -357,6 +411,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                             cmd.CommandType = CommandType.StoredProcedure;
                                             cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
                                             cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
+                                            cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
                                             cmd.ExecuteNonQuery();
                                         }
                                         catch (Exception ex)
@@ -379,7 +434,7 @@ namespace IMDBWeb.Secure.deskTopPages
                         {
                         Reader.Close();
                         string spInsProcHdr = "IMDB_ProcHdr_Ins";
-                        string spInsProcDetail = "SP_IMDB_ProcDetail_Ins";
+                        string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
                         SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
                         SqlCommand insProcDetail = new SqlCommand(spInsProcDetail,con);
                         insProcHdr.CommandType = CommandType.StoredProcedure;
@@ -411,6 +466,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                     insProcDetail.Parameters.AddWithValue("@Outboundstreamweight",Session["inboundpalletweight"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundCntrQty",Session["inboundcontainerqty"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundDocNo",ddDocList.SelectedItem.ToString());
+                                    insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
 
                                     insProcDetail.ExecuteNonQuery();
                                 }

@@ -437,7 +437,7 @@ td.details
 {  
 	padding:0px;
 	margin : 0px!important;
-	background-color : window;
+	background-color : white;
 	color : windowtext;
 	border : buttonshadow;
 	border-width : 1px;
@@ -465,7 +465,7 @@ td.details
 
 .autocomplete_listItem 
 {
-	background-color : window;
+	background-color : white;
 	color : windowtext;
 	padding : 1px;
 	margin:0px;

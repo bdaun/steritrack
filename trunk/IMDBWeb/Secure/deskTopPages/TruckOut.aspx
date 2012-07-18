@@ -145,7 +145,7 @@
     </FilterParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsTally" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_IMDB_TruckOut_Tally" SelectCommandType="StoredProcedure" >
+    SelectCommand="IMDB_TruckOut_Tally" SelectCommandType="StoredProcedure" >
     <SelectParameters>
         <asp:ControlParameter ControlID="ddDocList" PropertyName="SelectedValue" 
             Name="outbounddocno" Type="String" />
@@ -154,9 +154,9 @@
 <asp:SqlDataSource ID="sdsTruckOut" runat="server" DataSourceMode="DataSet" EnableCaching="false"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" OnDataBinding="sdsTruckOut_OnDataBinding"
     OnUpdating="sdsTruckOut_Updating" OnDeleting="sdsTruckOut_Deleting"
-    SelectCommand="SP_IMDB_TruckOut_Sel" SelectCommandType="StoredProcedure" 
-    UpdateCommand="SP_IMDB_TruckOut_AggrWt_upd" UpdateCommandType="StoredProcedure"
-    DeleteCommand="SP_IMDB_TruckOut_RemoveCntr" DeleteCommandType="StoredProcedure" >
+    SelectCommand="IMDB_TruckOut_Sel" SelectCommandType="StoredProcedure" 
+    UpdateCommand="IMDB_TruckOut_AggrWt_upd" UpdateCommandType="StoredProcedure"
+    DeleteCommand="IMDB_TruckOut_RemoveCntr" DeleteCommandType="StoredProcedure" >
     <SelectParameters>
         <asp:ControlParameter ControlID="ddDocList" Name="outbounddocno" PropertyName="SelectedValue" Type="String" />
     </SelectParameters>
