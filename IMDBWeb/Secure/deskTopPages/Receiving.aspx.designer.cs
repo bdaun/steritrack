@@ -130,22 +130,13 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// Label3 control.
+        /// upDocList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
-        
-        /// <summary>
-        /// label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label2;
+        protected global::System.Web.UI.UpdatePanel upDocList;
         
         /// <summary>
         /// btnAddDoc control.
@@ -155,15 +146,6 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddDoc;
-        
-        /// <summary>
-        /// upDocList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upDocList;
         
         /// <summary>
         /// gvSubCatDocs control.
