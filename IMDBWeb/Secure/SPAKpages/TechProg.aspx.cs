@@ -220,6 +220,18 @@ namespace IMDBWeb.Secure.SPAKpages
                 return;
             }
         }
+        protected void chkShipped_Changed(object sender, EventArgs e)
+        {
+            gvTechName.DataBind();
+        }
+        protected void sdsTechData_Selecting(object sender, SqlDataSourceSelectingEventArgs e) 
+        { 
+            sdsTechData.FilterExpression = string.Empty; 
+            if(!chkShipped.Checked)
+            { 
+                    sdsTechData.FilterExpression = "SpakStatus<>'Shipped'"; 
+            }
+        }
     }
     public static class DateTimeExtensions
     {

@@ -64,11 +64,12 @@
         <asp:AsyncPostBackTrigger ControlID="gvTechName" EventName="SelectedIndexChanged" />
     </Triggers>
 <ContentTemplate>
-    <asp:UpdateProgress ID="progGridView" runat="server" DisplayAfter="2000" DynamicLayout="true">
-        <ProgressTemplate>
-            <img src="../../images/progress.gif" alt="" />
-        </ProgressTemplate>
-    </asp:UpdateProgress>
+<asp:UpdateProgress ID="progGridView" runat="server" DisplayAfter="2000" DynamicLayout="true">
+    <ProgressTemplate>
+        <img src="../../images/progress.gif" alt="" />
+    </ProgressTemplate>
+</asp:UpdateProgress>
+<asp:CheckBox ID="chkShipped" runat="server" Checked="false" OnCheckedChanged="chkShipped_Changed" AutoPostBack="true" /> Show "Shipped" Records
 <asp:GridView ID="gvTechName" runat="server" AllowSorting="True" 
         AutoGenerateColumns="False" DataSourceID="sdsTechData" 
         EmptyDataText="Empty Data Set" ShowHeaderWhenEmpty="True" 
@@ -241,7 +242,7 @@
 <asp:SqlDataSource ID="sdsCustomerReps" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SELECT DISTINCT CustServRepID FROM SPAK_TechCSMap Order by CustServRepID">
 </asp:SqlDataSource>
-<asp:SqlDataSource ID="sdsTechData" runat="server" 
+<asp:SqlDataSource ID="sdsTechData" runat="server" OnSelecting="sdsTechData_Selecting"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SP_SpakTechData" SelectCommandType="StoredProcedure">
     <SelectParameters>
