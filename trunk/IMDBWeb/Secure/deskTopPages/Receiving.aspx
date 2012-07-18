@@ -74,7 +74,7 @@
                      </ajaxToolkit:AutoCompleteExtender>
             </td>
             <td>
-                <asp:Button ID="btnNewTruck" runat="server" Text="New Truck" onclick="btnNewTruck_Click" />
+                <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click"/>
             </td>
         </tr>
         <tr runat="server" id="trClient">
@@ -141,7 +141,7 @@
                     </ajaxToolkit:AutoCompleteExtender>
             </td>
             <td>
-                <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click"/>            
+                <asp:Button ID="btnNewTruck" runat="server" Text="New Truck" onclick="btnNewTruck_Click" />            
             </td>
         </tr>
     </table>
@@ -201,7 +201,7 @@
                                     </SelectParameters>
                             </asp:SqlDataSource>
 
-                        <asp:Label ID="Label1" runat="server" Visible="true"></asp:Label>
+                        <asp:Label ID="Label1" runat="server" Visible="false"></asp:Label>
                     <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                         <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                     
@@ -210,7 +210,15 @@
                 
                 <asp:UpdatePanel ID="upDocList" runat="server">
                     <ContentTemplate>
-                    <asp:Button ID="btnAddDoc" Visible="false" runat="server" Text="New Inbound Doc" onclick="btnAddDoc_Click" />
+                        <table class="us-accordion">
+                            <td width="400px">
+                                <asp:Label ID="Label5" runat="server" visible="false" Text="Listing Inbound Document Numbers" Font-Bold="True"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Button ID="btnAddDoc" Visible="false" runat="server" Text="Add New Inbound Doc" onclick="btnAddDoc_Click" />
+                            </td>
+                        </table>
+                        
                         <asp:GridView
                             Width="45%"
                             AllowPaging="True"
@@ -228,10 +236,10 @@
                                     <ItemTemplate>
                                         <asp:Panel ID="pnlSubCatDocs" runat="server">
                                             <asp:Image ID="imgCollapsible" Style="margin-right: 5px;" runat="server" />
-                                            <span style="font-weight:bold">Inbound Doc Number: <%#Eval("InboundDocNo")%></span>
+                                            <span style="font-weight:bold"><%#Eval("InboundDocNo")%></span>
                                             Click <asp:LinkButton ID='lbAddContainer' runat="server" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
                                          </asp:Panel>
-                                        <asp:Panel ID="pnlContainerList" runat="server" Width="75%">
+                                        <asp:Panel ID="pnlContainerList" runat="server" Width="100%">
                                             <asp:GridView
                                                 ID="gvContainerList"
                                                 DataSourceID="sdsContainerList"  
@@ -1385,8 +1393,7 @@
                                     DataSourceID="sdsContainerDetail"
                                     Height="50px"
                                     Width="400px"
-                                    OnItemCommand="dvContainerDetail_ItemCommand"
-                                    OnDataBound="dvContainerDetail_OnDataBound">
+                                    OnItemCommand="dvContainerDetail_ItemCommand">
                                         <Fields>
                                             <asp:TemplateField>
                                                 <InsertItemTemplate>
@@ -1658,7 +1665,7 @@
                                                 <td>&nbsp;</td>
                                             </tr>
                                         </table>
-                                                    <asp:LinkButton ID="Insert" runat="server" CommandName="Insert" Text="Insert" />
+                                                    <asp:LinkButton ID="Insert" runat="server" CommandName="myInsert" Text="Insert" />
                                                     <asp:LinkButton ID="Cancel" runat="server" CommandName="Cancel" Text="Cancel" />
                                                 </InsertItemTemplate>
                                                 <EditItemTemplate>
@@ -1670,7 +1677,8 @@
                                                         ID="txbInboundDoc"
                                                         runat="server" 
                                                         Text='<%# bind("InboundDocNo") %>'
-                                                        Width="250px"></asp:TextBox>
+                                                        Width="250px"
+                                                        readonly="true"></asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1942,7 +1950,8 @@
                                                         ID="txbInboundDoc"
                                                         runat="server" 
                                                         Width="250px"
-                                                        Text='<%# bind("InboundDocNo") %>'>
+                                                        Text='<%# bind("InboundDocNo") %>'
+                                                        Readonly="true">
                                                         </asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
