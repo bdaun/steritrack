@@ -201,13 +201,15 @@
                             </asp:SqlDataSource>
 
                         <asp:Label ID="Label1" runat="server" Visible="true"></asp:Label>
-                        <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
-                        <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
+<%--                    <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
+                        <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>--%>
+                    
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                <asp:Button ID="btnAddDoc" Visible="true" runat="server" Text="New Inbound Doc" onclick="btnAddDoc_Click" />
+                
                 <asp:UpdatePanel ID="upDocList" runat="server">
                     <ContentTemplate>
+                    <asp:Button ID="btnAddDoc" Visible="false" runat="server" Text="New Inbound Doc" onclick="btnAddDoc_Click" />
                         <asp:GridView
                             Width="45%"
                             AllowPaging="True"
@@ -218,8 +220,7 @@
                             runat="server"
                             ShowHeader="False"
                             OnRowCreated="gvSubCatDocs_RowCreated"
-                            DataKeyNames="InboundDocNo"
-                            OnSelectedIndexChanged="gvSubCatDocs_SelectedIndexChanged">
+                            DataKeyNames="InboundDocNo">
                             <Columns>
                                 <asp:TemplateField>
                                     <ItemStyle Width="200px" />
@@ -227,8 +228,8 @@
                                         <asp:Panel ID="pnlSubCatDocs" runat="server">
                                             <asp:Image ID="imgCollapsible" Style="margin-right: 5px;" runat="server" />
                                             <span style="font-weight:bold">Inbound Doc Number: <%#Eval("InboundDocNo")%></span>
-                                        </asp:Panel>
-                                        <asp:Button ID="btnAddContainer" Visible="true" runat="server" Text="New Container" onclick="btnAddContainer_Click" />
+                                            Click <asp:LinkButton ID='lbAddContainer' runat="server" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
+                                         </asp:Panel>
                                         <asp:Panel ID="pnlContainerList" runat="server" Width="75%">
                                             <asp:GridView
                                                 ID="gvContainerList"
@@ -294,7 +295,8 @@
                                                 ImageControlID="imgCollapsible"
                                                 ExpandedImage="~/images/collapse.gif"
                                                 CollapsedImage="~/images/expand.gif"
-                                                ExpandDirection="Vertical" />
+                                                ExpandDirection="Vertical"
+                                                SuppressPostBack="false"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -1382,7 +1384,8 @@
                                     DataSourceID="sdsContainerDetail"
                                     Height="50px"
                                     Width="400px"
-                                    OnItemCommand="dvContainerDetail_ItemCommand">
+                                    OnItemCommand="dvContainerDetail_ItemCommand"
+                                    OnDataBound="dvContainerDetail_OnDataBound">
                                         <Fields>
                                             <asp:TemplateField>
                                                 <InsertItemTemplate>
@@ -1684,23 +1687,6 @@
                                             <tr>
                                                 <td>Brand Code</td>
                                                 <td>
-                                                    <%--<asp:DropDownList
-                                                        ID="ddBrandCodes"
-                                                        runat="server" 
-                                                        DataSourceID="sdsGetBrandCode"
-                                                        DataTextField="Product" 
-                                                        DataValueField="ID"
-                                                        SelectedValue='<%# bind("BrandCode") %>'
-                                                        Width="250px"
-                                                        AppendDataBoundItems="True">
-                                                            <asp:ListItem Text="Select..." Value = "0" />
-                                                    </asp:DropDownList>
-                                                    <asp:SqlDataSource
-                                                        ID="sdsGetBrandCode"
-                                                        runat="server" 
-                                                        ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-                                                        SelectCommand="SELECT DISTINCT ID, US_Brand_Code + ' ' + Name AS Product, Name FROM Components ORDER BY Product DESC"> 
-                                                    </asp:SqlDataSource>--%>
                                                     <asp:TextBox
                                                         ID="txbBrandCodes"
                                                         runat="server"  
@@ -1975,23 +1961,6 @@
                                             <tr>
                                                 <td>Brand Code</td>
                                                 <td>
-                                                    <%--<asp:DropDownList
-                                                        ID="ddBrandCodes"
-                                                        runat="server" 
-                                                        DataSourceID="sdsGetBrandCode"
-                                                        DataTextField="Product" 
-                                                        DataValueField="ID"
-                                                        SelectedValue='<%# bind("BrandCode") %>'
-                                                        Width="250px"
-                                                        AppendDataBoundItems="True">
-                                                            <asp:ListItem Text="Select..." Value = "0" />
-                                                    </asp:DropDownList>
-                                                    <asp:SqlDataSource
-                                                        ID="sdsGetBrandCode"
-                                                        runat="server" 
-                                                        ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-                                                        SelectCommand="SELECT DISTINCT ID, US_Brand_Code + ' ' + Name AS Product, Name FROM Components ORDER BY Product DESC"> 
-                                                    </asp:SqlDataSource>--%>
                                                     <asp:TextBox
                                                         ID="txbBrandCodes"
                                                         runat="server"  
@@ -2249,13 +2218,12 @@
                                 SelectCommand="SELECT c.[US_Brand_Code] + ' ' + c.[name] as BrandCodeName, r.[ID], r.[InboundDocNo], r.[ManifestLineNumber], r.[RcvHdrID], r.[InboundProfileID], r.[InboundContainerType], r.[InboundPalletType], r.[InboundPalletWeight], r.[InboundContainerQty], r.[InboundContainerID], r.[InventoryLocation], r.[BrandCode], r.[Process?] AS column1, r.[ProcessPlan], r.[RcvdAs], r.[ModDate], r.[UserName] FROM [RcvDetail] r LEFT JOIN Components c on r.BrandCode = c.ID WHERE (r.[id] = @id)" 
                                 UpdateCommand="UPDATE [RcvDetail] SET [InboundDocNo] = @InboundDocNo, [ManifestLineNumber] = @ManifestLineNumber, [RcvHdrID] = @RcvHdrID, [InboundProfileID] = @InboundProfileID, [InboundContainerType] = @InboundContainerType, [InboundPalletType] = @InboundPalletType, [InboundPalletWeight] = @InboundPalletWeight, [InboundContainerQty] = @InboundContainerQty, [InboundContainerID] = @InboundContainerID, [InventoryLocation] = @InventoryLocation, [BrandCode] = @BrandCode, [Process?] = @column1, [ProcessPlan] = @ProcessPlan, [RcvdAs] = @RcvdAs, [ModDate] = @ModDate, [UserName] = @UserName WHERE [ID] = @ID"
                                 onupdated="sdsContainerDetail_Updated"
-                                OnInserting ="sdsContainerDetail_Inserting"
                                 oninserted="sdsContainerDetail_Inserted">
                                 <DeleteParameters>
                                     <asp:SessionParameter DefaultValue="0" Name="ID" SessionField="CurDetailID" Type="Int32" />
                                 </DeleteParameters>
                                 <InsertParameters>
-                                    <asp:Parameter Name="InboundDocNo" Type="String" />
+                                    <asp:SessionParameter Name="InboundDocNo" SessionField="CurInboundDocNo" Type="String" />
                                     <asp:Parameter Name="ManifestLineNumber" Type="Int32" />
                                     <asp:SessionParameter Name="RcvHdrID" SessionField="CurRcvHrdID" Type="Int32" />
                                     <asp:Parameter Name="InboundProfileID" Type="Int32" />
