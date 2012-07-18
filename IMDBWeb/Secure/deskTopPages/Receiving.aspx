@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Receiving.aspx.cs" Inherits="IMDBWeb.Secure.SPAKpages.Receiving" EnableEventValidation="false"%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" tagprefix="ajaxToolkit"%>
 
+
 <asp:Content
     ID="Content1"
     ContentPlaceHolderID="HeadContent"
@@ -201,8 +202,8 @@
                             </asp:SqlDataSource>
 
                         <asp:Label ID="Label1" runat="server" Visible="true"></asp:Label>
-<%--                    <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
-                        <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>--%>
+                    <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
+                        <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                     
                     </ContentTemplate>
                 </asp:UpdatePanel>
