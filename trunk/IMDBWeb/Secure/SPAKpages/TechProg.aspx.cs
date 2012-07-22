@@ -120,7 +120,7 @@ namespace IMDBWeb.Secure.SPAKpages
             //  Create if statement that uses selected value in sql to determine
             //  if insert is needed or update.
 
-            String sp = "SP_SpaklogExists";
+            String sp = "SPAK_CallLog_ChkExist";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -170,7 +170,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             if (ddTechName_CSRep.SelectedIndex != 0)
             {
-                String sp = "SP_SpakTechPhone";
+                String sp = "SPAK_TechProg_GetPhone_Sel";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);

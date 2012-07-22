@@ -85,7 +85,7 @@ namespace IMDBWeb.Secure.SPAKpages
             {
                 lblMsg.Visible = false;
                 lblMsg.Text = "";
-                String sp = "SP_SpakAddTech";
+                String sp = "SPAK_TechCSMap_Ins";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);

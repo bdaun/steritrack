@@ -83,9 +83,9 @@
     <asp:Button ID="btnInsert" runat="server" Text="Insert New" onclick="btnInsert_Click" />
     <asp:SqlDataSource ID="sdsTechcomments" runat="server" 
         ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-        SelectCommand="SP_SpakTechComments" SelectCommandType="StoredProcedure"
-        InsertCommand="SP_spakTechComments_Insert" InsertCommandType="StoredProcedure"
-        UpdateCommand="SP_spakTechComments_Update" UpdateCommandType="StoredProcedure"
+        SelectCommand="SPAK_TechComments_Sel" SelectCommandType="StoredProcedure"
+        InsertCommand="SPAK_TechComments_Ins" InsertCommandType="StoredProcedure"
+        UpdateCommand="SPAK_TechComments_upd" UpdateCommandType="StoredProcedure"
         OnInserting="sdsTechcomments_Inserting" OnInserted="sdsTechcomments_Inserted"
         OnUpdating="sdsTechcomments_Updating" OnUpdated="sdsTechcomments_Updated">
         <SelectParameters>
@@ -107,6 +107,6 @@
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="sdsTechName" runat="server" 
         ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-        SelectCommand="SP_SpakTechName_Sel" SelectCommandType="StoredProcedure">
+        SelectCommand="SPAK_TechProg_TechName_Sel" SelectCommandType="StoredProcedure">
     </asp:SqlDataSource>
 </asp:Content>
