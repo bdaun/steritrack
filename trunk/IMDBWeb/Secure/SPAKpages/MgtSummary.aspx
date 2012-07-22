@@ -200,7 +200,7 @@
 </asp:GridView>
 <asp:SqlDataSource ID="sdsSummaryData" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SpakMgtData" SelectCommandType="StoredProcedure">
+    SelectCommand="SPAK_MgtSummary_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomerRep" Name="repname" PropertyName="SelectedValue" Type="String" DefaultValue="ALL" />
         <asp:ControlParameter ControlID="ddCustomer" Name="Customer" PropertyName="SelectedValue" Type="String" DefaultValue="ALL" />
@@ -216,11 +216,11 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCM" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SpakCMName_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SPAK_MgtSummary_CMName_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsTech" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SpakTechName_perCS" SelectCommandType="StoredProcedure">
+    SelectCommand="SPAK_TechProg_TechNamePerCS_Sel" SelectCommandType="StoredProcedure">
         <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomerRep" Name="CSrep" PropertyName="SelectedValue" Type="String" />
     </SelectParameters>
