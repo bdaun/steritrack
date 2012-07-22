@@ -244,7 +244,7 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsTechData" runat="server" OnSelecting="sdsTechData_Selecting"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SpakTechData" SelectCommandType="StoredProcedure">
+    SelectCommand="SPAK_TechProg_TechData_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustRepList" Name="repname" PropertyName="SelectedValue" Type="String" />
         <asp:ControlParameter ControlID="ddCustomer" Name="Customer" PropertyName="SelectedValue" Type="String" />
@@ -255,7 +255,7 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsTechName_CSRep" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SpakTechName_perCS" SelectCommandType="StoredProcedure">
+    SelectCommand="SPAK_TechProg_TechNamePerCS_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustRepList" Name="CSrep" PropertyName="SelectedValue" Type="String" />
     </SelectParameters>
