@@ -175,7 +175,7 @@
         <asp:BoundField DataField="custservrepID" HeaderText="CM Name" SortExpression="custservrepID" />
         <asp:BoundField DataField="techname" HeaderText="Tech Name" SortExpression="techname" />
         <asp:BoundField DataField="OrderNumber" HeaderText="Order Number" SortExpression="OrderNumber" />
-        <asp:BoundField DataField="DateNeeded" HeaderText="Date Needed" SortExpression="DateNeeded" DataFormatString="{0:d}" />
+        <asp:BoundField DataField="DateRequired" HeaderText="Date Needed" SortExpression="DateRequired" DataFormatString="{0:d}" />
         <asp:BoundField DataField="PlannedVisitDate" HeaderText="Planned VisitDate" SortExpression="PlannedVisitDate" DataFormatString="{0:d}" />
         <asp:BoundField DataField="SiteName" HeaderText="Site Name" SortExpression="SiteName" />
         <asp:BoundField DataField="StoreNumber" HeaderText="Store Number" SortExpression="StoreNumber" />
