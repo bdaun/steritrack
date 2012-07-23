@@ -73,16 +73,16 @@
 <asp:GridView ID="gvTechName" runat="server" AllowSorting="True" 
         AutoGenerateColumns="False" DataSourceID="sdsTechData" 
         EmptyDataText="Empty Data Set" ShowHeaderWhenEmpty="True" 
-        OnRowDataBound="gvTechName_RowDataBound" DataKeyNames="OrderNum"
+        OnRowDataBound="gvTechName_RowDataBound" DataKeyNames="SalesOrderNumber"
         OnSelectedIndexChanged="gvTechName_SelectedIndexChanged" CellPadding="4" 
         ForeColor="#333333" GridLines="Horizontal"
         SelectedRowStyle-BackColor = "#ffff99">
     <Columns>
         <asp:BoundField DataField="TechName" HeaderText="Technician" SortExpression="TechName" ItemStyle-Wrap="False" />
-        <asp:BoundField DataField="DateNeeded" HeaderText="Date Needed" HtmlEncode="False" DataFormatString = "{0:d}" SortExpression="DateNeeded" />
-        <asp:BoundField DataField="OrderNum" HeaderText="Order" SortExpression="OrderNum" />
-        <asp:BoundField DataField="name" HeaderText="Store" SortExpression="name" />
-        <asp:BoundField DataField="store_number" HeaderText="Store Number" SortExpression="store_number" />
+        <asp:BoundField DataField="DateRequired" HeaderText="Date Needed" HtmlEncode="False" DataFormatString = "{0:d}" SortExpression="DateRequired" />
+        <asp:BoundField DataField="SalesOrderNumber" HeaderText="Order" SortExpression="SalesOrderNumber" />
+        <asp:BoundField DataField="SiteName" HeaderText="Store" SortExpression="name" />
+        <asp:BoundField DataField="SiteNumber" HeaderText="Store Number" SortExpression="SiteNumber" />
         <asp:BoundField DataField="Address1" HeaderText="Address" SortExpression="Address1" />
         <asp:BoundField DataField="City" HeaderText="City" SortExpression="City" />
         <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
@@ -111,7 +111,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
     <asp:DetailsView ID="dvCallLog" runat="server" AutoGenerateRows="False" 
-        DataKeyNames="ordernumber" DataSourceID="sdsCallDetail" 
+        DataKeyNames="OrderNumber" DataSourceID="sdsCallDetail" 
         DefaultMode="Edit" AutoGenerateEditButton="true">
         <Fields>
             <asp:BoundField DataField="OrderNumber" Visible="false" />
