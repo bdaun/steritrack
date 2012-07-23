@@ -382,33 +382,38 @@ namespace IMDBWeb.Secure
 	                   **************************************************************************************** */
 
                     String spChk = string.Empty;
-                    String sp_ins = string.Empty;
+                    String spIns = string.Empty;
+                    String spPallet = string.Empty;
                     //  Use switch to set storedprocedure values depending on new location
                     switch (txbNewLocation.Text.ToUpper())
                     {
                         case "COMPACTOR":
                             spChk = "IMDB_Processing_insCompact_Exist";
-                            sp_ins = "IMDB_Processing_InsCompact";
+                            spIns = "IMDB_Processing_InsCompact";
+                            spPallet = "IMDB_Processing_InsCompactPallet";
                             break;
                         case "BALER":
                             spChk = "IMDB_Processing_insBale_Exist";
-                            sp_ins = "imdb_processing_insbale";
+                            spIns = "imdb_processing_insbale";
                             break;
                         default:  // Captures both Tank1 and Tank2 Case
                             spChk = "IMDB_Processing_insTank_Exist";
-                            sp_ins = "IMDB_Processing_InsTank";
+                            spIns = "IMDB_Processing_InsTank";
                             break;
                     }
                     String spAggrCntr = "IMDB_AggCntr_Select";
                     Boolean ChkResult = false;  // Default setting assumes new AggrCntr record can be created
                     SqlConnection con = new SqlConnection();
                     con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                    SqlCommand spCmd = new SqlCommand(sp_ins, con);
+                    SqlCommand spCmd = new SqlCommand(spIns, con);
                     SqlCommand spChkCmd = new SqlCommand(spChk, con);
                     SqlCommand spAggrCmd = new SqlCommand(spAggrCntr, con);
+                    SqlCommand spPalletCmd = new SqlCommand(spPallet, con);
+
                     spAggrCmd.CommandType = CommandType.StoredProcedure;
                     spCmd.CommandType = CommandType.StoredProcedure;
                     spChkCmd.CommandType = CommandType.StoredProcedure;
+                    spPalletCmd.CommandType = CommandType.StoredProcedure;
                     con.Open();
                     
                     //check for existing AggrCntr record for this prochdrid
@@ -504,30 +509,96 @@ namespace IMDBWeb.Secure
 
                         //  Create Process Detail Record
                         #region Process Detail Insert
+
+
+
                         using (spCmd)
                         {
                             try
                             {
+                            //  Set the default value for the the new record Weight.
+                            //  For compactor, this value will be changed to separate out the pallet
+                            
+                                int productWt = (int)Session["InboundPalletWeight"];
+                                if (txbNewLocation.Text.ToUpper() == "COMPACTOR")
+                                {
+                                    int palletwt = 0;
+                                    switch (Session["InboundPalletType"].ToString())
+                                    {
+                                        case "CHEP":
+                                            palletwt = 66;
+                                            break;
+                                        case "GMA":
+                                            palletwt = 42;
+                                            break;
+                                        default:
+                                            palletwt = 0;
+                                            break;
+                                    }
+                                    productWt = productWt - palletwt;
+                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", productWt );
+                                }
+                                else
+                                {
+                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletWeight"]);
+                                }
                                 spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                                 spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                                 spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
                                 spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
                                 spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
                                 spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
-                                spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
                                 spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                                 spCmd.ExecuteNonQuery();
+
                             }
                             catch (Exception ex)
                             {
                                 lblErrMsg.Visible = true;
                                 lblErrMsg.Text = ex.ToString();
                             }
-                            finally
+                        }
+
+                        //  Add line for pallet when new location is pallet
+                        if (txbNewLocation.Text.ToUpper() == "COMPACTOR")
+                        {
+                            using (spPalletCmd)
                             {
-                                con.Close();
+                                try
+                                {
+                                    int palletWt = 0;
+                                    int palletprofile = 0;
+                                    switch (Session["InboundPalletType"].ToString())
+                                    {
+                                        case "CHEP":
+                                            palletWt = 66;
+                                            palletprofile = 26;
+                                            break;
+                                        case "GMA":
+                                            palletWt = 42;
+                                            palletprofile = 27;
+                                            break;
+                                        default:
+                                            palletWt = 0;
+                                            break;
+                                    }
+                                    spPalletCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                    spPalletCmd.Parameters.AddWithValue("@palletwt", palletWt );
+                                    spPalletCmd.Parameters.AddWithValue("@palletprofile", palletprofile);
+                                    spPalletCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                                    spPalletCmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.ToString();
+                                }
                             }
                         }
+                        txbCntrID.Text = string.Empty;
+                        txbCntrID.Focus();
+                        FormView1.DataBind();
+                        con.Close();
                         #endregion
                     }
                     else
@@ -687,19 +758,7 @@ namespace IMDBWeb.Secure
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand nonqueryCommand = thisConnection.CreateCommand();
-//string procplan = string.Empty;
-//switch (txbNewLocation.Text.ToUpper())
-//{
-//    case "COMPACTOR":
-//        procplan = "Compact";
-//        break;
-//    case "BALER":
-//        procplan = "Bale";
-//        break;
-//    case "TRUCK":
-//        procplan = "Truck";
-//        break;
-//}
+
                         try
                         {
                             // Open Connection
@@ -721,27 +780,8 @@ namespace IMDBWeb.Secure
                                 updateCmd.ExecuteNonQuery();
                             }
 
-                            // Sql Insert ProcHdr Statement for new record AND get Identity using Scope_Identity
-// Slightly different insert statement for Truck and Compactor.  Note that web login username
-// is used for the processor value
-
-//string insertSQL1 = string.Empty;
-//switch (txbNewLocation.Text.ToUpper())
-//{
-//case "TRUCK":       // Truck which has 0 hrs of labor
                             string insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-                            "VALUES (@InboundcontainerID,@User,Getdate(),'0'); Set @ProcessHeaderId = Scope_Identity()";
-//break;
-//case "COMPACTOR":    // compactor which has 0.25 hrs of labor
-//insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-//"VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-//break; 
-//case "BALER":       // baler which has 0.25 hrs of labor
-//    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-//    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-//    break;
-//}
-
+                                             "VALUES (@InboundcontainerID,@User,Getdate(),'0'); Set @ProcessHeaderId = Scope_Identity()";
                             int lastID;     // Create local variable for the identity value
                             SqlCommand insertCmd1 = new SqlCommand(insertSQL1, thisConnection);
                             using (insertCmd1)
@@ -801,89 +841,18 @@ namespace IMDBWeb.Secure
                                     }
                                 }
                             }
-                            // Sql Insert ProcDetail Statement for new record.  Single entry for Truck moves.  Two lines created for 
-                            // Compactor with weights depending upon pallet type.
+                            // Sql Insert ProcDetail Statement for new record.
                             string OutboundLocation = txbNewLocation.Text.ToUpper();
                             string insertSQL2 = "";
                             int palletwt = 0;
                             int productwt = 0;
                             int palletprofile = 0;
-//switch (OutboundLocation)
-//{
-//    case "TRUCK":
-//        {
                             insertSQL2 = "INSERT INTO ProcDetail " +
                             "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
                             "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation,OutboundDocNo) " +
                             "VALUES (@lastID,'WTE',@InboundPalletWeight,@InboundProfileID,@InboundContainerType,@InboundContainerID," +
                             "@InboundPalletType,'Ship','0','Truck',@OutboundDocNo)";
-//break;
-//    }
-//case "COMPACTOR":
-//    {
-//        //  First determine the weights and profiles based on the type of pallet
-//        switch (InboundPalletType)
-//        {
-//            case "CHEP":
-//                palletwt = 66;
-//                palletprofile = 26;
-//                break;
-//            case "GMA":
-//                palletwt = 42;
-//                palletprofile = 27;
-//                break;
-//            default:
-//                palletwt = 0;
-//                break;
-//        }
-//        productwt = InboundPalletWeight - palletwt;
 
-//        // Note the insertSQL2 statement for a compactor is actually two sequential insert statements.  
-//        // One for the pallet, the other for the "product" weight
-//        insertSQL2 = "INSERT INTO ProcDetail " +
-//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-//        "'None','Compact','0','NA');INSERT INTO ProcDetail " +
-//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//        "VALUES (@lastID,'WTE',@productwt,'35','Compactor',@OutboundContainerID," +
-//        "'None','Compact','0','Compactor')";
-//        break;
-//    }
-//case "BALER":
-//    {
-//        //  First determine the weights and profiles based on the type of pallet
-//        switch (InboundPalletType)
-//        {
-//            case "CHEP":
-//                palletwt = 66;
-//                palletprofile = 26;
-//                break;
-//            case "GMA":
-//                palletwt = 42;
-//                palletprofile = 27;
-//                break;
-//            default:
-//                palletwt = 0;
-//                break;
-//        }
-//            productwt = InboundPalletWeight - palletwt;
-
-//            // Note the insertSQL2 statement for a baler is actually two sequential insert statements.  
-//            // One for the pallet, the other for the "product" weight
-//            insertSQL2 = "INSERT INTO ProcDetail " +
-//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//            "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-//            "'None','Bale','0','NA');INSERT INTO ProcDetail " +
-//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//            "VALUES (@lastID,'Reuse',@productwt,'28','Baler',@OutboundContainerID," +
-//            "'None','Bale','0','Baler')";
-//            break;
-//        }
-//}
                             SqlCommand insertCmd2 = new SqlCommand(insertSQL2, thisConnection);
 
                             using (insertCmd2)
@@ -957,29 +926,10 @@ namespace IMDBWeb.Secure
                             thisConnection.Open();
 
                             string updateSQL = string.Empty;
-//switch (txbNewLocation.Text.ToUpper())
-//{ 
-//    case "TRUCK":
                             updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Truck', ModDate = getdate(), " +
                             "username = @username, outboundDocNo = @outbounddocno, outboundcontainerID = @outboundtruckid, " +
                             "shipped = '0',ProcessMethod = 'Ship' WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//    case "COMPACTOR":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Compactor', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Compact' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//    case "BALER":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Baler', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Bale' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//    case "TANK":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Tank', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Decant' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//}
+
                             SqlCommand UpdateCmd = new SqlCommand(updateSQL, thisConnection);
                                 
                             //  Map Parameters
@@ -1014,20 +964,146 @@ namespace IMDBWeb.Secure
                         txbOutCntr.Text = string.Empty;
                         txbOutCntr.Focus();
                         lblErrMsg.Visible = true;
-//if (txbNewLocation.Text.ToUpper() == "TRUCK")
-//{
-                            lblErrMsg.Text = "The value you entered is not in the ShipHdr Table or has already shipped.  Please re-scan or contact the shipping clerk to create " +
-                                "an outbound shipping record.";
-                            lblOutCntr.Visible = true;
-//}
-//else
-//{
-//    lblErrMsg.Text = "Please enter an OUT or ROPAK container";
-//    lblOutCntr.Visible = true;
-//}
+                        lblErrMsg.Text = "The value you entered is not in the ShipHdr Table or has already shipped. " +
+                            "Please re-scan or contact the shipping clerk to create " +
+                            "an outbound shipping record.";
+                        lblOutCntr.Visible = true;
+
                     }
 	            }
             }
         }
     }
 }
+//string procplan = string.Empty;
+//switch (txbNewLocation.Text.ToUpper())
+//{
+//    case "COMPACTOR":
+//        procplan = "Compact";
+//        break;
+//    case "BALER":
+//        procplan = "Bale";
+//        break;
+//    case "TRUCK":
+//        procplan = "Truck";
+//        break;
+//}
+// Sql Insert ProcHdr Statement for new record AND get Identity using Scope_Identity
+// Slightly different insert statement for Truck and Compactor.  Note that web login username
+// is used for the processor value
+
+//string insertSQL1 = string.Empty;
+//switch (txbNewLocation.Text.ToUpper())
+//{
+//case "TRUCK":       // Truck which has 0 hrs of labor
+
+//break;
+//case "COMPACTOR":    // compactor which has 0.25 hrs of labor
+//insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
+//"VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
+//break; 
+//case "BALER":       // baler which has 0.25 hrs of labor
+//    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
+//    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
+//    break;
+//}
+//switch (OutboundLocation)
+//{
+//    case "TRUCK":
+//        {
+
+//break;
+//    }
+//case "COMPACTOR":
+//    {
+//        //  First determine the weights and profiles based on the type of pallet
+//        switch (InboundPalletType)
+//        {
+//            case "CHEP":
+//                palletwt = 66;
+//                palletprofile = 26;
+//                break;
+//            case "GMA":
+//                palletwt = 42;
+//                palletprofile = 27;
+//                break;
+//            default:
+//                palletwt = 0;
+//                break;
+//        }
+//        productwt = InboundPalletWeight - palletwt;
+
+//        // Note the insertSQL2 statement for a compactor is actually two sequential insert statements.  
+//        // One for the pallet, the other for the "product" weight
+//        insertSQL2 = "INSERT INTO ProcDetail " +
+//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
+//        "'None','Compact','0','NA');INSERT INTO ProcDetail " +
+//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//        "VALUES (@lastID,'WTE',@productwt,'35','Compactor',@OutboundContainerID," +
+//        "'None','Compact','0','Compactor')";
+//        break;
+//    }
+//case "BALER":
+//    {
+//        //  First determine the weights and profiles based on the type of pallet
+//        switch (InboundPalletType)
+//        {
+//            case "CHEP":
+//                palletwt = 66;
+//                palletprofile = 26;
+//                break;
+//            case "GMA":
+//                palletwt = 42;
+//                palletprofile = 27;
+//                break;
+//            default:
+//                palletwt = 0;
+//                break;
+//        }
+//            productwt = InboundPalletWeight - palletwt;
+
+//            // Note the insertSQL2 statement for a baler is actually two sequential insert statements.  
+//            // One for the pallet, the other for the "product" weight
+//            insertSQL2 = "INSERT INTO ProcDetail " +
+//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//            "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
+//            "'None','Bale','0','NA');INSERT INTO ProcDetail " +
+//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
+//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
+//            "VALUES (@lastID,'Reuse',@productwt,'28','Baler',@OutboundContainerID," +
+//            "'None','Bale','0','Baler')";
+//            break;
+//        }
+//}
+//switch (txbNewLocation.Text.ToUpper())
+//{ 
+//    case "TRUCK":                     
+//        break;
+//    case "COMPACTOR":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Compactor', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Compact' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//    case "BALER":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Baler', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Bale' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//    case "TANK":
+//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Tank', ModDate = getdate(), " +
+//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Decant' " +
+//        "WHERE outboundcontainerid = @outboundcontainerID_old";
+//        break;
+//}
+//if (txbNewLocation.Text.ToUpper() == "TRUCK")
+//{
+//}
+//else
+//{
+//    lblErrMsg.Text = "Please enter an OUT or ROPAK container";
+//    lblOutCntr.Visible = true;
+//}
