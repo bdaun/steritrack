@@ -128,7 +128,7 @@ namespace IMDBWeb.Secure.SPAKpages
             con.Open();
             using (spCmd)
             {
-                spCmd.Parameters.AddWithValue("@ordernum", curOrder);
+                spCmd.Parameters.AddWithValue("@OrderNum", curOrder);
                 object isValid = new object();
                 isValid = spCmd.ExecuteScalar();
                 if (isValid == null)
@@ -137,14 +137,14 @@ namespace IMDBWeb.Secure.SPAKpages
                     // the record details in update mode.
 
                     string insertSQL = "INSERT INTO Spak_CallInfo (ordernumber,custservrepid,status,PlannedVisitDate,moddate,modby)" +
-                    "VALUES (@ordernum,@RepID,'WV',Getdate(),Getdate(),@User)";
+                    "VALUES (@OrderNum,@RepID,'WV',Getdate(),Getdate(),@User)";
                     SqlCommand cmdInsert = new SqlCommand(insertSQL, con);
                     using (cmdInsert)
                     {
 
                         // define insert parameters
 
-                        cmdInsert.Parameters.AddWithValue("@ordernum", curOrder);
+                        cmdInsert.Parameters.AddWithValue("@OrderNum", curOrder);
                         cmdInsert.Parameters.AddWithValue("@RepID", ddCustRepList.SelectedValue);
                         cmdInsert.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
 
