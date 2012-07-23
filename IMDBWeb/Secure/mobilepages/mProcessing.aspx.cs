@@ -448,7 +448,7 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                         spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
-                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", "35");
                         spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
                         spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
@@ -602,7 +602,7 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                         spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
-                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
+                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", "28");
                         spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
                         spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
