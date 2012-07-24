@@ -390,15 +390,17 @@ namespace IMDBWeb.Secure
                         case "COMPACTOR":
                             spChk = "IMDB_Processing_insCompact_Exist";
                             spIns = "IMDB_Processing_InsCompact";
-                            spPallet = "IMDB_Processing_InsCompactPallet";
+                            spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
                         case "BALER":
                             spChk = "IMDB_Processing_insBale_Exist";
                             spIns = "imdb_processing_insbale";
+                            spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
                         default:  // Captures both Tank1 and Tank2 Case
                             spChk = "IMDB_Processing_insTank_Exist";
                             spIns = "IMDB_Processing_InsTank";
+                            spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
                     }
                     String spAggrCntr = "IMDB_AggCntr_Select";
@@ -509,9 +511,6 @@ namespace IMDBWeb.Secure
 
                         //  Create Process Detail Record
                         #region Process Detail Insert
-
-
-
                         using (spCmd)
                         {
                             try
@@ -520,37 +519,29 @@ namespace IMDBWeb.Secure
                             //  For compactor, this value will be changed to separate out the pallet
                             
                                 int productWt = (int)Session["InboundPalletWeight"];
-                                if (txbNewLocation.Text.ToUpper() == "COMPACTOR")
+                                int palletwt = 0;
+
+                                switch (Session["InboundPalletType"].ToString())
                                 {
-                                    int palletwt = 0;
-                                    switch (Session["InboundPalletType"].ToString())
-                                    {
-                                        case "CHEP":
-                                            palletwt = 66;
-                                            break;
-                                        case "GMA":
-                                            palletwt = 42;
-                                            break;
-                                        default:
-                                            palletwt = 0;
-                                            break;
-                                    }
-                                    productWt = productWt - palletwt;
-                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", productWt );
+                                    case "CHEP":
+                                        palletwt = 66;
+                                        break;
+                                    case "GMA":
+                                        palletwt = 42;
+                                        break;
+                                    default:
+                                        palletwt = 0;
+                                        break;
                                 }
-                                else
-                                {
-                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletWeight"]);
-                                }
+                                productWt = productWt - palletwt;
+                                spCmd.Parameters.AddWithValue("@OutboundStreamWeight", productWt );
                                 spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
                                 spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
                                 spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
                                 spCmd.Parameters.AddWithValue("@OutboundStreamProfile", Session["InboundProfileID"]);
                                 spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
-                                spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
                                 spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                                 spCmd.ExecuteNonQuery();
-
                             }
                             catch (Exception ex)
                             {
@@ -558,41 +549,37 @@ namespace IMDBWeb.Secure
                                 lblErrMsg.Text = ex.ToString();
                             }
                         }
-
-                        //  Add line for pallet when new location is pallet
-                        if (txbNewLocation.Text.ToUpper() == "COMPACTOR")
+                        using (spPalletCmd)
                         {
-                            using (spPalletCmd)
+                            try
                             {
-                                try
+                                int palletWt = 0;
+                                int palletprofile = 0;
+                                switch (Session["InboundPalletType"].ToString())
                                 {
-                                    int palletWt = 0;
-                                    int palletprofile = 0;
-                                    switch (Session["InboundPalletType"].ToString())
-                                    {
-                                        case "CHEP":
-                                            palletWt = 66;
-                                            palletprofile = 26;
-                                            break;
-                                        case "GMA":
-                                            palletWt = 42;
-                                            palletprofile = 27;
-                                            break;
-                                        default:
-                                            palletWt = 0;
-                                            break;
-                                    }
-                                    spPalletCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
-                                    spPalletCmd.Parameters.AddWithValue("@palletwt", palletWt );
-                                    spPalletCmd.Parameters.AddWithValue("@palletprofile", palletprofile);
-                                    spPalletCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
-                                    spPalletCmd.ExecuteNonQuery();
+                                    case "CHEP":
+                                        palletWt = 66;
+                                        palletprofile = 26;
+                                        break;
+                                    case "GMA":
+                                        palletWt = 42;
+                                        palletprofile = 27;
+                                        break;
+                                    default:
+                                        palletWt = 0;
+                                        break;
                                 }
-                                catch (Exception ex)
-                                {
-                                    lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = ex.ToString();
-                                }
+                                spPalletCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                spPalletCmd.Parameters.AddWithValue("@palletwt", palletWt );
+                                spPalletCmd.Parameters.AddWithValue("@palletprofile", palletprofile);
+                                spPalletCmd.Parameters.AddWithValue("@PalletType", Session["InboundPalletType"]);
+                                spPalletCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                                spPalletCmd.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
                             }
                         }
                         txbCntrID.Text = string.Empty;
