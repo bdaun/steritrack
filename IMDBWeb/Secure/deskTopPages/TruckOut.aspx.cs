@@ -19,6 +19,28 @@ namespace IMDBWeb.Secure.deskTopPages
                 trErrMsg.Visible = false;
                 btnExport.Visible = false;
                 btnPrint.Visible = false;
+                string strSP = "IMDB_Truckout_ActShipWt_upd";
+                SqlConnection con1 = new SqlConnection();
+                con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand ActWtCmd = new SqlCommand(strSP, con1);
+                ActWtCmd.CommandType = CommandType.StoredProcedure;
+                con1.Open();
+                using (ActWtCmd)
+                {
+                    try
+                    {
+                        ActWtCmd.ExecuteNonQuery();
+                    }
+                    catch (Exception x)
+                    {
+                        lblErrMsg.Visible = true;
+                        lblErrMsg.Text = x.ToString();
+                    }
+                    finally
+                    {
+                        con1.Close();
+                    }
+                }
             }
             else
             {
