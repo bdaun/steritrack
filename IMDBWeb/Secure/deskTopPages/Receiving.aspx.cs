@@ -312,7 +312,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             string curCntr = ((TextBox)dvContainerDetail.FindControl("txbBrandCodes")).Text;
 
-            String sp = "IMDB_Test";
+            String sp = "IMDB_GetBrandCodeIDs_Sel";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
