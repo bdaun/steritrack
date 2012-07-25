@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Receiving.aspx.cs" Inherits="IMDBWeb.Secure.SPAKpages.Receiving" EnableEventValidation="false"%>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" tagprefix="ajaxToolkit"%>
+
 
 
 <asp:Content
@@ -8,7 +8,7 @@
     runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
     <table class="ui-accordion">
         <tr runat="server" id="trOrder">
             <td width="100px">
@@ -36,41 +36,7 @@
                         CompletionListItemCssClass="autocomplete_listItem" 
                         CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                         DelimiterCharacters=","
-                        ShowOnlyCurrentWordInCompletionListItem="false"
-                        BehaviorID="AutoCompleteEx1">
-                            <Animations>
-                            <OnShow>
-                                <Sequence>
-                                    <%-- Make the completion list transparent and then show it --%>
-                                    <OpacityAction Opacity="0" />
-                                    <HideAction Visible="true" />
-                            
-                                    <%--Cache the original size of the completion list the first time
-                                        the animation is played and then set it to zero --%>
-                                    <ScriptAction Script="
-                                        // Cache the size and setup the initial size
-                                        var behavior = $find('AutoCompleteEx1');
-                                        if (!behavior._height) {
-                                            var target = behavior.get_completionList();
-                                            behavior._height = target.offsetHeight - 2;
-                                            target.style.height = '0px';
-                                        }" />
-                            
-                                    <%-- Expand from 0px to the appropriate size while fading in --%>
-                                    <Parallel Duration=".4">
-                                        <FadeIn />
-                                        <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx1')._height" />
-                                    </Parallel>
-                                </Sequence>
-                            </OnShow>
-                            <OnHide>
-                                <%-- Collapse down to 0px and fade out --%>
-                                <Parallel Duration="0">
-                                    <FadeOut />
-                                    <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx1')._height" EndValue="0" />
-                                </Parallel>
-                            </OnHide>
-                        </Animations>
+                        ShowOnlyCurrentWordInCompletionListItem="false">
                      </ajaxToolkit:AutoCompleteExtender>
             </td>
             <td>
@@ -103,41 +69,7 @@
                         CompletionListItemCssClass="autocomplete_listItem" 
                         CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                         DelimiterCharacters=";, :"
-                        ShowOnlyCurrentWordInCompletionListItem="true"
-                        BehaviorID="AutoCompleteEx">
-                            <Animations>
-                            <OnShow>
-                                <Sequence>
-                                    <%-- Make the completion list transparent and then show it --%>
-                                    <OpacityAction Opacity="0" />
-                                    <HideAction Visible="true" />
-                            
-                                    <%--Cache the original size of the completion list the first time
-                                        the animation is played and then set it to zero --%>
-                                    <ScriptAction Script="
-                                        // Cache the size and setup the initial size
-                                        var behavior = $find('AutoCompleteEx');
-                                        if (!behavior._height) {
-                                            var target = behavior.get_completionList();
-                                            behavior._height = target.offsetHeight - 2;
-                                            target.style.height = '0px';
-                                        }" />
-                            
-                                    <%-- Expand from 0px to the appropriate size while fading in --%>
-                                    <Parallel Duration=".4">
-                                        <FadeIn />
-                                        <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx')._height" />
-                                    </Parallel>
-                                </Sequence>
-                            </OnShow>
-                            <OnHide>
-                                <%-- Collapse down to 0px and fade out --%>
-                                <Parallel Duration="0">
-                                    <FadeOut />
-                                    <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx')._height" EndValue="0" />
-                                </Parallel>
-                            </OnHide>
-                        </Animations>
+                        ShowOnlyCurrentWordInCompletionListItem="true">
                     </ajaxToolkit:AutoCompleteExtender>
             </td>
             <td>
@@ -202,7 +134,7 @@
                             </asp:SqlDataSource>
 
                         <asp:Label ID="Label1" runat="server" Visible="false"></asp:Label>
-                    <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
+                        <asp:Label ID="Label3" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                         <asp:Label ID="label2" runat="server" Visible="true" Font-Bold="True" ForeColor="Red"></asp:Label>
                     
                     </ContentTemplate>
@@ -215,7 +147,7 @@
                                 <asp:Label ID="Label5" runat="server" visible="false" Text="Listing Inbound Document Numbers" Font-Bold="True"></asp:Label>
                             </td>
                             <td>
-                                <asp:Button ID="btnAddDoc" Visible="false" runat="server" Text="Add New Inbound Doc" onclick="btnAddDoc_Click" />
+                                <asp:Button ID="btnAddDoc" Visible="false" runat="server" Text="Add New Inbound Doc" onclick="btnAddDoc_Click" OnClientClick="javascript:adddoc=true"/>
                             </td>
                         </table>
                         
@@ -237,7 +169,7 @@
                                         <asp:Panel ID="pnlSubCatDocs" runat="server">
                                             <asp:Image ID="imgCollapsible" Style="margin-right: 5px;" runat="server" />
                                             <span style="font-weight:bold"><%#Eval("InboundDocNo")%></span>
-                                            Click <asp:LinkButton ID='lbAddContainer' runat="server" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
+                                            Click <asp:LinkButton ID='lbAddContainer' runat="server" OnClientClick="adddoc=false" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
                                          </asp:Panel>
                                         <asp:Panel ID="pnlContainerList" runat="server" Width="100%">
                                             <asp:GridView
@@ -251,8 +183,8 @@
                                                 <Columns>
                                                     <asp:templatefield>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
-                                                        <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
+                                                        <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" OnClientClick="adddoc='edit'" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
+                                                        <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" OnClientClick="adddoc='dupe'" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
                                                     </ItemTemplate>
                                                         <ItemStyle Font-Size="XX-Small" HorizontalAlign="Center" VerticalAlign="Middle" />
                                                     </asp:templatefield>
@@ -292,7 +224,7 @@
                                             </asp:SqlDataSource>
                                         </asp:Panel>
                                             <ajaxtoolkit:CollapsiblePanelExtender
-                                                ID="ctlCollapsiblePanel"
+                                                ID="CPE1"
                                                 runat="Server"
                                                 TargetControlID="pnlContainerList"
                                                 CollapsedSize="0" Collapsed="True"
@@ -337,7 +269,8 @@
                             AutoGenerateRows="False"
                             Height="50px"
                             Width="400px"
-                            runat="server">
+                            runat="server"
+                            OnDataBound="dvHdrDetail_OnDataBound">
                             <EmptyDataTemplate>
                                 No Data
                             </EmptyDataTemplate>
@@ -391,41 +324,7 @@
                                                                 CompletionListItemCssClass="autocomplete_listItem" 
                                                                 CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                                 DelimiterCharacters=";, :"
-                                                                ShowOnlyCurrentWordInCompletionListItem="true"
-                                                                BehaviorID="AutoCompleteEx3">
-                                                                    <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx3')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx3')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                                ShowOnlyCurrentWordInCompletionListItem="true">
                                                     </ajaxToolkit:AutoCompleteExtender>
                                                     </td>
                                                     <td>
@@ -460,41 +359,7 @@
                                                                 CompletionListItemCssClass="autocomplete_listItem" 
                                                                 CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                                 DelimiterCharacters=";, :"
-                                                                ShowOnlyCurrentWordInCompletionListItem="true"
-                                                                BehaviorID="AutoCompleteEx4">
-                                                                    <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx4')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx4')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                                ShowOnlyCurrentWordInCompletionListItem="true">
                                                     </ajaxToolkit:AutoCompleteExtender>
                                                     </td>
                                                     <td>
@@ -544,41 +409,7 @@
                                                                 CompletionListItemCssClass="autocomplete_listItem" 
                                                                 CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                                 DelimiterCharacters=";, :"
-                                                                ShowOnlyCurrentWordInCompletionListItem="true"
-                                                                BehaviorID="AutoCompleteEx5">
-                                                                    <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx5')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx5')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                                ShowOnlyCurrentWordInCompletionListItem="true">
                                                     </ajaxToolkit:AutoCompleteExtender>
                                                     </td>
                                                     <td>
@@ -715,41 +546,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx3">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx3')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx3')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -785,41 +582,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx4">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx4')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx4')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -870,41 +633,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx5">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx5')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx5')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -1041,41 +770,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx3">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx3')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx3')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -1111,41 +806,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx4">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx4')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx4')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -1196,41 +857,7 @@
                                                     CompletionListItemCssClass="autocomplete_listItem" 
                                                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                     DelimiterCharacters=";, :"
-                                                    ShowOnlyCurrentWordInCompletionListItem="true"
-                                                    BehaviorID="AutoCompleteEx5">
-                                                        <Animations>
-                                                        <OnShow>
-                                                            <Sequence>
-                                                                <%-- Make the completion list transparent and then show it --%>
-                                                                <OpacityAction Opacity="0" />
-                                                                <HideAction Visible="true" />
-                            
-                                                                <%--Cache the original size of the completion list the first time
-                                                                    the animation is played and then set it to zero --%>
-                                                                <ScriptAction Script="
-                                                                    // Cache the size and setup the initial size
-                                                                    var behavior = $find('AutoCompleteEx');
-                                                                    if (!behavior._height) {
-                                                                        var target = behavior.get_completionList();
-                                                                        behavior._height = target.offsetHeight - 2;
-                                                                        target.style.height = '0px';
-                                                                    }" />
-                            
-                                                                <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                <Parallel Duration=".4">
-                                                                    <FadeIn />
-                                                                    <Length PropertyKey="height" StartValue="0" EndValueScript="$find('AutoCompleteEx5')._height" />
-                                                                </Parallel>
-                                                            </Sequence>
-                                                        </OnShow>
-                                                        <OnHide>
-                                                            <%-- Collapse down to 0px and fade out --%>
-                                                            <Parallel Duration="0">
-                                                                <FadeOut />
-                                                                <Length PropertyKey="height" StartValueScript="$find('AutoCompleteEx5')._height" EndValue="0" />
-                                                            </Parallel>
-                                                        </OnHide>
-                                                    </Animations>
+                                                    ShowOnlyCurrentWordInCompletionListItem="true">
                                         </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td>
@@ -1421,6 +1048,23 @@
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
+                                                <td>Line Number</td>
+                                                <td>
+                                                    <asp:TextBox
+                                                        ID="txbLineNo"
+                                                        runat="server" 
+                                                        Text='<%# bind("ManifestLineNumber") %>'
+                                                        Width="250px"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:Label
+                                                        ID="lblBrandCodeID"
+                                                        runat="server"
+                                                        Text='<%# bind("BrandCode") %>'
+                                                        Visible="false"></asp:Label>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>Brand Code</td>
                                                 <td>
                                                     <asp:TextBox
@@ -1444,59 +1088,8 @@
                                                             CompletionListItemCssClass="autocomplete_listItem" 
                                                             CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                             DelimiterCharacters=","
-                                                            ShowOnlyCurrentWordInCompletionListItem="false"
-                                                            BehaviorID="txbBrandCodes_Behavior">
-                                                                <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx1');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('txbBrandCodes_Behavior')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('txbBrandCodes_Behavior')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                            ShowOnlyCurrentWordInCompletionListItem="false">
                                                          </ajaxToolkit:AutoCompleteExtender>
-                                                </td>
-                                                <td>
-                                                        <asp:Label
-                                                            ID="lblBrandCodeID"
-                                                            runat="server"
-                                                            Text='<%# bind("BrandCode") %>'
-                                                            Visible="false"></asp:Label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Line No</td>
-                                                <td>
-                                                    <asp:TextBox
-                                                        ID="txbLineNo"
-                                                        runat="server" 
-                                                        Text='<%# bind("ManifestLineNumber") %>'
-                                                        Width="250px"></asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1694,6 +1287,23 @@
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
+                                                <td>Line Number</td>
+                                                <td>
+                                                    <asp:TextBox
+                                                        ID="txbLineNo"
+                                                        runat="server" 
+                                                        Text='<%# bind("ManifestLineNumber") %>'
+                                                        Width="250px"></asp:TextBox>
+                                                        
+                                                </td>
+                                                <td>
+                                                        <asp:Label
+                                                            ID="lblBrandCodeID"
+                                                            runat="server"
+                                                            Text='<%# bind("BrandCode") %>'
+                                                            Visible="false"></asp:Label></td>
+                                            </tr>
+                                            <tr>
                                                 <td>Brand Code</td>
                                                 <td>
                                                     <asp:TextBox
@@ -1718,58 +1328,8 @@
                                                             CompletionListItemCssClass="autocomplete_listItem" 
                                                             CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                             DelimiterCharacters=","
-                                                            ShowOnlyCurrentWordInCompletionListItem="false"
-                                                            BehaviorID="txbBrandCodes_Behavior">
-                                                                <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx1');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('txbBrandCodes_Behavior')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('txbBrandCodes_Behavior')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                            ShowOnlyCurrentWordInCompletionListItem="false">
                                                          </ajaxToolkit:AutoCompleteExtender>
-                                                </td>
-                                                <td>
-                                                        <asp:Label
-                                                            ID="lblBrandCodeID"
-                                                            runat="server"
-                                                            Text='<%# bind("BrandCode") %>'
-                                                            Visible="false"></asp:Label></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Line No</td>
-                                                <td>
-                                                    <asp:TextBox
-                                                        ID="txbLineNo"
-                                                        runat="server" 
-                                                        Text='<%# bind("ManifestLineNumber") %>'
-                                                        Width="250px"></asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1969,6 +1529,22 @@
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
+                                                <td>Line Number</td>
+                                                <td>
+                                                    <asp:TextBox
+                                                        ID="txbLineNo"
+                                                        runat="server" 
+                                                        Text='<%# bind("ManifestLineNumber") %>'
+                                                        Width="250px"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                        <asp:Label
+                                                            ID="lblBrandCodeID"
+                                                            runat="server"
+                                                            Text='<%# bind("BrandCode") %>'
+                                                            Visible="false"></asp:Label></td>
+                                            </tr>
+                                            <tr>
                                                 <td>Brand Code</td>
                                                 <td>
                                                     <asp:TextBox
@@ -1993,58 +1569,8 @@
                                                             CompletionListItemCssClass="autocomplete_listItem" 
                                                             CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                                             DelimiterCharacters=","
-                                                            ShowOnlyCurrentWordInCompletionListItem="false"
-                                                            BehaviorID="txbBrandCodes_Behavior">
-                                                                <Animations>
-                                                                    <OnShow>
-                                                                        <Sequence>
-                                                                            <%-- Make the completion list transparent and then show it --%>
-                                                                            <OpacityAction Opacity="0" />
-                                                                            <HideAction Visible="true" />
-                            
-                                                                            <%--Cache the original size of the completion list the first time
-                                                                                the animation is played and then set it to zero --%>
-                                                                            <ScriptAction Script="
-                                                                                // Cache the size and setup the initial size
-                                                                                var behavior = $find('AutoCompleteEx1');
-                                                                                if (!behavior._height) {
-                                                                                    var target = behavior.get_completionList();
-                                                                                    behavior._height = target.offsetHeight - 2;
-                                                                                    target.style.height = '0px';
-                                                                                }" />
-                            
-                                                                            <%-- Expand from 0px to the appropriate size while fading in --%>
-                                                                            <Parallel Duration=".4">
-                                                                                <FadeIn />
-                                                                                <Length PropertyKey="height" StartValue="0" EndValueScript="$find('txbBrandCodes_Behavior')._height" />
-                                                                            </Parallel>
-                                                                        </Sequence>
-                                                                    </OnShow>
-                                                                    <OnHide>
-                                                                        <%-- Collapse down to 0px and fade out --%>
-                                                                        <Parallel Duration="0">
-                                                                            <FadeOut />
-                                                                            <Length PropertyKey="height" StartValueScript="$find('txbBrandCodes_Behavior')._height" EndValue="0" />
-                                                                        </Parallel>
-                                                                    </OnHide>
-                                                                </Animations>
+                                                            ShowOnlyCurrentWordInCompletionListItem="false">
                                                          </ajaxToolkit:AutoCompleteExtender>
-                                                </td>
-                                                <td>
-                                                        <asp:Label
-                                                            ID="lblBrandCodeID"
-                                                            runat="server"
-                                                            Text='<%# bind("BrandCode") %>'
-                                                            Visible="false"></asp:Label></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Line No</td>
-                                                <td>
-                                                    <asp:TextBox
-                                                        ID="txbLineNo"
-                                                        runat="server" 
-                                                        Text='<%# bind("ManifestLineNumber") %>'
-                                                        Width="250px"></asp:TextBox>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -2280,18 +1806,55 @@
                                 runat="server"
                                 TargetControlID="Button1"
                                 PopupControlID="pnlContainerDetail"
-                                BackgroundCssClass="modalBackground">
+                                BackgroundCssClass="modalBackground"
+                                BehaviorID="MPE1_Behavior">
+                                <Animations>
+                                    <OnShown>
+                                        <Scriptaction Script="ButtonClicks();" />
+                                    </OnShown>
+                                </Animations>
                     </ajaxToolkit:ModalPopupExtender>
                         <asp:Button runat="server" ID="Button1" Style="display:none"/>
             </td>
         </tr>
     </table>
+
+
+
+
 </asp:Content>    
 
 <asp:Content
     ID="Content3"
     ContentPlaceHolderID="Clear"
-    runat="server"> 
+    runat="server">
+
+        <script type="text/javascript">
+            function ButtonClicks() {
+                    PageMethods.GetInboundDoc(onSuccess, onFailure);
+            }
+            function onSuccess(result) {
+                switch (adddoc) {
+                    case false:
+                        var lbl = document.getElementById('MainContent_dvContainerDetail_txbInboundDoc');
+                        lbl.value = result;
+                        document.getElementById('MainContent_dvContainerDetail_txbContainerID').focus();
+                        break;
+                    case "dupe":
+                        document.getElementById('MainContent_dvContainerDetail_txbContainerID').focus();
+                        break;
+                    case "edit":
+                        document.getElementById('MainContent_dvContainerDetail_txbContainerID').focus();
+                        break;
+                    default:
+                        document.getElementById('MainContent_dvContainerDetail_txbInboundDoc').focus();
+                } 
+            }
+            function onFailure(error) {
+                    alert(error);
+            }
+        </script>
+     
 </asp:Content>
 <asp:Content
     ID="Content4"
