@@ -1043,7 +1043,10 @@
                                                         ID="txbContainerID"
                                                         runat="server" 
                                                         Text='<%# bind("InboundContainerID") %>'
-                                                        Width="250px"></asp:TextBox>
+                                                        Width="250px"
+                                                        AutoPostBack="true"
+                                                        OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
+                                                    <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1282,7 +1285,10 @@
                                                         ID="txbContainerID"
                                                         runat="server" 
                                                         Text='<%# bind("InboundContainerID") %>'
-                                                        Width="250px"></asp:TextBox>
+                                                        Width="250px"
+                                                        AutoPostBack="true"
+                                                        OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
+                                                    <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -1524,7 +1530,10 @@
                                                         runat="server" 
                                                         Text=""
                                                         Width="250px"
-                                                        tabindex="0"></asp:TextBox>
+                                                        tabindex="0"
+                                                        AutoPostBack="true"
+                                                        OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
+                                                    <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
                                                 </td>
                                                 <td>&nbsp;</td>
                                             </tr>
