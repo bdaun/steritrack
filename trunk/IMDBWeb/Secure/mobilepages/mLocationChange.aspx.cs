@@ -45,11 +45,12 @@ namespace IMDBWeb.Secure
                 {
                     if (strCntr.StartsWith("IN"))
                     {
-                        string chkValidCntr = "SELECT ID FROM rcvDetail WHERE inboundcontainerid = @inboundcontainerid";
+                        string chkValidCntr = "IMDB_LocChange_InboundContainer_Exist";
                         lblErrMsg.Text = "This container does not appear to have been received.  Please receive the container before attempting to change the location.";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
+                        CntrCmd.CommandType = CommandType.StoredProcedure;
                         CntrConnect.Open();
                         using (CntrCmd)
                         {
@@ -77,11 +78,12 @@ namespace IMDBWeb.Secure
 
                         //  Confirm that the container id that was scanned is associated with an inbound container
 
-                        string chkValidCntr = "SELECT ID FROM procdetail WHERE outboundcontainerid = @outboundcontainerid";
+                        string chkValidCntr = "IMDB_LocChange_OutboundContainer_Exist";
                         lblErrMsg.Text = "This outbound container has not been assoicated with an inbound container.  Please use the processing page to associate this container with an inbound container";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
+                        CntrCmd.CommandType = CommandType.StoredProcedure;
                         CntrConnect.Open();
                         using (CntrCmd)
                         {
@@ -142,11 +144,12 @@ namespace IMDBWeb.Secure
                 {
                     if (strCntr.StartsWith("IN"))
                     {
-                        string chkValidCntr = "SELECT ID FROM rcvDetail WHERE inboundcontainerid = @inboundcontainerid";
+                        string chkValidCntr = "IMDB_LocChange_InboundContainer_Exist";
                         lblErrMsg.Text = "This container does not appear to have been received.  Please receive the container before attempting to change the location.";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
+                        CntrCmd.CommandType = CommandType.StoredProcedure;
                         CntrConnect.Open();
                         using (CntrCmd)
                         {
@@ -174,11 +177,12 @@ namespace IMDBWeb.Secure
 
                         //  Confirm that the container id that was scanned is associated with an inbound container
 
-                        string chkValidCntr = "SELECT ID FROM procdetail WHERE outboundcontainerid = @outboundcontainerid";
+                        string chkValidCntr = "IMDB_LocChange_OutboundContainer_Exist";
                         lblErrMsg.Text = "This outbound container has not been assoicated with an inbound container.  Please use the processing page to associate this container with an inbound container";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
+                        CntrCmd.CommandType = CommandType.StoredProcedure;
                         CntrConnect.Open();
                         using (CntrCmd)
                         {
@@ -237,10 +241,11 @@ namespace IMDBWeb.Secure
             // Check to see if the New Location is a valid location
             #region CheckLocation valid
 
-            string checklocation = "SELECT LocationName FROM Locations WHERE LocationName = @locationname";
+            string checklocation = "IMDB_LocChange_Location_Sel";
             SqlConnection LocConnect = new SqlConnection();
             LocConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand LocCmd = new SqlCommand(checklocation, LocConnect);
+            LocCmd.CommandType = CommandType.StoredProcedure;
             LocConnect.Open();
 
             using (LocCmd)
@@ -388,13 +393,13 @@ namespace IMDBWeb.Secure
                     switch (txbNewLocation.Text.ToUpper())
                     {
                         case "COMPACTOR":
-                            spChk = "IMDB_Processing_insCompact_Exist";
+                            spChk = "IMDB_Processing_InsCompact_Exist";
                             spIns = "IMDB_Processing_InsCompact";
                             spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
                         case "BALER":
-                            spChk = "IMDB_Processing_insBale_Exist";
-                            spIns = "imdb_processing_insbale";
+                            spChk = "IMDB_Processing_InsBale_Exist";
+                            spIns = "IMDB_processing_InsBale";
                             spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
                         default:  // Captures both Tank1 and Tank2 Case
@@ -516,7 +521,7 @@ namespace IMDBWeb.Secure
                             try
                             {
                             //  Set the default value for the the new record Weight.
-                            //  For compactor, this value will be changed to separate out the pallet
+                            //  For compactor and baler, this value will be changed to separate out the pallet
                             
                                 int productWt = (int)Session["InboundPalletWeight"];
                                 int palletwt = 0;
@@ -714,8 +719,9 @@ namespace IMDBWeb.Secure
                 object inTable = new object();
                 SqlConnection inTblConnect = new SqlConnection();
                 inTblConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                string inTbl = "SELECT ID FROM ShipHdr WHERE OutboundDocNo = @outbounddocno AND Completed = '0'";
+                string inTbl = "IMDB_LocChange_OutboundDoc_Exist";
                 SqlCommand inTblCmd = new SqlCommand(inTbl, inTblConnect);
+                inTblCmd.CommandType = CommandType.StoredProcedure;
                 inTblConnect.Open();
 
                 using (inTblCmd)
@@ -751,9 +757,10 @@ namespace IMDBWeb.Secure
                             // Open Connection
                             thisConnection.Open();
 
-                            // Sql Update RccDetails Statement
-                            string updateSql = "UPDATE rcvdetail SET InventoryLocation = @NewLocation,ProcessPlan = @processplan WHERE InboundContainerID = @InboundcontainerID";
+                            // Sql Update RcvDetails Statement
+                            string updateSql = "IMDB_LocChange_RcvDetail_Upd";
                             SqlCommand updateCmd = new SqlCommand(updateSql, thisConnection);
+                            updateCmd.CommandType = CommandType.StoredProcedure;
                             using (updateCmd)
                             {
                                 //  Map update Parameters and execute the NonQuery
@@ -766,11 +773,10 @@ namespace IMDBWeb.Secure
 
                                 updateCmd.ExecuteNonQuery();
                             }
-
-                            string insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-                                             "VALUES (@InboundcontainerID,@User,Getdate(),'0'); Set @ProcessHeaderId = Scope_Identity()";
+                            string insertSQL1 = "IMDB_LocChange_ProcHdr_Ins";
                             int lastID;     // Create local variable for the identity value
                             SqlCommand insertCmd1 = new SqlCommand(insertSQL1, thisConnection);
+                            insertCmd1.CommandType = CommandType.StoredProcedure;
                             using (insertCmd1)
                             {
                                 // Map ProcHdr Parameters
@@ -790,8 +796,7 @@ namespace IMDBWeb.Secure
                             // Create sql select from rcvdetail to obtain values from the current record
                             // which can be used to create procdetail values
 
-                            string selectSQL = "Select InboundPalletWeight,InboundProfileID,InboundContainerType,InboundContainerID," +
-                                "InboundPalletType from RcvDetail WHERE InboundContainerID = @InboundcontainerID";
+                            string selectSQL = "IMDB_LocChange_RcvDetail_Sel";
                             string InboundContainerID = String.Empty;
                             string InboundContainerType = String.Empty;
                             string InboundPalletType = String.Empty;
@@ -799,6 +804,7 @@ namespace IMDBWeb.Secure
                             int InboundProfileID = 0;
 
                             SqlCommand selectCmd = new SqlCommand(selectSQL, thisConnection);
+                            selectCmd.CommandType = CommandType.StoredProcedure;
 
                             using (selectCmd)
                             {
@@ -834,13 +840,10 @@ namespace IMDBWeb.Secure
                             int palletwt = 0;
                             int productwt = 0;
                             int palletprofile = 0;
-                            insertSQL2 = "INSERT INTO ProcDetail " +
-                            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-                            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation,OutboundDocNo) " +
-                            "VALUES (@lastID,'WTE',@InboundPalletWeight,@InboundProfileID,@InboundContainerType,@InboundContainerID," +
-                            "@InboundPalletType,'Ship','0','Truck',@OutboundDocNo)";
+                            insertSQL2 = "IMDB_LocChange_ProcDetail_Ins";
 
                             SqlCommand insertCmd2 = new SqlCommand(insertSQL2, thisConnection);
+                            insertCmd2.CommandType = CommandType.StoredProcedure;
 
                             using (insertCmd2)
                             {
@@ -913,11 +916,10 @@ namespace IMDBWeb.Secure
                             thisConnection.Open();
 
                             string updateSQL = string.Empty;
-                            updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Truck', ModDate = getdate(), " +
-                            "username = @username, outboundDocNo = @outbounddocno, outboundcontainerID = @outboundtruckid, " +
-                            "shipped = '0',ProcessMethod = 'Ship' WHERE outboundcontainerid = @outboundcontainerID_old";
+                            updateSQL = "IMDB_LocChange_ProcDetailTruck_Ins";
 
                             SqlCommand UpdateCmd = new SqlCommand(updateSQL, thisConnection);
+                            UpdateCmd.CommandType = CommandType.StoredProcedure;
                                 
                             //  Map Parameters
                             UpdateCmd.Parameters.AddWithValue("@outbounddocno", txbOutCntr.Text);
@@ -955,142 +957,9 @@ namespace IMDBWeb.Secure
                             "Please re-scan or contact the shipping clerk to create " +
                             "an outbound shipping record.";
                         lblOutCntr.Visible = true;
-
                     }
 	            }
             }
         }
     }
 }
-//string procplan = string.Empty;
-//switch (txbNewLocation.Text.ToUpper())
-//{
-//    case "COMPACTOR":
-//        procplan = "Compact";
-//        break;
-//    case "BALER":
-//        procplan = "Bale";
-//        break;
-//    case "TRUCK":
-//        procplan = "Truck";
-//        break;
-//}
-// Sql Insert ProcHdr Statement for new record AND get Identity using Scope_Identity
-// Slightly different insert statement for Truck and Compactor.  Note that web login username
-// is used for the processor value
-
-//string insertSQL1 = string.Empty;
-//switch (txbNewLocation.Text.ToUpper())
-//{
-//case "TRUCK":       // Truck which has 0 hrs of labor
-
-//break;
-//case "COMPACTOR":    // compactor which has 0.25 hrs of labor
-//insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-//"VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-//break; 
-//case "BALER":       // baler which has 0.25 hrs of labor
-//    insertSQL1 = "INSERT INTO ProcHdr (InboundContainerID,ProcessorName,ProcessDate,ProcessingLaborHr) " +
-//    "VALUES (@InboundcontainerID,@User,Getdate(),'0.25'); Set @ProcessHeaderId = Scope_Identity()";
-//    break;
-//}
-//switch (OutboundLocation)
-//{
-//    case "TRUCK":
-//        {
-
-//break;
-//    }
-//case "COMPACTOR":
-//    {
-//        //  First determine the weights and profiles based on the type of pallet
-//        switch (InboundPalletType)
-//        {
-//            case "CHEP":
-//                palletwt = 66;
-//                palletprofile = 26;
-//                break;
-//            case "GMA":
-//                palletwt = 42;
-//                palletprofile = 27;
-//                break;
-//            default:
-//                palletwt = 0;
-//                break;
-//        }
-//        productwt = InboundPalletWeight - palletwt;
-
-//        // Note the insertSQL2 statement for a compactor is actually two sequential insert statements.  
-//        // One for the pallet, the other for the "product" weight
-//        insertSQL2 = "INSERT INTO ProcDetail " +
-//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//        "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-//        "'None','Compact','0','NA');INSERT INTO ProcDetail " +
-//        "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//        "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//        "VALUES (@lastID,'WTE',@productwt,'35','Compactor',@OutboundContainerID," +
-//        "'None','Compact','0','Compactor')";
-//        break;
-//    }
-//case "BALER":
-//    {
-//        //  First determine the weights and profiles based on the type of pallet
-//        switch (InboundPalletType)
-//        {
-//            case "CHEP":
-//                palletwt = 66;
-//                palletprofile = 26;
-//                break;
-//            case "GMA":
-//                palletwt = 42;
-//                palletprofile = 27;
-//                break;
-//            default:
-//                palletwt = 0;
-//                break;
-//        }
-//            productwt = InboundPalletWeight - palletwt;
-
-//            // Note the insertSQL2 statement for a baler is actually two sequential insert statements.  
-//            // One for the pallet, the other for the "product" weight
-//            insertSQL2 = "INSERT INTO ProcDetail " +
-//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//            "VALUES (@lastID,'Reuse',@palletwt,@palletprofile,'None','NA'," +
-//            "'None','Bale','0','NA');INSERT INTO ProcDetail " +
-//            "(ProcHdrID,OutboundStreamType,OutboundStreamWeight,OutboundStreamProfile,OutboundContainerType," +
-//            "OutboundContainerID,OutboundPalletType,ProcessMethod,Shipped,OutboundLocation) " +
-//            "VALUES (@lastID,'Reuse',@productwt,'28','Baler',@OutboundContainerID," +
-//            "'None','Bale','0','Baler')";
-//            break;
-//        }
-//}
-//switch (txbNewLocation.Text.ToUpper())
-//{ 
-//    case "TRUCK":                     
-//        break;
-//    case "COMPACTOR":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Compactor', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Compact' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//    case "BALER":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Baler', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Bale' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//    case "TANK":
-//        updateSQL = "UPDATE ProcDetail SET outboundlocation = 'Tank', ModDate = getdate(), " +
-//        "username = @username, outboundcontainerID = @outboundcontainerID,ProcessMethod = 'Decant' " +
-//        "WHERE outboundcontainerid = @outboundcontainerID_old";
-//        break;
-//}
-//if (txbNewLocation.Text.ToUpper() == "TRUCK")
-//{
-//}
-//else
-//{
-//    lblErrMsg.Text = "Please enter an OUT or ROPAK container";
-//    lblOutCntr.Visible = true;
-//}
