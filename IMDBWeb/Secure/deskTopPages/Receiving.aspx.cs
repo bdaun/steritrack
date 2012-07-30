@@ -259,6 +259,7 @@ namespace IMDBWeb.Secure.SPAKpages
             con.Close();
         }
 
+
         protected void dvHdrDetail_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
         {
 
@@ -329,6 +330,37 @@ namespace IMDBWeb.Secure.SPAKpages
             con.Close();
             ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Focus();
 
+        }
+        protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
+        {
+            string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
+
+            String sp = "IMDB_InboundContainerID_Exist";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmd = new SqlCommand(sp, con);
+            spCmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (spCmd)
+            {
+                spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
+                object isValid = new object();
+                isValid = spCmd.ExecuteScalar();
+                if (isValid != null)
+                {
+                    ((Label)dvContainerDetail.FindControl("label6")).Visible = true;
+                    ((Label)dvContainerDetail.FindControl("label6")).Text = "Container ID muct be Unique";
+                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text = string.Empty;
+                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Focus();
+                }
+                else
+                {
+                    ((Label)dvContainerDetail.FindControl("label6")).Visible = false;
+                    ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
+                }
+            }
+            
+            con.Close();
         }
         //protected void ddInboundDoc_OnTextChanged(object sender, EventArgs e)
         //{
