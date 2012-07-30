@@ -33,53 +33,16 @@
     </asp:GridView>
 <asp:SqlDataSource ID="sdsProcDetail" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    DeleteCommand="DELETE FROM [ProcDetail] WHERE [ID] = @ID" 
-    InsertCommand="INSERT INTO [ProcDetail] ([ProcHdrID], [OutboundStreamType], [OutboundStreamWeight], [ActShipWt], [OutboundStreamProfile], [OutboundContainerType], [OutboundContainerID], [OutboundPalletType], [OutboundLocation], [OutboundDocNo], [ProcessMethod], [Shipped], [OutboundCntrQty]) VALUES (@ProcHdrID, @OutboundStreamType, @OutboundStreamWeight,@OutboundStreamWeight, @OutboundStreamProfile, @OutboundContainerType, @OutboundContainerID, @OutboundPalletType, @OutboundLocation, @OutboundDocNo, @ProcessMethod, @Shipped, @OutboundCntrQty)" 
-    SelectCommand="SELECT a.[ID], a.[ProcHdrID], a.[OutboundStreamType], a.[OutboundStreamWeight], a.[OutboundStreamProfile], a.[OutboundContainerType], a.[OutboundContainerID], a.[OutboundPalletType], a.[OutboundLocation], a.[OutboundDocNo], a.[ProcessMethod], a.[Shipped], a.[OutboundCntrQty] FROM [ProcDetail] a INNER JOIN [Prochdr] b ON b.[ID] = a.[ProcHdrID] WHERE (b.[InboundContainerID]= @CntrID)" 
-    UpdateCommand="UPDATE [ProcDetail] SET [ProcHdrID] = @ProcHdrID, [OutboundStreamType] = @OutboundStreamType, [OutboundStreamWeight] = @OutboundStreamWeight, [OutboundStreamProfile] = @OutboundStreamProfile, [OutboundContainerType] = @OutboundContainerType, [OutboundContainerID] = @OutboundContainerID, [OutboundPalletType] = @OutboundPalletType, [OutboundLocation] = @OutboundLocation, [OutboundDocNo] = @OutboundDocNo, [ProcessMethod] = @ProcessMethod, [Shipped] = @Shipped, [OutboundCntrQty] = @OutboundCntrQty WHERE [ID] = @ID">
-    <DeleteParameters>
-        <asp:Parameter Name="ID" Type="Int32" />
-    </DeleteParameters>
-    <InsertParameters>
-        <asp:Parameter Name="ProcHdrID" Type="Int32" />
-        <asp:Parameter Name="OutboundStreamType" Type="String" />
-        <asp:Parameter Name="OutboundStreamWeight" Type="Int32" />
-        <asp:Parameter Name="OutboundStreamProfile" Type="Int32" />
-        <asp:Parameter Name="OutboundContainerType" Type="String" />
-        <asp:Parameter Name="OutboundContainerID" Type="String" />
-        <asp:Parameter Name="OutboundPalletType" Type="String" />
-        <asp:Parameter Name="OutboundLocation" Type="String" />
-        <asp:Parameter Name="OutboundDocNo" Type="String" />
-        <asp:Parameter Name="ProcessMethod" Type="String" />
-        <asp:Parameter Name="Shipped" Type="Boolean" />
-        <asp:Parameter Name="OutboundCntrQty" Type="Int32" />
-    </InsertParameters>
+    SelectCommand="IMDB_Processing_ProcDetail_Sel" SelectCommandType="StoredProcedure" >
     <SelectParameters>
         <asp:ControlParameter ControlID="txbCntrID" DefaultValue="NULL" Name="CntrID" PropertyName="Text" />
     </SelectParameters>
-    <UpdateParameters>
-        <asp:Parameter Name="ProcHdrID" Type="Int32" />
-        <asp:Parameter Name="OutboundStreamType" Type="String" />
-        <asp:Parameter Name="OutboundStreamWeight" Type="Int32" />
-        <asp:Parameter Name="OutboundStreamProfile" Type="Int32" />
-        <asp:Parameter Name="OutboundContainerType" Type="String" />
-        <asp:Parameter Name="OutboundContainerID" Type="String" />
-        <asp:Parameter Name="OutboundPalletType" Type="String" />
-        <asp:Parameter Name="OutboundLocation" Type="String" />
-        <asp:Parameter Name="OutboundDocNo" Type="String" />
-        <asp:Parameter Name="ProcessMethod" Type="String" />
-        <asp:Parameter Name="Shipped" Type="Boolean" />
-        <asp:Parameter Name="OutboundCntrQty" Type="Int32" />
-        <asp:Parameter Name="ID" Type="Int32" />
-    </UpdateParameters>
 </asp:SqlDataSource>
-
 <asp:SqlDataSource ID="sdsProcHdr" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SELECT * FROM [ProcHdr] WHERE ([InboundContainerID] = @InboundContainerID)">
+    SelectCommand="IMDB_Processing_ProcHdr_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
-        <asp:ControlParameter ControlID="txbCntrID" DefaultValue="Null" 
-            Name="InboundContainerID" PropertyName="Text" Type="String" />
+        <asp:ControlParameter ControlID="txbCntrID" DefaultValue="Null" Name="InboundContainerID" PropertyName="Text" Type="String" />
     </SelectParameters>
 </asp:SqlDataSource>
 </asp:Content>

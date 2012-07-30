@@ -56,10 +56,11 @@ namespace IMDBWeb.Secure
 
             //  2.  Determine if the entered value exists in the rcvdetail table
 
-            string checkRcvDetail = "SELECT ID FROM RcvDetail WHERE InboundContainerID = @inboundcontainerid";
+            string checkRcvDetail = "IMDB_LocChange_InboundContainer_Exist";
             SqlConnection rcvConnect = new SqlConnection();
             rcvConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand rcvCmd = new SqlCommand(checkRcvDetail, rcvConnect);
+            rcvCmd.CommandType = CommandType.StoredProcedure;
             rcvConnect.Open();
 
             try
@@ -120,11 +121,11 @@ namespace IMDBWeb.Secure
 
             // 3. Determine if a process record exists.  If it does, bring back results. If it doesn't, create new process header.
 
-            string checkSql = "SELECT b.id from rcvdetail a INNER JOIN prochdr b on a.inboundcontainerid = b.inboundcontainerID "
-            + "WHERE a.inboundcontainerid = @inboundcontainerid";
+            string checkSql = "IMDB_Processing_ProcHdr_Exist";
             SqlConnection Connect = new SqlConnection();
             Connect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand checkCmd = new SqlCommand(checkSql, Connect);
+            checkCmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -227,7 +228,7 @@ namespace IMDBWeb.Secure
              *  the txbCntrID (the "IN" container) is stored as a session variable.
              *  This header ID is used when new OUT containers are added as ProcDetail records.
              *  The steps are as follows:
-             *      1. Validate the txbOutCntr value to exist and begin with "OUT"
+             *      1. Validate the txbOutCntr valcompaue to exist and begin with "OUT"
              *      2. Create a process detail record with the outbound cntr and the session variable prochdrid.
              *          Return the user to the current record allowing additional process detail records to be added.
              *      
@@ -450,7 +451,6 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamProfile", "35");
                         spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
-                        spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
                         spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                         spCmd.ExecuteNonQuery();
@@ -604,7 +604,6 @@ namespace IMDBWeb.Secure
                         spCmd.Parameters.AddWithValue("@AggCntr", Session["curCntr"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamProfile", "28");
                         spCmd.Parameters.AddWithValue("@OutboundContainerType", Session["InboundContainerType"]);
-                        spCmd.Parameters.AddWithValue("@OutboundPalletType", Session["InboundPalletType"]);
                         spCmd.Parameters.AddWithValue("@OutboundStreamWeight", Session["InboundPalletweight"]);
                         spCmd.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                         spCmd.ExecuteNonQuery();
