@@ -79,7 +79,7 @@ namespace IMDBWeb.Secure
                         //  Confirm that the container id that was scanned is associated with an inbound container
 
                         string chkValidCntr = "IMDB_LocChange_OutboundContainer_Exist";
-                        lblErrMsg.Text = "This outbound container has not been assoicated with an inbound container.  Please use the processing page to associate this container with an inbound container";
+                        lblErrMsg.Text = "This outbound container has not been associated with an inbound container.  Please use the processing page to associate this container with an inbound container";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
