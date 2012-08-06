@@ -139,7 +139,7 @@
 </asp:Panel>
 <asp:SqlDataSource ID="sdsOutBoundDocNo" runat="server" DataSourceMode="DataSet" EnableCaching="false"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_IMDB_OutBoundDoc_Sel" SelectCommandType="StoredProcedure" FilterExpression="Completed = '0'" >
+    SelectCommand="IMDB_TruckOut_OutBoundDoc_Sel" SelectCommandType="StoredProcedure" FilterExpression="Completed = '0'" >
     <FilterParameters>
         <asp:ControlParameter ControlID="rblFilter" PropertyName="SelectedValue" />
     </FilterParameters>
