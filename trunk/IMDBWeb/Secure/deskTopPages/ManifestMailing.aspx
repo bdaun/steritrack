@@ -27,11 +27,7 @@
 <td style="font-size:large; color: #0000FF;">
 Set all rows to &quot;Mailed&quot; with a Mailed Date of
 <asp:TextBox ID="txbMailDate" runat="server"  />
-    <ajaxToolKit:CalendarExtender
-            ID="txbMailDate_CalEx"
-            runat="server"
-            TargetControlID="txbMailDate" />
-&nbsp;&nbsp;
+<ajaxToolKit:CalendarExtender ID="txbMailDate_CalEx" runat="server" TargetControlID="txbMailDate" />&nbsp;&nbsp;
 <asp:Button ID="btnGo" runat="server" Text="Go" onclick="btnGo_Click" /></td>
 <td>
     <asp:Label ID="lblDateErr" runat="server" Font-Bold="True" ForeColor="Red" Text="Please Enter a Mailed Date" Visible="false"></asp:Label></td></tr></table>
