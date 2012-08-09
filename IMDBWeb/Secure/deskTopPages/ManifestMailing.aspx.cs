@@ -73,7 +73,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     gvManifestStatus.DataSourceID = "sdsManifestMail_TruckID";
                     gvManifestStatus.EmptyDataText = "No results available for this TruckID";
                     trUpdateAll.Visible = true;
-                    txbMailDate.Text = DateTime.Now.ToShortDateString();
+                    txbMailDate.Text = null;
                     gvManifestStatus.DataBind();
                     break;
                 case 2:
@@ -85,30 +85,38 @@ namespace IMDBWeb.Secure.deskTopPages
         }
         protected void btnGo_Click(object sender, EventArgs e)
         {
-            String sp = "SP_ManifestMail_TruckID_Upd";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand spCmd = new SqlCommand(sp, con);
-            spCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (spCmd)
+            if (txbMailDate.Text == string.Empty)
             {
-                try
+                lblDateErr.Visible = true;
+            }
+            else
+            {
+                lblDateErr.Visible = false;
+                String sp = "SP_ManifestMail_TruckID_Upd";
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand spCmd = new SqlCommand(sp, con);
+                spCmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                using (spCmd)
                 {
-                    spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
-                    spCmd.Parameters.AddWithValue("@TruckID", txbSelParam.Text);
-                    spCmd.Parameters.AddWithValue("@MailDate", txbMailDate.Text);
-                    spCmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    lblErrMsg.Visible = true;
-                    lblErrMsg.Text = ex.ToString();
-                }
-                finally
-                {
-                    con.Close();
-                    gvManifestStatus.DataBind();
+                    try
+                    {
+                        spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                        spCmd.Parameters.AddWithValue("@TruckID", txbSelParam.Text);
+                        spCmd.Parameters.AddWithValue("@MailDate", txbMailDate.Text);
+                        spCmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        lblErrMsg.Visible = true;
+                        lblErrMsg.Text = ex.ToString();
+                    }
+                    finally
+                    {
+                        con.Close();
+                        gvManifestStatus.DataBind();
+                    }
                 }
             }
         }

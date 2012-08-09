@@ -26,9 +26,15 @@
 <table><tr id="trUpdateAll" runat="server">
 <td style="font-size:large; color: #0000FF;">
 Set all rows to &quot;Mailed&quot; with a Mailed Date of
-<asp:TextBox ID="txbMailDate" runat="server"  />&nbsp;&nbsp;
+<asp:TextBox ID="txbMailDate" runat="server"  />
+    <ajaxToolKit:CalendarExtender
+            ID="txbMailDate_CalEx"
+            runat="server"
+            TargetControlID="txbMailDate" />
+&nbsp;&nbsp;
 <asp:Button ID="btnGo" runat="server" Text="Go" onclick="btnGo_Click" /></td>
-<td></td></tr></table>
+<td>
+    <asp:Label ID="lblDateErr" runat="server" Font-Bold="True" ForeColor="Red" Text="Please Enter a Mailed Date" Visible="false"></asp:Label></td></tr></table>
 <asp:GridView ID="gvManifestStatus" runat="server" AutoGenerateColumns="False" 
     DataSourceID="sdsManifestMail_Date" CellPadding="2" DataKeyNames="InboundDocNo" >
     <Columns>
