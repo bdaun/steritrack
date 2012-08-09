@@ -103,6 +103,15 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.TextBox txbMailDate;
         
         /// <summary>
+        /// txbMailDate_CalEx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender txbMailDate_CalEx;
+        
+        /// <summary>
         /// btnGo control.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,15 @@ namespace IMDBWeb.Secure.deskTopPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGo;
+        
+        /// <summary>
+        /// lblDateErr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDateErr;
         
         /// <summary>
         /// gvManifestStatus control.
