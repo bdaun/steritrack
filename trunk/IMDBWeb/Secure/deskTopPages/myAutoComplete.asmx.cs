@@ -166,7 +166,7 @@ using System.Configuration;
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            String strSql = "IMDB_GetBrandCodes_Sel";
+            String strSql = "IMDB_Rcv_GetBrandCodes_Sel";
             SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
             sqlComd.CommandType = CommandType.StoredProcedure;
             sqlCon.Open();
