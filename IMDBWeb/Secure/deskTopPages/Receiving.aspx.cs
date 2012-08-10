@@ -335,7 +335,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
 
-            String sp = "IMDB_InboundContainerID_Exist";
+            String sp = "IMDB_Rcv_InboundContainerID_Exist";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
