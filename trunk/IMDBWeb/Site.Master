@@ -36,7 +36,7 @@
                         <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
                         <asp:MenuItem NavigateUrl="~/Secure/mobilepages/mobilePages.aspx" Text="Mobile Pages"/>
                         <asp:MenuItem NavigateUrl="~/Secure/desktoppages/desktoppages.aspx" Text="Desktop Pages"/>
-                        <asp:MenuItem NavigateUrl="~/secure/spakpages/spakpages.aspx" Text="SPAK Pages" />
+                        <asp:MenuItem NavigateUrl="~/secure/spakpages/spakpages.aspx" Text="SPAK CS Pages" />
                         <asp:MenuItem NavigateUrl="~/secure/Reports/reportpages.aspx" Text="Report Pages"/>
                         <asp:MenuItem NavigateUrl="~/secure/Superfundpages/superfundpages.aspx" Text="SuperFund" />
                         <asp:MenuItem NavigateUrl="~/secure/deskTopPages/About.aspx" Text="About"/>
