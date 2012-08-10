@@ -313,7 +313,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             string curCntr = ((TextBox)dvContainerDetail.FindControl("txbBrandCodes")).Text;
 
-            String sp = "IMDB_GetBrandCodeIDs_Sel";
+            String sp = "IMDB_Rcv_GetBrandCodeIDs_Sel";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -378,7 +378,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     //dvContainerDetail.Visible = false;
                     if (Label1.Text == "Doc")
                     {
-                        String sp = "IMDB_DupeDetail_Ins";
+                        String sp = "IMDB_Rcv_DupeDetail_Ins";
                         SqlConnection con = new SqlConnection();
                         con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand spCmd = new SqlCommand(sp, con);
@@ -425,7 +425,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                     else
                     {
-                        String sp = "IMDB_DupeDetail_Ins";
+                        String sp = "IMDB_Rcv_DupeDetail_Ins";
                         SqlConnection con = new SqlConnection();
                         con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand spCmd = new SqlCommand(sp, con);
@@ -481,7 +481,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Duplicate":
-                    String sp1 = "IMDB_DupeDetail_Ins";
+                    String sp1 = "IMDB_Rcv_DupeDetail_Ins";
                     SqlConnection con1 = new SqlConnection();
                     con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                     SqlCommand spCmd1 = new SqlCommand(sp1, con1);
