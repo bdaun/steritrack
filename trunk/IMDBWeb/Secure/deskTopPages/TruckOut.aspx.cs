@@ -455,7 +455,7 @@ namespace IMDBWeb.Secure.deskTopPages
                         else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
                         {
                         Reader.Close();
-                        string spInsProcHdr = "IMDB_ProcHdr_Ins";
+                        string spInsProcHdr = "IMDB_TruckOUT_ProcHdr_Ins";
                         string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
                         SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
                         SqlCommand insProcDetail = new SqlCommand(spInsProcDetail,con);
