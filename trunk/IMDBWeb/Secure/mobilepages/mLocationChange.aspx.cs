@@ -330,7 +330,7 @@ namespace IMDBWeb.Secure
                             }
                             else  // this is the case where new prochdr must be created.
                             {
-                                string spInsProcHdr = "IMDB_ProcHdr_Ins";
+                                string spInsProcHdr = "IMDB_LocChange_ProcHdr_Ins";
                                 SqlConnection insConnect = new SqlConnection();
                                 insConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                                 SqlCommand insCmd = new SqlCommand(spInsProcHdr, insConnect);
@@ -342,11 +342,11 @@ namespace IMDBWeb.Secure
                                     insConnect.Open();
                                     using (insCmd)
                                     {
-                                        SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHdrId", SqlDbType.Int);
+                                        SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHeaderID", SqlDbType.Int);
                                         processHeaderIdParameter.Direction = ParameterDirection.Output;
                                         insCmd.Parameters.Add(processHeaderIdParameter);
-                                        insCmd.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
-                                        insCmd.Parameters.AddWithValue("@ProcessorName", HttpContext.Current.User.Identity.Name.ToString());   // made change here
+                                        insCmd.Parameters.AddWithValue("@InboundcontainerID", txbCntrID.Text);
+                                        insCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString()); 
 
                                         insCmd.ExecuteNonQuery();
                                         lastID = (int)processHeaderIdParameter.Value;
