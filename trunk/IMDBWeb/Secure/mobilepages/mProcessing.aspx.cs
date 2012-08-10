@@ -149,7 +149,7 @@ namespace IMDBWeb.Secure
                     }
                     else  // this is the case where new prochdr must be created.
                     {
-                        string spInsProcHdr = "IMDB_ProcHdr_Ins";
+                        string spInsProcHdr = "IMDB_Processing_ProcHdr_Ins";
                         SqlConnection insConnect = new SqlConnection();
                         insConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand insCmd = new SqlCommand(spInsProcHdr, insConnect);
