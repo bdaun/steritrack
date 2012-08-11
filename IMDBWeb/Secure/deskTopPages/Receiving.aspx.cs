@@ -93,7 +93,11 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             Session["CurRcvHrdID"] = gvHdrList.SelectedDataKey.Value.ToString();
         }
+<<<<<<< .mine
+
+=======
  
+>>>>>>> .r97
         // Inbound Docs / Receive Detail View
         protected void gvContainerList_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -245,6 +249,9 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
         {
+<<<<<<< .mine
+            if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
+=======
             if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
             {
                 string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
@@ -265,11 +272,16 @@ namespace IMDBWeb.Secure.SPAKpages
             spCmd.CommandType = CommandType.StoredProcedure;
             con.Open();
             using (spCmd)
+>>>>>>> .r97
             {
-                spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
-                object isValid = new object();
-                isValid = spCmd.ExecuteScalar();
-                if (isValid != null)
+                string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
+                String sp = "IMDB_Rcv_InboundContainerID_Exist";
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand spCmd = new SqlCommand(sp, con);
+                spCmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                using (spCmd)
 >>>>>>> .r96
                 {
                     spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
@@ -288,8 +300,12 @@ namespace IMDBWeb.Secure.SPAKpages
                         ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
                     }
                 }
+<<<<<<< .mine
+                con.Close();
+=======
 
                 con.Close();
+>>>>>>> .r97
             }
         }
 
@@ -390,7 +406,10 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                     break;
                 case "Cancel":
+<<<<<<< .mine
+=======
 
+>>>>>>> .r97
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Update":
@@ -448,7 +467,10 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
+<<<<<<< .mine
+=======
 
+>>>>>>> .r97
         }
 
         protected void gvSubCatDocs_RowCreated(object sender, GridViewRowEventArgs e)
