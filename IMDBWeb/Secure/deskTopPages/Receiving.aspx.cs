@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Text;
-using System.Collections;
 using System.Web.Services;
 
 
@@ -17,12 +11,10 @@ namespace IMDBWeb.Secure.SPAKpages
 {
     public partial class Receiving : System.Web.UI.Page
     {
-        // Page Load
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                //Label1.Text = "";
                 Session.Abandon();
             }
         }
@@ -50,12 +42,6 @@ namespace IMDBWeb.Secure.SPAKpages
             txbOrderNum.Text = "";
             Session.Abandon();
             dvHdrDetail.Visible = true;
-            //trClient.Visible = false;
-            //trOrder.Visible = false;
-            //gvHdrList.SelectedIndex = -1;
-            //Label1.Text = "";
-            //label2.Text = "";
-            //Label3.Text = "";
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
@@ -79,7 +65,6 @@ namespace IMDBWeb.Secure.SPAKpages
             Label1.Text = "Con";
             dvContainerDetail.DataBind();
             dvContainerDetail.ChangeMode(DetailsViewMode.Insert);
-            //dvContainerDetail.Visible = true;
             this.ModalPopupExtender1.Show();
         }
 
@@ -107,65 +92,8 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void gvHdrList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["CurRcvHrdID"] = gvHdrList.SelectedDataKey.Value.ToString();
-            //this.mdlPopup.Show();
-            //Label1.Text = Session["CurRcvHrdID"].ToString();
         }
-
-        // Pop Up
-        //protected void btnEdit_Click(object sender, EventArgs e)
-        //{
-        //    dvHdrDetail.ChangeMode(DetailsViewMode.Edit);
-        //    //dvHdrDetail.Visible = true;
-        //    //btnAddContainer.Visible = true;
-        //    //this.mdlPopup.Hide();
-        //        }
-        //protected void btnAdd_Click(object sender, EventArgs e)
-        //{
-        //    //this.mdlPopup.Hide();
-        //    ////gvContainerList.DataBind();
-        //    //dvContainerDetail.DataBind();
-        //    ////dvContainerDetail.FindControl("ddInboundDoc").Visible = false;
-        //    ////dvContainerDetail.FindControl("txbInboundDoc").Visible = true;
-        //    //dvContainerDetail.ChangeMode(DetailsViewMode.Insert);
-        //    //dvContainerDetail.Visible = true;
-        //    //this.ModalPopupExtender1.Show();
-        //    //btnAddContainer.Visible = true;
-        //}
-        //protected void btnOk_Click(object sender, EventArgs e)
-        //{
-        //    //btnAddContainer.Visible = true;
-        //    //label2.Text = "'";
-        //    //int z = -1;
-        //    // Iterate through the Items collection of the CheckBoxList
-        //    // control and display the selected items.
-        //    //for (int i = 0; i < CheckBoxList1.Items.Count; i++)
-        //    //{
-        //    //    if (CheckBoxList1.Items[i].Selected)
-        //    //    {
-        //    //       label2.Text += CheckBoxList1.Items[i].Text + "','";
-        //    //        z++;
-        //    //    }
-        //    //}
-        //    //switch (z)
-        //    //{
-        //    //    case -1:
-        //    //        Label3.Text = "You must select at least one Inbound Document Number";
-        //    //        label2.Text = null;
-        //    //        this.mdlPopup.Hide();
-        //    //       break;
-        //    //    case 0:
-        //    //        Label3.Text = "Showing Inbound Document Number:  ";
-        //    //        label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
-        //    //        this.mdlPopup.Hide();
-        //    //        break;
-        //    //    default:
-        //    //        Label3.Text = "Showing Inbound Document Numbers:  ";
-        //    //        label2.Text = label2.Text.Remove(label2.Text.Length - 2, 2);
-        //    //        this.mdlPopup.Hide();
-        //    //        break;
-        //    //}
-        //}
-
+ 
         // Inbound Docs / Receive Detail View
         protected void gvContainerList_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -175,14 +103,12 @@ namespace IMDBWeb.Secure.SPAKpages
                     int index = Int32.Parse(e.CommandArgument.ToString());
                     Session["CurDetailID"] = index;
                     dvContainerDetail.ChangeMode(DetailsViewMode.Edit);
-                    //dvContainerDetail.Visible = true;
                     this.ModalPopupExtender1.Show();
                     break;
                 case "DupeDetail":
                     Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
                     dvContainerDetail.DataBind();
                     dvContainerDetail.ChangeMode(DetailsViewMode.ReadOnly);
-                    //dvContainerDetail.Visible = true;
                     TextBox tbCustomerID = dvContainerDetail.FindControl("txbInboundDoc") as TextBox;
                     tbCustomerID.Focus();
                     this.ModalPopupExtender1.Show();
@@ -194,12 +120,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             gvHdrList.DataBind();
             upDocList.DataBind();
-            //UpdatepnlContainerDetail.DataBind();
-            //this.mdlPopup.Show();
         }
-
-
-        // Details View 1 Header/Truck Details, Adding, & Editing
 
         // Updates bound fields after using Autocomplete to select
         protected void txbClientName2_OnTextChanged(object sender, EventArgs e)
@@ -267,14 +188,9 @@ namespace IMDBWeb.Secure.SPAKpages
             {
                 case "Insert":
                     dvHdrDetail.Visible = false;
-                    //trClient.Visible = true;
-                    //trOrder.Visible = true;
                     break;
                 case "Cancel":
                     dvHdrDetail.Visible = false;
-                    //trClient.Visible = true;
-                    //trOrder.Visible = true;
-                    //Response.Redirect(Request.RawUrl);
                     break;
                 case "Update":
                     dvHdrDetail.Visible = false;
@@ -284,13 +200,11 @@ namespace IMDBWeb.Secure.SPAKpages
                     upDocList.DataBind();
                     break;
             }
-
         }
         protected void dvHdrDetail_OnDataBound(object sender, EventArgs e)
         {
             TextBox txb = (TextBox)dvHdrDetail.FindControl("txbOrderNumber");
             ScriptManager.GetCurrent(this).SetFocus(txb);
-
         }
         protected void sdsHdrDetail_Inserted(Object sender, SqlDataSourceStatusEventArgs e)
         {
@@ -305,8 +219,6 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
-
-        // Details View 2 Inbound Doc Details, Adding & Editing 
 
         // Updates bound fields after using Autocomplete to select
         protected void txbBrandCodes_OnTextChanged(object sender, EventArgs e)
@@ -333,8 +245,19 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
         {
-            string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
+            if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
+            {
+                string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
 
+<<<<<<< .mine
+                String sp = "IMDB_Rcv_InboundContainerID_Exist";
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand spCmd = new SqlCommand(sp, con);
+                spCmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                using (spCmd)
+=======
             String sp = "IMDB_Rcv_InboundContainerID_Exist";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
@@ -347,27 +270,28 @@ namespace IMDBWeb.Secure.SPAKpages
                 object isValid = new object();
                 isValid = spCmd.ExecuteScalar();
                 if (isValid != null)
+>>>>>>> .r96
                 {
-                    ((Label)dvContainerDetail.FindControl("label6")).Visible = true;
-                    ((Label)dvContainerDetail.FindControl("label6")).Text = "Container ID muct be Unique";
-                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text = string.Empty;
-                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Focus();
+                    spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
+                    object isValid = new object();
+                    isValid = spCmd.ExecuteScalar();
+                    if (isValid != null)
+                    {
+                        ((Label)dvContainerDetail.FindControl("label6")).Visible = true;
+                        ((Label)dvContainerDetail.FindControl("label6")).Text = "Container ID muct be Unique";
+                        ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text = string.Empty;
+                        ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Focus();
+                    }
+                    else
+                    {
+                        ((Label)dvContainerDetail.FindControl("label6")).Visible = false;
+                        ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
+                    }
                 }
-                else
-                {
-                    ((Label)dvContainerDetail.FindControl("label6")).Visible = false;
-                    ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
-                }
+
+                con.Close();
             }
-            
-            con.Close();
         }
-        //protected void ddInboundDoc_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    var mVal = ((DropDownList)dvContainerDetail.FindControl("ddInboundDoc")).Text;
-        //    ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text = mVal;
-        //    Session["CurOrderNum"] = txbOrderNum.Text;
-        //}
 
         protected void dvContainerDetail_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
         {
@@ -375,7 +299,6 @@ namespace IMDBWeb.Secure.SPAKpages
             switch (e.CommandName)
             {
                 case "myInsert":
-                    //dvContainerDetail.Visible = false;
                     if (Label1.Text == "Doc")
                     {
                         String sp = "IMDB_Rcv_DupeDetail_Ins";
@@ -399,7 +322,6 @@ namespace IMDBWeb.Secure.SPAKpages
                                 spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
                                 spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
                                 spCmd.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
-                                spCmd.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
                                 spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
                                 spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
                                 spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
@@ -414,14 +336,12 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 con.Close();
                                 this.ModalPopupExtender1.Hide();
-                                //dvContainerDetail.Visible = false;
                                 gvHdrList.DataBind();
                                 upContainerDetail.DataBind();
                                 upDocList.DataBind();
                                 gvSubCatDocs.DataBind();
                             }
                         }
-
                     }
                     else
                     {
@@ -446,7 +366,6 @@ namespace IMDBWeb.Secure.SPAKpages
                                 spCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
                                 spCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
                                 spCmd.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
-                                spCmd.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
                                 spCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
                                 spCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
                                 spCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
@@ -461,7 +380,6 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 con.Close();
                                 this.ModalPopupExtender1.Hide();
-                                //dvContainerDetail.Visible = false;
                                 gvHdrList.DataBind();
                                 upContainerDetail.DataBind();
                                 upDocList.DataBind();
@@ -472,12 +390,11 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                     break;
                 case "Cancel":
-                    //dvContainerDetail.Visible = false;
+
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Update":
                     dvContainerDetail.Visible = false;
-                    //gvContainerList.DataBind();
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Duplicate":
@@ -502,7 +419,6 @@ namespace IMDBWeb.Secure.SPAKpages
                             spCmd1.Parameters.AddWithValue("@InboundContainerID", ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text);
                             spCmd1.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)dvContainerDetail.FindControl("ddLocation")).Text);
                             spCmd1.Parameters.AddWithValue("@BrandCode", ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text);
-                            spCmd1.Parameters.AddWithValue("@column1", ((CheckBox)dvContainerDetail.FindControl("cbProcess")).Checked);
                             spCmd1.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).Text);
                             spCmd1.Parameters.AddWithValue("@RcvdAs", ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Text);
                             spCmd1.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
@@ -517,7 +433,6 @@ namespace IMDBWeb.Secure.SPAKpages
                         {
                             con1.Close();
                             this.ModalPopupExtender1.Hide();
-                            //dvContainerDetail.Visible = false;
                             gvHdrList.DataBind();
                             upContainerDetail.DataBind();
                             upDocList.DataBind();
@@ -533,16 +448,8 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
-            //gvHdrList.DataBind();
-            //upContainerDetail.DataBind();
-            //upDocList.DataBind();
 
         }
-        //protected void sdsContainerDetail_Inserting(Object source, SqlDataSourceCommandEventArgs e)
-        //{
-        //    //Label3.Text = "Showing Inbound Document Number:  "; 
-        //    //label2.Text = "'" + ((TextBox)dvContainerDetail.FindControl("txbInboundDoc")).Text + "'";
-        //}
 
         protected void gvSubCatDocs_RowCreated(object sender, GridViewRowEventArgs e)
         {
@@ -572,6 +479,5 @@ namespace IMDBWeb.Secure.SPAKpages
                 return "";
             }
         }
-
     }
 }
