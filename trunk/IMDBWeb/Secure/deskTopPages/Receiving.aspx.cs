@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Text;
+using System.Collections;
 using System.Web.Services;
 
 
@@ -11,6 +17,7 @@ namespace IMDBWeb.Secure.SPAKpages
 {
     public partial class Receiving : System.Web.UI.Page
     {
+        // Page Load
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -93,11 +100,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             Session["CurRcvHrdID"] = gvHdrList.SelectedDataKey.Value.ToString();
         }
-<<<<<<< .mine
 
-=======
- 
->>>>>>> .r97
         // Inbound Docs / Receive Detail View
         protected void gvContainerList_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -125,6 +128,9 @@ namespace IMDBWeb.Secure.SPAKpages
             gvHdrList.DataBind();
             upDocList.DataBind();
         }
+
+
+        // Details View 1 Header/Truck Details, Adding, & Editing
 
         // Updates bound fields after using Autocomplete to select
         protected void txbClientName2_OnTextChanged(object sender, EventArgs e)
@@ -204,11 +210,13 @@ namespace IMDBWeb.Secure.SPAKpages
                     upDocList.DataBind();
                     break;
             }
+
         }
         protected void dvHdrDetail_OnDataBound(object sender, EventArgs e)
         {
             TextBox txb = (TextBox)dvHdrDetail.FindControl("txbOrderNumber");
             ScriptManager.GetCurrent(this).SetFocus(txb);
+
         }
         protected void sdsHdrDetail_Inserted(Object sender, SqlDataSourceStatusEventArgs e)
         {
@@ -223,6 +231,8 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
+
+        // Details View 2 Inbound Doc Details, Adding & Editing 
 
         // Updates bound fields after using Autocomplete to select
         protected void txbBrandCodes_OnTextChanged(object sender, EventArgs e)
@@ -249,30 +259,7 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
         {
-<<<<<<< .mine
             if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
-=======
-            if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
-            {
-                string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
-
-<<<<<<< .mine
-                String sp = "IMDB_Rcv_InboundContainerID_Exist";
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand spCmd = new SqlCommand(sp, con);
-                spCmd.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                using (spCmd)
-=======
-            String sp = "IMDB_Rcv_InboundContainerID_Exist";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand spCmd = new SqlCommand(sp, con);
-            spCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (spCmd)
->>>>>>> .r97
             {
                 string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
                 String sp = "IMDB_Rcv_InboundContainerID_Exist";
@@ -282,7 +269,6 @@ namespace IMDBWeb.Secure.SPAKpages
                 spCmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 using (spCmd)
->>>>>>> .r96
                 {
                     spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
                     object isValid = new object();
@@ -300,12 +286,7 @@ namespace IMDBWeb.Secure.SPAKpages
                         ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
                     }
                 }
-<<<<<<< .mine
                 con.Close();
-=======
-
-                con.Close();
->>>>>>> .r97
             }
         }
 
@@ -358,6 +339,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 gvSubCatDocs.DataBind();
                             }
                         }
+
                     }
                     else
                     {
@@ -406,10 +388,6 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                     break;
                 case "Cancel":
-<<<<<<< .mine
-=======
-
->>>>>>> .r97
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Update":
@@ -467,10 +445,6 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
-<<<<<<< .mine
-=======
-
->>>>>>> .r97
         }
 
         protected void gvSubCatDocs_RowCreated(object sender, GridViewRowEventArgs e)
@@ -488,7 +462,7 @@ namespace IMDBWeb.Secure.SPAKpages
             }
         }
 
-        [WebMethod(EnableSession=true)]
+        [WebMethod(EnableSession = true)]
         public static string GetInboundDoc()
         {
             if (HttpContext.Current.Session["CurInboundDocNo"] != null)
@@ -501,5 +475,6 @@ namespace IMDBWeb.Secure.SPAKpages
                 return "";
             }
         }
+
     }
 }
