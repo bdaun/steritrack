@@ -467,7 +467,7 @@ namespace IMDBWeb.Secure.deskTopPages
                             {   
                                 using (insProcHdr)
                                 {
-                                    SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHdrId", SqlDbType.Int);
+                                    SqlParameter processHeaderIdParameter = new SqlParameter("@ProcHdrID", SqlDbType.Int);
                                     processHeaderIdParameter.Direction = ParameterDirection.Output;
                                     insProcHdr.Parameters.Add(processHeaderIdParameter);
                                     insProcHdr.Parameters.AddWithValue("@CntrID", txbNewCntr.Text);

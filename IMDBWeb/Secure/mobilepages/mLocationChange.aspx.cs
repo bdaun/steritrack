@@ -342,7 +342,7 @@ namespace IMDBWeb.Secure
                                     insConnect.Open();
                                     using (insCmd)
                                     {
-                                        SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHeaderID", SqlDbType.Int);
+                                        SqlParameter processHeaderIdParameter = new SqlParameter("@ProcHdrID", SqlDbType.Int);
                                         processHeaderIdParameter.Direction = ParameterDirection.Output;
                                         insCmd.Parameters.Add(processHeaderIdParameter);
                                         insCmd.Parameters.AddWithValue("@InboundcontainerID", txbCntrID.Text);
@@ -574,7 +574,7 @@ namespace IMDBWeb.Secure
                                         palletWt = 0;
                                         break;
                                 }
-                                spPalletCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                spPalletCmd.Parameters.AddWithValue("@ProcHdrID", Session["ProcHdrID"]);
                                 spPalletCmd.Parameters.AddWithValue("@palletwt", palletWt );
                                 spPalletCmd.Parameters.AddWithValue("@palletprofile", palletprofile);
                                 spPalletCmd.Parameters.AddWithValue("@PalletType", Session["InboundPalletType"]);
@@ -780,7 +780,7 @@ namespace IMDBWeb.Secure
                             using (insertCmd1)
                             {
                                 // Map ProcHdr Parameters
-                                SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHeaderId", SqlDbType.Int);
+                                SqlParameter processHeaderIdParameter = new SqlParameter("@ProcHdrID", SqlDbType.Int);
                                 processHeaderIdParameter.Direction = ParameterDirection.Output;
                                 insertCmd1.Parameters.Add(processHeaderIdParameter);
                                 insertCmd1.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
