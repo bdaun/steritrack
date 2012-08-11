@@ -161,7 +161,7 @@ namespace IMDBWeb.Secure
                             insConnect.Open();
                             using (insCmd)
                             {
-                                SqlParameter processHeaderIdParameter = new SqlParameter("@ProcessHdrId", SqlDbType.Int);
+                                SqlParameter processHeaderIdParameter = new SqlParameter("@ProcHdrID", SqlDbType.Int);
                                 processHeaderIdParameter.Direction = ParameterDirection.Output;
                                 insCmd.Parameters.Add(processHeaderIdParameter);
                                 insCmd.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
