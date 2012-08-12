@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <asp:ScriptManager ID="sm1" runat="server" />
-<h3>Shipment Management</h3><br />
+<h3>Shipment Management</h3><hr /><br />
 <table><tr id="trSubNav" runat="server">
 <td><asp:Button ID="btnAddShipment" runat="server" Text="New Shipment " 
         onclick="btnAddShipment_Click" Width="129px" /></td>
