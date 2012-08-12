@@ -22,6 +22,8 @@ namespace IMDBWeb.Secure.deskTopPages
         }
         protected void btnInsertShow_Click(object sender, EventArgs e)
         {
+            txbAlertItem.Text = string.Empty;
+            txbComment.Text = string.Empty;
             tblInsert.Visible = true;
             tblSearch.Visible = false;
             txbAlertItem_New.Focus();
