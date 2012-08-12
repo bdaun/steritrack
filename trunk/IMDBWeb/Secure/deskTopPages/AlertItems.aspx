@@ -2,8 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h3>Alert Items Management</h3><br />
+<h3>Alert Items Management</h3><hr /><br />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table id="tblSearch" runat="server">
 <tr><td>Alert Item</td><td></td><td></td></tr>
