@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"> 
-<h3>Truck Out Management</h3>
+<h3>Truck Out Management</h3><hr />
 <table><tr><td align="left"><asp:DropDownList ID="ddDocList" runat="server" AppendDataBoundItems="true" 
         AutoPostBack="True" DataSourceID="sdsOutBoundDocNo" 
         DataTextField="OutboundDocNo" DataValueField="outboundDocNo" 
