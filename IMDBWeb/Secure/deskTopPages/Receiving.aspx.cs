@@ -85,6 +85,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 gvSubCatDocs.DataBind();
             }
         }
+
         protected void gvHdrList_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -94,8 +95,8 @@ namespace IMDBWeb.Secure.SPAKpages
                 e.Row.Attributes.Add("style", "cursor:pointer;");
                 e.Row.Attributes.Add("onclick", ClientScript.GetPostBackClientHyperlink(this.gvHdrList, "Select$" + e.Row.RowIndex));
             }
-
         }
+
         protected void gvHdrList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["CurRcvHrdID"] = gvHdrList.SelectedDataKey.Value.ToString();
@@ -259,35 +260,32 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
         {
-            if (dvContainerDetail.CurrentMode != DetailsViewMode.Edit)
+            string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
+            String sp = "IMDB_Rcv_InboundContainerID_Exist";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmd = new SqlCommand(sp, con);
+            spCmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (spCmd)
             {
-                string curCntr = ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text;
-                String sp = "IMDB_Rcv_InboundContainerID_Exist";
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand spCmd = new SqlCommand(sp, con);
-                spCmd.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                using (spCmd)
+                spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
+                object isValid = new object();
+                isValid = spCmd.ExecuteScalar();
+                if (isValid != null)
                 {
-                    spCmd.Parameters.AddWithValue("@InboundContainerID", curCntr);
-                    object isValid = new object();
-                    isValid = spCmd.ExecuteScalar();
-                    if (isValid != null)
-                    {
-                        ((Label)dvContainerDetail.FindControl("label6")).Visible = true;
-                        ((Label)dvContainerDetail.FindControl("label6")).Text = "Container ID muct be Unique";
-                        ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text = string.Empty;
-                        ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Focus();
-                    }
-                    else
-                    {
-                        ((Label)dvContainerDetail.FindControl("label6")).Visible = false;
-                        ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
-                    }
+                    ((Label)dvContainerDetail.FindControl("label6")).Visible = true;
+                    ((Label)dvContainerDetail.FindControl("label6")).Text = "Container ID muct be Unique";
+                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Text = string.Empty;
+                    ((TextBox)dvContainerDetail.FindControl("txbContainerID")).Focus();
                 }
-                con.Close();
+                else
+                {
+                    ((Label)dvContainerDetail.FindControl("label6")).Visible = false;
+                    ((TextBox)dvContainerDetail.FindControl("txbLineNo")).Focus();
+                }
             }
+            con.Close();
         }
 
         protected void dvContainerDetail_ItemCommand(Object sender, DetailsViewCommandEventArgs e)
@@ -445,6 +443,7 @@ namespace IMDBWeb.Secure.SPAKpages
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
+
         }
 
         protected void gvSubCatDocs_RowCreated(object sender, GridViewRowEventArgs e)
