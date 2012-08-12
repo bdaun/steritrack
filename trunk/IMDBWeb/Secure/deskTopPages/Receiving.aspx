@@ -1199,7 +1199,8 @@
                                                 Text='<%# bind("InboundContainerID") %>'
                                                 Width="250px"
                                                 AutoPostBack="true"
-                                                OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
+                                                OnTextChanged="txbContainerID_OnTextChanged"
+                                                ReadOnly="true"> </asp:TextBox>
                                             <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
                                         </td>
                                         <td>&nbsp;</td>
@@ -1732,7 +1733,7 @@
                 document.getElementById('MainContent_dvContainerDetail_txbContainerID').focus();
                 break;
             case "edit":
-                document.getElementById('MainContent_dvContainerDetail_txbContainerID').focus();
+                document.getElementById('MainContent_dvContainerDetail_txbLineNo').focus();
                 break;
             default:
                 document.getElementById('MainContent_dvContainerDetail_txbInboundDoc').focus();
