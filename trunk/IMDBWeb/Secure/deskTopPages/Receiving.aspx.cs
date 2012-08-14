@@ -389,7 +389,6 @@ namespace IMDBWeb.Secure.SPAKpages
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Update":
-                    dvContainerDetail.Visible = false;
                     this.ModalPopupExtender1.Hide();
                     break;
                 case "Duplicate":
@@ -440,6 +439,7 @@ namespace IMDBWeb.Secure.SPAKpages
         protected void sdsContainerDetail_Updated(Object source, SqlDataSourceStatusEventArgs e)
         {
             upDocList.DataBind();
+            gvSubCatDocs.DataBind();
         }
         protected void sdsContainerDetail_Inserted(Object source, SqlDataSourceStatusEventArgs e)
         {
