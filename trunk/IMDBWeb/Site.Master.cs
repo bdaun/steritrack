@@ -23,7 +23,7 @@ namespace IMDBWeb
                 {
                     if (menuItem.Text == "Report Pages")
                         report = menuItem;
-                    else if (menuItem.Text == "SPAK Pages")
+                    else if (menuItem.Text == "SPAK CS Pages")
                         spak = menuItem;
                     else if (menuItem.Text == "Desktop Pages")
                         desk = menuItem;
