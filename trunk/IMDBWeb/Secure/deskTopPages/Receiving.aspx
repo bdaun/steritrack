@@ -143,7 +143,7 @@
                             <span style="font-weight:bold"><%#Eval("InboundDocNo")%></span>
                             Click <asp:LinkButton ID='lbAddContainer' runat="server" OnClientClick="adddoc=false" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
                         </asp:Panel>
-                        <asp:Panel ID="pnlContainerList" runat="server" Width="100%">
+                        <asp:Panel ID="pnlContainerList" runat="server">
                         <asp:GridView
                             ID="gvContainerList"
                             DataSourceID="sdsContainerList"  
@@ -1430,7 +1430,6 @@
                                             <asp:TextBox
                                                 ID="txbContainerID"
                                                 runat="server" 
-                                                Text=""
                                                 Width="250px"
                                                 tabindex="0"
                                                 AutoPostBack="true"
