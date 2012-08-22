@@ -265,11 +265,34 @@ namespace IMDBWeb.Secure.SPAKpages
             while (rdr.Read())
             {
                 ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text = rdr["cid"].ToString();
+                curCntr = rdr["cid"].ToString();
                 ((DropDownList)dvContainerDetail.FindControl("ddProfile")).SelectedValue = rdr["pid"].ToString();
             }
             rdr.Close();
             con.Close();
             ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Focus();
+
+
+            String sp1 = "IMDB_Rcv_GetProcessPlan_Sel";
+            SqlConnection con1 = new SqlConnection();
+            con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmd1 = new SqlCommand(sp1, con1);
+            spCmd1.CommandType = CommandType.StoredProcedure;
+            con1.Open();
+            spCmd1.Parameters.AddWithValue("@BrandCodeID", curCntr);
+            SqlDataReader rdr1 = spCmd1.ExecuteReader();
+            while (rdr1.Read())
+            {
+                curCntr = rdr1["pp"].ToString();
+                
+                if (string.IsNullOrEmpty(curCntr)== true)
+                {
+                    curCntr = "Select...";
+                }
+                ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).SelectedValue = curCntr;
+            }
+            rdr1.Close();
+            con1.Close();
 
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
