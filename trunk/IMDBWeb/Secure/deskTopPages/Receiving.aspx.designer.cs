@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IMDBWeb.Secure.SPAKpages
-{
-
-
-    public partial class Receiving
-    {
-
+namespace IMDBWeb.Secure.SPAKpages {
+    
+    
+    public partial class Receiving {
+        
         /// <summary>
         /// ScriptManager1 control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager1;
-
+        
         /// <summary>
         /// trOrder control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trOrder;
-
+        
         /// <summary>
         /// txbOrderNum control.
         /// </summary>
@@ -40,7 +38,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbOrderNum;
-
+        
         /// <summary>
         /// txbOrderNum_AutoCompleteExtender control.
         /// </summary>
@@ -49,7 +47,25 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender txbOrderNum_AutoCompleteExtender;
-
+        
+        /// <summary>
+        /// txbBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbBegDate;
+        
+        /// <summary>
+        /// CalExBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalExBegDate;
+        
         /// <summary>
         /// btnClear control.
         /// </summary>
@@ -58,7 +74,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnClear;
-
+        
         /// <summary>
         /// trClient control.
         /// </summary>
@@ -67,7 +83,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trClient;
-
+        
         /// <summary>
         /// txbClientName control.
         /// </summary>
@@ -76,7 +92,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbClientName;
-
+        
         /// <summary>
         /// txbClientName_AutoCompleteExtender control.
         /// </summary>
@@ -85,7 +101,25 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender txbClientName_AutoCompleteExtender;
-
+        
+        /// <summary>
+        /// txbEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbEndDate;
+        
+        /// <summary>
+        /// CalExEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalExEndDate;
+        
         /// <summary>
         /// btnNewTruck control.
         /// </summary>
@@ -94,7 +128,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNewTruck;
-
+        
         /// <summary>
         /// upHdrList control.
         /// </summary>
@@ -103,7 +137,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upHdrList;
-
+        
         /// <summary>
         /// gvHdrList control.
         /// </summary>
@@ -112,7 +146,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvHdrList;
-
+        
         /// <summary>
         /// sdsHdrList control.
         /// </summary>
@@ -121,7 +155,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsHdrList;
-
+        
         /// <summary>
         /// Label1 control.
         /// </summary>
@@ -130,7 +164,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-
+        
         /// <summary>
         /// Label3 control.
         /// </summary>
@@ -139,7 +173,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label3;
-
+        
         /// <summary>
         /// label2 control.
         /// </summary>
@@ -148,7 +182,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label label2;
-
+        
         /// <summary>
         /// upDocList control.
         /// </summary>
@@ -157,7 +191,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upDocList;
-
+        
         /// <summary>
         /// Label5 control.
         /// </summary>
@@ -166,7 +200,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label5;
-
+        
         /// <summary>
         /// btnAddDoc control.
         /// </summary>
@@ -175,7 +209,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddDoc;
-
+        
         /// <summary>
         /// gvSubCatDocs control.
         /// </summary>
@@ -184,7 +218,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvSubCatDocs;
-
+        
         /// <summary>
         /// sdsSubCatDocs control.
         /// </summary>
@@ -193,7 +227,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsSubCatDocs;
-
+        
         /// <summary>
         /// upHdrDetail control.
         /// </summary>
@@ -202,7 +236,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upHdrDetail;
-
+        
         /// <summary>
         /// dvHdrDetail control.
         /// </summary>
@@ -211,7 +245,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DetailsView dvHdrDetail;
-
+        
         /// <summary>
         /// sdsHdrDetail control.
         /// </summary>
@@ -220,7 +254,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsHdrDetail;
-
+        
         /// <summary>
         /// pnlContainerDetail control.
         /// </summary>
@@ -229,7 +263,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlContainerDetail;
-
+        
         /// <summary>
         /// upContainerDetail control.
         /// </summary>
@@ -238,7 +272,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upContainerDetail;
-
+        
         /// <summary>
         /// dvContainerDetail control.
         /// </summary>
@@ -247,7 +281,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DetailsView dvContainerDetail;
-
+        
         /// <summary>
         /// sdsContainerDetail control.
         /// </summary>
@@ -256,7 +290,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsContainerDetail;
-
+        
         /// <summary>
         /// ModalPopupExtender1 control.
         /// </summary>
@@ -265,7 +299,7 @@ namespace IMDBWeb.Secure.SPAKpages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender1;
-
+        
         /// <summary>
         /// Button1 control.
         /// </summary>
