@@ -42,6 +42,18 @@ namespace IMDBWeb.Secure.SPAKpages
             Session["CurClientName"] = txbClientName.Text;
         }
 
+        //Beginning Date Rage Changed
+        protected void txbBegDate_OnTextChanged(object sender, EventArgs e)
+        {
+            Session["CurBegDate"] = txbBegDate.Text;
+        }
+
+        //Ending Date Rage Changed
+        protected void txbEndDate_OnTextChanged(object sender, EventArgs e)
+        {
+            Session["CurEndDate"] = txbEndDate.Text;
+        }
+
         // Add Truck, Add InboundDoc & Clear Buttons
         protected void btnNewTruck_Click(object sender, EventArgs e)
         {
@@ -82,6 +94,8 @@ namespace IMDBWeb.Secure.SPAKpages
             {
                 Session.Remove("CurClientName");
                 Session.Remove("CurOrderNum");
+                Session.Remove("CurBegDate");
+                Session.Remove("CurEndDate");
                 gvSubCatDocs.DataBind();
             }
         }

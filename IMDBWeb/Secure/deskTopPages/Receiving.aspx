@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Receiving.aspx.cs" Inherits="IMDBWeb.Secure.SPAKpages.Receiving" EnableEventValidation="false"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
 <table class="ui-accordion">
 <tr runat="server" id="trOrder">
     <td width="100px">
@@ -28,7 +28,14 @@
                 </ajaxToolkit:AutoCompleteExtender>
     </td>
     <td>
-        <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click"/>
+    Begin Date Range
+    </td>
+    <td>
+        <asp:TextBox ID="txbBegDate" runat="server" OnTextChanged = "txbBegDate_OnTextChanged" AutoPostBack="true" Width="250px"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="CalExBegDate" runat="server" TargetControlID="txbBegDate" />
+    </td>
+    <td>
+        <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click" CausesValidation="false"/>
     </td>
 </tr>
 <tr runat="server" id="trClient">
@@ -54,7 +61,14 @@
             </ajaxToolkit:AutoCompleteExtender>
     </td>
     <td>
-        <asp:Button ID="btnNewTruck" runat="server" Text="New Truck" onclick="btnNewTruck_Click" />            
+    End Date Range
+    </td>
+    <td>
+        <asp:TextBox ID="txbEndDate" runat="server" OnTextChanged = "txbEndDate_OnTextChanged" AutoPostBack="true" Width="250px"></asp:TextBox>
+        <ajaxToolKit:CalendarExtender ID="CalExEndDate" runat="server" TargetControlID="txbEndDate" />
+    </td>
+    <td>
+        <asp:Button ID="btnNewTruck" runat="server" Text="New Truck" onclick="btnNewTruck_Click"  CausesValidation="false"/>            
     </td>
 </tr>
 </table>
@@ -101,6 +115,8 @@
                                 <asp:sessionparameter Name = "OrderNum" SessionField="CurOrderNum" DefaultValue = "null" Type="String" />
                                 <asp:SessionParameter Name="RcvHdrID"  SessionField="CurRcvHrdID" DefaultValue="0" Type="Int32" />
                                 <asp:SessionParameter Name="ClientName"  SessionField="CurClientName" DefaultValue="null" Type="String" />
+                                <asp:SessionParameter Name="BegDate"  SessionField="CurBegDate" defaultValue="1/1/1754" Type="DateTime" />
+                                <asp:SessionParameter Name="EndDate"  SessionField="CurEndDate" defaultValue="1/1/1753" Type="DateTime" />
                             </SelectParameters>
                     </asp:SqlDataSource>
                 <asp:Label ID="Label1" runat="server" Visible="false"></asp:Label>
@@ -119,7 +135,7 @@
                     <td>
                         <asp:Button ID="btnAddDoc" runat="server" onclick="btnAddDoc_Click" 
                             OnClientClick="javascript:adddoc=true" Text="Add New Inbound Doc" 
-                            Visible="false" />
+                            Visible="false"  CausesValidation="false"/>
                     </td>
                 </tr>
             </table>          
@@ -141,7 +157,7 @@
                         <asp:Panel ID="pnlSubCatDocs" runat="server">
                             <asp:Image ID="imgCollapsible" Style="margin-right: 5px;" runat="server" />
                             <span style="font-weight:bold"><%#Eval("InboundDocNo")%></span>
-                            Click <asp:LinkButton ID='lbAddContainer' runat="server" OnClientClick="adddoc=false" onclick="btnAddContainer_Click" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
+                            Click <asp:LinkButton ID='lbAddContainer' runat="server" OnClientClick="adddoc=false" onclick="btnAddContainer_Click"  CausesValidation="false" Text='<%#Eval("InboundDocNo")%>'></asp:LinkButton> to Add New Container
                         </asp:Panel>
                         <asp:Panel ID="pnlContainerList" runat="server">
                         <asp:GridView
@@ -155,8 +171,8 @@
                             <Columns>
                                 <asp:templatefield>
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" OnClientClick="adddoc='edit'" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
-                                    <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" OnClientClick="adddoc='dupe'" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
+                                    <asp:LinkButton ID="lbEditDetail" runat="server" CommandName="EditDetail" OnClientClick="adddoc='edit'"  CausesValidation="false" CommandArgument='<%# Eval("id") %>'>Edit</asp:LinkButton>
+                                    <asp:LinkButton ID="lblDupeDetail" runat="server" CommandName="DupeDetail" OnClientClick="adddoc='dupe'" causesvalidation="false" CommandArgument='<%# Eval("id") %>'>Duplicate</asp:LinkButton>
                                 </ItemTemplate>
                                 <ItemStyle Font-Size="XX-Small" HorizontalAlign="Center" VerticalAlign="Middle" />
                                 </asp:templatefield>
@@ -970,6 +986,7 @@
                                                 AutoPostBack="true"
                                                 OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
                                             <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                            <asp:RequiredFieldValidator ID="ReqContainerID1" runat="server" ControlToValidate="txbContainerID" ErrorMessage="Container ID is required" Font-Bold="True" ForeColor="Red"></asp:RequiredFieldValidator>
                                         </td>
                                         <td>&nbsp;</td>
                                     </tr>
@@ -1174,7 +1191,7 @@
                                     </tr>
                                 </table>
                                             <asp:LinkButton ID="Insert" runat="server" CommandName="myInsert" Text="Insert" />
-                                            <asp:LinkButton ID="Cancel" runat="server" CommandName="Cancel" Text="Cancel" />
+                                            <asp:LinkButton ID="Cancel" runat="server" CommandName="Cancel" Text="Cancel" CausesValidation="false"/>
                                         </InsertItemTemplate>
                                         <EditItemTemplate>
                                             <table class="ui-accordion">
@@ -1435,6 +1452,7 @@
                                                 AutoPostBack="true"
                                                 OnTextChanged="txbContainerID_OnTextChanged"></asp:TextBox>
                                             <asp:Label ID="Label6" runat="server" Visible="false" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                            <asp:RequiredFieldValidator ID="ReqContainerID1" runat="server" ControlToValidate="txbContainerID" ErrorMessage="Container ID is required" Font-Bold="True" ForeColor="Red"></asp:RequiredFieldValidator>
                                         </td>
                                         <td>&nbsp;</td>
                                     </tr>
@@ -1639,7 +1657,7 @@
                                     </tr>
                                 </table>
                                             <asp:LinkButton ID="Dupe" runat="server" CommandName="Duplicate" Text="Insert" />
-                                            <asp:LinkButton ID="Cancel" runat="server" CommandName="Cancel" Text="Cancel" />
+                                            <asp:LinkButton ID="Cancel" runat="server" CommandName="Cancel" Text="Cancel" CausesValidation="false"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Fields>
@@ -1717,7 +1735,7 @@
 </table>
 </asp:Content>    
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server">
-<script type="text/javascript">
+    <script type="text/javascript">
     function ButtonClicks() {
         PageMethods.GetInboundDoc(onSuccess, onFailure);
     }
