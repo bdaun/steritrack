@@ -92,7 +92,7 @@ namespace IMDBWeb.Secure.deskTopPages
             else
             {
                 lblDateErr.Visible = false;
-                String sp = "SP_ManifestMail_TruckID_Upd";
+                String sp = "SPAK_ManifestMail_TruckID_Upd";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);

@@ -117,7 +117,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
 </asp:GridView>
 <asp:SqlDataSource ID="sdsManifestMail_Date" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_ManifestMail_Date" SelectCommandType="StoredProcedure"
+    SelectCommand="SPAK_ManifestMail_Date" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
     Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
@@ -132,7 +132,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsManifestMail_TruckID" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_ManifestMail_TruckID" SelectCommandType="StoredProcedure"
+    SelectCommand="SPAK_ManifestMail_TruckID" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
     Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
@@ -150,7 +150,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsManifestMail_Manifest" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_ManifestMail_Manifest" SelectCommandType="StoredProcedure"
+    SelectCommand="SPAK_ManifestMail_Manifest" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
     Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
