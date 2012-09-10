@@ -115,8 +115,8 @@
 </asp:GridView>
 <asp:SqlDataSource ID="sdsShipContainers" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_gvShipContainers" SelectCommandType="StoredProcedure"
-     DeleteCommand="SP_SFund_ShipCntr_Del" DeleteCommandType="StoredProcedure">
+    SelectCommand="SFund_gvShipContainers" SelectCommandType="StoredProcedure"
+     DeleteCommand="SFund_ShipCntr_Del" DeleteCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddTruck" Name="TruckID" PropertyName="SelectedValue" Type="Int32" />
         <asp:ControlParameter ControlID="ddManifestNumber" Name="ManifestID" PropertyName="SelectedValue" Type="Int32" />
@@ -125,11 +125,11 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsTruckSelect" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_TruckCode_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SFund_TruckCode_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsManifestSelect" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_Manifest_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SFund_Manifest_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddTruck" Name="TruckID" PropertyName="SelectedValue" Type="Int32" />
     </SelectParameters>
