@@ -114,7 +114,7 @@ namespace IMDBWeb.Secure.SuperFundPages
         }
         protected void btnGo_Click(Object sender, EventArgs e)
         {
-            String sp = "SP_SFund_Container_Ins";
+            String sp = "SFund_Container_Ins";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -159,7 +159,7 @@ namespace IMDBWeb.Secure.SuperFundPages
             GridViewRow row = gvGridLoc.SelectedRow;
             string curCntr = row.Cells[2].Text;
 
-            String sp = "SP_SFund_CntrDetail_Exists";
+            String sp = "SFund_CntrDetail_Exists";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -175,7 +175,7 @@ namespace IMDBWeb.Secure.SuperFundPages
                     // No record exists, so insert a new blank record into the table and show 
                     // the record details in update mode.
 
-                    String sp1 = "SP_SFund_CntrDetail_Ins";
+                    String sp1 = "SFund_CntrDetail_Ins";
                     SqlCommand cmdInsert = new SqlCommand(sp1, con);
                     cmdInsert.CommandType = CommandType.StoredProcedure;
                     using (cmdInsert)

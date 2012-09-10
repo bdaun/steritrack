@@ -269,15 +269,15 @@ ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center" AllowPaging="Tru
 </tr>
 </table>
 <asp:SqlDataSource ID="sds_SFGridLoc" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_GridLoc_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SFund_GridLoc_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCompany" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_Company_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SFund_Company_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsGridLoc" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_gvGridLoc" SelectCommandType="StoredProcedure" 
+    SelectCommand="SFund_gvGridLoc" SelectCommandType="StoredProcedure" 
     OnSelected="sdsGridLoc_Selected" OnUpdating="sdsGridLoc_Updating"
-    UpdateCommand="SP_SFund_gvGridLoc_upd" UpdateCommandType="StoredProcedure">
+    UpdateCommand="SFund_gvGridLoc_upd" UpdateCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddGridLoc" Name="gridLocation" PropertyName="SelectedValue" Type="Int32" />
         <asp:ControlParameter ControlID="txbCntrID" Name="ContainerID" PropertyName="Text" Type="Int32" DefaultValue="0" />
@@ -291,7 +291,7 @@ ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center" AllowPaging="Tru
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCntrDetails" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     onUpdating="sdsCntrDetails_Updating" OnUpdated="sdsCntrDetails_Updated" 
-    SelectCommand="SP_SFund_ContainerDetails_Sel" SelectCommandType="StoredProcedure"
+    SelectCommand="SFund_ContainerDetails_Sel" SelectCommandType="StoredProcedure"
     UpdateCommand="UPDATE SFund_ContainerDetails SET ContainerUOI=@ContainerUOI,ContainerType=@ContainerType,ContainerSize=@ContainerSize,
     ContainerUOM=@ContainerUOM,Matrix=@Matrix,OverPack=@Overpack,ph=@ph,Flammability=@Flammability,WaterReactivity=@WaterReactivity,WaterSolubility=@WaterSolubility,
     Oxidizer=@Oxidizer,HazcatDuplicated=@HazcatDuplicated,ProfileID=@ProfileID,SampleNeeded=@SampleNeeded,SampleID=@SampleID,
@@ -327,7 +327,7 @@ ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center" AllowPaging="Tru
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsSFundProfile" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SP_SFund_Profile_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="SFund_Profile_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server">

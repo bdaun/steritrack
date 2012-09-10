@@ -53,7 +53,7 @@ namespace IMDBWeb.Secure.SuperFundPages
 
         protected void txbNewContainer_TextChanged(object sender, EventArgs e)
         {
-            String sp = "SP_SFund_GridCntr_Exists";
+            String sp = "SFund_GridCntr_Exists";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -77,7 +77,7 @@ namespace IMDBWeb.Secure.SuperFundPages
                     {
                     // Verify that the container has not already been entered into the ShipContainer table
 
-                        String spCntrChk = "SP_SFund_ShipCntr_Exist";
+                        String spCntrChk = "SFund_ShipCntr_Exist";
                         SqlCommand ChkCmd = new SqlCommand(spCntrChk, con);
                         ChkCmd.CommandType = CommandType.StoredProcedure;
                         ChkCmd.Parameters.AddWithValue("@ContainerID", txbNewContainer.Text);
@@ -90,7 +90,7 @@ namespace IMDBWeb.Secure.SuperFundPages
                         }
                         else
                         {
-                            String spCntrElig = "SP_SFund_CntrDetails_Eligible";
+                            String spCntrElig = "SFund_CntrDetails_Eligible";
                             SqlCommand CntrElig = new SqlCommand(spCntrElig, con);
                             CntrElig.Parameters.AddWithValue("@ContainerID", txbNewContainer.Text);
                             CntrElig.CommandType = CommandType.StoredProcedure;
@@ -103,7 +103,7 @@ namespace IMDBWeb.Secure.SuperFundPages
                             }
                             else
                             {
-                                String spIns = "SP_SFund_ShipCntr_Ins";
+                                String spIns = "SFund_ShipCntr_Ins";
                                 SqlCommand insCmd = new SqlCommand(spIns, con);
                                 insCmd.CommandType = CommandType.StoredProcedure;
                                 insCmd.Parameters.AddWithValue("@ContainerID", txbNewContainer.Text);
@@ -133,7 +133,7 @@ namespace IMDBWeb.Secure.SuperFundPages
             ddTruck.EnableViewState = true;
             if (txbNewTruck.Text != "")
             {
-                String sp = "SP_SFund_TruckCode_ins";
+                String sp = "SFund_TruckCode_ins";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);
@@ -190,7 +190,7 @@ namespace IMDBWeb.Secure.SuperFundPages
             }
             else
             {
-                String sp = "SP_SFund_Manifest_ins";
+                String sp = "SFund_Manifest_ins";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);
@@ -246,7 +246,7 @@ namespace IMDBWeb.Secure.SuperFundPages
         {
             //  Verify that the Manifest does not already exist in the system
 
-            String sp = "SP_SFund_Manifest_Exists";
+            String sp = "SFund_Manifest_Exists";
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand spCmd = new SqlCommand(sp, con);
@@ -339,7 +339,7 @@ namespace IMDBWeb.Secure.SuperFundPages
             if (gvShipContainer.DataKeys[e.RowIndex].Value.ToString()!="")
             {
                 int ID = (int)gvShipContainer.DataKeys[e.RowIndex].Value;
-                String sp = "SP_SFund_ShipCntr_Del";
+                String sp = "SFund_ShipCntr_Del";
                 SqlConnection con = new SqlConnection();
                 con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand spCmd = new SqlCommand(sp, con);
