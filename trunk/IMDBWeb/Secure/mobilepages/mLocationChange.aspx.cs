@@ -621,16 +621,16 @@ namespace IMDBWeb.Secure
 
                         // Sql Update Statement
 
-                        string updateSql = "UPDATE rcvdetail " +
-                            "SET InventoryLocation = @NewLocation " +
-                            "WHERE InboundContainerID = @InboundcontainerID";
+                        string updateSql = "IMDB_LocChange_Upd";
                         SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
+                        UpdateCmd.CommandType = CommandType.StoredProcedure;
 
                         //  Map Parameters
                         UpdateCmd.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
                         UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
                         UpdateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
                         UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                        UpdateCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
 
                         UpdateCmd.ExecuteNonQuery();
                     }
@@ -664,10 +664,9 @@ namespace IMDBWeb.Secure
 
                         // Sql Update Statement
 
-                        string updateSql = "UPDATE ProcDetail " +
-                            "SET Outboundlocation = @NewLocation " +
-                            "WHERE OutboundContainerID = @outboundcontainerid";
+                        string updateSql = "IMDB_LocChange_ProcDetail_Upd";
                         SqlCommand UpdateCmd = new SqlCommand(updateSql, thisConnection);
+                        UpdateCmd.CommandType = CommandType.StoredProcedure;
 
                         //  Map Parameters
                         UpdateCmd.Parameters.Add("@outboundcontainerid", SqlDbType.NVarChar, 20, "OutboundContainerID");
