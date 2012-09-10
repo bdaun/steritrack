@@ -25,7 +25,7 @@ namespace IMDBWeb.Secure.mobilepages
         {
             if (txbNewCntr.Text != "")
             {
-                string sp = "SP_AggCntr_update";
+                string sp = "IMDB_Aggrcntr_upd";
                 SqlConnection upd = new SqlConnection();
                 upd.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                 SqlCommand updCmd = new SqlCommand(sp, upd);
