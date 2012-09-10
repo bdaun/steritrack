@@ -95,7 +95,7 @@ namespace IMDBWeb.Secure
 
             //  The inbound container location will be set to 'Processing'
 
-            string setlocation = "UPDATE dbo.rcvdetail SET InventoryLocation = 'Processing' WHERE InboundContainerID = @inboundcontainerid";
+            string setlocation = "UPDATE dbo.rcvdetail SET InventoryLocation = 'Processing', UserName = @UserName, ModDate = GetDate() WHERE InboundContainerID = @inboundcontainerid";
             SqlConnection rcvConnect1 = new SqlConnection();
             rcvConnect1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             SqlCommand rcvCmd1 = new SqlCommand(setlocation, rcvConnect1);
@@ -105,6 +105,7 @@ namespace IMDBWeb.Secure
                 using (rcvCmd1)
                 {
                     rcvCmd1.Parameters.AddWithValue("@inboundContainerID", txbCntrID.Text);
+                    rcvCmd1.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                     rcvCmd1.ExecuteNonQuery();
                 }
             }
