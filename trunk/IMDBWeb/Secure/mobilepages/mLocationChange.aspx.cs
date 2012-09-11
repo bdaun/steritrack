@@ -769,6 +769,7 @@ namespace IMDBWeb.Secure
                                 updateCmd.Parameters["@processplan"].Value = "Truck";
                                 updateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
                                 updateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                                updateCmd.Parameters.AddWithValue("@Username", HttpContext.Current.User.Identity.Name.ToString());
 
                                 updateCmd.ExecuteNonQuery();
                             }
@@ -857,6 +858,7 @@ namespace IMDBWeb.Secure
                                 insertCmd2.Parameters.AddWithValue("@Productwt", productwt);
                                 insertCmd2.Parameters.AddWithValue("@OutboundDocNo", txbOutCntr.Text);
                                 insertCmd2.Parameters.AddWithValue("@InboundContainerID", InboundContainerID);
+                                insertCmd2.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
 
                                 insertCmd2.ExecuteNonQuery();
                             }

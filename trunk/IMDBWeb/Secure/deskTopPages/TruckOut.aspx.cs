@@ -306,6 +306,7 @@ namespace IMDBWeb.Secure.deskTopPages
                             cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
                             cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
                             cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
+                            cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                             cmd.ExecuteNonQuery();
                         }
                         catch (Exception ex)
@@ -434,6 +435,7 @@ namespace IMDBWeb.Secure.deskTopPages
                                             cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
                                             cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
                                             cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
+                                            cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                                             cmd.ExecuteNonQuery();
                                         }
                                         catch (Exception ex)

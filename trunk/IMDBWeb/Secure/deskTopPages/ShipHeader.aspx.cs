@@ -95,6 +95,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     spCmdIns.Parameters.AddWithValue("@Trailer_Number", txb5.Text);
                     spCmdIns.Parameters.AddWithValue("@ShippingDock", dd3.Text);
                     spCmdIns.Parameters.AddWithValue("@WiseOrder", txb7.Text);
+                    spCmdIns.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                     spCmdIns.ExecuteNonQuery();
                     lblErrMsg.Visible = true;
                     lblErrMsg.Text = "OutboundDocNo " + txb1.Text + " was created.";
@@ -155,6 +156,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     spCmdUpd.Parameters.AddWithValue("@ShippingDock", dd3.Text);
                     spCmdUpd.Parameters.AddWithValue("@WiseOrder", txb7.Text);
                     spCmdUpd.Parameters.AddWithValue("@Completed", strChk.ToString());
+                    spCmdUpd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                     spCmdUpd.ExecuteNonQuery();
                     lblErrMsg.Visible = true;
                     lblErrMsg.Text = "OutboundDocNo " + txb1.Text + " was updated.";
