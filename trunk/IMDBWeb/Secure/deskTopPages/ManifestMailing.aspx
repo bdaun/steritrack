@@ -119,7 +119,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SPAK_ManifestMail_Date" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
-    Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
+    Comment=@Comment,UserName=@User,moddate=GetDate() WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
     <asp:Parameter Name="Mailed" Type="Byte" />
     <asp:Parameter Name="DateMailed" Type="DateTime" />
@@ -134,7 +134,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SPAK_ManifestMail_TruckID" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
-    Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
+    Comment=@Comment,UserName=@User,moddate=GetDate() WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
     <asp:Parameter Name="Mailed" Type="Byte" />
     <asp:Parameter Name="DateMailed" Type="DateTime" />
@@ -152,7 +152,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="SPAK_ManifestMail_Manifest" SelectCommandType="StoredProcedure"
     UpdateCommand="Update SpakManifestRcvd Set Mailed=@Mailed,DateMailed=@DateMailed,Discrepancy=@Discrepancy,DateFailed=@DateFailed,
-    Comment=@Comment,UserName=@User WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
+    Comment=@Comment,UserName=@User,moddate=GetDate() WHERE InboundDocNo=@InboundDocNo" OnUpdating="sdsManifestMail_Date_Updating" >
     <UpdateParameters>
     <asp:Parameter Name="Mailed" Type="Byte" />
     <asp:Parameter Name="DateMailed" Type="DateTime" />
