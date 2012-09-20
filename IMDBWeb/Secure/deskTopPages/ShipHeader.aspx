@@ -60,23 +60,30 @@
             </asp:DropDownList>        
         </td></tr>
         <tr><td style="font-weight:bold" align="right">WiseOrder:&nbsp;</td>
-        <td><asp:TextBox ID="WiseOrderTextBox" runat="server" Text='<%# Bind("WiseOrder") %>' /></td></tr>
+        <td><asp:TextBox ID="WiseOrderTextBox" runat="server" Text='<%# Bind("WiseOrder") %>' />
+        <asp:RequiredFieldValidator ID="rfvWiseOrder" runat="server" ControlToValidate="WiseOrderTextBox" ErrorMessage="Wise Order" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
         <tr><td style="font-weight:bold" align="right">Completed:&nbsp;</td>
         <td><asp:CheckBox ID="Completed" runat="server" Checked='<%# Bind("Completed") %>' /></td></tr>
         </table>
         <asp:LinkButton ID="btnUpdate" runat="server" CausesValidation="True" onClick="btnUpdate_Click" Text="Update" />&nbsp;
         <asp:LinkButton ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" />
+        <asp:ValidationSummary ID="vsShipHdrUpd" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false" HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
         </EditItemTemplate>
         <InsertItemTemplate>
         <table border="1">
         <tr style="font-weight:bold; text-align:center"><td>Field</td><td>Value</td></tr>
-        <tr><td style="font-weight:bold" align="right">OutboundDocNo:&nbsp;</td><td><asp:TextBox ID="OutboundDocNoTextBox" runat="server" Text='<%# Bind("OutboundDocNo") %>' /></td></tr>
+        <tr><td style="font-weight:bold" align="right">OutboundDocNo:&nbsp;</td>
+            <td><asp:TextBox ID="OutboundDocNoTextBox" runat="server" Text='<%# Bind("OutboundDocNo") %>' />
+                <asp:RequiredFieldValidator ID="rfvDocNo" runat="server" ControlToValidate="OutboundDocNoTextBox" ErrorMessage="Document Number" Font-Bold="true" ForeColor="Red" Text="*" />
+            </td></tr>
         <tr><td style="font-weight:bold" align="right">Destination:&nbsp;</td>
         <td>
             <asp:DropDownList ID="ddDestination" runat="server" AppendDataBoundItems = "true" SelectedValue='<%# Bind("Destination") %>'
                 DataSourceID="sdsDestination" DataTextField="VendorName" DataValueField="VendorName">
                 <asp:ListItem Text="Select from List" Value="Not Specified" />
             </asp:DropDownList>
+            <asp:RequiredFieldValidator ID="rfvDestination" runat="server" ControlToValidate="ddDestination" InitialValue="Not Specified" ErrorMessage="Destination" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
         <tr><td style="font-weight:bold" align="right">ShipDate:&nbsp;</td>
         <td><asp:TextBox ID="ShipDateTextBox" runat="server" Text='<%# Bind("ShipDate") %>' />
@@ -101,10 +108,14 @@
                 <asp:ListItem Text="Other" Value="Other" />
             </asp:DropDownList>
         </td></tr>
-        <tr><td style="font-weight:bold" align="right">WiseOrder:&nbsp;</td><td><asp:TextBox ID="WiseOrderTextBox" runat="server" Text='<%# Bind("WiseOrder") %>' /></td></tr>
+        <tr><td style="font-weight:bold" align="right">WiseOrder:&nbsp;</td>
+        <td><asp:TextBox ID="WiseOrderTextBox" runat="server" Text='<%# Bind("WiseOrder") %>' />
+            <asp:RequiredFieldValidator ID="rfvWiseOrder" runat="server" ControlToValidate="WiseOrderTextBox" ErrorMessage="Wise Order" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
         </table>
         <asp:LinkButton ID="btnInsert" runat="server" CausesValidation="True" onClick="btnInsert_Click" Text="Insert" />&nbsp;
         <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" />
+        <asp:ValidationSummary ID="vsShipHdrIns" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false" HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
         </InsertItemTemplate>
         <ItemTemplate>
         <table border="1" width="100%">
