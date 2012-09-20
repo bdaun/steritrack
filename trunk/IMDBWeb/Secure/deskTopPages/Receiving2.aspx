@@ -29,7 +29,11 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
             DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
         </ajaxToolkit:AutoCompleteExtender>
         <asp:RequiredFieldValidator ID="rfvOrderNumber" runat="server" ControlToValidate="txbNewOrderNumber" ErrorMessage="Order Number" Font-Bold="true" ForeColor="Red" Text="*" />
-</td></tr>
+        <asp:CustomValidator ID="cvOrderNumber" runat="server" EnableClientScript="true" 
+            ErrorMessage="You must select a value from the list!" ControlToValidate="txbNewOrderNumber" 
+            OnServerValidate="txbNewOrderNumber_Validate" Display="Dynamic" Font-Bold="true" ForeColor="Red" > 
+</asp:CustomValidator>
+    </td></tr>
     <tr><td style="font-weight:bold">WorkOrder:</td>
         <td><asp:TextBox ID="WorkOrderTextBox" runat="server" Text='<%# Bind("WorkOrder") %>' /></td></tr>
     <tr><td style="font-weight:bold">ClientName:</td>

@@ -448,11 +448,36 @@ namespace IMDBWeb.Secure.deskTopPages
             Session["CurRcvHdrID"] = Convert.ToInt32(e.Command.Parameters["@ID"].Value);
             sdsRcvHdr.SelectParameters["OrderNumber"].DefaultValue = "All";
             gvRcvHdr.DataBind();
-            gvRcvHdr.SelectedIndex = 1;
+            gvRcvHdr.SelectedIndex = 0;
             fvContainerDetail.DataBind();
             trContainerDetails.Visible = true;
             tdContainerEdit.Visible = true;
+            trAddContainers.Visible = true;
             fvContainerDetail.ChangeMode(FormViewMode.Insert);
         }
+
+        protected void txbNewOrderNumber_Validate(object source, ServerValidateEventArgs args)
+        {
+            string spExist = "IMDB_Receive_OrderNumbers_Exist";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmdExist = new SqlCommand(spExist, con);
+            spCmdExist.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (spCmdExist)
+            {
+                spCmdExist.Parameters.AddWithValue("@OrderNumber", ((TextBox)fvNewTruck.FindControl("txbNewOrderNumber")).Text);
+                object OrderExist = new object();
+                OrderExist = spCmdExist.ExecuteScalar();
+                if(OrderExist == null)
+                {
+                    args.IsValid = false;
+                }
+                else
+	            {
+                    args.IsValid = true;
+	            }  
+            }
+        } 
     }
 }
