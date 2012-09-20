@@ -67,6 +67,33 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.Button btnNewTruck;
         
         /// <summary>
+        /// tblNewTruck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblNewTruck;
+        
+        /// <summary>
+        /// lblNewTruck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNewTruck;
+        
+        /// <summary>
+        /// fvNewTruck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView fvNewTruck;
+        
+        /// <summary>
         /// tblSearch control.
         /// </summary>
         /// <remarks>
@@ -101,6 +128,60 @@ namespace IMDBWeb.Secure.deskTopPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddClient;
+        
+        /// <summary>
+        /// txbBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbBegDate;
+        
+        /// <summary>
+        /// wmBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.TextBoxWatermarkExtender wmBegDate;
+        
+        /// <summary>
+        /// CalExBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalExBegDate;
+        
+        /// <summary>
+        /// txbEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbEndDate;
+        
+        /// <summary>
+        /// wmEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.TextBoxWatermarkExtender wmEndDate;
+        
+        /// <summary>
+        /// CalExEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalExEndDate;
         
         /// <summary>
         /// btnSearch control.
@@ -175,6 +256,69 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trContainerDetails;
         
         /// <summary>
+        /// tdContainerDuplicate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell tdContainerDuplicate;
+        
+        /// <summary>
+        /// lblCntrID_Dup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCntrID_Dup;
+        
+        /// <summary>
+        /// txbNewCntrID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbNewCntrID;
+        
+        /// <summary>
+        /// btnGo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGo;
+        
+        /// <summary>
+        /// btnCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// rfvNewCntr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNewCntr;
+        
+        /// <summary>
+        /// valCheck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator valCheck;
+        
+        /// <summary>
         /// tdContainerEdit control.
         /// </summary>
         /// <remarks>
@@ -229,6 +373,15 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsContainer;
         
         /// <summary>
+        /// sdsContainer_Edit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsContainer_Edit;
+        
+        /// <summary>
         /// sdsRcvHdr control.
         /// </summary>
         /// <remarks>
@@ -236,5 +389,50 @@ namespace IMDBWeb.Secure.deskTopPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsRcvHdr;
+        
+        /// <summary>
+        /// sdsGetProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetProfile;
+        
+        /// <summary>
+        /// sdsGetProcPlan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetProcPlan;
+        
+        /// <summary>
+        /// sdsGetLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetLocation;
+        
+        /// <summary>
+        /// sdsNewTruck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsNewTruck;
+        
+        /// <summary>
+        /// sdsGetUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetUsers;
     }
 }
