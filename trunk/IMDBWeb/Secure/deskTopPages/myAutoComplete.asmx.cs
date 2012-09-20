@@ -52,10 +52,45 @@ using System.Configuration;
         }
 
         [WebMethod]
+        public string[] GetNewOrderNums(string prefixText)
+        {
+            DataSet dtst = new DataSet();
+            SqlConnection sqlCon = new SqlConnection();
+            sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            String strSql = "IMDB_Receive_OrderNumbers_Sel";
+            SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
+            sqlComd.CommandType = CommandType.StoredProcedure;
+            sqlCon.Open();
+            using (sqlComd)
+            {
+                sqlComd.Parameters.AddWithValue("@prefixtext", prefixText + "%");
+            }
+            SqlDataAdapter sqlAdpt = new SqlDataAdapter();
+            sqlAdpt.SelectCommand = sqlComd;
+            sqlAdpt.Fill(dtst);
+            string[] ONum = new string[dtst.Tables[0].Rows.Count];
+            int i = 0;
+
+            try
+            {
+                foreach (DataRow rdr in dtst.Tables[0].Rows)
+                {
+                    ONum.SetValue(rdr["OrderNum"].ToString(), i);
+                    i++;
+                }
+            }
+            catch { }
+            finally
+            {
+                sqlCon.Close();
+            }
+            return ONum;
+        }
+
+        [WebMethod]
         public string[] GetClientName(string prefixText)
         {
             DataSet dtst = new DataSet();
-            //SqlConnection sqlCon = new SqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             String strSql = "SELECT DISTINCT Name FROM Client c INNER JOIN rcvhdr r on c.id = r.clientname WHERE Name Like '" + prefixText + "%'";
@@ -86,12 +121,10 @@ using System.Configuration;
         [WebMethod]
         public string[] GetTSDFName(string prefixText)
         {
-            //prefixText = prefixText + "%";
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            //String strSql = "SELECT DISTINCT Name FROM Client c INNER JOIN rcvhdr r on c.id = r.clientname WHERE Name Like '" + prefixText + "%'";
-            String strSql = "IMDB_Rcv_TSDF_Sel";
+            String strSql = "IMDB_Receive_TSDF_Sel";
             SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
             sqlComd.CommandType = CommandType.StoredProcedure;
             sqlCon.Open();
@@ -128,8 +161,7 @@ using System.Configuration;
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            //String strSql = "SELECT DISTINCT Name FROM Client c INNER JOIN rcvhdr r on c.id = r.clientname WHERE Name Like '" + prefixText + "%'";
-            String strSql = "IMDB_Rcv_Carrier_Sel";
+            String strSql = "IMDB_Receive_Carrier_Sel";
             SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
             sqlComd.CommandType = CommandType.StoredProcedure;
             sqlCon.Open();
@@ -166,7 +198,7 @@ using System.Configuration;
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            String strSql = "IMDB_Rcv_GetBrandCodes_Sel";
+            String strSql = "IMDB_Receive_GetBrandCodes_Sel";
             SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
             sqlComd.CommandType = CommandType.StoredProcedure;
             sqlCon.Open();
