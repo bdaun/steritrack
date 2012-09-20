@@ -489,4 +489,10 @@ td.details
     height:auto;
     text-align:left;
 }
+
+.watermarked
+{
+    font-style:italic;
+    color: Gray;
+}
     
