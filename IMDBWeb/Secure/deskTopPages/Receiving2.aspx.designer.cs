@@ -355,6 +355,24 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsClient;
         
         /// <summary>
+        /// sdsTSDF control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsTSDF;
+        
+        /// <summary>
+        /// sdsCarrier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsCarrier;
+        
+        /// <summary>
         /// sdsContainerDetail control.
         /// </summary>
         /// <remarks>
