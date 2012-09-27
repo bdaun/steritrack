@@ -1,8 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Receiving2.aspx.cs" 
 Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">function setHeight(txtdesc) { txtdesc.style.height = txtdesc.scrollHeight + "px"; }</script>
 <asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
@@ -37,28 +36,22 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
     <tr><td style="font-weight:bold">WorkOrder:</td>
         <td><asp:TextBox ID="WorkOrderTextBox" runat="server" Text='<%# Bind("WorkOrder") %>' /></td></tr>
     <tr><td style="font-weight:bold">ClientName:</td>
-        <td><asp:TextBox ID="ClientNameTextBox" runat="server" OnTextChanged="ClientNameTextBox_OnTextChanged" />
-        <ajaxToolkit:AutoCompleteExtender ID="txbClientName_AutoCompleteExtender" runat="server"
-            Enabled="True" CompletionInterval="250" TargetControlID="ClientNameTextBox" ServicePath="myAutoComplete.asmx"
-            ServiceMethod="GetClientName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="5"
-            CompletionListCssClass="autocomplete_completionListElement" CompletionListItemCssClass="autocomplete_listItem" 
-            CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" DelimiterCharacters=";, :"
-            ShowOnlyCurrentWordInCompletionListItem="true">
-        </ajaxToolkit:AutoCompleteExtender>
-        <asp:RequiredFieldValidator ID="rfvClientName" runat="server" ControlToValidate="ClientNameTextBox" ErrorMessage="Client Name" Font-Bold="true" ForeColor="Red" Text="*" />
-        <asp:Label ID="lblClientID" runat="server" Visible="false" Text='<%# Bind("ClientName") %>'></asp:Label>
+        <td>
+            <asp:DropDownList ID="ddClient" runat="server" DataSourceID="sdsClient" DataTextField="ClientName"
+                DataValueField="ClientID" SelectedValue='<%# bind("ClientName") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvClientName" runat="server" ControlToValidate="ddClient" ErrorMessage="Client Name" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">TSDF:</td>
-        <td><asp:TextBox ID="TSDFTextBox" runat="server" OnTextChanged="TSDFTextBox_OnTextChanged" />
-        <ajaxToolkit:AutoCompleteExtender ID="TSDFTextBox_AutoCompleteExtender" runat="server"
-            Enabled="True" CompletionInterval="100" TargetControlID="TSDFTextBox" ServicePath="myAutoComplete.asmx"
-            ServiceMethod="GetTSDFName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="5"
-            CompletionListCssClass="autocomplete_completionListElement" CompletionListItemCssClass="autocomplete_listItem" 
-            CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" DelimiterCharacters=";, :"
-            ShowOnlyCurrentWordInCompletionListItem="true">
-        </ajaxToolkit:AutoCompleteExtender>
-        <asp:RequiredFieldValidator ID="rfvTSDF" runat="server" ControlToValidate="TSDFTextBox" ErrorMessage="TSDF" Font-Bold="true" ForeColor="Red" Text="*" />
-        <asp:Label ID="lblTSDFID" runat="server" Visible="false" Text='<%# Bind("TSDF") %>'></asp:Label>
+        <td>
+        <asp:DropDownList ID="ddTSDF" runat="server" DataSourceID="sdsTSDF" DataTextField="VendorName"
+                DataValueField="VendorID" SelectedValue='<%# bind("TSDF") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvTSDF" runat="server" ControlToValidate="ddTSDF" ErrorMessage="TSDF" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">ReceivedBy:</td>
         <td><asp:DropDownList ID="ddRcvBy" Width="250px" runat="server" DataSourceID="sdsGetUsers" 
@@ -66,11 +59,6 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
                 <asp:ListItem Text="Select..." Value = "" />
              </asp:DropDownList>
              <asp:RequiredFieldValidator ID="rfvRcvBy" runat="server" ControlToValidate="ddRcvBy" InitialValue="" ErrorMessage="Received By" Font-Bold="true" ForeColor="Red" Text="*" />
-        </td></tr>
-    <tr><td style="font-weight:bold">ReceiveDate:</td>
-        <td><asp:TextBox ID="ReceiveDateTextBox" runat="server" Text='<%# Bind("ReceiveDate") %>' />
-            <ajaxToolKit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="ReceiveDateTextBox" />
-            <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">ReceiveDock:</td>
         <td><asp:DropDownList ID="ddRcvDock"  Width="250px"  runat="server" SelectedValue='<%# bind("ReceiveDock") %>'>
@@ -86,19 +74,20 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
             <asp:RequiredFieldValidator ID="rfvRcvDock" runat="server" ControlToValidate="ddRcvDock" InitialValue="" ErrorMessage="Receive Dock" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">Carrier:</td>
-        <td><asp:TextBox ID="CarrierTextBox" runat="server" OnTextChanged="CarrierTextBox_OnTextChanged" />
-        <ajaxToolkit:AutoCompleteExtender
-            ID="CarrierTextBox_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="100"
-            TargetControlID="CarrierTextBox" ServicePath="myAutoComplete.asmx" ServiceMethod="GetCarrierName"
-            MinimumPrefixLength="3" EnableCaching="true" CompletionSetCount="20" CompletionListCssClass="autocomplete_completionListElement" 
-            CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" 
-            DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
-        </ajaxToolkit:AutoCompleteExtender>
-        <asp:RequiredFieldValidator ID="rfvCarrier" runat="server" ControlToValidate="CarrierTextBox" ErrorMessage="Carrier" Font-Bold="true" ForeColor="Red" Text="*" />
-        <asp:Label ID="lblCarrierID" runat="server" Visible="false" Text='<%# Bind("Carrier") %>' />
+        <td><asp:DropDownList ID="ddCarrier" runat="server" DataSourceID="sdsCarrier" DataTextField="VendorName"
+                DataValueField="CarrierID" SelectedValue='<%# bind("Carrier") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvCarrier" runat="server" ControlToValidate="ddCarrier" ErrorMessage="Carrier" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">Trailer_Number:</td>
         <td><asp:TextBox ID="Trailer_NumberTextBox" runat="server" Text='<%# Bind("Trailer_Number") %>' /></td></tr>
+        <tr><td style="font-weight:bold">ReceiveDate:</td>
+        <td><asp:TextBox ID="ReceiveDateTextBox" runat="server" Text='<%# Bind("ReceiveDate") %>' />
+            <ajaxToolKit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="ReceiveDateTextBox" />
+            <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
     <tr><td style="font-weight:bold">ShipDate:</td>
         <td><asp:TextBox ID="ShipDateTextBox" runat="server" Text='<%# Bind("ShipDate") %>' />
         <ajaxToolKit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="ShipDateTextBox" /></td></tr>
@@ -192,8 +181,9 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
     <td id="tdContainerDuplicate" runat="server" visible="false">
         <asp:Label ID="lblCntrID_Dup" runat="server" Font-Bold="true" ForeColor="Black" />&nbsp;
         <asp:TextBox ID="txbNewCntrID" runat="server" />&nbsp;&nbsp;
-        <asp:Button ID="btnGo" runat="server" Text="Enter" onclick="btnGo_Click" CausesValidation="true" />&nbsp;
-        <asp:Button ID="btnCancel" runat="server" Text="Cancel" onclick="btnCancel_Click" CausesValidation="false" />
+        <asp:Button ID="btnGo" runat="server" Text="Enter" onclick="btnCreateDup_Click" CausesValidation="true" />&nbsp;
+        <asp:Button ID="btnCancel" runat="server" Text="Cancel" 
+            onclick="btnCancel_Click" CausesValidation="false" style="height: 29px" />
         <asp:RequiredFieldValidator ID="rfvNewCntr" runat="server" ControlToValidate="txbNewCntrID" Text="You must enter a value" ForeColor="Red" Font-Bold="true" />
         <asp:RegularExpressionValidator ID="valCheck" ControlToValidate="txbNewCntrID" runat="server" ForeColor="Red" Font-Bold="true" 
         ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" />
@@ -262,7 +252,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
                     <asp:ListItem Value="0">Select...</asp:ListItem>
                     <asp:ListItem>CHEP</asp:ListItem>
                     <asp:ListItem>GMA</asp:ListItem>
-                    <asp:ListItem>OTHER</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
                     <asp:ListItem></asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundPalletWeightTextBox" runat="server" Text='<%# Bind("InboundPalletWeight") %>' Width="30px" Font-Size="Smaller" /></td>
@@ -350,7 +340,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
                     <asp:ListItem Value="0">Select...</asp:ListItem>
                     <asp:ListItem>CHEP</asp:ListItem>
                     <asp:ListItem>GMA</asp:ListItem>
-                    <asp:ListItem>OTHER</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
                     <asp:ListItem></asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundPalletWeightTextBox" runat="server" Text='<%# Bind("InboundPalletWeight") %>' Width="30px" Font-Size="Smaller" /></td>
@@ -415,8 +405,10 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 </tr>
 <tr>
     <td>    
-    <asp:GridView ID="gvContainers" runat="server" AutoGenerateColumns="False" DataKeyNames="RcvDetailID" DataSourceID="sdsContainer" 
-        AllowPaging="True" AllowSorting="True" CellPadding="4"  ForeColor="#333333" Font-Size="Smaller" OnRowCommand="gvContainers_RowCommand">
+    <asp:GridView ID="gvContainers" runat="server" AutoGenerateColumns="False" 
+            DataKeyNames="RcvDetailID" DataSourceID="sdsContainer" AllowSorting="True" 
+            CellPadding="4"  ForeColor="#333333" Font-Size="Smaller" 
+            OnRowCommand="gvContainers_RowCommand">
         <Columns>
         <asp:templatefield>
             <ItemTemplate>
@@ -445,7 +437,15 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 <asp:SqlDataSource ID="sdsClient" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_Client_Sel" SelectCommandType="StoredProcedure">
-</asp:SqlDataSource>        
+</asp:SqlDataSource>  
+<asp:SqlDataSource ID="sdsTSDF" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+    SelectCommand="IMDB_Receive_TSDF_Sel" SelectCommandType="StoredProcedure">
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsCarrier" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+    SelectCommand="IMDB_Receive_Carrier_Sel" SelectCommandType="StoredProcedure">
+</asp:SqlDataSource>       
     <asp:SqlDataSource ID="sdsContainerDetail" runat="server" 
         ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
         SelectCommand="IMDB_Receive_Container_Sel" SelectCommandType="StoredProcedure">

@@ -124,6 +124,8 @@ namespace IMDBWeb.Secure.deskTopPages
         }
         protected void btnDone_Click(object sender, EventArgs e)
         {
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
             trAddContainers.Visible = false;
             tdContainerEdit.Visible = false;
             tblSearch.Visible = false;
@@ -192,10 +194,19 @@ namespace IMDBWeb.Secure.deskTopPages
 
                     UpdCmd.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (SqlException ex)
                 {
-                    lblErrMsg.Visible = true;
-                    lblErrMsg.Text = ex.ToString();
+                    if (ex.ErrorCode == -2146232060)
+                    {
+                        // there is already a record with this container ID
+                        lblErrMsg.Text = "There is already a record with this container ID.  Please scan/enter a new containerID or contact your supervisor";
+                        lblErrMsg.Visible = true;
+                    }
+                    else
+                    {
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
                 }
                 finally
                 {
@@ -333,7 +344,7 @@ namespace IMDBWeb.Secure.deskTopPages
             }
         }
 
-        protected void btnGo_Click(object sender, EventArgs e)
+        protected void btnCreateDup_Click(object sender, EventArgs e)
         {
             String spDup = "IMDB_Receive_Container_Dup";
             SqlConnection con = new SqlConnection();
@@ -351,10 +362,19 @@ namespace IMDBWeb.Secure.deskTopPages
 
                     DupCmd.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (SqlException ex)
                 {
-                    lblErrMsg.Visible = true;
-                    lblErrMsg.Text = ex.ToString();
+                    if (ex.ErrorCode == -2146232060)
+                    {
+                        // there is already a record with this container ID
+                        lblErrMsg.Text = "There is already a record with this container ID.  Please scan/enter a new containerID or contact your supervisor";
+                        lblErrMsg.Visible = true;
+                    }
+                    else
+                    {
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
                 }
                 finally
                 {
@@ -370,6 +390,8 @@ namespace IMDBWeb.Secure.deskTopPages
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
             txbNewCntrID.Text = "";
             tdContainerDuplicate.Visible = false;
             trContainerDetails.Visible = false;
@@ -381,60 +403,7 @@ namespace IMDBWeb.Secure.deskTopPages
             tblNewTruck.Visible = true;
             fvNewTruck.ChangeMode(FormViewMode.Insert); 
         }
-        protected void ClientNameTextBox_OnTextChanged(object sender, EventArgs e)
-        {
-            string strClientName = ((TextBox)fvNewTruck.FindControl("ClientNameTextBox")).Text;
-            String sp = "IMDB_Receive_GetClientID_Sel";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand spCmd = new SqlCommand(sp, con);
-            spCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (spCmd)
-            {
-                spCmd.Parameters.AddWithValue("@ClientName", strClientName);
-                object ClientID = new object();
-                ClientID = spCmd.ExecuteScalar();
-                ((Label)fvNewTruck.FindControl("lblClientID")).Text = ClientID.ToString();
-            }
-            con.Close();
-        }
-        protected void TSDFTextBox_OnTextChanged(object sender, EventArgs e)
-        {
-            string curTSDFName = ((TextBox)fvNewTruck.FindControl("TSDFTextBox")).Text;
-            String sp = "IMDB_Receive_TSDFID_Sel";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand spCmd = new SqlCommand(sp, con);
-            spCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (spCmd)
-            {
-                spCmd.Parameters.AddWithValue("@TSDF", curTSDFName);
-                object TSDFID = new object();
-                TSDFID = spCmd.ExecuteScalar();
-                ((Label)fvNewTruck.FindControl("lblTSDFID")).Text = TSDFID.ToString();
-            }
-            con.Close();
-        }
-        protected void CarrierTextBox_OnTextChanged(object sender, EventArgs e)
-        {
-            string CurCarrierName = ((TextBox)fvNewTruck.FindControl("CarrierTextBox")).Text;
-            String sp = "IMDB_Receive_CarrierID_Sel";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand spCmd = new SqlCommand(sp, con);
-            spCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (spCmd)
-            {
-                spCmd.Parameters.AddWithValue("@Carrier", CurCarrierName);
-                object CarrierID = new object();
-                CarrierID = spCmd.ExecuteScalar();
-                ((Label)fvNewTruck.FindControl("lblCarrierID")).Text = CarrierID.ToString();
-            }
-            con.Close();
-        }
+
         protected void sdsNewTruck_Inserting(Object sender, SqlDataSourceCommandEventArgs e)
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
