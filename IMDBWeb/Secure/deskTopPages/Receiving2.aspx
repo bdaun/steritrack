@@ -15,7 +15,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 <table id="tblNewTruck" runat="server">
 <tr><td>
 <asp:Label ID="lblNewTruck" runat="server" Text="Enter the New truck information and click 'Insert'" Font-Italic="true" />
-<asp:FormView ID="fvNewTruck" runat="server" DataSourceID="sdsNewTruck" OnItemCommand="fvNewTruck_Command" >
+<asp:FormView ID="fvNewTruck" runat="server" DataSourceID="sdsNewTruck" OnItemCommand="fvNewTruck_Command" DefaultMode="Insert" >
     <InsertItemTemplate>
     <table>
     <tr><td style="font-weight:bold">OrderNumber:</td>
@@ -99,6 +99,89 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
     </table>
     <asp:ValidationSummary ID="vsNewTruckIns" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false" HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
     </InsertItemTemplate>
+    <ItemTemplate>
+    <table>
+    <tr><td style="font-weight:bold">OrderNumber:</td>
+        <td><asp:TextBox ID="txbNewOrderNumber" runat="server" Width="100px"  Text='<%# Bind("OrderNumber") %>' />
+        <ajaxToolkit:AutoCompleteExtender
+            ID="txbOrderNum_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
+            TargetControlID="txbNewOrderNumber" ServicePath="myAutoComplete.asmx" ServiceMethod="GetNewOrderNums"
+            MinimumPrefixLength="3" EnableCaching="true" CompletionSetCount="20" CompletionListCssClass="autocomplete_completionListElement" 
+            CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" 
+            DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
+        </ajaxToolkit:AutoCompleteExtender>
+        <asp:RequiredFieldValidator ID="rfvOrderNumber" runat="server" ControlToValidate="txbNewOrderNumber" ErrorMessage="Order Number" Font-Bold="true" ForeColor="Red" Text="*" />
+        <asp:CustomValidator ID="cvOrderNumber" runat="server" EnableClientScript="true" 
+            ErrorMessage="You must select a value from the list!" ControlToValidate="txbNewOrderNumber" 
+            OnServerValidate="txbNewOrderNumber_Validate" Display="Dynamic" Font-Bold="true" ForeColor="Red" > 
+</asp:CustomValidator>
+    </td></tr>
+    <tr><td style="font-weight:bold">WorkOrder:</td>
+        <td><asp:TextBox ID="WorkOrderTextBox" runat="server" Text='<%# Bind("WorkOrder") %>' /></td></tr>
+    <tr><td style="font-weight:bold">ClientName:</td>
+        <td>
+            <asp:DropDownList ID="ddClient" runat="server" DataSourceID="sdsClient" DataTextField="ClientName"
+                DataValueField="ClientID" SelectedValue='<%# bind("ClientName") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvClientName" runat="server" ControlToValidate="ddClient" ErrorMessage="Client Name" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">TSDF:</td>
+        <td>
+        <asp:DropDownList ID="ddTSDF" runat="server" DataSourceID="sdsTSDF" DataTextField="VendorName"
+                DataValueField="VendorID" SelectedValue='<%# bind("TSDF") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvTSDF" runat="server" ControlToValidate="ddTSDF" ErrorMessage="TSDF" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">ReceivedBy:</td>
+        <td><asp:DropDownList ID="ddRcvBy" Width="250px" runat="server" DataSourceID="sdsGetUsers" 
+             DataTextField="Name" DataValueField="Name" AppendDataBoundItems="True" SelectedValue='<%# bind("ReceivedBy") %>' >
+                <asp:ListItem Text="Select..." Value = "" />
+             </asp:DropDownList>
+             <asp:RequiredFieldValidator ID="rfvRcvBy" runat="server" ControlToValidate="ddRcvBy" InitialValue="" ErrorMessage="Received By" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">ReceiveDock:</td>
+        <td><asp:DropDownList ID="ddRcvDock"  Width="250px"  runat="server" SelectedValue='<%# bind("ReceiveDock") %>'>
+                <asp:ListItem Text="Select..." Value="" />
+                <asp:ListItem>33</asp:ListItem>
+                <asp:ListItem>34</asp:ListItem>
+                <asp:ListItem>35</asp:ListItem>
+                <asp:ListItem>36</asp:ListItem>
+                <asp:ListItem>37</asp:ListItem>
+                <asp:ListItem>SuiteA</asp:ListItem>
+                <asp:ListItem>Other</asp:ListItem>
+            </asp:DropDownList>
+            <asp:RequiredFieldValidator ID="rfvRcvDock" runat="server" ControlToValidate="ddRcvDock" InitialValue="" ErrorMessage="Receive Dock" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">Carrier:</td>
+        <td><asp:DropDownList ID="ddCarrier" runat="server" DataSourceID="sdsCarrier" DataTextField="VendorName"
+                DataValueField="CarrierID" SelectedValue='<%# bind("Carrier") %>' AppendDataBoundItems="true" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+        <asp:RequiredFieldValidator ID="rfvCarrier" runat="server" ControlToValidate="ddCarrier" ErrorMessage="Carrier" 
+            InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">Trailer_Number:</td>
+        <td><asp:TextBox ID="Trailer_NumberTextBox" runat="server" Text='<%# Bind("Trailer_Number") %>' /></td></tr>
+        <tr><td style="font-weight:bold">ReceiveDate:</td>
+        <td><asp:TextBox ID="ReceiveDateTextBox" runat="server" Text='<%# Bind("ReceiveDate") %>' />
+            <ajaxToolKit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="ReceiveDateTextBox" />
+            <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
+        </td></tr>
+    <tr><td style="font-weight:bold">ShipDate:</td>
+        <td><asp:TextBox ID="ShipDateTextBox" runat="server" Text='<%# Bind("ShipDate") %>' />
+        <ajaxToolKit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="ShipDateTextBox" /></td></tr>
+    <tr><td style="font-weight:bold">Memo:</td>
+        <td><asp:TextBox ID="MemoTextBox" runat="server" TextMode="MultiLine" Width="300px" Text='<%# Bind("Memo") %>'
+            onkeyup="setHeight(this);" onkeydown="setHeight(this);" onclick="setHeight(this);" /></td></tr>
+    <tr><td><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />&nbsp;
+        <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" /></td></tr>
+    </table>
+    <asp:ValidationSummary ID="vsNewTruckIns" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false" HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
+    </ItemTemplate>
 </asp:FormView>
 </td></tr>
 </table>
