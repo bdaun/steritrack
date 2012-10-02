@@ -52,12 +52,12 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
         <asp:Label ID="InboundDocNo" runat="server" Text='<%# Eval("InboundDocNo") %>' />
         </ItemTemplate>
         </asp:TemplateField>
-        <asp:TemplateField HeaderText="Date Needed">
+        <asp:TemplateField HeaderText="Date Serviced">
         <EditItemTemplate>
-        <asp:Label ID="DateNeeded" runat="server" Text='<%# Eval("DateNeeded","{0:MM/dd/yyyy}") %>' />
+        <asp:Label ID="DateService" runat="server" Text='<%# Eval("DateService","{0:MM/dd/yyyy}") %>' />
         </EditItemTemplate>
         <ItemTemplate>
-        <asp:Label ID="DateNeeded" runat="server" Text='<%# Eval("DateNeeded","{0:MM/dd/yyyy}") %>' />
+        <asp:Label ID="DateService" runat="server" Text='<%# Eval("DateService","{0:MM/dd/yyyy}") %>' />
         </ItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Age">
