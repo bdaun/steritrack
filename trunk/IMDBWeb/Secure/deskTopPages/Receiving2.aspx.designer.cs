@@ -247,6 +247,33 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.Button btnDone;
         
         /// <summary>
+        /// btnSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSummary;
+        
+        /// <summary>
+        /// trSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trSummary;
+        
+        /// <summary>
+        /// gvSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvSummary;
+        
+        /// <summary>
         /// trContainerDetails control.
         /// </summary>
         /// <remarks>
@@ -452,5 +479,14 @@ namespace IMDBWeb.Secure.deskTopPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsGetUsers;
+        
+        /// <summary>
+        /// sdsRcvSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsRcvSummary;
     }
 }
