@@ -11,6 +11,7 @@ namespace IMDBWeb.Secure.deskTopPages
 {
     public partial class Receiving2 : System.Web.UI.Page
     {
+        private GridViewHelper helper;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -22,6 +23,21 @@ namespace IMDBWeb.Secure.deskTopPages
                 tblBegin.Visible = true;
                 trContainerDetails.Visible = false;
             }
+            helper = new GridViewHelper(gvSummary);
+            GridViewSummary s = helper.RegisterSummary("NumberContainers", SummaryOperation.Sum);
+            s.Automatic = false;
+            s = helper.RegisterSummary("TotalWeight", SummaryOperation.Sum);
+            s.Automatic = false;
+            helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
+        }
+
+        private void helper_ManualSummary(GridViewRow row)
+        {
+            GridViewRow newRow = helper.InsertGridRow(row);
+            newRow.Cells[0].HorizontalAlign = HorizontalAlign.Right;
+            newRow.Cells[0].Text = String.Format("Total: {0:n0} Containers,&nbsp&nbsp&nbsp&nbsp{1:n0} lbs", helper.GeneralSummaries["NumberContainers"].Value, helper.GeneralSummaries["TotalWeight"].Value);
+            newRow.Cells[0].ForeColor = System.Drawing.Color.Black;
+            newRow.Cells[0].Font.Bold = true;
         }
 
         protected void btnSearchTruck_Click(object sender, EventArgs e)
@@ -133,6 +149,8 @@ namespace IMDBWeb.Secure.deskTopPages
             tblBegin.Visible = true;
             ddClient.SelectedIndex = 0;
             txbOrderNumber.Text = string.Empty;
+            trSummary.Visible = false;
+            btnSummary.Text = "Show Summary";
             Session["CurRcvHdrID"] = 0;
             sdsRcvHdr.SelectParameters["OrderNumber"].DefaultValue = null;
             gvRcvHdr.DataBind();
@@ -213,6 +231,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     con.Close();
                     gvContainers.DataBind();
                     fvContainerDetail.DataBind();
+                    gvSummary.DataBind();
                     tdContainerEdit.Visible = false;
                 }
             }
@@ -268,6 +287,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     con.Close();
                     gvContainers.DataBind();
                     fvContainerDetail.DataBind();
+                    gvSummary.DataBind();
                 }
             }
         }
@@ -381,6 +401,7 @@ namespace IMDBWeb.Secure.deskTopPages
                     con.Close();
                     gvContainers.DataBind();
                     fvContainerDetail.DataBind();
+                    gvSummary.DataBind();
                     txbNewCntrID.Text = "";
                     tdContainerDuplicate.Visible = false;
                     trContainerDetails.Visible = false;
@@ -446,6 +467,21 @@ namespace IMDBWeb.Secure.deskTopPages
 	            {
                     args.IsValid = true;
 	            }  
+            }
+        }
+
+        protected void btnSummary_Click(object sender, EventArgs e)
+        {
+            if(btnSummary.Text=="Show Summary")
+            {
+                btnSummary.Text = "Hide Summary";
+                trSummary.Visible = true;
+                gvSummary.DataBind();
+            }
+            else
+            {
+                btnSummary.Text = "Show Summary";
+                trSummary.Visible = false;
             }
         } 
     }

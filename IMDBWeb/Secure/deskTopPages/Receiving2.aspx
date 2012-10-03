@@ -258,8 +258,22 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 <table>
 <tr id="trAddContainers" runat="server" visible="false"><td>
     <asp:Button ID="btnAddContainer" runat="server" Text="Add Containers" onclick="btnAddContainer_Click" />&nbsp;
-    <asp:Button ID="btnDone" runat="server" Text="Done" onclick="btnDone_Click" /></td>
+    <asp:Button ID="btnDone" runat="server" Text="Done" onclick="btnDone_Click" />&nbsp;&nbsp;
+    <asp:Button ID="btnSummary" runat="server" Text="Show Summary" OnClick="btnSummary_Click" /></td>
 </tr>
+<tr id="trSummary" runat="server" Visible="false">
+<td>
+    <asp:GridView ID="gvSummary" runat="server" AutoGenerateColumns="False" 
+        DataSourceID="sdsRcvSummary" Width="421px">
+        <Columns>
+            <asp:BoundField DataField="ProfileName" HeaderText="Profile Name" SortExpression="ProfileName" ItemStyle-HorizontalAlign="Left" ItemStyle-Wrap="False" HeaderStyle-HorizontalAlign="Center" />
+            <asp:BoundField DataField="LineNumber" HeaderText="Line Number" SortExpression="LineNumber" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
+            <asp:BoundField DataField="CntrType" HeaderText="Cntr Type" SortExpression="CntrType" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
+            <asp:BoundField DataField="NumberContainers" HeaderText="Number Containers"  ReadOnly="True" SortExpression="NumberContainers" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
+            <asp:BoundField DataField="TotalWeight" HeaderText="Total Weight"  ReadOnly="True" SortExpression="TotalWeight" DataFormatString="{0:n0}" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center" />
+        </Columns> 
+    </asp:GridView>
+</td></tr>
 <tr id="trContainerDetails" runat="server">
     <td id="tdContainerDuplicate" runat="server" visible="false">
         <asp:Label ID="lblCntrID_Dup" runat="server" Font-Bold="true" ForeColor="Black" />&nbsp;
@@ -592,6 +606,12 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsGetUsers" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_User_Sel" SelectCommandType="StoredProcedure">
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsRcvSummary" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+    SelectCommand="IMDB_Receive_Summary_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:SessionParameter Name="RcvHdrID" SessionField="CurRcvHdrID" Type="Int32" />
+    </SelectParameters>
 </asp:SqlDataSource>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server"></asp:Content>
