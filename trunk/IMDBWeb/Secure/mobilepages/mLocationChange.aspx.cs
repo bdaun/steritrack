@@ -673,7 +673,7 @@ namespace IMDBWeb.Secure
                         UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
                         UpdateCmd.Parameters["@outboundcontainerid"].Value = txbCntrID.Text;
                         UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
-
+                        UpdateCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                         UpdateCmd.ExecuteNonQuery();
                     }
 
