@@ -274,20 +274,230 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         </Columns> 
     </asp:GridView>
 </td></tr>
-<tr id="trContainerDetails" runat="server">
-    <td id="tdContainerDuplicate" runat="server" visible="false">
-        <asp:Label ID="lblCntrID_Dup" runat="server" Font-Bold="true" ForeColor="Black" />&nbsp;
-        <asp:TextBox ID="txbNewCntrID" runat="server" />&nbsp;&nbsp;
-        <asp:Button ID="btnGo" runat="server" Text="Enter" onclick="btnCreateDup_Click" CausesValidation="true" />&nbsp;
-        <asp:Button ID="btnCancel" runat="server" Text="Cancel" 
-            onclick="btnCancel_Click" CausesValidation="false" style="height: 29px" />
-        <asp:RequiredFieldValidator ID="rfvNewCntr" runat="server" ControlToValidate="txbNewCntrID" Text="You must enter a value" ForeColor="Red" Font-Bold="true" />
-        <asp:RegularExpressionValidator ID="valCheck" ControlToValidate="txbNewCntrID" runat="server" ForeColor="Red" Font-Bold="true" 
-        ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" />
+<tr id="trDuplicate" runat="server">
+    <td>
+    <asp:Label ID="lblCntrID_Dup" runat="server" Font-Bold="true" ForeColor="Red"></asp:Label><br />
+    <asp:FormView ID="fvDuplicate" runat="server" DataKeyNames="RcvDetailID" DataSourceID="sdsContainerDetail" 
+        Font-Size="Small" OnDataBound="fvDuplicate_DataBound" DefaultMode="Edit" >
+        <EditItemTemplate>
+        <table>
+        <tr>
+        <td colspan="12">
+        <asp:ValidationSummary ID="vsCntrUpdate" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false"
+            HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
+        </td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold;font-size:smaller">DocNo
+                <asp:RequiredFieldValidator ID="rfvDocNo" runat="server" ControlToValidate="InboundDocNoTextBox" ErrorMessage="Document Number" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">CntrID
+                <asp:RequiredFieldValidator ID="rfvCntrID" runat="server" ControlToValidate="txbNewCntrID" ErrorMessage="ContainerID" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">BrandCode
+                <asp:RequiredFieldValidator ID="rfvBrandCode" runat="server" ControlToValidate="txbBrandCodes" ErrorMessage="BrandCode" Font-Bold="true" ForeColor="Red" Text="*" /></td>  
+            <td style="font-weight:bold;font-size:smaller">Line
+                <asp:RequiredFieldValidator ID="rfvManLine" runat="server" ControlToValidate="ManLineTextBox" ErrorMessage="Manifest Line" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Profile
+                <asp:RequiredFieldValidator ID="rfvProfile" runat="server" ControlToValidate="ddProfile" InitialValue="" ErrorMessage="Profile" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">RcvdAs
+                <asp:RequiredFieldValidator ID="rfvRcvdAs" runat="server" ControlToValidate="ddRcvdAs" InitialValue="Select..." ErrorMessage="RcvdAs" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Pallet Type
+                <asp:RequiredFieldValidator ID="rfvPalletType" runat="server" ControlToValidate="ddPalletType" InitialValue="0" ErrorMessage="PalletType" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">PalletWt
+                <asp:RequiredFieldValidator ID="rfvPalletWt" runat="server" ControlToValidate="InboundPalletWeightTextBox" ErrorMessage="Pallet Weight" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Cntr Type
+                <asp:RequiredFieldValidator ID="rfvCntrType" runat="server" ControlToValidate="ddContainerType" InitialValue="0" ErrorMessage="Container Type" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Qty
+                <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Location
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">ProcessPlan
+                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="txbNewCntrID" runat="server" ForeColor="Red" Font-Bold="true" 
+                ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" /></tr>
+        <tr>
+  <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
+            <td><asp:TextBox ID="txbNewCntrID" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
+            <td><asp:TextBox ID="txbBrandCodes" runat="server" Text='<%# Bind("BrandCodeName") %>' OnTextChanged="txbBrandCodes_SelectedIndexChanged" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
+                <ajaxToolkit:AutoCompleteExtender
+                    ID="txbBrandCodes_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
+                    TargetControlID="txbBrandCodes" ServicePath="myAutoComplete.asmx" ServiceMethod="GetBrandCodes"
+                    MinimumPrefixLength="4" EnableCaching="true" CompletionSetCount="20" CompletionListCssClass="autocomplete_completionListElement" 
+                    CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
+                    DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
+                </ajaxToolkit:AutoCompleteExtender>
+                <asp:Label ID="lblBrandCodeID" runat="server" Text='<%# Bind("BrandCode") %>' Visible="false" /></td>
+            <td><asp:TextBox ID="ManLineTextBox" runat="server" Text='<%# Bind("ManLine") %>' Width="20px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddProfile" runat="server" DataSourceID="sdsGetProfile"  DataTextField="Name" Font-Size="Smaller"
+                    DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
+                    <asp:ListItem Text="Select..." Value = "" />
+                </asp:DropDownList></td>
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+                    <asp:ListItem>Select...</asp:ListItem>
+                    <asp:ListItem>Product</asp:ListItem>
+                    <asp:ListItem>ShippedNH</asp:ListItem>
+                    <asp:ListItem>Waste</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:DropDownList ID="ddPalletType" runat="server" SelectedValue='<%# bind("InboundPalletType") %>' Width="50px" Font-Size="Smaller">
+                    <asp:ListItem Value="0">Select...</asp:ListItem>
+                    <asp:ListItem>CHEP</asp:ListItem>
+                    <asp:ListItem>GMA</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
+                    <asp:ListItem></asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:TextBox ID="InboundPalletWeightTextBox" runat="server" Text='<%# Bind("InboundPalletWeight") %>' Width="30px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddContainerType" runat="server" SelectedValue='<%# bind("InboundContainerType") %>' Width="50px" Font-Size="Smaller">
+                    <asp:ListItem Value="0">Select...</asp:ListItem>
+                    <asp:ListItem>DM</asp:ListItem>
+                    <asp:ListItem>CW</asp:ListItem>
+                    <asp:ListItem>CS</asp:ListItem>
+                    <asp:ListItem>CF</asp:ListItem>
+                    <asp:ListItem>DF</asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
+                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+                    <asp:ListItem Text="Select..." Value = "" />
+                </asp:DropDownList>
+            </td>
+            <td><asp:DropDownList ID="ddProcessPlan" runat="server" DataSourceID="sdsGetProcPlan"  DataTextField="ProcessPlan" Font-Size="Smaller"
+                    DataValueField="ProcessPlan" Width="100px" SelectedValue='<%# bind("ProcessPlan") %>' AppendDataBoundItems="true">
+                    <asp:ListItem>Select...</asp:ListItem>
+                </asp:DropDownList></td>
+            <td nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" onClick="fvDuplicateIns_Click" Text="Insert" Font-Size="Smaller" />&nbsp;
+            <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" OnClick="InsCancel_Click" CommandName="Cancel" Text="Cancel" Font-Size="Smaller" /></td>
+        </tr>
+        </table>                       
+        </EditItemTemplate>
+        <InsertItemTemplate>
+        <table>
+        <tr>
+        <td colspan="12">
+        <asp:ValidationSummary ID="vsCntrInsert" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false"
+            HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
+        </td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold;font-size:smaller">DocNo
+                <asp:RequiredFieldValidator ID="rfvDocNo" runat="server" ControlToValidate="InboundDocNoTextBox" ErrorMessage="Document Number" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">CntrID
+                <asp:RequiredFieldValidator ID="rfvCntrID" runat="server" ControlToValidate="txbNewCntrID" ErrorMessage="ContainerID" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">BrandCode
+                <asp:RequiredFieldValidator ID="rfvBrandCode" runat="server" ControlToValidate="txbBrandCodes" ErrorMessage="BrandCode" Font-Bold="true" ForeColor="Red" Text="*" /></td>  
+            <td style="font-weight:bold;font-size:smaller">Line
+                <asp:RequiredFieldValidator ID="rfvManLine" runat="server" ControlToValidate="ManLineTextBox" ErrorMessage="Manifest Line" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Profile
+                <asp:RequiredFieldValidator ID="rfvProfile" runat="server" ControlToValidate="ddProfile" InitialValue="" ErrorMessage="Profile" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">RcvdAs
+                <asp:RequiredFieldValidator ID="rfvRcvdAs" runat="server" ControlToValidate="ddRcvdAs" InitialValue="Select..." ErrorMessage="RcvdAs" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Pallet Type
+                <asp:RequiredFieldValidator ID="rfvPalletType" runat="server" ControlToValidate="ddPalletType" InitialValue="0" ErrorMessage="PalletType" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">PalletWt
+                <asp:RequiredFieldValidator ID="rfvPalletWt" runat="server" ControlToValidate="InboundPalletWeightTextBox" ErrorMessage="Pallet Weight" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Cntr Type
+                <asp:RequiredFieldValidator ID="rfvCntrType" runat="server" ControlToValidate="ddContainerType" InitialValue="0" ErrorMessage="Container Type" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Qty
+                <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">Location
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <td style="font-weight:bold;font-size:smaller">ProcessPlan
+                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td></tr>
+        <tr>
+            <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
+            <td><asp:TextBox ID="txbNewCntrID" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
+            <td><asp:TextBox ID="txbBrandCodes" runat="server" OnTextChanged="txbBrandCodes_SelectedIndexChanged" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
+                <ajaxToolkit:AutoCompleteExtender
+                    ID="txbBrandCodes_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
+                    TargetControlID="txbBrandCodes" ServicePath="myAutoComplete.asmx" ServiceMethod="GetBrandCodes"
+                    MinimumPrefixLength="4" EnableCaching="true" CompletionSetCount="20" CompletionListCssClass="autocomplete_completionListElement" 
+                    CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
+                    DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
+                </ajaxToolkit:AutoCompleteExtender>
+                <asp:Label ID="lblBrandCodeID" runat="server" Text='<%# Bind("BrandCode") %>' Visible="false" /></td>
+            <td><asp:TextBox ID="ManLineTextBox" runat="server" Text='<%# Bind("ManLine") %>' Width="20px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddProfile" runat="server" DataSourceID="sdsGetProfile"  DataTextField="Name" Font-Size="Smaller"
+                    DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
+                    <asp:ListItem Text="Select..." Value = "" />
+                </asp:DropDownList></td>
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+                    <asp:ListItem>Select...</asp:ListItem>
+                    <asp:ListItem>Product</asp:ListItem>
+                    <asp:ListItem>ShippedNH</asp:ListItem>
+                    <asp:ListItem>Waste</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:DropDownList ID="ddPalletType" runat="server" SelectedValue='<%# bind("InboundPalletType") %>' Width="50px" Font-Size="Smaller">
+                    <asp:ListItem Value="0">Select...</asp:ListItem>
+                    <asp:ListItem>CHEP</asp:ListItem>
+                    <asp:ListItem>GMA</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
+                    <asp:ListItem></asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:TextBox ID="InboundPalletWeightTextBox" runat="server" Text='<%# Bind("InboundPalletWeight") %>' Width="30px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddContainerType" runat="server" SelectedValue='<%# bind("InboundContainerType") %>' Width="50px" Font-Size="Smaller">
+                    <asp:ListItem Value="0">Select...</asp:ListItem>
+                    <asp:ListItem>DM</asp:ListItem>
+                    <asp:ListItem>CW</asp:ListItem>
+                    <asp:ListItem>CS</asp:ListItem>
+                    <asp:ListItem>CF</asp:ListItem>
+                    <asp:ListItem>DF</asp:ListItem>
+                </asp:DropDownList></td>
+            <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
+                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+                    <asp:ListItem Text="Select..." Value = "" />
+                </asp:DropDownList>
+            </td>
+            <td><asp:DropDownList ID="ddProcessPlan" runat="server" DataSourceID="sdsGetProcPlan"  DataTextField="ProcessPlan" Font-Size="Smaller"
+                    DataValueField="ProcessPlan" Width="100px" SelectedValue='<%# bind("ProcessPlan") %>' AppendDataBoundItems="true">
+                    <asp:ListItem>Select...</asp:ListItem>
+                </asp:DropDownList></td>
+            <td nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" onClick="fvContainerDetailsIns_Click" Text="Insert" Font-Size="Smaller" />&nbsp;
+            <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" OnClick="InsCancel_Click" CommandName="Cancel" Text="Cancel" Font-Size="Smaller" /></td>
+        </tr>
+        </table>
+        </InsertItemTemplate>
+        <ItemTemplate>
+       <table style="font-size:smaller">
+        <tr>
+            <td style="font-weight:bold;font-size:smaller;" width="10px">ID</td>
+            <td style="font-weight:bold;font-size:smaller">InboundDocNo</td>
+            <td style="font-weight:bold;font-size:smaller">CntrID</td>
+            <td style="font-weight:bold;font-size:smaller">BrandCode</td>  
+            <td style="font-weight:bold;font-size:smaller">ManLine</td>
+            <td style="font-weight:bold;font-size:smaller">Profile</td>
+            <td style="font-weight:bold;font-size:smaller">RcvdAs</td>
+            <td style="font-weight:bold;font-size:smaller">PalletType</td>
+            <td style="font-weight:bold;font-size:smaller">PalletWt</td>
+            <td style="font-weight:bold;font-size:smaller">CntrType</td>
+            <td style="font-weight:bold;font-size:smaller">CntrQty</td>
+            <td style="font-weight:bold;font-size:smaller">Location</td>
+            <td style="font-weight:bold;font-size:smaller">ProcessPlan</td></tr>
+        <tr>
+            <td><asp:Label ID="RcvDetailIDLabel1" runat="server" Text='<%# Eval("RcvDetailID") %>' Width="10px" /></td>
+            <td><asp:Label ID="InboundDocNoLabel" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="30px" /></td>
+            <td><asp:Label ID="txbNewCntrID" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="30px"  /></td>
+            <td><asp:Label ID="BrandCodeNameLabel" runat="server" Text='<%# Bind("BrandCodeName") %>' Width="30px"  /></td>
+            <td><asp:Label ID="ManLineLabel" runat="server" Text='<%# Bind("ManLine") %>' Width="30px"  /></td>
+            <td><asp:Label ID="ProfileLabel" runat="server" Text='<%# Bind("Profile") %>' Width="30px"  /></td>
+            <td><asp:Label ID="RcvdAsLabel" runat="server" Text='<%# Bind("RcvdAs") %>' Width="30px"  /></td>
+            <td><asp:Label ID="InboundPalletTypeLabel" runat="server" Text='<%# Bind("InboundPalletType") %>' Width="30px"  /></td>
+            <td><asp:Label ID="InboundPalletWeightLabel" runat="server" Text='<%# Bind("InboundPalletWeight") %>' Width="30px"  /></td>
+            <td><asp:Label ID="InboundContainerTypeLabel" runat="server" Text='<%# Bind("InboundContainerType") %>' Width="30px"  /></td>
+            <td><asp:Label ID="InboundContainerQtyLabel" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="30px"  /></td>
+            <td><asp:Label ID="InventoryLocationLabel" runat="server" Text='<%# Bind("InventoryLocation") %>' Width="30px"  /></td>
+            <td><asp:Label ID="ProcessPlanLabel" runat="server" Text='<%# Bind("ProcessPlan") %>' Width="30px"  /></td>
+        </tr>
+        </table>
+        </ItemTemplate>
+    </asp:FormView>
     </td>
+</tr>
+<tr id="trContainerDetails" runat="server">
     <td id="tdContainerEdit" runat="server" visible="false" >
+    <br />
     <asp:FormView ID="fvContainerDetail" runat="server" DataKeyNames="RcvDetailID" DataSourceID="sdsContainerDetail" 
-        Font-Size="Small" OnDataBound="fvContainerDetail_DataBound" >
+        Font-Size="Small" OnDataBound="fvDuplicate_DataBound" DefaultMode="Edit" >
         <EditItemTemplate>
         <table>
         <tr>
@@ -320,7 +530,9 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
             <td style="font-weight:bold;font-size:smaller">Location
                 <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
-                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td></tr>
+                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="InboundContainerIDTextBox" runat="server" ForeColor="Red" Font-Bold="true" 
+                ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" /></tr>
         <tr>
   <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
             <td><asp:TextBox ID="InboundContainerIDTextBox" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
@@ -408,7 +620,9 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
             <td style="font-weight:bold;font-size:smaller">Location
                 <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
-                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td></tr>
+                <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+            <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="InboundContainerIDTextBox" runat="server" ForeColor="Red" Font-Bold="true" 
+                ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" /></tr>
         <tr>
             <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
             <td><asp:TextBox ID="InboundContainerIDTextBox" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
