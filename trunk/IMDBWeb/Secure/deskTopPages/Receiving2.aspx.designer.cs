@@ -274,22 +274,13 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.GridView gvSummary;
         
         /// <summary>
-        /// trContainerDetails control.
+        /// trDuplicate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trContainerDetails;
-        
-        /// <summary>
-        /// tdContainerDuplicate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell tdContainerDuplicate;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trDuplicate;
         
         /// <summary>
         /// lblCntrID_Dup control.
@@ -301,49 +292,22 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::System.Web.UI.WebControls.Label lblCntrID_Dup;
         
         /// <summary>
-        /// txbNewCntrID control.
+        /// fvDuplicate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbNewCntrID;
+        protected global::System.Web.UI.WebControls.FormView fvDuplicate;
         
         /// <summary>
-        /// btnGo control.
+        /// trContainerDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGo;
-        
-        /// <summary>
-        /// btnCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancel;
-        
-        /// <summary>
-        /// rfvNewCntr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNewCntr;
-        
-        /// <summary>
-        /// valCheck control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator valCheck;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trContainerDetails;
         
         /// <summary>
         /// tdContainerEdit control.

@@ -126,6 +126,7 @@ namespace IMDBWeb.Secure.deskTopPages
                 e.Row.Attributes.Add("onclick", ClientScript.GetPostBackClientHyperlink(this.gvRcvHdr, "Select$" + e.Row.RowIndex));
             }
         }
+
         protected void gvRcvHdr_SelectedIndexChanged(object sender, EventArgs e)
         {
             trAddContainers.Visible = true;
@@ -138,10 +139,12 @@ namespace IMDBWeb.Secure.deskTopPages
             gvRcvHdr.DataBind();
             gvContainers.DataBind();
         }
+
         protected void btnDone_Click(object sender, EventArgs e)
         {
             lblErrMsg.Text = string.Empty;
             lblErrMsg.Visible = false;
+            trDuplicate.Visible = false;
             trAddContainers.Visible = false;
             tdContainerEdit.Visible = false;
             tblSearch.Visible = false;
@@ -159,18 +162,24 @@ namespace IMDBWeb.Secure.deskTopPages
 
         protected void btnAddContainer_Click(object sender, EventArgs e)
         {
+            trDuplicate.Visible = true;
             trContainerDetails.Visible = true;
             tdContainerEdit.Visible = true;
             fvContainerDetail.ChangeMode(FormViewMode.Insert);
         }
+
         protected void InsCancel_Click(object sender, EventArgs e)
         {
-            tdContainerEdit.Visible = false;
+            trDuplicate.Visible = false;
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
         }
 
         protected void UpdCancel_Click(object sender, EventArgs e)
         {
             tdContainerEdit.Visible = false;
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
         }
 
         protected void fvNewTruck_Command(object sender, FormViewCommandEventArgs e)
@@ -180,8 +189,11 @@ namespace IMDBWeb.Secure.deskTopPages
             tblNewTruck.Visible = false;
             tblSearch.Visible = false;
             tblBegin.Visible = true;
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
             }
         }
+
         protected void fvContainerDetailsUpd_Click(object sender, EventArgs e)
         {
             String spUpd = "IMDB_Receive_Container_Upd";
@@ -237,6 +249,7 @@ namespace IMDBWeb.Secure.deskTopPages
             }
         
         }
+
         protected void fvContainerDetailsIns_Click(object sender, EventArgs e)
         {
             lblErrMsg.Visible = false;
@@ -292,6 +305,61 @@ namespace IMDBWeb.Secure.deskTopPages
             }
         }
 
+        protected void fvDuplicateIns_Click(object sender, EventArgs e)
+        {
+            lblErrMsg.Visible = false;
+            lblErrMsg.Text = string.Empty;
+            String spIns = "IMDB_Receive_Container_Ins";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand InsCmd = new SqlCommand(spIns, con);
+            InsCmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (InsCmd)
+            {
+                try
+                {
+                    InsCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                    InsCmd.Parameters.AddWithValue("@InboundDocNo", ((TextBox)fvDuplicate.FindControl("InboundDocNoTextBox")).Text);
+                    InsCmd.Parameters.AddWithValue("@ManifestLineNumber", Convert.ToInt32(((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Text));
+                    InsCmd.Parameters.AddWithValue("@RcvHdrID", Session["CurRcvHdrID"].ToString());
+                    InsCmd.Parameters.AddWithValue("@InboundProfileID", Convert.ToInt32(((DropDownList)fvDuplicate.FindControl("ddProfile")).Text));
+                    InsCmd.Parameters.AddWithValue("@InboundContainerType", ((DropDownList)fvDuplicate.FindControl("ddContainerType")).Text);
+                    InsCmd.Parameters.AddWithValue("@InboundPalletType", ((DropDownList)fvDuplicate.FindControl("ddPalletType")).Text);
+                    InsCmd.Parameters.AddWithValue("@InboundPalletWeight", Convert.ToInt32(((TextBox)fvDuplicate.FindControl("InboundPalletWeightTextBox")).Text));
+                    InsCmd.Parameters.AddWithValue("@InboundContainerQty", Convert.ToInt32(((TextBox)fvDuplicate.FindControl("InboundContainerQtyTextBox")).Text));
+                    InsCmd.Parameters.AddWithValue("@InboundContainerID", ((TextBox)fvDuplicate.FindControl("txbNewCntrID")).Text);
+                    InsCmd.Parameters.AddWithValue("@InventoryLocation", ((DropDownList)fvDuplicate.FindControl("ddLocation")).Text);
+                    InsCmd.Parameters.AddWithValue("@BrandCode", ((Label)fvDuplicate.FindControl("lblBrandCodeID")).Text);
+                    InsCmd.Parameters.AddWithValue("@ProcessPlan", ((DropDownList)fvDuplicate.FindControl("ddProcessPlan")).Text);
+                    InsCmd.Parameters.AddWithValue("@RcvdAs", ((DropDownList)fvDuplicate.FindControl("ddRcvdAs")).Text);
+
+                    InsCmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.ErrorCode == -2146232060)
+                    {
+                        // there is already a record with this container ID
+                        lblErrMsg.Text = "There is already a record with this container ID.  Please scan/enter a new containerID or contact your supervisor";
+                        lblErrMsg.Visible = true;
+                    }
+                    else
+                    {
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
+                }
+                finally
+                {
+                    con.Close();
+                    gvContainers.DataBind();
+                    fvDuplicate.DataBind();
+                    gvSummary.DataBind();
+                }
+            }
+        }
+
         protected void fvContainerDetail_DataBound(object sender, EventArgs e)
         { 
             Control ctrl = fvContainerDetail.FindControl("InboundDocNoTextBox"); 
@@ -300,6 +368,18 @@ namespace IMDBWeb.Secure.deskTopPages
                 ctrl.Focus(); 
             } 
         }
+
+        protected void fvDuplicate_DataBound(object sender, EventArgs e)
+        {
+            TextBox txb1 = fvDuplicate.FindControl("txbNewCntrID") as TextBox;
+            if (txb1 != null)
+            { 
+                txb1.Text = "Enter ID";
+                txb1.Attributes.Add("Onfocus", "this.select()");
+                txb1.Focus();
+            }
+        }
+
         protected void txbBrandCodes_SelectedIndexChanged(object sender, EventArgs e)
         {
             string SelBCName = ((TextBox)fvContainerDetail.FindControl("txbBrandCodes")).Text;
@@ -340,82 +420,28 @@ namespace IMDBWeb.Secure.deskTopPages
             rdr1.Close();
             ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
         }
+
         protected void gvContainers_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             switch (e.CommandName)
             {
                 case "EditDetail":
-                    int index = Int32.Parse(e.CommandArgument.ToString());
-                    Session["CurDetailID"] = index;
+                    Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
                     trContainerDetails.Visible = true;
+                    trDuplicate.Visible = false;
                     tdContainerEdit.Visible = true;
-                    tdContainerDuplicate.Visible = false;
                     fvContainerDetail.ChangeMode(FormViewMode.Edit);
                     fvContainerDetail.DataSourceID = "sdsContainer_Edit";
                     break;
                 case "DupeDetail":
                     Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
-                    trContainerDetails.Visible = true;
-                    tdContainerDuplicate.Visible = true;
-                    tdContainerEdit.Visible = false;
+                    trContainerDetails.Visible = false;
+                    trDuplicate.Visible = true;
+                    fvDuplicate.ChangeMode(FormViewMode.Edit);
+                    fvDuplicate.DataSourceID = "sdsContainer_Edit";
                     lblCntrID_Dup.Text = "Please enter a new Container ID to duplicate values in RcvDetailID '" + Session["CurDetailID"] + "'";
-                    txbNewCntrID.Focus();
                     break;
             }
-        }
-
-        protected void btnCreateDup_Click(object sender, EventArgs e)
-        {
-            String spDup = "IMDB_Receive_Container_Dup";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand DupCmd = new SqlCommand(spDup, con);
-            DupCmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            using (DupCmd)
-            {
-                try
-                {
-                    DupCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                    DupCmd.Parameters.AddWithValue("@InboundContainerID", txbNewCntrID.Text);
-                    DupCmd.Parameters.AddWithValue("RcvDetailID", Session["CurDetailID"].ToString());
-
-                    DupCmd.ExecuteNonQuery();
-                }
-                catch (SqlException ex)
-                {
-                    if (ex.ErrorCode == -2146232060)
-                    {
-                        // there is already a record with this container ID
-                        lblErrMsg.Text = "There is already a record with this container ID.  Please scan/enter a new containerID or contact your supervisor";
-                        lblErrMsg.Visible = true;
-                    }
-                    else
-                    {
-                        lblErrMsg.Text = ex.ToString();
-                        lblErrMsg.Visible = true;
-                    }
-                }
-                finally
-                {
-                    con.Close();
-                    gvContainers.DataBind();
-                    fvContainerDetail.DataBind();
-                    gvSummary.DataBind();
-                    txbNewCntrID.Text = "";
-                    tdContainerDuplicate.Visible = false;
-                    trContainerDetails.Visible = false;
-                }
-            }
-        }
-
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            lblErrMsg.Text = string.Empty;
-            lblErrMsg.Visible = false;
-            txbNewCntrID.Text = "";
-            tdContainerDuplicate.Visible = false;
-            trContainerDetails.Visible = false;
         }
 
         protected void btnNewTruck_Click(object sender, EventArgs e)
@@ -483,6 +509,7 @@ namespace IMDBWeb.Secure.deskTopPages
                 btnSummary.Text = "Show Summary";
                 trSummary.Visible = false;
             }
-        } 
+        }
+
     }
 }
