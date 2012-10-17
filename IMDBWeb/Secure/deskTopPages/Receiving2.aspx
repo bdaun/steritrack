@@ -169,7 +169,8 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         <tr><td style="font-weight:bold">ReceiveDate:</td>
         <td><asp:TextBox ID="ReceiveDateTextBox" runat="server" Text='<%# Bind("ReceiveDate") %>' />
             <ajaxToolKit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="ReceiveDateTextBox" />
-            <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
+            <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" 
+                ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
         </td></tr>
     <tr><td style="font-weight:bold">ShipDate:</td>
         <td><asp:TextBox ID="ShipDateTextBox" runat="server" Text='<%# Bind("ShipDate") %>' />
@@ -214,12 +215,16 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         </asp:DropDownList></td>
 </tr>
 <tr><td align="right">RcvDate Range:&nbsp;</td>
-<td><asp:TextBox ID="txbBegDate" runat="server" Width="75px" AutoPostBack="true" />
-        <ajaxToolkit:TextBoxWatermarkExtender ID="wmBegDate" runat="server" TargetControlID="txbBegDate" WatermarkText="Begin Date" WatermarkCssClass="watermarked" />
-        <ajaxToolKit:CalendarExtender ID="CalExBegDate" runat="server" TargetControlID="txbBegDate" />&nbsp;and&nbsp;
-        <asp:TextBox ID="txbEndDate" runat="server" Width="75px" AutoPostBack="true" />
-        <ajaxToolkit:TextBoxWatermarkExtender ID="wmEndDate" runat="server" TargetControlID="txbEndDate" WatermarkText="End Date" WatermarkCssClass="watermarked" />
-        <ajaxToolKit:CalendarExtender ID="CalExEndDate" runat="server" TargetControlID="txbEndDate" />
+<td><asp:TextBox ID="txbBegDate" runat="server" Width="75px" AutoPostBack="true" CausesValidation="true" />
+    <ajaxToolkit:TextBoxWatermarkExtender ID="wmBegDate" runat="server" TargetControlID="txbBegDate" WatermarkText="Begin Date" WatermarkCssClass="watermarked" />
+    <ajaxToolKit:CalendarExtender ID="CalExBegDate" runat="server" TargetControlID="txbBegDate" />&nbsp;and&nbsp;
+    <asp:TextBox ID="txbEndDate" runat="server" Width="75px" AutoPostBack="true" CausesValidation="true" />
+    <ajaxToolkit:TextBoxWatermarkExtender ID="wmEndDate" runat="server" TargetControlID="txbEndDate" WatermarkText="End Date" WatermarkCssClass="watermarked" />
+    <ajaxToolKit:CalendarExtender ID="CalExEndDate" runat="server" TargetControlID="txbEndDate" />
+    <asp:RegularExpressionValidator ID="revBegDate" runat="server" ControlToValidate="txbBegDate" ForeColor="Red" Font-Bold="true" 
+        ErrorMessage="Please use mm/dd/yyyy format" ValidationExpression="^(1[0-2]|0?[1-9])/(3[01]|[12][0-9]|0?[1-9])/(?:[0-9]{2})?[0-9]{2}$" SetFocusOnError="True" />
+    <asp:RegularExpressionValidator ID="revEndDate" runat="server" ControlToValidate="txbEndDate" ForeColor="Red" Font-Bold="true" 
+        ErrorMessage="Please use mm/dd/yyyy format" ValidationExpression="^(1[0-2]|0?[1-9])/(3[01]|[12][0-9]|0?[1-9])/(?:[0-9]{2})?[0-9]{2}$" SetFocusOnError="True" />
     </td></tr>
 <tr><td></td>
     <td><asp:Button ID="btnSearch" runat="server" Text="Search" onclick="btnSearch_Click" /> &nbsp;&nbsp;
@@ -228,31 +233,149 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 <table>
 <tr><td style="font-style:italic">
 <asp:Label ID="lblTruckMsg" runat="Server" Text="Click on a row from the available trucks to manage containers"/>
-    &nbsp;
 </td><td></td></tr>
 <tr><td>
-    <asp:GridView ID="gvRcvHdr" runat="server" AutoGenerateColumns="False" DataKeyNames="RcvHdrID" DataSourceID="sdsRcvHdr"
+    <asp:GridView ID="gvRcvHdr" runat="server" AutoGenerateColumns="False" DataKeyNames="RcvHdrID" DataSourceID="sdsRcvHdr" Width="90%"
             OnRowDataBound="gvRcvHdr_RowDataBound" OnSelectedIndexChanged="gvRcvHdr_SelectedIndexChanged" OnDataBound="gvRcvHdr_DataBound"
-            SelectedRowStyle-BackColor="#ffff99" AllowPaging="True" AllowSorting="True" CellPadding="4" ForeColor="#333333">
+            SelectedRowStyle-BackColor="#ffff99" AllowPaging="True" AllowSorting="True" CellPadding="2" ForeColor="#333333" Font-Size="Smaller">
         <Columns>
+            <asp:CommandField ShowEditButton="True" />
             <asp:BoundField DataField="RcvHdrID" HeaderText="Hdr ID" InsertVisible="False" ReadOnly="True" SortExpression="RcvHdrID" />
-            <asp:BoundField DataField="OrderNumber" HeaderText="Order" SortExpression="OrderNumber" ItemStyle-Wrap="false" />
-            <asp:BoundField DataField="WorkOrder" HeaderText="Work Order" SortExpression="WorkOrder" />
-            <asp:BoundField DataField="Clientname" HeaderText="Client" SortExpression="Clientname" />
-            <asp:BoundField DataField="Carrier" HeaderText="Carrier" SortExpression="Carrier" />
-            <asp:BoundField DataField="TSDF" HeaderText="TSDF" SortExpression="TSDF" />
-            <asp:BoundField DataField="ReceivedBy" HeaderText="RcvBy"  SortExpression="ReceivedBy" />
-            <asp:BoundField DataField="ReceiveDate" HeaderText="RcvDate" SortExpression="ReceiveDate" DataFormatString="{0:d}" />
-            <asp:BoundField DataField="ReceiveDock" HeaderText="Dock" SortExpression="ReceiveDock" />            
-            <asp:BoundField DataField="Trailer Number" HeaderText="Trailer Number" SortExpression="Trailer Number" />
-            <asp:BoundField DataField="ShipDate" HeaderText="Ship Date" SortExpression="ShipDate" DataFormatString="{0:d}" />
-            <asp:BoundField DataField="ClientID" HeaderText="ClientID" SortExpression="ClientID" Visible="false" />
-            <asp:BoundField DataField="TSDFID" HeaderText="TSDFID" SortExpression="TSDFID" Visible="false" />
-            <asp:BoundField DataField="CarrierID" HeaderText="CarrierID" SortExpression="CarrierID" Visible="false" />
-            <asp:BoundField DataField="Memo" HeaderText="Memo" SortExpression="Memo" Visible="false" />
+            <asp:TemplateField HeaderText="Order" SortExpression="OrderNumber" ItemStyle-Wrap="false" >
+            <EditItemTemplate>
+                <asp:TextBox ID="txbOrderNumber" runat="server" Width="60px"  Text='<%# Bind("OrderNumber") %>' Font-Size="8"/>
+                    <ajaxToolkit:AutoCompleteExtender
+                    ID="AutoCompleteExtender1" runat="server" Enabled="True" CompletionInterval="50"
+                    TargetControlID="txbOrderNumber" ServicePath="myAutoComplete.asmx" ServiceMethod="GetNewOrderNums"
+                    MinimumPrefixLength="3" EnableCaching="true" CompletionSetCount="20" CompletionListCssClass="autocomplete_completionListElement" 
+                    CompletionListItemCssClass="autocomplete_listItem" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" 
+                    DelimiterCharacters="," ShowOnlyCurrentWordInCompletionListItem="false">
+                    </ajaxToolkit:AutoCompleteExtender>
+                    <asp:RequiredFieldValidator ID="rfvOrderNumber" runat="server" ControlToValidate="txbOrderNumber" ErrorMessage="Order Number" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblOrder" runat="server" Text='<%# Eval("OrderNumber") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Work Order" SortExpression="WorkOrder">
+            <EditItemTemplate>
+                <asp:TextBox ID="txbWorkOrder" runat="server" Width="40px" Text='<%# Bind("WorkOrder") %>' Font-Size="8" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblWorkOrder" runat="server" Text='<%# Eval("WorkOrder") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Client" SortExpression="ClientName" ItemStyle-Wrap="false">
+            <EditItemTemplate>
+            <asp:DropDownList ID="ddClient" runat="server" DataSourceID="sdsClient" DataTextField="ClientName" Width="100px"
+                DataValueField="ClientID" SelectedValue='<%# bind("ClientID") %>' AppendDataBoundItems="true" Font-Size="8" >
+                <asp:ListItem Text="Select..." Value="" />
+            </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="rfvClientName" runat="server" ControlToValidate="ddClient" ErrorMessage="Client Name" 
+                    InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblClient" runat="server" Text='<%# Eval("ClientName") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Carrier" SortExpression="CarrierName" ItemStyle-Wrap="false">
+            <EditItemTemplate>
+                <asp:DropDownList ID="ddCarrier" runat="server" DataSourceID="sdsCarrier" DataTextField="VendorName" Width="100px"
+                    DataValueField="CarrierID" SelectedValue='<%# bind("CarrierID") %>' AppendDataBoundItems="true" Font-Size="8" >
+                    <asp:ListItem Text="Select..." Value="" />
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="rfvCarrier" runat="server" ControlToValidate="ddCarrier" ErrorMessage="Carrier" 
+                    InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblCarrier" runat="server" Text='<%# Eval("Carrier") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="TSDF" SortExpression="TSDF" ItemStyle-Wrap="false">
+            <EditItemTemplate>
+            <asp:DropDownList ID="ddTSDF" runat="server" DataSourceID="sdsTSDF" DataTextField="VendorName" Width="100px"
+                    DataValueField="VendorID" SelectedValue='<%# bind("TSDFID") %>' AppendDataBoundItems="true" Font-Size="8" >
+                    <asp:ListItem Text="Select..." Value="" />
+                </asp:DropDownList>
+            <asp:RequiredFieldValidator ID="rfvTSDF" runat="server" ControlToValidate="ddTSDF" ErrorMessage="TSDF" 
+                InitialValue="" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblTSDF" runat="server" Text='<%# Eval("TSDF") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="RcvBy" SortExpression="RcvBy" ItemStyle-Wrap="false">
+            <EditItemTemplate>
+            <asp:DropDownList ID="ddRcvBy" runat="server" DataSourceID="sdsGetUsers" Font-Size="8" Width="100px"
+                DataTextField="Name" DataValueField="Name" AppendDataBoundItems="True" SelectedValue='<%# bind("ReceivedBy") %>' >
+                <asp:ListItem Text="Select..." Value = "" />
+            </asp:DropDownList>
+            <asp:RequiredFieldValidator ID="rfvRcvBy" runat="server" ControlToValidate="ddRcvBy" InitialValue="" ErrorMessage="Received By" 
+                Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblRcvdBy" runat="server" Text='<%# Eval("ReceivedBy") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="RcvDate" SortExpression="RcvDate">
+            <EditItemTemplate>
+                <asp:TextBox ID="ReceiveDateTextBox" runat="server" Width="60" Text='<%# Bind("ReceiveDate","{0:d}") %>' Font-Size="8"/>
+                <ajaxToolKit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="ReceiveDateTextBox" />
+                <asp:RequiredFieldValidator ID="rfvReceiveDate" runat="server" ControlToValidate="ReceiveDateTextBox" ErrorMessage="Received Date" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblRcvDate" runat="server" Text='<%# Eval("ReceiveDate","{0:d}") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Trailer Number" SortExpression="TrailerNumber">
+            <EditItemTemplate>
+                <asp:TextBox ID="txbTrailerNumber" runat="server" Width="50" Text='<%# Bind("Trailer_Number") %>' Font-Size="8" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblTrailerNumber" runat="server" Text='<%# Eval("Trailer_Number") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Dock" SortExpression="Dock">
+            <EditItemTemplate>
+                <asp:DropDownList ID="ddRcvDock"  Width="50" Font-Size="8" runat="server" SelectedValue='<%# bind("ReceiveDock") %>'>
+                <asp:ListItem Text="Select..." Value="" />
+                <asp:ListItem>33</asp:ListItem>
+                <asp:ListItem>34</asp:ListItem>
+                <asp:ListItem>35</asp:ListItem>
+                <asp:ListItem>36</asp:ListItem>
+                <asp:ListItem>37</asp:ListItem>
+                <asp:ListItem>SuiteA</asp:ListItem>
+                <asp:ListItem>Other</asp:ListItem>
+            </asp:DropDownList>
+            <asp:RequiredFieldValidator ID="rfvRcvDock" runat="server" ControlToValidate="ddRcvDock" InitialValue="" 
+                ErrorMessage="Receive Dock" Font-Bold="true" ForeColor="Red" Text="*" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblDock" runat="server" Text='<%# Eval("ReceiveDock") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField> 
+            <asp:TemplateField HeaderText="ShipDate" SortExpression="ShipDate">
+            <EditItemTemplate>
+                <asp:TextBox ID="txbShipDate" runat="server" Width="60" Text='<%# Bind("ShipDate","{0:d}") %>' Font-Size="8"/>
+                <ajaxToolKit:CalendarExtender ID="CalendarExtender3" runat="server" TargetControlID="txbShipDate" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblShipDate" runat="server" Text='<%# Eval("ShipDate","{0:d}") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Memo" SortExpression="Memo">
+            <EditItemTemplate>
+                <asp:TextBox ID="MemoTextBox" runat="server" TextMode="MultiLine" Width="300px" Text='<%# Bind("Memo") %>'
+                    onkeyup="setHeight(this);" onkeydown="setHeight(this);" onclick="setHeight(this);" />
+            </EditItemTemplate>
+            <ItemTemplate>
+                <asp:Label ID="lblMemo" runat="server" Text='<%# Eval("Memo") %>' Font-Size="8" />
+            </ItemTemplate>
+            </asp:TemplateField>    
         </Columns>
+        <SelectedRowStyle BackColor="#FFFF99"></SelectedRowStyle>
     </asp:GridView>    
-    </td><td></td>
+    </td>
 </tr>
 </table>
 <table>
@@ -263,8 +386,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 </tr>
 <tr id="trSummary" runat="server" Visible="false">
 <td>
-    <asp:GridView ID="gvSummary" runat="server" AutoGenerateColumns="False" 
-        DataSourceID="sdsRcvSummary" Width="421px">
+    <asp:GridView ID="gvSummary" runat="server" AutoGenerateColumns="False" DataSourceID="sdsRcvSummary" Width="425px">
         <Columns>
             <asp:BoundField DataField="ProfileName" HeaderText="Profile Name" SortExpression="ProfileName" ItemStyle-HorizontalAlign="Left" ItemStyle-Wrap="False" HeaderStyle-HorizontalAlign="Center" />
             <asp:BoundField DataField="LineNumber" HeaderText="Line Number" SortExpression="LineNumber" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" />
@@ -371,12 +493,10 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         </EditItemTemplate>
         <InsertItemTemplate>
         <table>
-        <tr>
-        <td colspan="12">
+        <tr><td colspan="12">
         <asp:ValidationSummary ID="vsCntrInsert" runat="server" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false"
             HeaderText="You must enter a value in the following fields:" EnableClientScript="true" />
-        </td>
-        </tr>
+        </td></tr>
         <tr>
             <td style="font-weight:bold;font-size:smaller">DocNo
                 <asp:RequiredFieldValidator ID="rfvDocNo" runat="server" ControlToValidate="InboundDocNoTextBox" ErrorMessage="Document Number" Font-Bold="true" ForeColor="Red" Text="*" /></td>
@@ -780,7 +900,9 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsRcvHdr" runat="server"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>"
-    SelectCommand="IMDB_Receive_Hdr_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="IMDB_Receive_Hdr_Sel" SelectCommandType="StoredProcedure"
+    UpdateCommand="IMDB_Receive_Hdr_Upd" UpdateCommandType="StoredProcedure"
+    OnUpdating="sdsRcvHdr_Updating">
     <SelectParameters>
         <asp:ControlParameter ControlID="txbOrderNumber" Name="ordernumber" PropertyName="Text" Type="String" />
         <asp:ControlParameter ControlID="ddClient" Name="clientID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
@@ -788,6 +910,21 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         <asp:ControlParameter ControlID="txbBegDate" Name="BegDate" PropertyName="Text" Type="String" DefaultValue="01/01/1900" />
         <asp:ControlParameter ControlID="txbEndDate" Name="EndDate" PropertyName="Text" Type="String" DefaultValue="01/01/2200" />
     </SelectParameters>
+    <UpdateParameters>
+        <asp:Parameter Name="RcvHdrID" Type="Int32" />
+        <asp:Parameter Name="OrderNumber" Type="String" />
+        <asp:Parameter Name="ClientID" Type="Int32" />
+        <asp:Parameter Name="WorkOrder" Type="Int32" />
+        <asp:Parameter Name="TSDFID" Type="Int32" />
+        <asp:Parameter Name="ReceivedBy" Type="String" />
+        <asp:Parameter Name="ReceiveDate" Type="DateTime" />
+        <asp:Parameter Name="ReceiveDock" Type="String" />
+        <asp:Parameter Name="CarrierID" Type="Int32" />
+        <asp:Parameter Name="Trailer_Number" Type="String" />
+        <asp:Parameter Name="ShipDate" Type="DateTime" />
+        <asp:Parameter Name="Memo" Type="String" />
+        <asp:Parameter Name="UserName" Type="String" />
+    </UpdateParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsGetProfile" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_GetProfile_Sel" SelectCommandType="StoredProcedure">

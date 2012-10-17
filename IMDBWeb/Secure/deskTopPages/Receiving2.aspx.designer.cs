@@ -184,6 +184,24 @@ namespace IMDBWeb.Secure.deskTopPages {
         protected global::AjaxControlToolkit.CalendarExtender CalExEndDate;
         
         /// <summary>
+        /// revBegDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revBegDate;
+        
+        /// <summary>
+        /// revEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revEndDate;
+        
+        /// <summary>
         /// btnSearch control.
         /// </summary>
         /// <remarks>
