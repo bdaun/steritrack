@@ -12,6 +12,7 @@ namespace IMDBWeb.Secure.deskTopPages
     public partial class Receiving2 : System.Web.UI.Page
     {
         private GridViewHelper helper;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -51,6 +52,7 @@ namespace IMDBWeb.Secure.deskTopPages
 
         protected void btnCancelSearch_Click(object sender, EventArgs e)
         {
+            Session.Abandon();
             tblBegin.Visible = true;
             tblSearch.Visible = false;
             tblNewTruck.Visible = false;
@@ -73,6 +75,7 @@ namespace IMDBWeb.Secure.deskTopPages
             }
             gvRcvHdr.DataBind();
             gvRcvHdr.SelectedIndex = -1;
+            Session.Abandon();
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -118,12 +121,17 @@ namespace IMDBWeb.Secure.deskTopPages
 
         protected void gvRcvHdr_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                e.Row.Attributes.Add("onmouseover", "this.previous_color=this.style.backgroundColor;this.style.backgroundColor='#ceedfc'");
-                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=this.previous_color");
-                e.Row.Attributes.Add("style", "cursor:pointer;");
-                e.Row.Attributes.Add("onclick", ClientScript.GetPostBackClientHyperlink(this.gvRcvHdr, "Select$" + e.Row.RowIndex));
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    if ((e.Row.RowState == DataControlRowState.Normal) || (e.Row.RowState == DataControlRowState.Alternate))
+                    {
+                        e.Row.Attributes.Add("onmouseover", "this.previous_color=this.style.backgroundColor;this.style.backgroundColor='#ceedfc'");
+                        e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=this.previous_color");
+                        e.Row.Attributes.Add("style", "cursor:pointer;");
+                        e.Row.Attributes.Add("onclick", ClientScript.GetPostBackClientHyperlink(this.gvRcvHdr, "Select$" + e.Row.RowIndex));
+                    }
+                }
             }
         }
 
@@ -162,7 +170,7 @@ namespace IMDBWeb.Secure.deskTopPages
 
         protected void btnAddContainer_Click(object sender, EventArgs e)
         {
-            trDuplicate.Visible = true;
+            trDuplicate.Visible = false;
             trContainerDetails.Visible = true;
             tdContainerEdit.Visible = true;
             fvContainerDetail.ChangeMode(FormViewMode.Insert);
@@ -511,5 +519,9 @@ namespace IMDBWeb.Secure.deskTopPages
             }
         }
 
+        protected void sdsRcvHdr_Updating(Object sender, SqlDataSourceCommandEventArgs e)
+        {
+            e.Command.Parameters["@Username"].Value = HttpContext.Current.User.Identity.Name.ToString();
+        }
     }
 }
