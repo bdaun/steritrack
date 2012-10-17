@@ -6,25 +6,16 @@ p.MsoTitleCxSpFirst
 	{border-style: none;
             border-color: inherit;
             border-width: medium;
-            margin-bottom:.0001pt;
-	        padding:0in;
 	        font-size:26.0pt;
 	        font-family:"Cambria","serif";
 	        color:#17365D;
 	        letter-spacing:.25pt;
-	        margin-left: 0in;
-            margin-right: 0in;
-            margin-top: 0in;
         }
 p.MsoTitleCxSpLast
 	{border-style: none;
             border-color: inherit;
             border-width: medium;
-            margin-top:0in;
-	        margin-right:0in;
 	        margin-bottom:15.0pt;
-	        margin-left:0in;
-	        padding:0in;
 	        font-size:26.0pt;
 	        font-family:"Cambria","serif";
 	        color:#17365D;
@@ -35,14 +26,13 @@ p.MsoTitleCxSpLast
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
     <div style="border:none;border-bottom:solid #4F81BD 1.0pt;padding:0in 0in 4.0pt 0in">
-        <p class="MsoTitleCxSpFirst">
-            &nbsp;</p>
+        <p class="MsoTitleCxSpFirst">&nbsp;</p>
         <p class="MsoTitleCxSpFirst">
             <span class="style2" style=" font-size:32pt; color: #215E1C">Welcome To </span>
             <span class="style1" style=" font-size:larger; color: #215E1C"><em>SteriTrack!</em></span></p>
         <p class="MsoTitleCxSpLast" style="font-size: medium; color: #215E1C">
             A SYSTEM FOR INVENTORY MANAGEMENT, PROCESSING, AND REPORTING</p>
     </div>
-    <asp:Label ID="Label1" runat="server" Text="v001065" Font-Size="X-Small"></asp:Label>
+    <asp:Label ID="Label1" runat="server" Text="v001066" Font-Size="X-Small"></asp:Label>
     <div class="footer"></div>
 </asp:Content>
