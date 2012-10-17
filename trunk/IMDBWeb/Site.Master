@@ -49,7 +49,9 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>
     <div class="clear">
-        <hr />
+        <hr style="color:Green" />
+        <asp:HyperLink ID="hypIdea" runat="server" NavigateUrl="./secure/desktoppages/improvements.aspx" ForeColor="DarkGreen"
+            Font-Bold="true" Font-Size="Smaller" Font-Names="Comic Sans MS" Text="I&I" ToolTip="Issues & Ideas" />
         <asp:ContentPlaceHolder ID="Clear" runat="server" /></div>
     </div>
     <div class="footer">
