@@ -534,6 +534,9 @@ namespace IMDBWeb.Secure
                                     case "GMA":
                                         palletwt = 42;
                                         break;
+                                    case "Other":
+                                        palletwt = 42;
+                                        break;
                                     default:
                                         palletwt = 0;
                                         break;
@@ -567,6 +570,10 @@ namespace IMDBWeb.Secure
                                         palletprofile = 26;
                                         break;
                                     case "GMA":
+                                        palletWt = 42;
+                                        palletprofile = 27;
+                                        break;
+                                    case "Other":
                                         palletWt = 42;
                                         palletprofile = 27;
                                         break;
