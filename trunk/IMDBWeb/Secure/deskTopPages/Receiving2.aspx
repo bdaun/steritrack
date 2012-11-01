@@ -382,7 +382,8 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
 <tr id="trAddContainers" runat="server" visible="false"><td>
     <asp:Button ID="btnAddContainer" runat="server" Text="Add Containers" onclick="btnAddContainer_Click" />&nbsp;
     <asp:Button ID="btnDone" runat="server" Text="Done" onclick="btnDone_Click" />&nbsp;&nbsp;
-    <asp:Button ID="btnSummary" runat="server" Text="Show Summary" OnClick="btnSummary_Click" /></td>
+    <asp:Button ID="btnSummary" runat="server" Text="Show Summary" OnClick="btnSummary_Click" />&nbsp;&nbsp;
+    </td>
 </tr>
 <tr id="trSummary" runat="server" Visible="false">
 <td>
