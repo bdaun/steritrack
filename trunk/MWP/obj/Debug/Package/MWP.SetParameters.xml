@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Default Web Site/MWP_deploy" />
+  <setParameter name="ApplicationServices-Web.config Connection String" value="Data Source=0-NN-1644\SQLEXPRESS;Initial Catalog=MWP;Integrated Security=True" />
+  <setParameter name="MWP_SQL-Web.config Connection String" value="Server=tcp:pqroftca5d.database.windows.net,1433;Database=MWP;User ID=bdaun@pqroftca5d;Password=Wil1iam1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30" />
+</parameters>
