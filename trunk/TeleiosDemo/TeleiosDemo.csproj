@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{272B6A6D-4000-46D8-B70B-3A8BC33BAD9F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TeleiosDemo</RootNamespace>
+    <AssemblyName>TeleiosDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=4.1.50927.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\AjaxControlToolkit.Binary.NET4\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\ChangePassword.aspx" />
+    <Content Include="Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="admin\access\access_rules.aspx" />
+    <Content Include="admin\access\access_rule_summary.aspx" />
+    <Content Include="admin\access\active_users.aspx" />
+    <Content Include="admin\access\add_user.aspx" />
+    <Content Include="admin\access\edit_user.aspx" />
+    <Content Include="admin\access\locked_users.aspx" />
+    <Content Include="admin\access\online_users.aspx" />
+    <Content Include="admin\access\roles.aspx" />
+    <Content Include="admin\access\users.aspx" />
+    <Content Include="admin\access\users_by_role.aspx" />
+    <Content Include="admin\access\_nav.aspx" />
+    <Content Include="admin\access\_nav3.aspx" />
+    <Content Include="admin\AdminMenu.aspx" />
+    <Content Include="admin\PasswordReset.aspx" />
+    <Content Include="admin\Register.aspx" />
+    <Content Include="bin\AjaxControlToolkit.dll" />
+    <Content Include="bin\AjaxControlToolkit.pdb" />
+    <Content Include="bin\AntiXSSLibrary.dll" />
+    <Content Include="bin\ar\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\cs\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\de\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\es\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\fr\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\he\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\hi\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\HtmlSanitizationLibrary.dll" />
+    <Content Include="bin\IMDBWeb.dll" />
+    <Content Include="bin\IMDBWeb.pdb" />
+    <Content Include="bin\it\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\ja\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\ko\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\nl\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\pt\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\ru\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\SanitizerProviders.dll" />
+    <Content Include="bin\tr-TR\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\zh-CHS\AjaxControlToolkit.resources.dll" />
+    <Content Include="bin\zh-CHT\AjaxControlToolkit.resources.dll" />
+    <Content Include="default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="images\ajax-loader.gif" />
+    <Content Include="images\collapse.gif" />
+    <Content Include="images\expand.gif" />
+    <Content Include="images\folder.gif" />
+    <Content Include="images\greenlight.gif" />
+    <Content Include="images\progress.gif" />
+    <Content Include="images\redlight.gif" />
+    <Content Include="images\SustainabilityLogo.jpg" />
+    <Content Include="images\target.gif" />
+    <Content Include="images\yellowlight.gif" />
+    <Content Include="obj\Debug\IMDBWeb.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\IMDBWeb.dll" />
+    <Content Include="obj\Debug\IMDBWeb.pdb" />
+    <Content Include="obj\Debug\Package\PackageTmp\Account\ChangePassword.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Account\ChangePasswordSuccess.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Account\Login.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\access_rules.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\access_rule_summary.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\active_users.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\add_user.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\edit_user.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\locked_users.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\online_users.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\roles.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\users.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\users_by_role.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\_nav.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\access\_nav3.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\AdminMenu.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\PasswordReset.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\Register.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\AjaxControlToolkit.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\AjaxControlToolkit.pdb" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\AntiXSSLibrary.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\ar\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\cs\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\de\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\es\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\fr\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\he\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\hi\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\HtmlSanitizationLibrary.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\IMDBWeb.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\IMDBWeb.pdb" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\it\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\ja\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\ko\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\nl\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\pt\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\ru\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\SanitizerProviders.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\tr-TR\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\zh-CHS\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\bin\zh-CHT\AjaxControlToolkit.resources.dll" />
+    <Content Include="obj\Debug\Package\PackageTmp\default.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Global.asax" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\ajax-loader.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\collapse.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\expand.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\folder.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\greenlight.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\progress.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\redlight.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\SustainabilityLogo.jpg" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\target.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\images\yellowlight.gif" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\About.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\AlertItems.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\deskTopPages.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\ManifestMailing.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\myAutoComplete.asmx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\Receiving.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\Receiving2.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\ShipHeader.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\TruckOut.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\home.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\mobilepages\mAggregateContainer.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\mobilepages\mLocationChange.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\mobilepages\mobilePages.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\mobilepages\mProcessing.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\Reports\reportPages.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\MgtSummary.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\spakpages.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\TechComments.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\TechCSMap.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\TechProg.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\CntrLabel.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\ContainerInfo.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\PrintLabel.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\Shipping.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\superfundpages.aspx" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_gloss-wave_35_006633_500x100.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-icons_222222_256x240.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-icons_228ef1_256x240.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Images\ui-icons_ffffff_256x240.png" />
+    <Content Include="obj\Debug\Package\PackageTmp\Styles\Site.css" />
+    <Content Include="obj\Debug\Package\PackageTmp\UserControls\alphalinks.ascx" />
+    <Content Include="Secure\deskTopPages\About.aspx" />
+    <Content Include="Secure\deskTopPages\AlertItems.aspx" />
+    <Content Include="Secure\deskTopPages\deskTopPages.aspx" />
+    <Content Include="Secure\deskTopPages\ManifestMailing.aspx" />
+    <Content Include="Secure\deskTopPages\myAutoComplete.asmx" />
+    <Content Include="Secure\deskTopPages\Receiving.aspx" />
+    <Content Include="Secure\deskTopPages\Receiving2.aspx" />
+    <Content Include="Secure\deskTopPages\ShipHeader.aspx" />
+    <Content Include="Secure\deskTopPages\TruckOut.aspx" />
+    <Content Include="Secure\home.aspx" />
+    <Content Include="Secure\mobilepages\mAggregateContainer.aspx" />
+    <Content Include="Secure\mobilepages\mLocationChange.aspx" />
+    <Content Include="Secure\mobilepages\mobilePages.aspx" />
+    <Content Include="Secure\mobilepages\mProcessing.aspx" />
+    <Content Include="Secure\Reports\reportPages.aspx" />
+    <Content Include="Secure\SPAKpages\MgtSummary.aspx" />
+    <Content Include="Secure\SPAKpages\spakpages.aspx" />
+    <Content Include="Secure\SPAKpages\TechComments.aspx" />
+    <Content Include="Secure\SPAKpages\TechCSMap.aspx" />
+    <Content Include="Secure\SPAKpages\TechProg.aspx" />
+    <Content Include="Secure\SuperFundPages\CntrLabel.aspx" />
+    <Content Include="Secure\SuperFundPages\ContainerInfo.aspx" />
+    <Content Include="Secure\SuperFundPages\PrintLabel.aspx" />
+    <Content Include="Secure\SuperFundPages\Shipping.aspx" />
+    <Content Include="Secure\SuperFundPages\superfundpages.aspx" />
+    <Content Include="Site.css" />
+    <Content Include="Site.Master" />
+    <Content Include="Styles\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Styles\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Styles\Images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Styles\Images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Styles\Images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Styles\Images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Styles\Images\ui-bg_gloss-wave_35_006633_500x100.png" />
+    <Content Include="Styles\Images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Styles\Images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Styles\Images\ui-icons_222222_256x240.png" />
+    <Content Include="Styles\Images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Styles\Images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Styles\Images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Styles\Images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Styles\jquery-ui-1.8.18.custom.css" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="UserControls\alphalinks.ascx" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.designer.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\AdminMenu.aspx.cs">
+      <DependentUpon>AdminMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\AdminMenu.aspx.designer.cs">
+      <DependentUpon>AdminMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\PasswordReset.aspx.cs">
+      <DependentUpon>PasswordReset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\PasswordReset.aspx.designer.cs">
+      <DependentUpon>PasswordReset.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Class\GridViewExport.cs" />
+    <Compile Include="Class\GridViewGroup.cs" />
+    <Compile Include="Class\GridViewGroupList.cs" />
+    <Compile Include="Class\GridViewHelper.cs" />
+    <Compile Include="Class\GridViewSummary.cs" />
+    <Compile Include="Class\GridViewSummaryList.cs" />
+    <Compile Include="Class\PrinterHelper.cs" />
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mobile.Master.cs">
+      <DependentUpon>Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mobile.Master.designer.cs">
+      <DependentUpon>Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Secure\deskTopPages\About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\AlertItems.aspx.cs">
+      <DependentUpon>AlertItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\AlertItems.aspx.designer.cs">
+      <DependentUpon>AlertItems.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\deskTopPages.aspx.cs">
+      <DependentUpon>deskTopPages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\deskTopPages.aspx.designer.cs">
+      <DependentUpon>deskTopPages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\ManifestMailing.aspx.cs">
+      <DependentUpon>ManifestMailing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\ManifestMailing.aspx.designer.cs">
+      <DependentUpon>ManifestMailing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\myAutoComplete.asmx.cs">
+      <DependentUpon>myAutoComplete.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\Receiving.aspx.cs">
+      <DependentUpon>Receiving.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\Receiving.aspx.designer.cs">
+      <DependentUpon>Receiving.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\Receiving2.aspx.cs">
+      <DependentUpon>Receiving2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\Receiving2.aspx.designer.cs">
+      <DependentUpon>Receiving2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\ShipHeader.aspx.cs">
+      <DependentUpon>ShipHeader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\ShipHeader.aspx.designer.cs">
+      <DependentUpon>ShipHeader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\TruckOut.aspx.cs">
+      <DependentUpon>TruckOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\deskTopPages\TruckOut.aspx.designer.cs">
+      <DependentUpon>TruckOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\home.aspx.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\home.aspx.designer.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mAggregateContainer.aspx.cs">
+      <DependentUpon>mAggregateContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mAggregateContainer.aspx.designer.cs">
+      <DependentUpon>mAggregateContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mLocationChange.aspx.cs">
+      <DependentUpon>mLocationChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mLocationChange.aspx.designer.cs">
+      <DependentUpon>mLocationChange.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mobilePages.aspx.cs">
+      <DependentUpon>mobilePages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mobilePages.aspx.designer.cs">
+      <DependentUpon>mobilePages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mProcessing.aspx.cs">
+      <DependentUpon>mProcessing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\mobilepages\mProcessing.aspx.designer.cs">
+      <DependentUpon>mProcessing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\Reports\reportPages.aspx.cs">
+      <DependentUpon>reportPages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\Reports\reportPages.aspx.designer.cs">
+      <DependentUpon>reportPages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\MgtSummary.aspx.cs">
+      <DependentUpon>MgtSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\MgtSummary.aspx.designer.cs">
+      <DependentUpon>MgtSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\spakpages.aspx.cs">
+      <DependentUpon>spakpages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\spakpages.aspx.designer.cs">
+      <DependentUpon>spakpages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechComments.aspx.cs">
+      <DependentUpon>TechComments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechComments.aspx.designer.cs">
+      <DependentUpon>TechComments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechCSMap.aspx.cs">
+      <DependentUpon>TechCSMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechCSMap.aspx.designer.cs">
+      <DependentUpon>TechCSMap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechProg.aspx.cs">
+      <DependentUpon>TechProg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SPAKpages\TechProg.aspx.designer.cs">
+      <DependentUpon>TechProg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\CntrLabel.aspx.cs">
+      <DependentUpon>CntrLabel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\CntrLabel.aspx.designer.cs">
+      <DependentUpon>CntrLabel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\ContainerInfo.aspx.cs">
+      <DependentUpon>ContainerInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\ContainerInfo.aspx.designer.cs">
+      <DependentUpon>ContainerInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\PrintLabel.aspx.cs">
+      <DependentUpon>PrintLabel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\PrintLabel.aspx.designer.cs">
+      <DependentUpon>PrintLabel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\Shipping.aspx.cs">
+      <DependentUpon>Shipping.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\Shipping.aspx.designer.cs">
+      <DependentUpon>Shipping.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\superfundpages.aspx.cs">
+      <DependentUpon>superfundpages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\SuperFundPages\superfundpages.aspx.designer.cs">
+      <DependentUpon>superfundpages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Administration\web.config" />
+    <Content Include="admin\web.config" />
+    <Content Include="Mobile.Master" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\Package\PackageTmp\Account\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Administration\web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\admin\web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Mobile.Master" />
+    <Content Include="obj\Debug\Package\PackageTmp\packages.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\deskTopPages\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\mobilepages\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\Reports\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SPAKpages\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\SuperFundPages\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Secure\web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Site.Master" />
+    <Content Include="obj\Debug\Package\PackageTmp\Web.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Web.Dev.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Web.Local.config" />
+    <Content Include="obj\Debug\Package\PackageTmp\Web.Prod.config" />
+    <None Include="obj\Debug\ResolveAssemblyReference.cache" />
+    <Content Include="obj\Debug\TransformWebConfig\original\Web.config" />
+    <Content Include="obj\Debug\TransformWebConfig\transformed\Web.config" />
+    <Content Include="Secure\deskTopPages\Web.config" />
+    <Content Include="Secure\mobilepages\Web.config" />
+    <Content Include="Secure\Reports\Web.config" />
+    <Content Include="Secure\SPAKpages\Web.config" />
+    <Content Include="Secure\SuperFundPages\Web.config" />
+    <Content Include="Secure\web.config" />
+    <Content Include="Web.Local.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Account\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Administration\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\admin\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Secure\deskTopPages\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Secure\mobilepages\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Secure\Reports\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Secure\SPAKpages\" />
+    <Folder Include="obj\Debug\TransformWebConfig\transformed\Secure\SuperFundPages\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Styles\ui-lightness\images\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51077</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

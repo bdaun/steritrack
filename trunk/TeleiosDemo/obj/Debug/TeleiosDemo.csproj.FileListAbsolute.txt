@@ -1,0 +1,5 @@
+C:\Users\billd\Documents\Visual Studio 2010\Projects\TeleiosDemo\TeleiosDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\billd\Documents\Visual Studio 2010\Projects\TeleiosDemo\TeleiosDemo\bin\TeleiosDemo.dll
+C:\Users\billd\Documents\Visual Studio 2010\Projects\TeleiosDemo\TeleiosDemo\bin\TeleiosDemo.pdb
+C:\Users\billd\Documents\Visual Studio 2010\Projects\TeleiosDemo\TeleiosDemo\obj\Debug\TeleiosDemo.dll
+C:\Users\billd\Documents\Visual Studio 2010\Projects\TeleiosDemo\TeleiosDemo\obj\Debug\TeleiosDemo.pdb
