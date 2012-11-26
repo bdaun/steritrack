@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="ApplicationServices-Web.config Connection String" description="ApplicationServices Connection String used in web.config by the application to access the database." defaultvalue="Data Source=0-NN-1644\SQLEXPRESS;Initial Catalog=MWP;Integrated Security=True" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\billd\\Documents\\Visual\ Studio\ 2010\\Projects\\MWP\\MWP\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ApplicationServices']/@connectionString" />
-  </parameter>
-  <parameter name="MWP_SQL-Web.config Connection String" description="MWP_SQL Connection String used in web.config by the application to access the database." defaultvalue="Server=tcp:pqroftca5d.database.windows.net,1433;Database=MWP;User ID=bdaun@pqroftca5d;Password=Wil1iam1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\billd\\Documents\\Visual\ Studio\ 2010\\Projects\\MWP\\MWP\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MWP_SQL']/@connectionString" />
-  </parameter>
-</parameters>
