@@ -14,6 +14,7 @@ namespace MWP.Secure.Customer
             if (!IsPostBack)
             {
                 tblBegin.Visible = true;
+                trAddDept.Visible = false;
             }
             if (ddCustomer.SelectedIndex != 0)
             {
@@ -62,6 +63,24 @@ namespace MWP.Secure.Customer
         protected void sdsCustomerInfo_Updating(Object sender, SqlDataSourceCommandEventArgs e)
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
+        }
+
+        protected void lnkAdd_Insert(object sender, EventArgs e)
+        {
+            trAddDept.Visible = true;
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            trAddDept.Visible = false;
+        }
+
+        protected void sdsCustomerInfo_Inserted(object sender, EventArgs e)
+        {
+            ddCustomer.Items.Clear();
+            ddCustomer.DataBind();
+            ddCustomer.Items.Insert(0, new ListItem("Select from List", "0"));
+
         }
     }
 }
