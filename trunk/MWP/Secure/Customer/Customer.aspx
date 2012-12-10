@@ -8,17 +8,17 @@
 <tr id="trBegin">
     <td style="font-style:italic">To begin, Select a customer&nbsp;&nbsp;
     <asp:DropDownList ID="ddCustomer" runat="server" DataSourceID="sdsCustomerName" 
-        AppendDataBoundItems="True" DataTextField="CustomerName" AutoPostBack="true" 
+        AppendDataBoundItems="True" DataTextField="CustomerName" AutoPostBack="true"
         DataValueField="CustomerID" onselectedindexchanged="ddCustomer_SelectedIndexChanged">
         <asp:ListItem Text="Select from List" Value="0" />
     </asp:DropDownList>&nbsp;&nbsp;or&nbsp;
     <asp:Button ID="btnNewCustomer" runat="server" Text="Create New Customer" onclick="btnNewCustomer_Click" /></td></tr></table>
 <table>
 <tr id="trCustomerHdr" runat="server">
-<td style="font-style:italic" align="center">Customer Information</td>
-<td style="font-style:italic" align="center">Customer Department Information</td></tr>
+<td style="font-style:italic;font-size:large" align="center"><br />Customer Information</td>
+<td style="font-style:italic;font-size:large" align="center"><br />Customer Department Information</td></tr>
 <tr id="trCustomerInfo" runat="server">
-    <td>
+    <td valign="top">
     <asp:FormView ID="fvCustomer" runat="server" DataSourceID="sdsCustomerInfo" DataKeyNames="ID">
         <EditItemTemplate>
         <table>
@@ -39,7 +39,8 @@
         </EditItemTemplate>
         <InsertItemTemplate>
         <table style="width: 500px">
-        <tr><td class="formviewText">Name:</td><td class="formviewValue"><asp:TextBox ID="CustomerNameTextBox" runat="server" Width="400px" Text='<%# Bind("CustomerName") %>' /></td></tr>
+        <tr><td class="formviewText" >Name:</td><td class="formviewValue" nowrap="nowrap"><asp:TextBox ID="CustomerNameTextBox" runat="server" Width="400px" Text='<%# Bind("CustomerName") %>' />
+            <asp:RequiredFieldValidator ID="rfvName" runat="server" ForeColor="Red" Font-Bold="true" ErrorMessage="Customer Name is required" ControlToValidate="CustomerNameTextBox" Text="*" /></td></tr>
         <tr><td class="formviewText">Address1:</td><td class="formviewValue"><asp:TextBox ID="CustomerAddress1TextBox" runat="server" Width="400px" Text='<%# Bind("CustomerAddress1") %>' /></td></tr>
         <tr><td class="formviewText">Address2:</td><td class="formviewValue"><asp:TextBox ID="CustomerAddress2TextBox" runat="server" Width="400px" Text='<%# Bind("CustomerAddress2") %>' /></td></tr>
         <tr><td class="formviewText">City:</td><td class="formviewValue"><asp:TextBox ID="CustomerCityTextBox" runat="server" Width="400px" Text='<%# Bind("CustomerCity") %>' /></td></tr>
@@ -49,9 +50,10 @@
         <tr><td class="formviewText">Phone:</td><td class="formviewValue"><asp:TextBox ID="CustomerPhoneTextBox" runat="server" Width="400px" Text='<%# Bind("CustomerPhone") %>' /></td></tr>
         <tr><td class="formviewText">Fax:</td><td class="formviewValue"><asp:TextBox ID="CustomerFaxTextBox" runat="server" Width="400px" Text='<%# Bind("CustomerFax") %>' /></td></tr>
         <tr><td class="formviewText">Active:</td><td><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked='<%# Bind("Active") %>' /></td></tr>
-        <tr><td class="formviewText"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />&nbsp;
-                <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" /></td><td></td></tr>
+        <tr><td class="formviewText" nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />&nbsp;
+            <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" /></td><td></td></tr>
         </table>
+        <asp:ValidationSummary ID="vsInsert" runat="server" ShowMessageBox="True" HeaderText="Field Validator Summary" ShowSummary="False" />
         </InsertItemTemplate>
         <ItemTemplate>
         <table>
@@ -66,14 +68,16 @@
         <tr><td class="formviewText">Phone:</td><td class="formviewValue"><asp:Label ID="lblCustomerPhone" runat="server" Text='<%# Eval("CustomerPhone") %>' /></td></tr>
         <tr><td class="formviewText">Fax:</td><td class="formviewValue"><asp:Label ID="lblCustomerFax" runat="server" Text='<%# Eval("CustomerFax") %>' /></td></tr>
         <tr><td class="formviewText">Active:</td><td class="formviewValue"><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked='<%# Eval("Active") %>' /></td></tr>
-        <tr><td class="formviewText"><asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" OnClick="EditCustomer_Click"  Text="Edit" /></td><td></td></tr>
+        <tr><td class="formviewText" nowrap="nowrap"><asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" OnClick="EditCustomer_Click"  Text="Edit" /></td><td></td></tr>
         </table>
         </ItemTemplate>
     </asp:FormView>
     </td>
     <td valign="top">
-    <asp:GridView ID="gvDept" runat="server" AutoGenerateColumns="False" 
-            DataKeyNames="ID" DataSourceID="sdsCustomerDept">
+    <table>
+    <tr><td>
+        <asp:GridView ID="gvDept" runat="server" AutoGenerateColumns="False" 
+            DataKeyNames="ID" DataSourceID="sdsCustomerDept" ShowFooter="True">
         <Columns>
             <asp:CommandField ShowEditButton="True" />
             <asp:BoundField DataField="ID" HeaderText="ID" InsertVisible="False" ReadOnly="True" SortExpression="ID" Visible="false" />
@@ -81,6 +85,9 @@
                 <EditItemTemplate>
                     <asp:TextBox ID="CustomerDepartmentNameTextBox" runat="server" Text='<%# Bind("CustomerDepartmentName") %>'></asp:TextBox>
                 </EditItemTemplate>
+                <FooterTemplate>
+                    <asp:LinkButton ID="lnkAdd" runat="server" Font-Bold="true" OnClick="lnkAdd_Insert">Add</asp:LinkButton>
+                </FooterTemplate>
                 <ItemTemplate>
                     <asp:Label ID="CustomerDepartmentNameLabel" runat="server" Text='<%# Bind("CustomerDepartmentName") %>'></asp:Label>
                 </ItemTemplate>
@@ -94,7 +101,16 @@
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
-    </asp:GridView>    
+    </asp:GridView></td>    
+</tr>
+    <tr id="trAddDept" runat="server"><td>
+        <asp:Label ID="lblAddDept" runat="server" Text="Dept Name:"></asp:Label>&nbsp;
+        <asp:TextBox ID="txbAddDept" runat="server" Width="250px"></asp:TextBox><br />
+        <asp:Button ID="btnAdd" runat="server" Text="Add Dept" Font-Size="Smaller" />&nbsp;&nbsp;
+        <asp:Button ID="btnCancel" runat="server" Text="Cancel" Font-Size="Smaller" 
+            onclick="btnCancel_Click" /></td></tr>
+    </table>
+
     </td>
 </tr>
 </table>
@@ -120,7 +136,8 @@
 	    [UserName]=@UserName
         WHERE [ID]=@ID"
     UpdateCommandType="Text"
-    OnInserting="sdsCustomerInfo_Inserting" OnUpdating="sdsCustomerInfo_Updating">
+    OnInserting="sdsCustomerInfo_Inserting" OnUpdating="sdsCustomerInfo_Updating"
+    OnInserted="sdsCustomerInfo_Inserted">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
     </SelectParameters>
@@ -131,10 +148,10 @@
         <asp:Parameter Name="Username" Type="String" />
     </UpdateParameters>
 </asp:SqlDataSource>  
-    <asp:SqlDataSource ID="sdsCustomerDept" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-        SelectCommand="MPS_Customer_CustomerDept_Sel" SelectCommandType="StoredProcedure">
-        <SelectParameters>
-        <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
-        </SelectParameters>
-    </asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsCustomerDept" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
+    SelectCommand="MPS_Customer_CustomerDept_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+    <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
 </asp:Content>
