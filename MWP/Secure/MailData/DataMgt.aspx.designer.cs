@@ -13,13 +13,13 @@ namespace MWP.Secure.MailData {
     public partial class DataMgt {
         
         /// <summary>
-        /// SM1 control.
+        /// AjaxSM control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager SM1;
+        protected global::AjaxControlToolkit.ToolkitScriptManager AjaxSM;
         
         /// <summary>
         /// lblErrMsg control.
@@ -47,6 +47,33 @@ namespace MWP.Secure.MailData {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddCustomer;
+        
+        /// <summary>
+        /// ddDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddDataSource;
+        
+        /// <summary>
+        /// trDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trDept;
+        
+        /// <summary>
+        /// ddDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddDept;
         
         /// <summary>
         /// txbBegDate control.
@@ -146,5 +173,23 @@ namespace MWP.Secure.MailData {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsCustomer;
+        
+        /// <summary>
+        /// sdsCustomerDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsCustomerDept;
+        
+        /// <summary>
+        /// sdsDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsDataSource;
     }
 }
