@@ -33,12 +33,12 @@ namespace IMDBWeb.Secure.deskTopPages
                 case 1:
                     gvManifestStatus.DataSourceID = "";
                     gvManifestStatus.EmptyDataText = "";
-                    lblSelParam.Text = "Enter the TruckID in format TT-mm/dd/yy-#";
+                    lblSelParam.Text = "Enter the TruckID in format @@-mm/dd/yy-###";
                     lblSelParam.Visible = true;
                     txbSelParam.Visible = true;
                     txbSelParam.Text = "";
-                    revSelParam.ValidationExpression = "^TT-(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][0-9][0-9][-][0-9]$";
-                    revSelParam.ErrorMessage = "Please use a format of TT-mm/dd/yy-#";
+                    revSelParam.ValidationExpression = "^([0-9][0-9])-(0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][0-9][0-9][-][0-9][0-9][0-9]$";
+                    revSelParam.ErrorMessage = "Please use a format of @@-mm/dd/yy-###";
                     break;
                 case 2:
                     gvManifestStatus.DataSourceID = "";
