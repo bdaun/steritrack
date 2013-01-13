@@ -42,5 +42,23 @@ namespace MWP.Secure.MailData
         {
 
         }
+        protected void sdsMailData_Updating(Object sender, SqlDataSourceCommandEventArgs e)
+        {
+            e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
+        }
+
+        protected void ddCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+                ddDept.Items.Clear();
+                ListItem li = new ListItem();
+                li.Text = "Select a Department";
+                li.Value = "0";
+                ddDept.Items.Add(li);
+                ListItem li2 = new ListItem();
+                li2.Text = "All Departments";
+                li2.Value = "-1";
+                ddDept.Items.Add(li2);
+                ddDept.DataBind();
+        }
     }
 }
