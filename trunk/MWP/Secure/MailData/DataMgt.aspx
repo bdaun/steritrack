@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DataMgt.aspx.cs" Inherits="MWP.Secure.MailData.DataMgt" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DataMgt.aspx.cs" Inherits="MWP.Secure.MailData.DataMgt" EnableEventValidation="false" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -10,7 +10,8 @@
 <tr><td align="right">Customer:&nbsp;</td>
     <td><asp:DropDownList ID="ddCustomer" runat="server" DataSourceID="sdsCustomer" 
             AppendDataBoundItems="True" DataTextField="CustomerName" AutoPostBack="true" 
-            DataValueField="CustomerID" >
+            DataValueField="CustomerID" 
+            onselectedindexchanged="ddCustomer_SelectedIndexChanged" >
             <asp:ListItem Text="Select from List" Value="0" />
             <asp:ListItem Text="All Customers" Value="-1" />
         </asp:DropDownList></td>
@@ -45,8 +46,7 @@
 <asp:GridView ID="gvMailData" runat="server" DataKeyNames="MailID" AutoGenerateColumns="False" 
         DataSourceID="sdsMailData" AllowPaging="True" AllowSorting="True" CellPadding="4" ForeColor="#333333">
     <Columns>
-        <asp:CommandField ShowEditButton="True" />
-        <asp:CommandField ShowDeleteButton="True" />
+        <asp:CommandField ShowEditButton="True" EditText="UpdCust" />
         <asp:BoundField DataField="MailID" HeaderText="MailID" InsertVisible="False" ReadOnly="True" SortExpression="MailID" />
         <asp:BoundField DataField="DataSource" HeaderText="DataSource" ReadOnly="true" SortExpression="DataSource" />
         <asp:TemplateField HeaderText="CustomerName" SortExpression="CustomerName">
@@ -62,7 +62,7 @@
                 <asp:Label ID="lblCustomerName" runat="server" Text='<%# Eval("CustomerName") %>'></asp:Label>
             </ItemTemplate>
         </asp:TemplateField>
-        <asp:TemplateField HeaderText="DeptName" SortExpression="DeptName">
+        <asp:TemplateField HeaderText="DeptName" SortExpression="CustomerDeptName">
             <EditItemTemplate>
                 <asp:DropDownList ID="ddDept_gv" runat="server" 
                     SelectedValue='<%# Bind("CustomerDeptID") %>' DataSourceID="sdsCustomerDept" 
@@ -75,26 +75,41 @@
                 <asp:Label ID="lblCustomerName" runat="server" Text='<%# Eval("CustomerDeptName") %>'></asp:Label>
             </ItemTemplate>
         </asp:TemplateField>
-        <asp:BoundField DataField="Weight" HeaderText="Weight" SortExpression="Weight" />
-        <asp:BoundField DataField="WeightUnit" HeaderText="WeightUnit" SortExpression="WeightUnit" />
-        <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" />
-        <asp:BoundField DataField="RateLevel" HeaderText="RateLevel" SortExpression="RateLevel" />
-        <asp:BoundField DataField="RateAffixed" HeaderText="RateAffixed" SortExpression="RateAffixed" />
-        <asp:BoundField DataField="RateClaimed" HeaderText="RateClaimed" SortExpression="RateClaimed" />
-        <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" />
-        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" />
+        <asp:BoundField DataField="Weight" HeaderText="Weight" SortExpression="Weight" ReadOnly="true" />
+        <asp:BoundField DataField="WeightUnit" HeaderText="WeightUnit" SortExpression="WeightUnit" Visible="false" />
+        <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" ReadOnly="true" /> 
+        <asp:BoundField DataField="RateLevel" HeaderText="Rate Level" SortExpression="RateLevel" ReadOnly="true" ItemStyle-Wrap="true" />
+        <asp:BoundField DataField="RateAffixed" HeaderText="Rate Affixed" SortExpression="RateAffixed" ReadOnly="true" ItemStyle-Wrap="true" />
+        <asp:BoundField DataField="RateClaimed" HeaderText="Rate Claimed" SortExpression="RateClaimed" ReadOnly="true" ItemStyle-Wrap="true" />
+        <asp:BoundField DataField="MailQty" HeaderText="Mail Qty" SortExpression="MailQty" ItemStyle-Wrap="true" />
+        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" ReadOnly="true" />
+        <asp:BoundField DataField="Approved" HeaderText="Approved" SortExpression="Approved" ReadOnly="true" />
+        <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" ReadOnly="true" />
     </Columns>
 </asp:GridView>
 <asp:SqlDataSource ID="sdsMailData" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="DataMgt_MailData_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="DataMgt_MailData_Sel" SelectCommandType="StoredProcedure"
+    UpdateCommand="UPDATE InvoiceData 
+        SET
+	        CustomerDeptID = @CustomerDeptID,
+	        ModDate = getdate(),
+	        Username = @UserName
+        WHERE 
+	        ID = @MailID" UpdateCommandType="Text"
+    OnUpdating="sdsMailData_Updating">
     <SelectParameters>
-    <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
-    <asp:ControlParameter ControlID="ddDept" Name="CustomerDeptID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
-    <asp:ControlParameter ControlID="ddDataSource" Name="DataSource" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
-    <asp:ControlParameter ControlID="txbBegDate" Name="BegDate" PropertyName="Text" Type="String" DefaultValue="01/01/1900" />
-    <asp:ControlParameter ControlID="txbEndDate" Name="EndDate" PropertyName="Text" Type="String" DefaultValue="01/01/2200" />
+        <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
+        <asp:ControlParameter ControlID="ddDept" Name="CustomerDeptID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
+        <asp:ControlParameter ControlID="ddDataSource" Name="DataSource" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
+        <asp:ControlParameter ControlID="txbBegDate" Name="BegDate" PropertyName="Text" Type="String" DefaultValue="01/01/1900" />
+        <asp:ControlParameter ControlID="txbEndDate" Name="EndDate" PropertyName="Text" Type="String" DefaultValue="01/01/2200" />
     </SelectParameters>
+    <UpdateParameters>
+        <asp:Parameter Name="Username" Type="String" />
+        <asp:Parameter Name="MailID" Type="Int32" />
+        <asp:Parameter Name="CustomerDeptID" Type="Int32" />
+    </UpdateParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCustomer" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 

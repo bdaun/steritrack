@@ -17,6 +17,7 @@ namespace MWP
                 MenuItem Admin = new MenuItem();
                 MenuItem DataMgt = new MenuItem(); 
                 MenuItem CustomerMgt = new MenuItem();
+                MenuItem Invoice = new MenuItem();
 
                 foreach (MenuItem menuItem in menuItems)
                 {
@@ -26,10 +27,13 @@ namespace MWP
                         DataMgt = menuItem;
                     else if (menuItem.Text == "CustomerMgt")
                         CustomerMgt = menuItem;
+                    else if (menuItem.Text == "Invoice")
+                        Invoice = menuItem;
                 }
                 menuItems.Remove(Admin);
                 menuItems.Remove(DataMgt);
                 menuItems.Remove(CustomerMgt);
+                menuItems.Remove(Invoice);
             }
             if (!Page.User.IsInRole("Admin"))
             {

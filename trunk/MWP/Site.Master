@@ -36,6 +36,7 @@
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
                         <asp:MenuItem NavigateUrl="~/secure/MailData/DataMgt.aspx" Text="DataMgt" />
                         <asp:MenuItem NavigateUrl="~/secure/Customer/Customer.aspx" Text="CustomerMgt"/>
+                        <asp:MenuItem NavigateUrl="~/secure/Invoice/InvoiceMenu.aspx" Text="Invoice"/>
                         <asp:MenuItem NavigateUrl="~/Admin/AdminMenu.aspx" Text="Admin"/>
                     </Items>
                 </asp:Menu>
