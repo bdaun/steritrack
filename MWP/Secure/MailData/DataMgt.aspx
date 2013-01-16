@@ -40,7 +40,9 @@
 </tr>
 <tr>
     <td colspan="2"><asp:Button ID="btnSearch" runat="server" Text="Search" onclick="btnSearch_Click" /> &nbsp;&nbsp;
-                    <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td><td></td><td></td>
+                    <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td><td>
+    <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/Secure/MailData/ManualDataAdd.aspx">Add Data Item</asp:LinkButton>
+    </td><td></td>
 </tr>
 </table>
 <asp:GridView ID="gvMailData" runat="server" DataKeyNames="MailID" AutoGenerateColumns="False" 
@@ -82,8 +84,8 @@
         <asp:BoundField DataField="RateAffixed" HeaderText="Rate Affixed" SortExpression="RateAffixed" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="RateClaimed" HeaderText="Rate Claimed" SortExpression="RateClaimed" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="MailQty" HeaderText="Mail Qty" SortExpression="MailQty" ItemStyle-Wrap="true" />
-        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" ReadOnly="true" />
-        <asp:BoundField DataField="Approved" HeaderText="Approved" SortExpression="Approved" ReadOnly="true" />
+        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" ReadOnly="true" DataFormatString="{0:MM-dd-yyyy}" />
+        <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" ReadOnly="true" />
         <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" ReadOnly="true" />
     </Columns>
 </asp:GridView>

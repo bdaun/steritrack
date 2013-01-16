@@ -24,10 +24,11 @@
             onselectedindexchanged="ddBillingYear_SelectedIndexChanged">
         </asp:DropDownList>
     </td>
-    <td align="right"> Approval Status:&nbsp;</td>
-    <td><asp:DropDownList ID="ddApproved" runat="server" AutoPostBack="True">
+    <td align="right"> Status:&nbsp;</td>
+    <td><asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddStatus_SelectedIndexChanged">
         <asp:ListItem Value="Unapproved" />
         <asp:ListItem Value="Approved" />
+        <asp:ListItem Value="Billed" />
         <asp:ListItem Value="All" />
     </asp:DropDownList></td>
 </tr>
@@ -40,15 +41,15 @@
             <asp:ListItem Text="All Customers" Value="-1" />
         </asp:DropDownList></td><td>Data Date Range:&nbsp;</td>
     <td>
-        <asp:DropDownList ID="ddBillingPeriod" runat="server">
+        <asp:DropDownList ID="ddBillingPeriod" runat="server" OnSelectedIndexChanged="ddBillingPeriod_SelectedIndexChanged" AutoPostBack="True">
         </asp:DropDownList>
 </td>
-    <td align="right">Billing Status:</td>
-    <td><asp:DropDownList ID="ddBillingStatus" runat="server" AutoPostBack="True">
-        <asp:ListItem Text="Not Billed" Value="" Selected="True" />
-        <asp:ListItem Text="Billed" Value="_"  />
-        <asp:ListItem Text="All" Value="All" />
-    </asp:DropDownList></td>
+    <td align="right">Invoice:</td>
+    <td><asp:DropDownList ID="ddInvoice" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddInvoice_SelectedIndexChanged" 
+        DataSourceID="sdsInvoiceNumbers" DataTextField="InvoiceNumber" DataValueField="InvoiceNumber" AppendDataBoundItems="True"   >
+        <asp:ListItem Value="All" />
+    </asp:DropDownList>
+    </td>
 </tr>
 <tr id="trCustDept" runat="server" visible="false">
     <td align="right">Customer Dept:</td>
@@ -62,43 +63,50 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
 </tr>
 <tr>
     <td colspan="2"><asp:Button ID="btnSearch" runat="server" Text="Search" onclick="btnSearch_Click" /> &nbsp;&nbsp;
                     <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td><td>
     </td>
-    <td>
-        &nbsp;</td>
-    <td>
-        &nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
 </tr>
 </table>
-<asp:GridView ID="gvInvoiceData" runat="server" DataSourceID="sdsInvoiceData" DataKeyNames="CustomerDeptID" AutoGenerateColumns="false">
+<asp:GridView ID="gvInvoiceData" runat="server" DataSourceID="sdsInvoiceData" DataKeyNames="CustomerDeptID" CellPadding="2" AutoGenerateColumns="False" AllowSorting="True">
     <Columns>
-        <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" InsertVisible="False" ReadOnly="True" SortExpression="CustomerID" Visible="false" />
-        <asp:BoundField DataField="customername" HeaderText="customername" SortExpression="customername" />
-        <asp:BoundField DataField="CustomerDeptID" HeaderText="CustomerDeptID" InsertVisible="False" ReadOnly="True" SortExpression="CustomerDeptID" Visible="false" />
-        <asp:BoundField DataField="customerdepartmentname" HeaderText="customerdepartmentname" SortExpression="customerdepartmentname" />
+        <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" Visible="False" ReadOnly="True" SortExpression="CustomerID" />
+        <asp:BoundField DataField="CustomerName" HeaderText="Customer" SortExpression="customername" />
+        <asp:BoundField DataField="CustomerDeptID" HeaderText="CustomerDeptID" Visible="False" ReadOnly="True" SortExpression="CustomerDeptID" />
+        <asp:BoundField DataField="CustomerDepartmentName" HeaderText="Department" SortExpression="customerdepartmentname" />
         <asp:BoundField DataField="Datasource" HeaderText="Datasource" SortExpression="Datasource" />
         <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" />
         <asp:BoundField DataField="RateLevel" HeaderText="RateLevel" SortExpression="RateLevel" />
         <asp:BoundField DataField="RateAffixed" HeaderText="RateAffixed" SortExpression="RateAffixed" />
         <asp:BoundField DataField="RateClaimed" HeaderText="RateClaimed" SortExpression="RateClaimed" />
         <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" />
-        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" />
-        <asp:BoundField DataField="Approved" HeaderText="Approved" SortExpression="Approved" />
-        <asp:BoundField DataField="InvoiceNumber" HeaderText="InvoiceNumber" SortExpression="InvoiceNumber" />
+        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" DataFormatString="{0:MM-dd-yyyy}" />
+        <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
+        <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" />
     </Columns>
 </asp:GridView>
-
+<asp:SqlDataSource ID="sdsInvoiceNumbers" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
+    SelectCommand="InvoiceSummary_InvoiceNumbers_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="ddDept" Name="CustomerDeptID" PropertyName="SelectedValue" Type="Int32" />
+        <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsInvoiceData" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="Invoice_Summary_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="InvoiceSummary_DataItems_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
-        <asp:Parameter Name="CustomerID" Type="Int32" />
-        <asp:Parameter Name="CustomerDepartmentID" Type="Int32" />
-        <asp:controlParameter ControlID="ddApproved" Name="Approved" Type="String" />
-        <asp:ControlParameter ControlID="ddBillingStatus" Name="BillingStatus" Type="String" />
+        <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
+        <asp:ControlParameter ControlID="ddDept" Name="CustomerDepartmentID" PropertyName="SelectedValue" Type="Int32" />
+        <asp:controlParameter ControlID="ddStatus" Name="Status" Type="String" />
+        <asp:ControlParameter ControlID="ddInvoice" Name="InvoiceNumber" Type="String" />
+        <asp:ControlParameter ControlID="ddBillingPeriod" Name="BillingPeriod" Type="String" DefaultValue="1/1/2001 - 1/1/2101" />
+        <asp:ControlParameter ControlID="ddBillingCycle" Name="BillingCycle" Type="String" />
     </SelectParameters></asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCustomer" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
@@ -109,9 +117,10 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCustomerDept" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="DataMgt_CustomerDept_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="InvoiceSummary_CustomerDept_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" Type="Int32" />
+        <asp:ControlParameter ControlID="ddBillingCycle" Name="BillingCycle" Type="String" />
     </SelectParameters>
 </asp:SqlDataSource>
 </asp:Content>
