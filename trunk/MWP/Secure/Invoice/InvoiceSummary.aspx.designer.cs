@@ -58,13 +58,13 @@ namespace MWP.Secure.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList ddBillingYear;
         
         /// <summary>
-        /// ddApproved control.
+        /// ddStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddApproved;
+        protected global::System.Web.UI.WebControls.DropDownList ddStatus;
         
         /// <summary>
         /// trCustomer control.
@@ -94,13 +94,13 @@ namespace MWP.Secure.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList ddBillingPeriod;
         
         /// <summary>
-        /// ddBillingStatus control.
+        /// ddInvoice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddBillingStatus;
+        protected global::System.Web.UI.WebControls.DropDownList ddInvoice;
         
         /// <summary>
         /// trCustDept control.
@@ -146,6 +146,15 @@ namespace MWP.Secure.Invoice {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvInvoiceData;
+        
+        /// <summary>
+        /// sdsInvoiceNumbers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsInvoiceNumbers;
         
         /// <summary>
         /// sdsInvoiceData control.

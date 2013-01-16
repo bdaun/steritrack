@@ -130,6 +130,7 @@
     <Content Include="Secure\Invoice\InvoiceMenu.aspx" />
     <Content Include="Secure\Invoice\InvoiceSummary.aspx" />
     <Content Include="Secure\MailData\DataMgt.aspx" />
+    <Content Include="Secure\MailData\ManualDataAdd.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -217,6 +218,13 @@
     </Compile>
     <Compile Include="Secure\Invoice\InvoiceSummary.aspx.designer.cs">
       <DependentUpon>InvoiceSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secure\MailData\ManualDataAdd.aspx.cs">
+      <DependentUpon>ManualDataAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\MailData\ManualDataAdd.aspx.designer.cs">
+      <DependentUpon>ManualDataAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\WebMsgBox.cs" />
     <Content Include="App_Code\DropdownWebService.cs">

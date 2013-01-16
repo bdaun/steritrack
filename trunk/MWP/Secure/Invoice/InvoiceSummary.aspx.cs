@@ -26,8 +26,11 @@ namespace MWP.Secure.Invoice
                     ddBillingYear.Items.Add(list);
                 }
                 ddBillingYear.Items.FindByValue(DateTime.Now.Year.ToString()).Selected = true;
+                ListItem li = new ListItem();
+                li.Text = "Select a Billing Cycle";
+                li.Value = "1/1/2001 - 1/1/2101";
+                ddBillingPeriod.Items.Add(li);
             }
-            ddBillingPeriod.Items.Add("Select a Billing Cycle");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -38,9 +41,9 @@ namespace MWP.Secure.Invoice
         protected void btnCancelSearch_Click(object sender, EventArgs e)
         {
             ddBillingCycle.SelectedIndex = 0;
-            ddDept.SelectedIndex = 0;
-            ddBillingPeriod.Items.Clear();
-            ddBillingPeriod.Items.Add("Select a Billing Cycle");
+            ddStatus.SelectedIndex = 0;
+            PopulateDropDown();
+            trCustDept.Visible = false;
         }
 
         protected void ddBillingCycle_SelectedIndexChanged(object sender, EventArgs e)
@@ -57,12 +60,15 @@ namespace MWP.Secure.Invoice
             // Show customers baseed on billing cycle selection
             ddBillingPeriod.Items.Clear();
             ddCustomer.Items.Clear();
-            ddCustomer.DataBind();
             ddCustomer.Items.Insert(0, new ListItem("Select from List", "0"));
+            ddCustomer.DataBind();
             ListItem li = new ListItem();
             li.Text = "All";
-            li.Value = "-1";
+            li.Value = "1/1/2001 - 1/1/2101";
             ddBillingPeriod.Items.Add(li);
+            ddInvoice.Items.Clear();
+            ddInvoice.Items.Add("All");
+            ddInvoice.DataBind();
 
             switch (ddBillingCycle.SelectedValue)
             {
@@ -134,9 +140,22 @@ namespace MWP.Secure.Invoice
                         }
                         return;
                     }
+                case "NotSelected":
+                    {
+                        ddCustomer.Items.Clear();
+                        ddCustomer.Items.Insert(0, new ListItem("Select from List", "0"));
+                        ddCustomer.Items.Insert(1, new ListItem("All Customers", "-1"));
+                        ddCustomer.DataBind();
+                        ddBillingPeriod.Items.Clear();
+                        ListItem li2 = new ListItem();
+                        li2.Text = "Select a Billing Cycle";
+                        li2.Value = "1/1/2001 - 1/1/2101";
+                        ddBillingPeriod.Items.Add(li2);
+                        trCustDept.Visible = false;
+                        return;
+                    }
                 default:
                     return;
-
             }        
         }
 
@@ -160,9 +179,34 @@ namespace MWP.Secure.Invoice
             li2.Value = "-1";
             ddDept.Items.Add(li2);
             ddDept.DataBind();
+            ddInvoice.Items.Clear();
+            ddInvoice.Items.Add("All");
+            ddInvoice.DataBind();
         }
 
         protected void ddDept_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddInvoice.Items.Clear();
+            ddInvoice.Items.Add("All");
+            ddInvoice.DataBind();
+        }
+
+        protected void ddInvoice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddInvoice.SelectedIndex != 0)
+            {
+                ddStatus.SelectedValue = "Billed";
+            }
+        }
+
+        protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddInvoice.Items.Clear();
+            ddInvoice.Items.Add("All");
+            ddInvoice.DataBind();
+        }
+
+        protected void ddBillingPeriod_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
