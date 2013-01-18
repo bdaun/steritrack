@@ -40,9 +40,59 @@
 </tr>
 <tr>
     <td colspan="2"><asp:Button ID="btnSearch" runat="server" Text="Search" onclick="btnSearch_Click" /> &nbsp;&nbsp;
-                    <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td><td>
-    <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/Secure/MailData/ManualDataAdd.aspx">Add Data Item</asp:LinkButton>
+                    <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td>
+    <td>
+    <asp:Button ID="btnManualAdd" runat="server" Text="Add Data Item" OnClick="btnManualAdd_Click" />
     </td><td></td>
+</tr>
+</table>
+<table id="tblManualAdd" runat="server" border="2" rules="none" frame="box" cellpadding="2">
+<tr>
+    <td colspan="6" style="font-style:italic">Add items to the billable items table</td>
+</tr>
+<tr align="center" style="font-weight:bold">
+    <td>Customer</td>
+    <td>Department</td>
+    <td>Entry&nbsp; Desc</td>
+    <td>Pc Cnt</td>
+    <td>Amount</td>
+    <td>DataDate</td>
+</tr>
+<tr id="trCustDept" align="center">
+    <td><asp:DropDownList ID="ddCustomerAdd" runat="server" DataSourceID="sdsCustomer" 
+            AppendDataBoundItems="True" DataTextField="CustomerName" AutoPostBack="true" 
+            DataValueField="CustomerID" 
+            onselectedindexchanged="ddCustomerAdd_SelectedIndexChanged" >
+            <asp:ListItem Text="Select from List" Value="0" />
+        </asp:DropDownList></td><td><asp:DropDownList ID="ddDeptAdd" runat="server" DataSourceID="sdsCustomerDeptAdd" 
+            AppendDataBoundItems="True" DataTextField="CustomerDeptName" AutoPostBack="true" 
+            DataValueField="CustomerDeptID" OnSelectedIndexChanged="ddDeptAdd_SelectedIndexChanged">
+            <asp:ListItem Text="Select from List" Value="0" />
+            <asp:ListItem Text="All Depts" Value="-1" Selected="True" />
+        </asp:DropDownList></td><td>
+        <asp:DropDownList ID="ddEntryType" runat="server" AutoPostBack="true" Height="19px" OnSelectedIndexChanged="ddEntryType_SelectedIndexChanged" >
+            <asp:ListItem Text="Select from List" Value="0" />
+            <asp:ListItem Text="2 oz. + Bump up" Value="1" />
+            <asp:ListItem Text="Foreign" Value="2" />
+            <asp:ListItem Text="No Postage at all" Value="3" />
+            <asp:ListItem Text="Wrong weight" Value="4" />
+        </asp:DropDownList>
+    </td>
+    <td><asp:TextBox ID="txbPcCnt" runat="server" Width="75" OnTextChanged="txbPcCnt_TextChanged"></asp:TextBox></td>
+    <td><asp:TextBox ID="txbAmt" runat="server" Width="100" OnTextChanged="txbAmt_TextChanged"></asp:TextBox></td>
+    <td><asp:TextBox ID="txbDataDate" runat="server" Width="100" OnTextChanged="txbDataDate_TextChanged"></asp:TextBox>
+        <ajaxToolkit:CalendarExtender ID="calDataDate" runat="server" TargetControlID="txbDataDate" />
+        <ajaxToolkit:TextBoxWatermarkExtender ID="wmDataDate" runat="server" TargetControlID="txbDataDate" WatermarkText="Data Date" WatermarkCssClass="watermarked" />
+    </td>
+
+
+</tr>
+<tr>
+    <td colspan="2">
+        <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" CausesValidation="true" /> &nbsp;&nbsp;
+        <asp:Button ID="btnDoneManualAdd" runat="server" Text="Done" CausesValidation="false" OnClick="btnDoneManualAdd_Click" />
+    </td>
+    <td><asp:Label ID="lblResult" runat="server" Visible="false" Font-Bold="true" Font-Italic="true" ForeColor="Green" /></td><td></td><td></td><td></td>
 </tr>
 </table>
 <asp:GridView ID="gvMailData" runat="server" DataKeyNames="MailID" AutoGenerateColumns="False" 
@@ -122,6 +172,13 @@
     SelectCommand="DataMgt_CustomerDept_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsCustomerDeptAdd" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
+    SelectCommand="DataMgt_CustomerDept_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="ddCustomerAdd" Name="CustomerID" Type="Int32" />
     </SelectParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsDataSource" runat="server" 

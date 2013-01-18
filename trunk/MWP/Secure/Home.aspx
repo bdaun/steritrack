@@ -3,10 +3,10 @@
 <style type="text/css">
 
 p.MsoTitleCxSpFirst
-	{border-style: none;
+	{border: none;
             border-color: inherit;
             border-width: medium;
-            margin-bottom:.0001pt;
+            margin:.0001pt;
 	        padding:0in;
 	        font-size:26.0pt;
 	        font-family:"Cambria","serif";
@@ -17,10 +17,10 @@ p.MsoTitleCxSpFirst
             margin-top: 0in;
         }
 p.MsoTitleCxSpLast
-	{border-style: none;
+	{border: none;
             border-color: inherit;
             border-width: medium;
-            margin-top:0in;
+            margin:0in;
 	        margin-right:0in;
 	        margin-bottom:15.0pt;
 	        margin-left:0in;
