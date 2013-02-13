@@ -9,44 +9,49 @@
 </head>
 <body>
     <form id="frmPageMaster" runat="server">
+    <asp:ScriptManager ID="smPageMaster" runat="server" >        
+    <Scripts>
+        <%--Framework Scripts--%>
+        <asp:ScriptReference Name="MsAjaxBundle" />
+        <asp:ScriptReference Name="jquery" />
+        <asp:ScriptReference Name="jquery.ui.combined" />
+        <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+        <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+        <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+        <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+        <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+        <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+        <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+        <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+        <asp:ScriptReference Name="WebFormsBundle" />
+        <%--Site Scripts--%>
+    </Scripts>
+    </asp:ScriptManager>
         <div class="page">
-            <div class="header">
-                    <div class="title">
-                    <asp:ScriptManager ID="smPageMaster" runat="server" >        
-                        <Scripts>
-                            <%--Framework Scripts--%>
-                            <asp:ScriptReference Name="MsAjaxBundle" />
-                            <asp:ScriptReference Name="jquery" />
-                            <asp:ScriptReference Name="jquery.ui.combined" />
-                            <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                            <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                            <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                            <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                            <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                            <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                            <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                            <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                            <asp:ScriptReference Name="WebFormsBundle" />
-                            <%--Site Scripts--%>
-                        </Scripts>
-                    </asp:ScriptManager>
-                    <header>
+        <div class="header">
+                <header>
                     <table style="align-content:center;width:100%">
                         <tr>
                             <td style="width:25%">
                                 <a href="http://brownsburgeducationfoundation.org/"><img style="width:60px;height:60px" src="~/Images/logo_top_left.png" runat="server" /></a>
                             </td>
-                            <td class="site-title">Brownsburg Education Foundation<br />
-                                <p><em>On the Web</em></p>
+                            <td class="site-title">Brownsburg Education Foundation
+                                <br /><em>On the Web</em>
                             </td>
                             <td style="vertical-align:top;text-align:right;width:25%">
-                                <div class="float-right" style="vertical-align:text-top">
+                                <div class="float-right" style="vertical-align:text-top; color: #FFFFFF">
                                     <section id="login" class="float-right">
                                         <asp:LoginView runat="server" ViewStateMode="Disabled" ID="LoginView1">
+                                            <AnonymousTemplate>
+                                                <ul>
+                                                    <li><a id="registerLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Register.aspx">Register</a></li>
+                                                    <li><a id="loginLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Login.aspx">Log in</a></li>
+                                                </ul>
+                                            </AnonymousTemplate>
                                             <LoggedInTemplate>
                                                 <p>Hello, <a id="A1" runat="server" class="username" href="~/Account/Manage.aspx" title="Manage your account">
                                                 <asp:LoginName ID="LoginName1" runat="server" CssClass="username" /></a>!
-                                                <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" /></p>
+                                                <asp:LoginStatus ID="LoginStatus1" style="background-color:#6E11A8;color:white" runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" /></p>
                                             </LoggedInTemplate>
                                         </asp:LoginView>
                                     </section>
@@ -55,26 +60,25 @@
                         </tr>
                         <tr>
                             <td colspan="3"> 
-                            <div class="clear hideSkiplink">               
-                            <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
-                                <Items>
-                                    <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
-                                    <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
-                                    <asp:MenuItem NavigateUrl="~/Admin/AdminMenu.aspx" Text="Admin"/>
-                                </Items>
-                            </asp:Menu>
-                            </div>
+                                <div class="hideSkiplink">               
+                                    <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                                        <Items>
+                                            <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
+                                            <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                                            <asp:MenuItem NavigateUrl="~/Admin/AdminMenu.aspx" Text="Admin"/>
+                                        </Items>
+                                    </asp:Menu>
+                                </div>
                             </td>
                         </tr>
                     </table>
-                    </header>   
-                    <div>
+
+                </header> 
+                    <div style="background-color: #e2e2e2;">
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-        
                         </asp:ContentPlaceHolder>
-                    </div>
-                </div>
-            </div>
+                    </div>  
+        </div>
         </div>
     </form>
 </body>
