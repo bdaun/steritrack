@@ -41,20 +41,20 @@
             <td class="site-title">Brownsburg Education Foundation<br />
                 <em>On the Web</em></td>
             <td style="vertical-align:top;width:25%">
-            <div class="float-right" style="vertical-align:text-top; color: #FFFFFF;">
+            <div class="float-right" style="vertical-align:text-top; color: #FFFFFF">
                 <section id="login">
                     <asp:LoginView runat="server" ViewStateMode="Disabled" ID="LoginView1">
                         <AnonymousTemplate>
                             <ul>
-                                <li><a id="registerLink" runat="server" href="~/Account/Register.aspx">Register</a></li>
-                                <li><a id="loginLink" runat="server" href="~/Account/Login.aspx">Log in</a></li>
+                                <li><a id="registerLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Register.aspx">Register</a></li>
+                                <li><a id="loginLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Login.aspx">Log in</a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <p>
                                 Hello, <a runat="server" class="username" href="~/Account/Manage.aspx" title="Manage your account">
                                     <asp:LoginName runat="server" CssClass="username" /></a>!
-                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                                <asp:LoginStatus runat="server" style="background-color:#6E11A8;color:white" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
                             </p>
                         </LoggedInTemplate>
                     </asp:LoginView>

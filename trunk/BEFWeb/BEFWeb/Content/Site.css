@@ -143,7 +143,6 @@ h5, h6 {
 
 header .content-wrapper {
     padding-top: 20px;
-    height: 222px;
 }
     
 footer {
@@ -171,8 +170,6 @@ footer {
     outline: none;
     text-decoration: none;
 }
-
-
 
 /* login
 ----------------------------------------------------------*/
@@ -415,7 +412,7 @@ fieldset {
     }
     
     fieldset ol {
-        padding: 0;
+        padding: 40px;
         list-style: none;
     }
 
@@ -538,12 +535,13 @@ input[type="checkbox"].input-validation-error {
 
 div.hideSkiplink
 {
-    background-color:#6E11A8;
+    background-color:#4d0b75;
     width:100%;
 }
 
 div.menu
 {
+    font-size:large;
     padding: 4px 0px 4px 8px;
 }
 
@@ -557,12 +555,11 @@ div.menu ul
 
 div.menu ul li a, div.menu ul li a:visited
 {
-    background-color: #6E11A8;
+    background-color: #4d0b75;
     border: 1px #4e667d solid;
     color: #dde4ec;
     display: block;
-    line-height: 1.35em;
-    padding: 4px 20px;
+    padding: 4px 25px;
     text-decoration: none;
     white-space: nowrap;
 }
@@ -635,12 +632,12 @@ th {
 	}
 
 td {
-    padding: 0.25em 2em 0.25em 0em;
+
     border: 0 none;
 }
 
 tr.pager td {
-    padding: 0 0.25em 0 0;
+    padding: 0 0 0 0;
 }
 
 
@@ -695,7 +692,7 @@ tr.pager td {
 
     /* menu */
     nav {
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
 
     ul#menu {
