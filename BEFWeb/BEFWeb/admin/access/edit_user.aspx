@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/Page.master" %>
 
 <script runat="server">
 	string username;
@@ -110,7 +110,7 @@
 	}
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 
 <!-- #include file="_nav.aspx -->
 
@@ -119,7 +119,7 @@
 	<th>User Information</th>
 </tr>
 <tr>
-<td class="details" valign="top">
+<td class="details" style="vertical-align:top">
 
 <h3>Roles:</h3>
 <asp:CheckBoxList ID="UserRoles" runat="server" />

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/page.master" %>
 
 <script runat="server">
 	private void Page_Init()
@@ -37,7 +37,7 @@
 	}
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 
 <!-- #include file="_nav.aspx -->
 
@@ -46,7 +46,7 @@
 	<th>Users by Role</th>
 </tr>
 <tr>
-<td class="details" valign="top">
+<td class="details" style="vertical-align:top">
 
 <!-- #include file="_nav3.aspx -->
 
@@ -80,9 +80,5 @@ Role filter:
 	<asp:BoundField DataField="islockedout" HeaderText="Is Locked Out" />
 </Columns>
 </asp:GridView>
-
 </td></tr></table>
-
-
-
 </asp:Content>

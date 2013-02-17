@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/Page.master" %>
 
 <script runat="server">
 	private void Page_PreRender()
@@ -28,7 +28,7 @@
 	<th>Online Users</th>
 </tr>
 <tr>
-<td class="details" valign="top">
+<td class="details" style="vertical-align:top">
 
 <!-- #include file="_nav3.aspx -->
 
@@ -54,10 +54,6 @@
 	<asp:BoundField DataField="islockedout" HeaderText="Is Locked Out" />
 </Columns>
 </asp:GridView>
-
-
 </td>
-
 </tr></table>
-
 </asp:Content>

@@ -1,32 +1,12 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="BEFWeb.About" %>
+﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Secure/Page.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="BEFWeb.About" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <hgroup class="title">
-        <h1><%: Title %>.</h1>
-        <h2>What can I do from this site?</h2>
-    </hgroup>
-
-    <article>
-        <p>        
-            Manage your contact information including committees and 
-        </p>
-        <p>        
-            Create and manage GRANT APPLICATIONS
-        </p>
-        <p>        
-            Volunteer to be part of a BEF Event
-        </p>
-    </article>
-
-    <aside>
-        <h3>Aside Title</h3>
-        <p>        
-            Use this area to provide additional information.
-        </p>
+    <h1>What can I do from this site?</h1>
+    <div class="aboutList">
         <ul>
-            <li><a runat="server" href="~/">Home</a></li>
-            <li><a runat="server" href="~/About.aspx">About</a></li>
-            <li><a runat="server" href="~/Contact.aspx">Contact</a></li>
+            <li><span style="font-weight:bold;font-style:italic;text-decoration:underline">BEF BOARD MEMBERS</span> can manage their contact information and committee membership</li>
+            <li><span style="font-weight:bold;font-style:italic;text-decoration:underline">TEACHERS</span> can create and manage Grant Applications</li>
+            <li><span style="font-weight:bold;font-style:italic;text-decoration:underline">VOLUNTEERS</span> can register to help BEF Events</li>
         </ul>
-    </aside>
+        </div>
 </asp:Content>

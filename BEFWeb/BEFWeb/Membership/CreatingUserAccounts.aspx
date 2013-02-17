@@ -1,13 +1,11 @@
-﻿<%@ Page Title="Register" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="BEFWeb.Account.Register" %>
-
-<asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <h2>Use the form below to create a new account.</h2>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreatingUserAccounts.aspx.cs" Inherits="BEFWeb.Membership.CreatingUserAccounts" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+    <h2>Create a New User Account</h2>
     <p>
         <asp:CreateUserWizard ID="RegisterUser" runat="server" 
             CancelDestinationPageUrl="~/Default.aspx" 
             ContinueDestinationPageUrl="~/Default.aspx" DisplayCancelButton="True"
-            oncreatinguser="RegisterUser_CreatingUser" OnCreatedUser="RegisterUser_CreatedUser">
+            oncreatinguser="RegisterUser_CreatingUser">
             <WizardSteps>
                 <asp:CreateUserWizardStep ID="CreateUserWizardStep1" runat="server" />
                 <asp:CompleteWizardStep ID="CompleteWizardStep1" runat="server" />
@@ -17,4 +15,9 @@
     <p>
         <asp:Label runat="server" id="InvalidUserNameOrPasswordMessage" Visible="false" EnableViewState="false" ForeColor="Red"></asp:Label>
     </p>
+    
+    <p>
+        <asp:Label ID="CreateAccountResults" runat="server"></asp:Label>
+    </p>    
 </asp:Content>
+

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/Page.master" %>
 <%@ Import Namespace="System.Web.Configuration" %>
 
 <script runat="server">
@@ -172,7 +172,7 @@
 	}
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 
 <!-- #include file="_nav.aspx -->
 
@@ -181,11 +181,11 @@
 	<th>Website Access Security Summary</th>
 </tr>
 <tr>
-	<td class="details" valign="top">
+	<td class="details" style="vertical-align:top">
 		<table>
 		<tr>
-			<td valign="top" style="padding-right: 30px;">
-				
+			<td style="padding-right: 30px;vertical-align:top">
+
 				<asp:DropDownList ID="UserRoles" runat="server" AppendDataBoundItems="true"
 					AutoPostBack="true" OnSelectedIndexChanged="DisplayRoleSummary">
 				<asp:ListItem>Select Role</asp:ListItem>

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/Page.master" %>
 <%@ Import Namespace="System.Web.Configuration" %>
 
 <script runat="server">
@@ -334,7 +334,7 @@
 
 
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 
 <!-- #include file="_nav.aspx -->
 
@@ -343,16 +343,13 @@
 	<th>Website Access Rules</th>
 </tr>
 <tr>
-	<td class="details" valign="top">
+	<td class="details" style="vertical-align:top">
 		<p>
 		Use this page to manage access rules for your Web site. Rules are applied to folders, thus providing robust folder-level security enforced by the ASP.NET infrastructure. Rules are persisted as XML in each folder's Web.config file. <i>Page-level security and inner-page security are not handled using this tool &mdash; they are handled using specialized code that is available to the Web Developers.</i>
 		</p>
-
-
-
 		<table>
 		<tr>
-			<td valign="top" style="padding-right: 30px;">
+			<td style="padding-right: 30px;vertical-align:top">
 				<div class="treeview">
 				<asp:TreeView runat="server" ID="FolderTree"
 					OnSelectedNodeChanged="FolderTree_SelectedNodeChanged">

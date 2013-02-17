@@ -1,39 +1,15 @@
-﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="BEFWeb.Contact" %>
+﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Secure/Page.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="BEFWeb.Contact" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <hgroup class="title">
-        <h1><%: Title %>.</h1>
-        <h2>Your contact page.</h2>
-    </hgroup>
-
+    <br />
     <section class="contact">
-        <header>
-            <h3>Phone:</h3>
-        </header>
+        <h3>Contact Info:</h3>
         <p>
-            <span class="label">Main:</span>
-            <span>317.852.1056</span>
+            Phone:&nbsp;317.852.1056<br />
+            Web Support:&nbsp;<span><a href="mailto:bdaun1@gmail.com">BEF Application Webmaster</a></span><br />
+            General:&nbsp;<span><a href="mailto:BEFInfo@BrownsburgEducationFoundation.org">Rene Behrend</a></span>
         </p>
-    </section>
-
-    <section class="contact">
-        <header>
-            <h3>Email:</h3>
-        </header>
-        <p>
-            <span class="label">Web Support:</span>
-            <span><a href="mailto:bdaun1@gmail.com">BEF Application Webmaster</a></span>
-        </p>
-        <p>
-            <span class="label">General:</span>
-            <span><a href="mailto:BEFInfo@BrownsburgEducationFoundation.org">Rene Behrend</a></span>
-        </p>
-    </section>
-
-    <section class="contact">
-        <header>
-            <h3>Address:</h3>
-        </header>
+        <h3>Address:</h3>
         <p>
             Brownsburg Education Foundation<br />
             444 East Tilden Drive<br />

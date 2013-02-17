@@ -14,8 +14,8 @@ namespace BEFWeb
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AuthConfig.RegisterOpenAuth();
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //AuthConfig.RegisterOpenAuth();
         }
 
         void Application_End(object sender, EventArgs e)
