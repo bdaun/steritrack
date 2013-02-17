@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BEFWeb.Account
-{
-
-
-    public partial class Register
-    {
-
+namespace BEFWeb.Account {
+    
+    
+    public partial class Register {
+        
         /// <summary>
         /// RegisterUser control.
         /// </summary>
@@ -22,14 +20,32 @@ namespace BEFWeb.Account
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CreateUserWizard RegisterUser;
-
+        
         /// <summary>
-        /// RegisterUserWizardStep control.
+        /// CreateUserWizardStep1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CreateUserWizardStep RegisterUserWizardStep;
+        protected global::System.Web.UI.WebControls.CreateUserWizardStep CreateUserWizardStep1;
+        
+        /// <summary>
+        /// CompleteWizardStep1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompleteWizardStep CompleteWizardStep1;
+        
+        /// <summary>
+        /// InvalidUserNameOrPasswordMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label InvalidUserNameOrPasswordMessage;
     }
 }

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/page.master" %>
 <%@ Register TagPrefix="dc" TagName="alphalinks" Src="~/Usercontrols/alphalinks.ascx" %>
 
 <script runat="server">
@@ -16,25 +16,18 @@
 	}
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 <!-- #include file="_nav.aspx -->
-
 <table class="webparts">
 <tr>
 	<th>Users by Name</th>
 </tr>
 <tr>
-<td class="details" valign="top">
-
+<td class="details" style="vertical-align:top">
 <!-- #include file="_nav3.aspx -->
-
-
 User Name filter:&nbsp;&nbsp;&nbsp;
 <dc:alphalinks runat="server" ID="Alphalinks" />
-
 <br /><br />
-
 <asp:GridView runat="server" ID="Users" AutoGenerateColumns="false"
 	CssClass="list" AlternatingRowStyle-CssClass="odd" GridLines="none"
 	>
@@ -55,10 +48,6 @@ User Name filter:&nbsp;&nbsp;&nbsp;
 	<asp:BoundField DataField="islockedout" HeaderText="Is Locked Out" />
 </Columns>
 </asp:GridView>
-
 </td>
-
 </tr></table>
-
-
 </asp:Content>

@@ -12,7 +12,7 @@ namespace BEFWeb.Account
         protected void Page_Load(object sender, EventArgs e)
         {
             RegisterHyperLink.NavigateUrl = "Register.aspx";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
+ //           OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
 
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))

@@ -19,7 +19,7 @@
     <asp:ScriptManager ID="smSiteMaster" runat="server">
         <Scripts>
             <%--Framework Scripts--%>
-            <asp:ScriptReference Name="MsAjaxBundle" />
+            <%--<asp:ScriptReference Name="MsAjaxBundle" />--%>
             <asp:ScriptReference Name="jquery" />
             <asp:ScriptReference Name="jquery.ui.combined" />
             <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
@@ -38,7 +38,7 @@
     <table style="align-content:center;width:100%">
         <tr>
             <td style="width:25%"><a href="http://brownsburgeducationfoundation.org/"><img src="~/Images/logo_top_left.png" runat="server" style="height: 140px; width: 140px" /></a></td>
-            <td class="site-title">Brownsburg Education Foundation<br />
+            <td class="site-title" style="font-size:xx-large">Brownsburg Education Foundation<br />
                 <em>On the Web</em></td>
             <td style="vertical-align:top;width:25%">
             <div class="float-right" style="vertical-align:text-top; color: #FFFFFF">
@@ -59,13 +59,13 @@
                         </LoggedInTemplate>
                     </asp:LoginView>
                 </section>
-                <nav>
-                    <ul id="menu">
-                        <li><a runat="server" href="~/secure/home.aspx">Home</a></li>
-                        <li><a runat="server" href="~/About.aspx">About</a></li>
-                        <li><a runat="server" href="~/Contact.aspx">Contact</a></li>
-                    </ul>
-                </nav>
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="minimenu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/Contact.aspx" Text="Contact" />
+                    </Items>
+                </asp:Menu>
             </div>
             </td>
         </tr>
@@ -74,12 +74,49 @@
     <div id="body">
         <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
         <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+            <asp:ContentPlaceHolder runat="server" ID="MainContent">
+                </asp:ContentPlaceholder>
         </section>
     </div>
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
+                <ul>
+     <li>
+
+          <asp:HyperLink runat="server" ID="lnkHome" NavigateUrl="~/Default.aspx">Home</asp:HyperLink>
+     </li>
+     <asp:Repeater runat="server" ID="menu" DataSourceID="SiteMapDataSource1">
+
+          <ItemTemplate>
+               <li>
+                    <asp:HyperLink ID="lnkMenuItem" runat="server" 
+                         NavigateUrl='<%# Eval("Url") %>'><%# Eval("Title") %></asp:HyperLink>
+
+                    <asp:Repeater ID="submenu" runat="server" DataSource="<%#
+                         ((SiteMapNode) Container.DataItem).ChildNodes %>">
+                         <HeaderTemplate>
+                              <ul>
+                         </HeaderTemplate>
+                         <ItemTemplate>
+
+                              <li>
+                                   <asp:HyperLink ID="lnkMenuItem" runat="server" NavigateUrl='<%#
+                                        Eval("Url") %>'><%# Eval("Title") %></asp:HyperLink>
+
+                              </li>
+                         </ItemTemplate>
+                         <FooterTemplate>
+                              </ul>
+                         </FooterTemplate>
+                    </asp:Repeater>
+               </li>
+          </ItemTemplate>
+     </asp:Repeater>
+
+</ul>
+    
+<asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false" />
                 <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
             </div>
         </div>

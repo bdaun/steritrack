@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/site.master" %>
+<%@ Page Language="C#" MasterPageFile="~/Secure/Page.master" %>
 
 <script runat="server">
 	private bool createRoleSuccess = true;
@@ -65,7 +65,7 @@
 	}
 </script>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
 
 <!-- #include file="_nav.aspx -->
 
@@ -74,13 +74,12 @@
 	<th>Roles</th>
 </tr>
 <tr>
-<td class="details" valign="top" style="width: 450px;">
+<td class="details" style="width: 450px;vertical-align:top">
 
 <br />
 
 <asp:GridView runat="server" ID="UserRoles" AutoGenerateColumns="false"
-	CssClass="list" AlternatingRowStyle-CssClass="odd" GridLines="none"
-	>
+	CssClass="list" AlternatingRowStyle-CssClass="odd" GridLines="none">
 	<Columns>
 		<asp:TemplateField>
 			<HeaderTemplate>Role Name</HeaderTemplate>
@@ -102,19 +101,13 @@
 		</asp:TemplateField>
 	</Columns>
 </asp:GridView>
-
-
 <p>
 New Role:
 <asp:TextBox runat="server" ID="NewRole"></asp:TextBox>
-
 <asp:Button ID="Button2" runat="server" OnClick="AddRole" Text="Add Role" />
 </p>
-
 <div runat="server" id="ConfirmationMessage" class="alert">
 </div>
-
 </td>
-
 </tr></table>
 </asp:Content>
