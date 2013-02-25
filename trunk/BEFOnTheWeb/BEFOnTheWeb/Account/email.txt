@@ -1,0 +1,7 @@
+﻿<p>Hello <b><%UserName%></b>,</p>
+<p>You are receiving this email on behalf of BEFWeb because you have requested a new password.</p>
+<p>Your new password is <b><%Password%></b></p>
+<p>We suggest that you login immediately and change your password.</p>
+<p>Click&nbsp;<a HRef="http://www.teleiosconsultinggroup.com/BEFWeb/Account/Login.aspx">HERE</a>&nbsp;to login with your new password</P>
+<p>Thanks,<br/>Your Website Team</p>
+

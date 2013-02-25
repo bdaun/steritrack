@@ -1,0 +1,64 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page.master.cs" Inherits="BEFOnTheWeb.Secure.Page" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="~/content/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="frmPageMaster" runat="server">
+    <div class="page">
+        <div class="header" style="padding-top:10px">
+            <div class="title" style="padding-bottom:10px">
+                <asp:Image ID="imgLogo" runat="server" ImageUrl="~/Images/logo_top_left.png" Height="100px" Width="100px" />
+                    &nbsp;&nbsp;&nbsp;<span class="site-title" style="font-size:xx-large">Brownsburg Education Foundation<em>&nbsp;On the Web</em></span>
+            </div>
+            <div class="loginDisplay">
+                <asp:LoginView runat="server" ViewStateMode="Disabled" ID="LoginView1">
+                    <AnonymousTemplate>
+                            [ <a id="loginLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Login.aspx">Log in</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <p>Hello, <a id="A1" runat="server" class="username" href="~/Account/Manage.aspx" title="Manage your account">
+                        <asp:LoginName ID="LoginName1" runat="server" CssClass="username" /></a>!
+                        <asp:LoginStatus ID="LoginStatus1" style="background-color:#6E11A8;color:white" runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                        <br />
+                        <div style="background-color:#6E11A8;color:white">
+                        <asp:HyperLink ID="hypChangePw" runat="server" NavigateUrl="~/Account/ChangePassword.aspx">Change PW</asp:HyperLink>
+                        </div>
+                        </p>
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            <div class="clear hideSkiplink" >               
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/Secure/Grants/GrantMainMenu.aspx" Text="Grants" />
+                        <asp:MenuItem NavigateUrl="~/Secure/EventsMainMenu.aspx" Text="Events" />
+                        <asp:MenuItem NavigateUrl="~/Secure/BEF/BEFMainMenu.aspx" Text="BEF" />
+                        <asp:MenuItem NavigateUrl="~/Secure/MeManagement.aspx" Text="Me" />
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/Contact.aspx" Text="Contact Us" />
+                        <asp:MenuItem NavigateUrl="~/Admin/AdminMenu.aspx" Text="Admin"/>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+        <div class="clear"></div>
+        </div>
+    <asp:ScriptManager ID="smPageMaster" runat="server" >        
+    <Scripts>
+        <%--Framework Scripts--%>
+        <asp:ScriptReference Name="jquery" />
+        <asp:ScriptReference Name="jquery.ui.combined" />
+        <%--Site Scripts--%>
+    </Scripts>
+    </asp:ScriptManager>
+    </form>
+</body>
+</html>
