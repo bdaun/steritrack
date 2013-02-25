@@ -1,0 +1,96 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="BEFOnTheWeb.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <title><%: Page.Title %> - My ASP.NET Application</title> 
+    <link href="~/content/Site.css" rel="stylesheet" type="text/css" />
+
+
+
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</head>
+<body>
+    <form id="Form1" runat="server">
+    <asp:ScriptManager ID="smSiteMaster" runat="server">
+    <Scripts>
+        <asp:ScriptReference Name="jquery" />
+        <asp:ScriptReference Name="jquery.ui.combined" />
+        <%--Site Scripts--%>
+
+
+
+
+
+
+
+
+
+
+    </Scripts>
+</asp:ScriptManager>
+    <div class="header">
+    <header>
+    <table style="align-content:center;width:100%">
+        <tr>
+            <td style="width:25%"><a href="http://brownsburgeducationfoundation.org/"><img id="Img1" src="~/Images/logo_top_left.png" runat="server" style="height: 140px; width: 140px" /></a></td>
+            <td class="site-title" style="font-size:xx-large">Brownsburg Education Foundation<br />
+                <em>On the Web</em></td>
+            <td style="vertical-align:top;width:25%">
+            <div class="float-right" style="vertical-align:text-top; color: #FFFFFF;margin-top:4px;">
+                <section id="login">
+                    <asp:LoginView runat="server" ViewStateMode="Disabled" ID="LoginView1">
+                        <AnonymousTemplate>
+                            <ul>
+                                <li><a id="registerLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Register.aspx">Register</a></li>
+                                <li><a id="loginLink" style="background-color:#6E11A8;color:white" runat="server" href="~/Account/Login.aspx">Log in</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <p>
+                                Hello, <a id="A1" runat="server" class="username" href="~/Account/Manage.aspx" title="Manage your account">
+                                    <asp:LoginName ID="LoginName1" runat="server" CssClass="username" /></a>!
+                                <asp:LoginStatus ID="LoginStatus1" runat="server" style="background-color:#6E11A8;color:white" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                                <br />
+                                <div style="background-color:#6E11A8;color:white">
+                                <asp:HyperLink ID="hypChangePw" runat="server" NavigateUrl="~/Account/ChangePassword.aspx" style="background-color:#6E11A8;color:white">Change PW</asp:HyperLink>
+                                </div>
+                                <p>
+                                </p>
+                            </p>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </section>
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/Contact.aspx" Text="Contact" />
+                    </Items>
+                </asp:Menu>
+            </div>
+            </td>
+        </tr>
+    </table>
+    </header>
+    <div id="body">
+
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" >
+            
+        </asp:ContentPlaceHolder>
+        <section class="content-wrapper main-content clear-fix">
+            <asp:ContentPlaceHolder runat="server" ID="MainContent">
+                </asp:ContentPlaceholder>
+        </section>
+    </div>
+    <footer>
+
+    </footer>
+    </div>
+    </form>
+</body>
+</html>
+
