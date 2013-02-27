@@ -31,6 +31,15 @@ namespace BEFOnTheWeb.Secure {
         protected global::System.Web.UI.HtmlControls.HtmlForm frmPageMaster;
         
         /// <summary>
+        /// smPageMaster control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ToolkitScriptManager smPageMaster;
+        
+        /// <summary>
         /// imgLogo control.
         /// </summary>
         /// <remarks>
@@ -65,14 +74,5 @@ namespace BEFOnTheWeb.Secure {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
-        /// <summary>
-        /// smPageMaster control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager smPageMaster;
     }
 }

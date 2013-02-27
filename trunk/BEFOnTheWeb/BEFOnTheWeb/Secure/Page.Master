@@ -8,6 +8,14 @@
 </head>
 <body>
     <form id="frmPageMaster" runat="server">
+    <ajaxToolkit:ToolkitScriptManager ID="smPageMaster" runat="server" >        
+    <Scripts>
+        <%--Framework Scripts--%>
+        <asp:ScriptReference Name="jquery" />
+        <asp:ScriptReference Name="jquery.ui.combined" />
+        <%--Site Scripts--%>
+    </Scripts>
+    </ajaxToolkit:ToolkitScriptManager>
     <div class="page">
         <div class="header" style="padding-top:10px">
             <div class="title" style="padding-bottom:10px">
@@ -51,14 +59,6 @@
         </div>
         <div class="clear"></div>
         </div>
-    <asp:ScriptManager ID="smPageMaster" runat="server" >        
-    <Scripts>
-        <%--Framework Scripts--%>
-        <asp:ScriptReference Name="jquery" />
-        <asp:ScriptReference Name="jquery.ui.combined" />
-        <%--Site Scripts--%>
-    </Scripts>
-    </asp:ScriptManager>
     </form>
 </body>
 </html>

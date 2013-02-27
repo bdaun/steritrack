@@ -1,13 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Secure/Page.Master" AutoEventWireup="true" CodeBehind="GrantManagement.aspx.cs" Inherits="BEFOnTheWeb.Secure.GrantManagement" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Secure/Page.Master" AutoEventWireup="true" CodeBehind="GrantManagement.aspx.cs" 
+    Inherits="BEFOnTheWeb.Secure.GrantManagement" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">                  
     <h1>Grant Application Form</h1>
 <asp:Label ID="lblErrMsg" runat="server" />
 <table>
     <tr>
-        <td><asp:GridView ID="gvGrantInfo" runat="server" DataSourceID="sdsGrant" AutoGenerateColumns="False"  
-                GridLines="Horizontal" AllowSorting="True" CssClass="mGrid" ForeColor="White"
-                OnRowEditing="gvGrantInfo_RowEditing" SelectedRowStyle-BackColor="#ffff99" OnRowDataBound="gvGrantInfo_RowDataBound"
+        <td><asp:GridView ID="gvGrantsAvailable" runat="server" DataSourceID="sdsGrantsAvailable" AutoGenerateColumns="False"  
+                GridLines="Horizontal" AllowSorting="True" CssClass="mGrid" ForeColor="White" OnSelectedIndexChanged="gvGrantsAvailable_SelectedIndexChanged"
+                OnRowEditing="gvGrantsAvailable_RowEditing" SelectedRowStyle-BackColor="#ffff99" OnRowDataBound="gvGrantsAvailable_RowDataBound"
                 DataKeyNames="ID" ShowHeaderWhenEmpty="True" HeaderStyle-HorizontalAlign="Center">
                 <Columns>
                     <asp:BoundField DataField="ID" HeaderText="ID" InsertVisible="False" ReadOnly="True" SortExpression="ID" />
@@ -16,14 +17,13 @@
                 </Columns>
             </asp:GridView></td>
         <td style="padding-left:50px;vertical-align:top">
-            <asp:Button ID="btnNewGrant" runat="server" Text="Start New Grant" ForeColor="white" Font-Size="Small" BackColor="#a695d1"   /><br />
-            <asp:Button ID="btnPrint" runat="server" Text="Print" onclick="btnPrint_Click" ForeColor="white" Font-Size="Small" BackColor="#a695d1" />
-            <ajaxToolkit:RoundedCornersExtender ID="rcNewGrant" runat="server" TargetControlID="btnnewGrant" BorderColor="#a695d1"  />
-            <ajaxToolkit:RoundedCornersExtender ID="rcPrint" runat="server" TargetControlID="btnPrint" BorderColor="#a695d1"  />
+            <asp:Button ID="btnNewGrant" runat="server" Text="Start New Grant" /><br />
+            <asp:Button ID="btnPrint" runat="server" Text="Print" onclick="btnPrint_Click" />
+            <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click" />
         </td>
     </tr>
 </table>
-<asp:FormView ID="fvGrantInfo" runat="server" DataSourceID="sdsGrant" RenderOuterTable="true" Width="100%">
+<asp:FormView ID="fvGrantInfo" runat="server" DataSourceID="sdsGrantInfo" Width="100%">
     <EditItemTemplate>
         ID:
         <asp:Label ID="IDLabel1" runat="server" Text='<%# Eval("ID") %>' />
@@ -183,10 +183,6 @@
         <table class="formtable">
             <tr><th colspan="2" style="font-weight:bold;text-align:center">Basic Information</th></tr>
             <div id="Step1" runat="server">
-            <tr><td class="form1sttd">ID:</td>
-                <td><asp:Label ID="IDLabel" runat="server" Width="20px" Text='<%# Eval("ID") %>' />&nbsp;&nbsp;
-                    <asp:Label ID="usernameLabel" runat="server" Text='<%# Bind("username") %>' />
-                </td></tr>
             <tr><td class="form1sttd">Status:</td>
                 <td><asp:Label ID="StatusLabel" runat="server" Text='<%# Bind("Status") %>' /></td>
             </tr>
@@ -217,40 +213,90 @@
             <tr><th colspan="2" style="font-weight:bold;text-align:center">Activity Description</th></tr>
             <div id="Step2" runat="server">
             <tr><td class="form1sttd">ActivityDescription:</td>
-                <td><asp:TextBox ID="ActivityDescriptionTextBox" runat="server" Text='<%# Bind("ActivityDescription") %>' Enabled="false" TextMode="MultiLine" 
+                <td><asp:TextBox ID="ActivityDescriptionTextBox" runat="server" Text='<%# Bind("ActivityDescription") %>' Font-Size="Small" ReadOnly="true" TextMode="MultiLine" Rows="5"
                      Width="98%" />
-                    <ajaxToolkit:TextBoxWatermarkExtender ID="wmActDesc" runat="server" TargetControlID="ActivityDescriptionTextBox" 
+                    <ajaxToolkit:TextBoxWatermarkExtender ID="wmActDesc" runat="server" TargetControlID="ActivityDescriptionTextBox"  
                         WatermarkText="Describe the strategies and/or activities you will use to implement this project and how those strategies and/or activities meet student needs and/or Indiana State Standards." WatermarkCssClass="watermarked" />
+<%--                    <ajaxToolkit:HtmlEditorExtender ID="htmlActDesc" runat="server" TargetControlID="ActivityDescriptionTextBox" />--%>
                 </td></tr>
                 </div>
         </table>
         <asp:Button ID="btnStep2ShowHide" runat="server" Text="Hide Activity Description" OnClick="btnStep2ShowHide_Click" />
-
-        StudentImpact:
-        <asp:Label ID="StudentImpactLabel" runat="server" Text='<%# Bind("StudentImpact") %>' />
-
-        AmountRequested:
-        <asp:Label ID="AmountRequestedLabel" runat="server" Text='<%# Bind("AmountRequested") %>' />
-
-        
         <br />
-        NeedsAssessment:
-        <asp:Label ID="NeedsAssessmentLabel" runat="server" Text='<%# Bind("NeedsAssessment") %>' />
+        <table class="formtable">
+            <tr><th colspan="2" style="font-weight:bold;text-align:center">Needs Assessment</th></tr>
+            <div id="Step3" runat="server">
+            <tr><td class="form1sttd">Needs Assessment:</td>
+                <td><asp:TextBox ID="NeedsAssessmentTextBox" runat="server" Text='<%# Bind("NeedsAssessment") %>' Font-Size="Small" ReadOnly="true" TextMode="MultiLine" Rows="5"
+                     Width="98%" />
+                    <ajaxToolkit:TextBoxWatermarkExtender ID="wmNeedsAssess" runat="server" TargetControlID="NeedsAssessmentTextBox"  
+                        WatermarkText="In four or five sentences, please specify the educational need(s) that the project addresses, indicate how the need(s) was(were) identified and provide a thorough description of the targeted student population." WatermarkCssClass="watermarked" />
+<%--                    <ajaxToolkit:HtmlEditorExtender ID="HtmlNeedsAssess" runat="server" TargetControlID="NeedsAssessmentTextBox" />--%>
+                </td></tr>
+                </div>
+        </table>
+        <asp:Button ID="btnStep3ShowHide" runat="server" Text="Hide Activity Description" OnClick="btnStep3ShowHide_Click" />
         <br />
-        GoalsObjectives:
-        <asp:Label ID="GoalsObjectivesLabel" runat="server" Text='<%# Bind("GoalsObjectives") %>' />
+        <table class="formtable">
+            <tr><th colspan="2" style="font-weight:bold;text-align:center">Goals and Objectives</th></tr>
+            <div id="Step4" runat="server">
+            <tr><td class="form1sttd">Goals and Objectives:</td>
+                <td><asp:TextBox ID="GoalsObjectivesTextBox" runat="server" Text='<%# Bind("GoalsObjectives") %>' Font-Size="Small" ReadOnly="true" TextMode="MultiLine" Rows="5" Enabled="false"
+                     Width="98%" />
+                    <ajaxToolkit:TextBoxWatermarkExtender ID="wmGoalsObjectives" runat="server" TargetControlID="GoalsObjectivesTextBox"  
+                        WatermarkText="In four or five sentences, describe the specific goals and objectives as they relate to the Indiana State Standards, student achievement needs, or your school’s School Improvement Plan.  The goals should be specific and measurable. " WatermarkCssClass="watermarked" />
+<%--                    <ajaxToolkit:HtmlEditorExtender ID="htmlGoalsObjectives" runat="server" TargetControlID="GoalsObjectivesTextBox" />--%>
+                </td></tr>
+                </div>
+        </table>
+        <asp:Button ID="btnStep4ShowHide" runat="server" Text="Hide Goals and Objectives" OnClick="btnStep4ShowHide_Click" />
         <br />
-        AssessEvaluation:
-        <asp:Label ID="AssessEvaluationLabel" runat="server" Text='<%# Bind("AssessEvaluation") %>' />
+        <table class="formtable">
+            <tr><th colspan="2" style="font-weight:bold;text-align:center">Assessment/Evaluation</th></tr>
+            <div id="Step5" runat="server">
+            <tr><td class="form1sttd">Assessment/Evaluation:</td>
+                <td><asp:TextBox ID="AssessEvaluationTextBox" runat="server" Text='<%# Bind("AssessEvaluation") %>' Font-Size="Small" ReadOnly="true" TextMode="MultiLine" Rows="5" Enabled="false"
+                     Width="98%" />
+                    <ajaxToolkit:TextBoxWatermarkExtender ID="wmAssessEval" runat="server" TargetControlID="AssessEvaluationTextBox"  
+                        WatermarkText="1. Describe the anticipated benefits of this project on student learning. In addition, identify the assessment strategies and/or tools that you will use to assess the impact that this project/activity has had on student/staff learning.
+2. Describe how you will share the results with colleagues.
+" WatermarkCssClass="watermarked" />
+<%--                    <ajaxToolkit:HtmlEditorExtender ID="htmlAssessEval" runat="server" TargetControlID="AssessEvaluationTextBox" />--%>
+                </td></tr>
+                </div>
+        </table>
+        <asp:Button ID="btnStep5ShowHide" runat="server" Text="Hide Assessment/Evaluation" OnClick="btnStep5ShowHide_Click" />
         <br />
-        ExpenseID:
-        <asp:Label ID="ExpenseIDLabel" runat="server" Text='<%# Bind("ExpenseID") %>' />
-        <br />
-        AltFunding:
-        <asp:Label ID="AltFundingLabel" runat="server" Text='<%# Bind("AltFunding") %>' />
+    <table class="formtable">
+        <tr><th colspan="2" style="font-weight:bold;text-align:center">Alternate Funding</th></tr>
+        <div id="Step6" runat="server">
+        <tr><td class="form1sttd">Alternate Funding:</td>
+            <td><asp:TextBox ID="AltFundingTextBox" runat="server" Text='<%# Bind("AltFunding") %>' Font-Size="Small" ReadOnly="true" TextMode="MultiLine" Rows="5" Enabled="false" Width="98%" />
+                <ajaxToolkit:TextBoxWatermarkExtender ID="wmAltFunding" runat="server" TargetControlID="AltFundingTextBox"  
+                    WatermarkText="If the grant award does not cover the complete cost of the project, how will the balance be funded?" WatermarkCssClass="watermarked" />
+<%--                    <ajaxToolkit:HtmlEditorExtender ID="htmlAltFunding" runat="server" TargetControlID="AltFundingTextBox" />--%>
+            </td></tr>
+            </div>
+    </table>
+    <asp:Button ID="btnStep6ShowHide" runat="server" Text="Hide Alternate Funding" OnClick="btnStep6ShowHide_Click" />
+    <br />
+    <table class="formtable">
+        <tr><th colspan="2" style="font-weight:bold;text-align:center">Expenditures</th></tr>
+        <div id="Step7" runat="server">
+        <asp:GridView ID="gvExpenseItems" runat="server" AutoGenerateColumns="False" DataSourceID="sdsExpenseItems" BackColor="White" HeaderStyle-BackColor="#a695d1">
+            <Columns>
+                <asp:BoundField DataField="ID" HeaderText="ID" InsertVisible="False" ReadOnly="True" SortExpression="ID" />
+                <asp:BoundField DataField="Item" HeaderText="Item" SortExpression="Item" />
+                <asp:BoundField DataField="Description" HeaderText="Description" SortExpression="Description" />
+                <asp:BoundField DataField="Amount" HeaderText="Amount" SortExpression="Amount" />
+            </Columns>
+        </asp:GridView>    
+        </div>
+    </table>
+    <asp:Button ID="btnStep7ShowHide" runat="server" Text="Hide Expenditures" OnClick="btnStep7ShowHide_Click" />
+    <br />
     </ItemTemplate>
 </asp:FormView>
-
 
 
 <asp:Panel ID="Panel1" runat="server" >
@@ -279,13 +325,23 @@
 </asp:FormView>--%>
 </asp:Panel>
 
-
-
-
-<asp:SqlDataSource ID="sdsGrant" runat="server" ConnectionString="<%$ ConnectionStrings:Teleios2013ConnectionString %>" 
-    SelectCommand="Grant_GrantInfo_Sel" SelectCommandType="StoredProcedure" OnSelecting="sdsGrant_OnSelecting">
+<asp:SqlDataSource ID="sdsGrantsAvailable" runat="server" ConnectionString="<%$ ConnectionStrings:Teleios2013ConnectionString %>" 
+    SelectCommand="Grant_GrantsByUser_Sel" SelectCommandType="StoredProcedure" OnSelecting="sdsGrantsAvailable_OnSelecting">
     <SelectParameters>
         <asp:Parameter Name="UserName" />
         <asp:Parameter Name="Role" />
-    </SelectParameters></asp:SqlDataSource>
+        <asp:SessionParameter Name="ID" SessionField="CurGrantID" DefaultValue="0" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsGrantInfo" runat="server" ConnectionString="<%$ ConnectionStrings:Teleios2013ConnectionString %>" 
+    SelectCommand="Grant_GrantInfo_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="gvGrantsAvailable" Name="ID" PropertyName="SelectedValue" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsExpenseItems" runat="server" ConnectionString="<%$ ConnectionStrings:Teleios2013ConnectionString %>" SelectCommand="Grant_ExpenseItems_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:SessionParameter DefaultValue="0" Name="GrantID" SessionField="curGrantID" Type="String" />
+    </SelectParameters>
+</asp:SqlDataSource>
 </asp:Content>

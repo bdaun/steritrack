@@ -22,13 +22,13 @@ namespace BEFOnTheWeb.Secure {
         protected global::System.Web.UI.WebControls.Label lblErrMsg;
         
         /// <summary>
-        /// gvGrantInfo control.
+        /// gvGrantsAvailable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvGrantInfo;
+        protected global::System.Web.UI.WebControls.GridView gvGrantsAvailable;
         
         /// <summary>
         /// btnNewGrant control.
@@ -49,22 +49,13 @@ namespace BEFOnTheWeb.Secure {
         protected global::System.Web.UI.WebControls.Button btnPrint;
         
         /// <summary>
-        /// rcNewGrant control.
+        /// btnReset control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.RoundedCornersExtender rcNewGrant;
-        
-        /// <summary>
-        /// rcPrint control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.RoundedCornersExtender rcPrint;
+        protected global::System.Web.UI.WebControls.Button btnReset;
         
         /// <summary>
         /// fvGrantInfo control.
@@ -85,12 +76,30 @@ namespace BEFOnTheWeb.Secure {
         protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
-        /// sdsGrant control.
+        /// sdsGrantsAvailable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsGrant;
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGrantsAvailable;
+        
+        /// <summary>
+        /// sdsGrantInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGrantInfo;
+        
+        /// <summary>
+        /// sdsExpenseItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsExpenseItems;
     }
 }
