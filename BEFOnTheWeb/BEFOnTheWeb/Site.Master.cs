@@ -15,22 +15,39 @@ namespace BEFOnTheWeb
             if (HttpContext.Current.User.Identity.Name.ToString() == "")
             {
                 MenuItemCollection menuItems = NavigationMenu.Items;
-                MenuItem Contact = new MenuItem();
                 MenuItem Home = new MenuItem();
+                MenuItem Contact = new MenuItem();
                 MenuItem About = new MenuItem();
+                //MenuItem Grants = new MenuItem();
+                //MenuItem Events = new MenuItem();
+                //MenuItem Me = new MenuItem();
+                //MenuItem BEF = new MenuItem();
 
                 foreach (MenuItem menuItem in menuItems)
                 {
-                    if (menuItem.Text == "Contact")
-                        Contact = menuItem;
-                    else if (menuItem.Text == "Home")
+                    if (menuItem.Text == "Home")
                         Home = menuItem;
+                    else if (menuItem.Text == "Contact Us")
+                        Contact = menuItem;
                     else if (menuItem.Text == "About")
                         About = menuItem;
+                    //else if (menuItem.Text == "Grants")
+                    //    Grants = menuItem;
+                    //else if (menuItem.Text == "Events")
+                    //    Events = menuItem;
+                    //else if (menuItem.Text == "Me")
+                    //    Me = menuItem;
+                    //else if (menuItem.Text == "BEF")
+                    //    BEF = menuItem;
+
                 }
-                menuItems.Remove(Contact);
                 menuItems.Remove(Home);
+                menuItems.Remove(Contact);
                 menuItems.Remove(About);
+                //menuItems.Remove(Grants);
+                //menuItems.Remove(Events);
+                //menuItems.Remove(Me);
+                //menuItems.Remove(BEF);
             }
             if (!Page.User.IsInRole("Admin"))
             {
@@ -45,7 +62,56 @@ namespace BEFOnTheWeb
                 }
                 menuItems.Remove(adminItem);
             }
-            if (Page.User.IsInRole("User"))
+            if (Page.User.IsInRole("User") || Page.User.IsInRole("Guest"))
+            {
+                MenuItemCollection menuItems = NavigationMenu.Items;
+                MenuItem Admin = new MenuItem();
+                //MenuItem Grants = new MenuItem();
+                //MenuItem Events = new MenuItem();
+                //MenuItem BEF = new MenuItem();
+
+                foreach (MenuItem menuItem in menuItems)
+                {
+                    if (menuItem.Text == "Admin")
+                    {
+                        Admin = menuItem;
+                    }
+                    //else if (menuItem.Text == "Grants")
+                    //{
+                    //    Grants = menuItem;
+                    //}
+                    //else if (menuItem.Text == "BEF")
+                    //{
+                    //    BEF = menuItem;
+                    //}
+                }
+                menuItems.Remove(Admin);
+                //menuItems.Remove(Grants);
+                //menuItems.Remove(BEF);
+
+            }
+            if (Page.User.IsInRole("Teacher") || Page.User.IsInRole("Power User") || Page.User.IsInRole("GrantApprover"))
+            {
+                MenuItemCollection menuItems = NavigationMenu.Items;
+                MenuItem Admin = new MenuItem();
+                //MenuItem BEF = new MenuItem();
+
+                foreach (MenuItem menuItem in menuItems)
+                {
+                    if (menuItem.Text == "Admin")
+                    {
+                        Admin = menuItem;
+                    }
+                    //else if (menuItem.Text == "BEF")
+                    //{
+                    //    BEF = menuItem;
+                    //}
+                }
+                menuItems.Remove(Admin);
+                //menuItems.Remove(BEF);
+
+            }
+            if (Page.User.IsInRole("BEF"))
             {
                 MenuItemCollection menuItems = NavigationMenu.Items;
                 MenuItem Admin = new MenuItem();
