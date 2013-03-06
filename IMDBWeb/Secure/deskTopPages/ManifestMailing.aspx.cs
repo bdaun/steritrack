@@ -132,5 +132,10 @@ namespace IMDBWeb.Secure.deskTopPages
                 lblErrMsg.Text = e.ToString();
             }
         }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/secure/DesktopPages/ManifestMailing.aspx");
+        }
     }
 }

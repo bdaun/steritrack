@@ -13,6 +13,8 @@
 <asp:ListItem>Manage manifest mailing by Truck Tag</asp:ListItem>
 <asp:ListItem>Manage manifest mailing by Manifest Number</asp:ListItem>
 </asp:RadioButtonList></td><td></td></tr>
+<tr><td><asp:Button ID="btnReset" runat="server" onclick="btnReset_Click" Font-Size="Small" Text="Reset" />
+    </td></tr>
 </table>
 <asp:UpdateProgress ID="progGridView" runat="server" DisplayAfter="2000" DynamicLayout="true">
     <ProgressTemplate>
