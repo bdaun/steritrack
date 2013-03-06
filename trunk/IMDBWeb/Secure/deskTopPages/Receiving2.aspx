@@ -440,7 +440,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         <tr>
   <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
             <td><asp:TextBox ID="txbNewCntrID" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
-            <td><asp:TextBox ID="txbBrandCodes" runat="server" Text='<%# Bind("BrandCodeName") %>' OnTextChanged="txbBrandCodes_SelectedIndexChanged" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
+            <td><asp:TextBox ID="txbBrandCodes" runat="server" Text='<%# Bind("BrandCodeName") %>' OnTextChanged="txbBrandCodes_SelectedIndexChanged_Dup" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
                 <ajaxToolkit:AutoCompleteExtender
                     ID="txbBrandCodes_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
                     TargetControlID="txbBrandCodes" ServicePath="myAutoComplete.asmx" ServiceMethod="GetBrandCodes"
@@ -526,7 +526,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
         <tr>
             <td><asp:TextBox ID="InboundDocNoTextBox" runat="server" Text='<%# Bind("InboundDocNo") %>' Width="75px" Font-Size="Smaller" /></td>
             <td><asp:TextBox ID="txbNewCntrID" runat="server" Text='<%# Bind("InboundContainerID") %>' Width="50px"  Font-Size="Smaller"/></td>
-            <td><asp:TextBox ID="txbBrandCodes" runat="server" OnTextChanged="txbBrandCodes_SelectedIndexChanged" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
+            <td><asp:TextBox ID="txbBrandCodes" runat="server" OnTextChanged="txbBrandCodes_SelectedIndexChanged_Dup" AutoPostBack="true" Width="200px" Font-Size="Smaller"></asp:TextBox>
                 <ajaxToolkit:AutoCompleteExtender
                     ID="txbBrandCodes_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
                     TargetControlID="txbBrandCodes" ServicePath="myAutoComplete.asmx" ServiceMethod="GetBrandCodes"
@@ -573,7 +573,7 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
                     DataValueField="ProcessPlan" Width="100px" SelectedValue='<%# bind("ProcessPlan") %>' AppendDataBoundItems="true">
                     <asp:ListItem>Select...</asp:ListItem>
                 </asp:DropDownList></td>
-            <td nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" onClick="fvContainerDetailsIns_Click" Text="Insert" Font-Size="Smaller" />&nbsp;
+            <td nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" onClick="fvDuplicateIns_Click" Text="Insert" Font-Size="Smaller" />&nbsp;
             <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" OnClick="InsCancel_Click" CommandName="Cancel" Text="Cancel" Font-Size="Smaller" /></td>
         </tr>
         </table>
