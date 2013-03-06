@@ -429,6 +429,47 @@ namespace IMDBWeb.Secure.deskTopPages
             ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
         }
 
+        protected void txbBrandCodes_SelectedIndexChanged_Dup(object sender, EventArgs e)
+        {
+            string SelBCName = ((TextBox)fvDuplicate.FindControl("txbBrandCodes")).Text;
+            string SelBCID = string.Empty;
+
+            String spBCID = "IMDB_Receive_GetBrandCodeIDs_Sel";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand spCmd = new SqlCommand(spBCID, con);
+            spCmd.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            spCmd.Parameters.AddWithValue("@Product", SelBCName);
+            SqlDataReader rdr = spCmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                ((Label)fvDuplicate.FindControl("lblBrandCodeID")).Text = rdr["BCID"].ToString();
+                SelBCID = rdr["BCID"].ToString();
+                ((DropDownList)fvDuplicate.FindControl("ddProfile")).SelectedValue = rdr["Profileid"].ToString();
+            }
+            rdr.Close();
+
+            string SelProcPlan = string.Empty;
+            String spProcPlan = "IMDB_Receive_GetProcessPlan_Sel";
+            SqlCommand spCmd1 = new SqlCommand(spProcPlan, con);
+            spCmd1.CommandType = CommandType.StoredProcedure;
+            spCmd1.Parameters.AddWithValue("@BCID", SelBCID);
+            SqlDataReader rdr1 = spCmd1.ExecuteReader();
+            while (rdr1.Read())
+            {
+                SelProcPlan = rdr1["ProcessPlan"].ToString();
+
+                if (string.IsNullOrEmpty(SelProcPlan) == true || SelProcPlan.ToString() == "")
+                {
+                    SelProcPlan = "Select...";
+                }
+                ((DropDownList)fvDuplicate.FindControl("ddProcessPlan")).SelectedValue = SelProcPlan;
+            }
+            rdr1.Close();
+            ((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Focus();
+        }
+
         protected void gvContainers_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             switch (e.CommandName)
