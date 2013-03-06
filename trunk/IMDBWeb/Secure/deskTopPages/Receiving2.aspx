@@ -864,6 +864,11 @@ Inherits="IMDBWeb.Secure.deskTopPages.Receiving2" EnableEventValidation="false" 
             <asp:BoundField DataField="ProcessPlan" HeaderText="Process Plan"  SortExpression="ProcessPlan" />
             <asp:BoundField DataField="RcvHdrID" HeaderText="HdrID" SortExpression="RcvHdrID" Visible="false" />
             <asp:BoundField DataField="BrandCode" HeaderText="BrandCode"  SortExpression="BrandCode" Visible="false" />
+        <asp:TemplateField>
+            <ItemTemplate>
+                <asp:LinkButton ID="lnkDeleteBtn" runat="server" CommandName="DeleteDetail" CommandArgument='<%# Eval("RcvDetailID") %>'>Delete</asp:LinkButton>
+            </ItemTemplate>
+        </asp:TemplateField>
         </Columns>
     </asp:GridView></td></tr></table>
 <asp:SqlDataSource ID="sdsClient" runat="server" 
