@@ -449,6 +449,45 @@ namespace IMDBWeb.Secure.deskTopPages
                     fvDuplicate.DataSourceID = "sdsContainer_Edit";
                     lblCntrID_Dup.Text = "Please enter a new Container ID to duplicate values in RcvDetailID '" + Session["CurDetailID"] + "'";
                     break;
+                case "DeleteDetail":
+                    Session["CurDetailID"] = Int32.Parse(e.CommandArgument.ToString());
+                    string spExist = "IMDB_Receive_procRecord_Exist";
+                    SqlConnection con = new SqlConnection();
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand spCmdExist = new SqlCommand(spExist, con);
+                    spCmdExist.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (spCmdExist)
+                    {
+                        spCmdExist.Parameters.AddWithValue("@RcvDetailID", Session["CurDetailID"]);
+                        object OrderExist = new object();
+                        OrderExist = spCmdExist.ExecuteScalar();
+                        if(OrderExist == null)
+                        {
+                            try
+                            {
+                                String spDelRow = "IMDB_Receive_RcvRecord_Del";
+                                SqlCommand cmdDelRow = new SqlCommand(spDelRow, con);
+                                cmdDelRow.CommandType = CommandType.StoredProcedure;
+                                cmdDelRow.Parameters.AddWithValue("@RcvDetailID", Session["CurDetailID"]);
+                                cmdDelRow.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
+                            }
+                            finally
+                            {
+                                gvContainers.DataBind();
+                            }
+                        }
+                        else
+	                    {
+                            WebMsgBox.Show("You cannot delete this record because it has downstream processing associated with it.");
+	                    }  
+                    }
+                    break;
             }
         }
 
