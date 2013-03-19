@@ -23,9 +23,9 @@ namespace MWP.Secure.MailData
             if (!IsPostBack)
             {
                 tblManualAdd.Visible = false;
+                tblTicketAdd.Visible = false;
             }
         }
-
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             if (ddCustomer.SelectedIndex == 0)
@@ -34,7 +34,6 @@ namespace MWP.Secure.MailData
 
             }
         }
-
         protected void btnCancelSearch_Click(object sender, EventArgs e)
         {
             ddCustomer.SelectedIndex = 0;
@@ -43,7 +42,6 @@ namespace MWP.Secure.MailData
             txbBegDate.Text = string.Empty;
             txbEndDate.Text = string.Empty;
         }
-
         protected void ddDataSource_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -52,7 +50,6 @@ namespace MWP.Secure.MailData
         {
             e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
-
         protected void ddCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
                 ddDept.Items.Clear();
@@ -66,12 +63,6 @@ namespace MWP.Secure.MailData
                 ddDept.Items.Add(li2);
                 ddDept.DataBind();
         }
-
-        protected void LinkButton1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         protected void btnManualAdd_Click(object sender, EventArgs e)
         {
             ddCustomerAdd.SelectedIndex = 0;
@@ -81,13 +72,37 @@ namespace MWP.Secure.MailData
             li.Value = "0";
             ddDeptAdd.Items.Add(li);    
             tblManualAdd.Visible = true;
+            tblTicketAdd.Visible = false;
         }
-
         protected void btnDoneManualAdd_Click(object sender, EventArgs e)
         {
+            ddCustomerAdd.SelectedIndex = 0;
+            ddDeptAdd.SelectedIndex = 0;
+            ddEntryType.SelectedIndex = 0;
+            txbPcCnt.Text = string.Empty;
+            txbAmt.Text = string.Empty;
+            txbDataDate.Text = string.Empty;
             tblManualAdd.Visible = false;
         }
-
+        protected void btnTicket_Click(object sender, EventArgs e)
+        {
+            ddCustomerTx.SelectedIndex = 0;
+            ddDeptTx.SelectedIndex = 0;
+            txbFlats.Text = string.Empty;
+            txbLetters.Text = string.Empty;
+            txbDataDateTx.Text = string.Empty;
+            tblTicketAdd.Visible = true;
+            tblManualAdd.Visible = false;
+        }
+        protected void btnDoneTx_Click(object sender, EventArgs e)
+        {
+            ddCustomerTx.SelectedIndex = 0;
+            ddDeptTx.SelectedIndex = 0;
+            txbFlats.Text = string.Empty;
+            txbLetters.Text = string.Empty;
+            txbDataDateTx.Text = string.Empty;
+            tblTicketAdd.Visible = false;
+        }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             string newRecord = "DataMgt_RecordAdd_Ins";
@@ -125,12 +140,11 @@ namespace MWP.Secure.MailData
                     ddDept.DataBind();
                     ddDept.SelectedValue = ddDeptAdd.SelectedValue;
                     gvMailData.DataBind();
+                    gvTicket.DataBind();
                     Con.Close();
                 }
 
             }
-
-            //temp make this a reset button
             ddCustomerAdd.SelectedIndex = 0;
             ddEntryType.SelectedIndex = 0;
             txbAmt.Text = string.Empty;
@@ -144,7 +158,59 @@ namespace MWP.Secure.MailData
             ddDeptAdd.DataBind();
             ddCustomerAdd.Focus();
         }
+        protected void btnSubmitTx_Click(object sender, EventArgs e)
+        {
+            string newRecord = "DataMgt_RecordTx_Ins";
+            SqlConnection Con = new SqlConnection();
+            Con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MPS_SQL"].ConnectionString;
+            SqlCommand Cmd = new SqlCommand(newRecord, Con);
+            Cmd.CommandType = CommandType.StoredProcedure;
+            Con.Open();
+            using (Cmd)
+            {
+                try
+                {
+                    Cmd.Parameters.AddWithValue("@CustomerDeptID", ddDeptTx.SelectedValue.ToString());
+                    Cmd.Parameters.AddWithValue("@QtyFlats", txbFlats.Text);
+                    Cmd.Parameters.AddWithValue("@QtyLetters", txbLetters.Text);
+                    Cmd.Parameters.AddWithValue("@DataDate", txbDataDateTx.Text);
+                    Cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                    Cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                    lblResultTx.Visible = true;
+                    lblResultTx.ForeColor = System.Drawing.Color.Red;
+                    lblResultTx.Text = "There was a problem.  Record was NOT Added!";
+                }
+                finally
+                {
+                    lblResultTx.Visible = true;
+                    lblResultTx.ForeColor = System.Drawing.Color.Green;
+                    lblResultTx.Text = "Successfully Added!";
+                    ddCustomer.SelectedValue = ddCustomerTx.SelectedValue;
+                    ddDept.DataBind();
+                    ddDept.SelectedValue = ddDeptTx.SelectedValue;
+                    gvMailData.DataBind();
+                    gvTicket.DataBind();
+                    Con.Close();
+                }
 
+            }
+            ddCustomerTx.SelectedIndex = 0;
+            txbFlats.Text = string.Empty;
+            txbLetters.Text = string.Empty;
+            txbDataDateTx.Text = string.Empty;
+            ddDeptTx.Items.Clear();
+            ListItem li = new ListItem();
+            li.Text = "Select a Department";
+            li.Value = "0";
+            ddDeptTx.Items.Add(li);
+            ddDeptTx.DataBind();
+            ddCustomerTx.Focus();
+        }
         protected void ddCustomerAdd_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
@@ -156,35 +222,69 @@ namespace MWP.Secure.MailData
             ddDeptAdd.DataBind();
             ddDeptAdd.Focus();
         }
-
+        protected void ddCustomerTx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblResultTx.Visible = false;
+            ddDeptTx.Items.Clear();
+            ListItem li = new ListItem();
+            li.Text = "Select a Department";
+            li.Value = "0";
+            ddDeptTx.Items.Add(li);
+            ddDeptTx.DataBind();
+            ddDeptTx.Focus();
+        }
         protected void ddDeptAdd_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
             ddEntryType.Focus();
         }
-
+        protected void ddDeptTx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblResultTx.Visible = false;
+            txbFlats.Focus();
+        }
         protected void ddEntryType_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
             txbPcCnt.Focus();
         }
-
+        protected void txbFlats_TextChanged(object sender, EventArgs e)
+        {
+            lblResultTx.Visible = false;
+            txbLetters.Focus();
+        }
+        protected void txbLetters_TextChanged(object sender, EventArgs e)
+        {
+            lblResultTx.Visible = false;
+            txbDataDateTx.Focus();
+        }
         protected void txbPcCnt_TextChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
             txbAmt.Focus();
         }
-
         protected void txbAmt_TextChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
             txbDataDate.Focus();
         }
-
         protected void txbDataDate_TextChanged(object sender, EventArgs e)
         {
             lblResult.Visible = false;
             btnSubmit.Focus();
+        }
+        protected void txbDataDateTx_TextChanged(object sender, EventArgs e)
+        {
+            lblResultTx.Visible = false;
+            btnSubmitTx.Focus();
+        }
+
+        protected void ddDept_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if((ddCustomer.SelectedIndex != 0) && (ddDept.SelectedIndex != 0) && (ddDataSource.SelectedIndex == 0))
+            {
+                ddDataSource.SelectedIndex = 1;
+            }
         }
     }
 }

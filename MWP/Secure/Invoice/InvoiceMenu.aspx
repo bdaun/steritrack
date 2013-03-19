@@ -5,7 +5,7 @@
 <h2>Invoice Menu</h2>
 <asp:Table ID="tblMenu" runat="server">
     <asp:TableRow>
-        <asp:TableCell><asp:HyperLink runat="server" NavigateUrl="~/Secure/Invoice/InvoiceSummary.aspx">Invoice Summary</asp:HyperLink></asp:TableCell>
+        <asp:TableCell><asp:HyperLink runat="server" NavigateUrl="~/Secure/Invoice/InvoiceCustomerApproval.aspx">Approve Customer Invoice Items</asp:HyperLink></asp:TableCell>
         <asp:TableCell></asp:TableCell></asp:TableRow>
 </asp:Table>
 </asp:Content>

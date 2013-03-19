@@ -157,6 +157,15 @@ namespace MWP.Secure.MailData {
         protected global::System.Web.UI.WebControls.Button btnManualAdd;
         
         /// <summary>
+        /// btnTicket control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnTicket;
+        
+        /// <summary>
         /// tblManualAdd control.
         /// </summary>
         /// <remarks>
@@ -274,6 +283,114 @@ namespace MWP.Secure.MailData {
         protected global::System.Web.UI.WebControls.Label lblResult;
         
         /// <summary>
+        /// tblTicketAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblTicketAdd;
+        
+        /// <summary>
+        /// tr1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr1;
+        
+        /// <summary>
+        /// ddCustomerTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddCustomerTx;
+        
+        /// <summary>
+        /// ddDeptTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddDeptTx;
+        
+        /// <summary>
+        /// txbFlats control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbFlats;
+        
+        /// <summary>
+        /// txbLetters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbLetters;
+        
+        /// <summary>
+        /// txbDataDateTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbDataDateTx;
+        
+        /// <summary>
+        /// calDataDateTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender calDataDateTx;
+        
+        /// <summary>
+        /// wmDataDateTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.TextBoxWatermarkExtender wmDataDateTx;
+        
+        /// <summary>
+        /// btnSubmitTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmitTx;
+        
+        /// <summary>
+        /// btnDoneTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDoneTx;
+        
+        /// <summary>
+        /// lblResultTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblResultTx;
+        
+        /// <summary>
         /// gvMailData control.
         /// </summary>
         /// <remarks>
@@ -281,6 +398,24 @@ namespace MWP.Secure.MailData {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvMailData;
+        
+        /// <summary>
+        /// gvTicket control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvTicket;
+        
+        /// <summary>
+        /// sdsTicket control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsTicket;
         
         /// <summary>
         /// sdsMailData control.
@@ -317,6 +452,15 @@ namespace MWP.Secure.MailData {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsCustomerDeptAdd;
+        
+        /// <summary>
+        /// sdsCustomerDeptTx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsCustomerDeptTx;
         
         /// <summary>
         /// sdsDataSource control.

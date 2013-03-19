@@ -27,7 +27,7 @@
 <tr id="trDept" runat="server" visible="true"><td align="right">Department:&nbsp;</td>
     <td><asp:DropDownList ID="ddDept" runat="server" DataSourceID="sdsCustomerDept" 
             AppendDataBoundItems="True" DataTextField="CustomerDeptName" AutoPostBack="true" 
-            DataValueField="CustomerDeptID">
+            DataValueField="CustomerDeptID" OnSelectedIndexChanged="ddDept_SelectedIndexChanged">
             <asp:ListItem Text="Select from List" Value="0" />
             <asp:ListItem Text="All Depts" Value="-1" Selected="True" />
         </asp:DropDownList></td><td>Mail Date Range:&nbsp;</td>
@@ -42,7 +42,8 @@
     <td colspan="2"><asp:Button ID="btnSearch" runat="server" Text="Search" onclick="btnSearch_Click" /> &nbsp;&nbsp;
                     <asp:Button ID="btnCancelSearch" runat="server" Text="Cancel" onclick="btnCancelSearch_Click" /></td><td></td>
     <td>
-    <asp:Button ID="btnManualAdd" runat="server" Text="Add Data Item" OnClick="btnManualAdd_Click" />
+    <asp:Button ID="btnManualAdd" runat="server" Text="Add Data Item" OnClick="btnManualAdd_Click" />&nbsp;&nbsp;
+    <asp:Button ID="btnTicket" runat="server" Text="Add Ticket" OnClick="btnTicket_Click" />
     </td><td></td>
 </tr>
 </table>
@@ -75,7 +76,7 @@
             <asp:ListItem Text="2 oz. + Bump up" Value="1" />
             <asp:ListItem Text="Foreign" Value="2" />
             <asp:ListItem Text="No Postage at all" Value="3" />
-            <asp:ListItem Text="Wrong weight" Value="4" />
+            <asp:ListItem Text="Handling/Courier" Value="4" />
         </asp:DropDownList>
     </td>
     <td><asp:TextBox ID="txbPcCnt" runat="server" Width="75" OnTextChanged="txbPcCnt_TextChanged"></asp:TextBox></td>
@@ -90,9 +91,48 @@
 <tr>
     <td colspan="2">
         <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" CausesValidation="true" /> &nbsp;&nbsp;
-        <asp:Button ID="btnDoneManualAdd" runat="server" Text="Done" CausesValidation="false" OnClick="btnDoneManualAdd_Click" />
+        <asp:Button ID="btnDoneManualAdd" runat="server" Text="Cancel/Done" CausesValidation="false" OnClick="btnDoneManualAdd_Click" />
     </td>
     <td><asp:Label ID="lblResult" runat="server" Visible="false" Font-Bold="true" Font-Italic="true" ForeColor="Green" /></td><td></td><td></td><td></td>
+</tr>
+</table>
+<table id="tblTicketAdd" runat="server" border="2" rules="none" frame="box" cellpadding="2">
+<tr>
+    <td colspan="6" style="font-style:italic">Add Ticket Information to the billable items table</td>
+</tr>
+<tr align="center" style="font-weight:bold">
+    <td>Customer</td>
+    <td>Department</td>
+    <td>Flats</td>
+    <td>Letters</td>
+    <td>DataDate</td>
+</tr>
+<tr id="tr1" align="center">
+    <td><asp:DropDownList ID="ddCustomerTx" runat="server" DataSourceID="sdsCustomer" 
+            AppendDataBoundItems="True" DataTextField="CustomerName" AutoPostBack="true" 
+            DataValueField="CustomerID" 
+            onselectedindexchanged="ddCustomerTx_SelectedIndexChanged" >
+            <asp:ListItem Text="Select from List" Value="0" />
+        </asp:DropDownList>
+    </td><td><asp:DropDownList ID="ddDeptTx" runat="server" DataSourceID="sdsCustomerDeptTx" 
+            AppendDataBoundItems="True" DataTextField="CustomerDeptName" AutoPostBack="true" 
+            DataValueField="CustomerDeptID" OnSelectedIndexChanged="ddDeptTx_SelectedIndexChanged">
+            <asp:ListItem Text="Select from List" Value="0" />
+            <asp:ListItem Text="All Depts" Value="-1" Selected="True" />
+        </asp:DropDownList></td>
+    <td><asp:TextBox ID="txbFlats" runat="server" Width="75" OnTextChanged="txbFlats_TextChanged"></asp:TextBox></td>
+    <td><asp:TextBox ID="txbLetters" runat="server" Width="75" OnTextChanged="txbLetters_TextChanged"></asp:TextBox></td>
+    <td><asp:TextBox ID="txbDataDateTx" runat="server" Width="100" OnTextChanged="txbDataDateTx_TextChanged"></asp:TextBox>
+    <ajaxToolkit:CalendarExtender ID="calDataDateTx" runat="server" TargetControlID="txbDataDateTx" />
+    <ajaxToolkit:TextBoxWatermarkExtender ID="wmDataDateTx" runat="server" TargetControlID="txbDataDateTx" WatermarkText="Data Date" WatermarkCssClass="watermarked" />
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <asp:Button ID="btnSubmitTx" runat="server" Text="Submit" OnClick="btnSubmitTx_Click" CausesValidation="true" /> &nbsp;&nbsp;
+        <asp:Button ID="btnDoneTx" runat="server" Text="Cancel/Done" CausesValidation="false" OnClick="btnDoneTx_Click" />
+    </td>
+    <td><asp:Label ID="lblResultTx" runat="server" Visible="false" Font-Bold="true" Font-Italic="true" ForeColor="Green" /></td><td></td><td></td><td></td>
 </tr>
 </table>
 <asp:GridView ID="gvMailData" runat="server" DataKeyNames="MailID" AutoGenerateColumns="False" 
@@ -135,20 +175,46 @@
         <asp:BoundField DataField="RateClaimed" HeaderText="Rate Claimed" SortExpression="RateClaimed" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="MailQty" HeaderText="Mail Qty" SortExpression="MailQty" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" ReadOnly="true" DataFormatString="{0:MM-dd-yyyy}" />
-        <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" ReadOnly="true" />
-        <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" ReadOnly="true" />
+        <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" ReadOnly="true" Visible="false" />
+        <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" ReadOnly="true" Visible="false" />
     </Columns>
 </asp:GridView>
+<br />
+<asp:GridView ID="gvTicket" runat="server" AutoGenerateColumns="False" DataKeyNames="TicketID" DataSourceID="sdsTicket">
+    <Columns>
+        <asp:CommandField ShowEditButton="True" EditText="UpdTicket" />
+        <asp:BoundField DataField="TicketID" HeaderText="TicketID" InsertVisible="False" ReadOnly="True" SortExpression="TicketID" />
+        <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" Visible="false" InsertVisible="False" ReadOnly="True" SortExpression="CustomerID" />
+        <asp:BoundField DataField="CustomerName" HeaderText="CustomerName" SortExpression="CustomerName" />
+        <asp:BoundField DataField="CustomerDeptID" HeaderText="CustomerDeptID" Visible="false" SortExpression="CustomerDeptID" />
+        <asp:BoundField DataField="CustomerDeptName" HeaderText="CustomerDeptName" SortExpression="CustomerDeptName" />
+        <asp:BoundField DataField="QtyFlats" HeaderText="QtyFlats" SortExpression="QtyFlats" />
+        <asp:BoundField DataField="QtyLetters" HeaderText="QtyLetters" SortExpression="QtyLetters" />
+        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" />
+        <asp:BoundField DataField="CreateDate" HeaderText="CreateDate" SortExpression="CreateDate" Visible="false" DataFormatString="{0:MM-dd-yyyy}" />
+        <asp:BoundField DataField="ModDate" HeaderText="ModDate" SortExpression="ModDate" Visible="false" />
+        <asp:BoundField DataField="Username" HeaderText="Username" SortExpression="Username" Visible="false" />
+    </Columns>
+    </asp:GridView>
+    <asp:SqlDataSource ID="sdsTicket" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
+        SelectCommand="DataMgt_TicketData_Sel" SelectCommandType="StoredProcedure">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
+            <asp:ControlParameter ControlID="ddDept" Name="CustomerDeptID" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
+            <asp:ControlParameter ControlID="txbBegDate" Name="BegDate" PropertyName="Text" Type="String" DefaultValue="01/01/1900" />
+            <asp:ControlParameter ControlID="txbEndDate" Name="EndDate" PropertyName="Text" Type="String" DefaultValue="01/01/2200" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsMailData" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
     SelectCommand="DataMgt_MailData_Sel" SelectCommandType="StoredProcedure"
     UpdateCommand="UPDATE InvoiceData 
         SET
-	        CustomerDeptID = @CustomerDeptID,
-	        ModDate = getdate(),
-	        Username = @UserName
+            CustomerDeptID = @CustomerDeptID,
+            ModDate = getdate(),
+            Username = @UserName
         WHERE 
-	        ID = @MailID" UpdateCommandType="Text"
+            ID = @MailID" UpdateCommandType="Text"
     OnUpdating="sdsMailData_Updating">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="String" DefaultValue="0"/>
@@ -179,6 +245,13 @@
     SelectCommand="DataMgt_CustomerDept_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomerAdd" Name="CustomerID" Type="Int32" />
+    </SelectParameters>
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsCustomerDeptTx" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
+    SelectCommand="DataMgt_CustomerDept_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="ddCustomerTx" Name="CustomerID" Type="Int32" />
     </SelectParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsDataSource" runat="server" 

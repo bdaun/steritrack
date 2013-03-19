@@ -66,8 +66,8 @@
                     <asp:ListItem Text="Semi-Monthly" Value="Semi-Monthly" />
                     <asp:ListItem Text="Monthly" Value="Monthly" />
             </asp:DropDownList></td></tr>
-        <tr><td class="formviewText">Active:</td><td><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked='<%# Bind("Active") %>' /></td></tr>
-        <tr><td class="formviewText" nowrap="nowrap"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />&nbsp;
+        <tr><td class="formviewText">Active:</td><td><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked="true" /></td></tr>
+        <tr><td align="left" colspan="2"><asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />&nbsp;
             <asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" /></td><td></td></tr>
         </table>
         <asp:ValidationSummary ID="vsInsert" runat="server" ShowMessageBox="True" HeaderText="Field Validator Summary" ShowSummary="False" />
@@ -85,8 +85,8 @@
         <tr><td class="formviewText">Phone:</td><td class="formviewValue"><asp:Label ID="lblCustomerPhone" runat="server" Text='<%# Eval("CustomerPhone") %>' /></td></tr>
         <tr><td class="formviewText">Billing Cycle:</td><td class="formviewValue"><asp:Label ID="BillingCycleTextBox" runat="server" Width="400px" Text='<%# Eval("BillingCycle") %>' /></td></tr>        
         <tr><td class="formviewText">Fax:</td><td class="formviewValue"><asp:Label ID="lblCustomerFax" runat="server" Text='<%# Eval("CustomerFax") %>' /></td></tr>
-        <tr><td class="formviewText">Active:</td><td class="formviewValue"><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked='<%# Eval("Active") %>' /></td></tr>
-        <tr><td class="formviewText" nowrap="nowrap"><asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" OnClick="EditCustomer_Click"  Text="Edit" /></td><td></td></tr>
+        <tr><td class="formviewText">Active:</td><td class="formviewValue"><asp:CheckBox ID="ActiveCheckBox" runat="server" Checked='<%# Eval("Active") %>' Enabled="false" /></td></tr>
+        <tr><td class="formviewText"><asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" OnClick="EditCustomer_Click"  Text="Edit" /></td><td></td></tr>
         </table>
         </ItemTemplate>
     </asp:FormView>
@@ -109,13 +109,13 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Department Name" SortExpression="CustomerDepartmentName">
                 <EditItemTemplate>
-                    <asp:TextBox ID="CustomerDepartmentNameTextBox" runat="server" Text='<%# Bind("CustomerDeptName") %>'></asp:TextBox>
+                    <asp:TextBox ID="CustomerDeptName" runat="server" Text='<%# Bind("CustomerDeptName") %>'></asp:TextBox>
                 </EditItemTemplate>
                 <FooterTemplate>
                     <asp:LinkButton ID="lnkAdd" runat="server" Font-Bold="true" OnClick="lnkAdd_Insert">Add</asp:LinkButton>
                 </FooterTemplate>
                 <ItemTemplate>
-                    <asp:Label ID="CustomerDepartmentNameLabel" runat="server" Text='<%# Bind("CustomerDeptName") %>'></asp:Label>
+                    <asp:Label ID="CustomerDepartmentNameLabel" runat="server" Text='<%# Eval("CustomerDeptName") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Active" SortExpression="Active">
@@ -155,6 +155,7 @@
 	    [CustomerAddress2]=@CustomerAddress2,
 	    [CustomerCity]=@CustomerCity,
 	    [CustomerState]=@CustomerState,
+        [CustomerZip]=@CustomerZip,
 	    [CustomerWeb]=@CustomerWeb,
 	    [CustomerPhone]=@CustomerPhone,
 	    [CustomerFax]=@CustomerFax,
@@ -179,7 +180,7 @@
 <asp:SqlDataSource ID="sdsCustomerDept" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
     SelectCommand="Customer_CustomerDept_Sel" SelectCommandType="StoredProcedure"
     UpdateCommand="UPDATE [CustomerDepartment] SET
-	    [CustomerDepartmentName]=@CustomerDepartmentName,
+        [CustomerDepartmentName]=@CustomerDeptName,
 	    [Active]=@Active,
 	    [ModDate]=getdate(),
 	    [UserName]=@UserName
@@ -191,7 +192,7 @@
     </SelectParameters>
     <UpdateParameters>
         <asp:Parameter Name="Username" Type="String" />
-        <asp:Parameter Name="CustomerDepartmentNameTextBox" Type="String" />
+        <asp:Parameter Name="CustomerDeptName" Type="String" />
         <asp:Parameter Name="ID" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>

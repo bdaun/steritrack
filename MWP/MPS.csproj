@@ -125,10 +125,11 @@
     <Content Include="bin\MWP.pdb" />
     <Content Include="DropdownWebService.asmx" />
     <Content Include="Images\imgLogo.GIF" />
+    <Content Include="Secure\Customer\CustomerTranslationTableMgt.aspx" />
     <Content Include="Secure\Customer\Customer.aspx" />
     <Content Include="Secure\Home.aspx" />
     <Content Include="Secure\Invoice\InvoiceMenu.aspx" />
-    <Content Include="Secure\Invoice\InvoiceSummary.aspx" />
+    <Content Include="Secure\Invoice\InvoiceCustomerApproval.aspx" />
     <Content Include="Secure\MailData\DataMgt.aspx" />
     <Content Include="Secure\MailData\ManualDataAdd.aspx" />
     <Content Include="Styles\Site.css" />
@@ -205,6 +206,13 @@
     <Compile Include="admin\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Secure\Customer\CustomerTranslationTableMgt.aspx.cs">
+      <DependentUpon>CustomerTranslationTableMgt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secure\Customer\CustomerTranslationTableMgt.aspx.designer.cs">
+      <DependentUpon>CustomerTranslationTableMgt.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Secure\Invoice\InvoiceMenu.aspx.cs">
       <DependentUpon>InvoiceMenu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -212,12 +220,12 @@
     <Compile Include="Secure\Invoice\InvoiceMenu.aspx.designer.cs">
       <DependentUpon>InvoiceMenu.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Secure\Invoice\InvoiceSummary.aspx.cs">
-      <DependentUpon>InvoiceSummary.aspx</DependentUpon>
+    <Compile Include="Secure\Invoice\InvoiceCustomerApproval.aspx.cs">
+      <DependentUpon>InvoiceCustomerApproval.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Secure\Invoice\InvoiceSummary.aspx.designer.cs">
-      <DependentUpon>InvoiceSummary.aspx</DependentUpon>
+    <Compile Include="Secure\Invoice\InvoiceCustomerApproval.aspx.designer.cs">
+      <DependentUpon>InvoiceCustomerApproval.aspx</DependentUpon>
     </Compile>
     <Compile Include="Secure\MailData\ManualDataAdd.aspx.cs">
       <DependentUpon>ManualDataAdd.aspx</DependentUpon>
