@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="InvoiceSummary.aspx.cs" Inherits="MWP.Secure.Invoice.InvoiceSummary" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="InvoiceCustomerApproval.aspx.cs" Inherits="MWP.Secure.Invoice.InvoiceSummary" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="AjaxSM" runat="server" EnablePageMethods="true" />
-    <h2>Invoice Summary Page</h2>
+    <h2>Customer Invoice Data Approval Page</h2>
     <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table id="tblSearch" runat="server">
 <tr><td colspan="2" style="font-style:italic">Enter your search criteria and click "Search"</td><td></td><td></td><td>
@@ -91,7 +91,7 @@
     </Columns>
 </asp:GridView>
 <asp:SqlDataSource ID="sdsInvoiceNumbers" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="InvoiceSummary_InvoiceNumbers_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="InvoiceApproval_InvoiceNumbers_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddDept" Name="CustomerDeptID" PropertyName="SelectedValue" Type="Int32" />
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
@@ -99,7 +99,7 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsInvoiceData" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="InvoiceSummary_DataItems_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="InvoiceApproval_DataItems_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" PropertyName="SelectedValue" Type="Int32" />
         <asp:ControlParameter ControlID="ddDept" Name="CustomerDepartmentID" PropertyName="SelectedValue" Type="Int32" />
@@ -117,7 +117,7 @@
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsCustomerDept" runat="server" 
     ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
-    SelectCommand="InvoiceSummary_CustomerDept_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="InvoiceApproval_CustomerDept_Sel" SelectCommandType="StoredProcedure">
     <SelectParameters>
         <asp:ControlParameter ControlID="ddCustomer" Name="CustomerID" Type="Int32" />
         <asp:ControlParameter ControlID="ddBillingCycle" Name="BillingCycle" Type="String" />
