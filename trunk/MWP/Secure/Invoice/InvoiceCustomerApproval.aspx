@@ -1,5 +1,46 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="InvoiceCustomerApproval.aspx.cs" Inherits="MWP.Secure.Invoice.InvoiceSummary" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<script type="text/javascript">
+        var TotalChkBx;
+        var Counter;
+        window.onload = function () {
+            //Get total no. of CheckBoxes in side the GridView.
+            TotalChkBx = parseInt('<%= this.gvInvoiceData.Rows.Count %>');
+    //Get total no. of checked CheckBoxes in side the GridView.
+    Counter = 0;
+}
+
+function HeaderClick(CheckBox) {
+    //Get target base & child control.
+    var TargetBaseControl =
+        document.getElementById('<%= this.gvInvoiceData.ClientID %>');
+    var TargetChildControl = "chkBxSelect";
+    //Get all the control of the type INPUT in the base control.
+    var Inputs = TargetBaseControl.getElementsByTagName("input");
+    //Checked/Unchecked all the checkBoxes in side the GridView.
+    for (var n = 0; n < Inputs.length; ++n)
+        if (Inputs[n].type == 'checkbox' &&
+                  Inputs[n].id.indexOf(TargetChildControl, 0) >= 0)
+            Inputs[n].checked = CheckBox.checked;
+    //Reset Counter
+    Counter = CheckBox.checked ? TotalChkBx : 0;
+}
+
+function ChildClick(CheckBox, HCheckBox) {
+    //get target control.
+    var HeaderCheckBox = document.getElementById(HCheckBox);
+    //Modifiy Counter; 
+    if (CheckBox.checked && Counter < TotalChkBx)
+        Counter++;
+    else if (Counter > 0)
+        Counter--;
+    //Change state of the header CheckBox.
+    if (Counter < TotalChkBx)
+        HeaderCheckBox.checked = false;
+    else if (Counter == TotalChkBx)
+        HeaderCheckBox.checked = true;
+}
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="AjaxSM" runat="server" EnablePageMethods="true" />
@@ -72,8 +113,23 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
 </tr>
+<tr id="trStatusUpdate" runat="server" visible="false">
+    <td colspan="6">Update Selected Records to a status of&nbsp;&nbsp; 
+        <asp:DropDownList ID="ddNewStatus" runat="server" OnSelectedIndexChanged="ddNewStatus_SelectedIndexChanged" AutoPostBack="true">
+            <asp:ListItem Value="" Text="Select New Status" />
+            <asp:ListItem Value="Unapproved" />
+            <asp:ListItem Value="Approved" />
+            <asp:ListItem Value="Billed" />
+        </asp:DropDownList>&nbsp;&nbsp;
+        <asp:Label ID="lblInvoiceNumber" runat="server" Text="InvoiceNumber:" Visible="false" />&nbsp;&nbsp;
+        <asp:TextBox ID="txbInvoiceNumber" runat="server" Visible="false" OnTextChanged="txbInvoiceNumber_TextChanged" AutoPostBack="true" />
+        <asp:Button ID="btnStatusupdate" runat="server" Text="Update" OnClick="btnStatusupdate_Click" Visible="false" />
+    </td>
+</tr>
 </table>
-<asp:GridView ID="gvInvoiceData" runat="server" DataSourceID="sdsInvoiceData" DataKeyNames="CustomerDeptID" CellPadding="2" AutoGenerateColumns="False" AllowSorting="True">
+<asp:GridView ID="gvInvoiceData" runat="server" DataSourceID="sdsInvoiceData" DataKeyNames="CustomerDeptID" CellPadding="2" 
+     OnRowCreated="gvInvoiceData_RowCreated" OnSelectedIndexChanged="gvInvoiceData_SelectedIndexChanged" 
+     OnRowDataBound="gvInvoiceData_RowDataBound" AutoGenerateColumns="False" AllowSorting="True">
     <Columns>
         <asp:BoundField DataField="CustomerID" HeaderText="CustomerID" Visible="False" ReadOnly="True" SortExpression="CustomerID" />
         <asp:BoundField DataField="CustomerName" HeaderText="Customer" SortExpression="customername" />
@@ -82,12 +138,23 @@
         <asp:BoundField DataField="Datasource" HeaderText="Datasource" SortExpression="Datasource" />
         <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" />
         <asp:BoundField DataField="RateLevel" HeaderText="RateLevel" SortExpression="RateLevel" />
-        <asp:BoundField DataField="RateAffixed" HeaderText="RateAffixed" SortExpression="RateAffixed" />
-        <asp:BoundField DataField="RateClaimed" HeaderText="RateClaimed" SortExpression="RateClaimed" />
+        <asp:BoundField DataField="PostageAffixed" HeaderText="Postage Affixed" SortExpression="PostageAffixed" HeaderStyle-Wrap="true" HeaderStyle-Width="65px" />
+        <asp:BoundField DataField="PostageClaimed" HeaderText="Postage Claimed" SortExpression="PostageClaimed" HeaderStyle-Wrap="true" HeaderStyle-Width="65px" />
         <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" />
         <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" DataFormatString="{0:MM-dd-yyyy}" />
         <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
         <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" />
+      <asp:TemplateField HeaderText="Select" >
+         <HeaderTemplate>
+            Select All<br /><asp:CheckBox ID="chkBxHeader" onclick="javascript:HeaderClick(this);" runat="server" 
+                OnCheckedChanged="chkBxSelect_CheckedChanged" AutoPostBack="true" />
+         </HeaderTemplate>         
+         <ItemTemplate>
+            <asp:CheckBox ID="chkBxSelect" runat="server" OnCheckedChanged="chkBxSelect_CheckedChanged" AutoPostBack="true" />
+         </ItemTemplate>
+         <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="60px" Wrap="false" />
+         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="60px" />
+      </asp:TemplateField>
     </Columns>
 </asp:GridView>
 <asp:SqlDataSource ID="sdsInvoiceNumbers" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
