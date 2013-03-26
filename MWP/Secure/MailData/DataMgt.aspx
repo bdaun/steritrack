@@ -190,8 +190,8 @@
         <asp:BoundField DataField="CustomerDeptName" HeaderText="CustomerDeptName" SortExpression="CustomerDeptName" />
         <asp:BoundField DataField="QtyFlats" HeaderText="QtyFlats" SortExpression="QtyFlats" />
         <asp:BoundField DataField="QtyLetters" HeaderText="QtyLetters" SortExpression="QtyLetters" />
-        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" />
-        <asp:BoundField DataField="CreateDate" HeaderText="CreateDate" SortExpression="CreateDate" Visible="false" DataFormatString="{0:MM-dd-yyyy}" />
+        <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" DataFormatString="{0:MM-dd-yyyy}" />
+        <asp:BoundField DataField="CreateDate" HeaderText="CreateDate" SortExpression="CreateDate" Visible="false"  />
         <asp:BoundField DataField="ModDate" HeaderText="ModDate" SortExpression="ModDate" Visible="false" />
         <asp:BoundField DataField="Username" HeaderText="Username" SortExpression="Username" Visible="false" />
     </Columns>

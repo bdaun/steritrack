@@ -14,6 +14,7 @@ namespace MWP.Secure.Invoice
             if (!IsPostBack)
             {
                 trCustDept.Visible = false;
+                trStatusUpdate.Visible = false;
 
                 //  Set the BillingYear dropdown list with current year and 2 years prior
                 DateTime SelYear = Convert.ToDateTime(DateTime.Now);
@@ -44,6 +45,7 @@ namespace MWP.Secure.Invoice
             ddStatus.SelectedIndex = 0;
             PopulateDropDown();
             trCustDept.Visible = false;
+            trStatusUpdate.Visible = false;
         }
 
         protected void ddBillingCycle_SelectedIndexChanged(object sender, EventArgs e)
@@ -209,6 +211,95 @@ namespace MWP.Secure.Invoice
         protected void ddBillingPeriod_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void gvInvoiceData_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow &&
+                (e.Row.RowState == DataControlRowState.Normal ||
+                e.Row.RowState == DataControlRowState.Alternate))
+            {
+                CheckBox chkBxSelect = (CheckBox)e.Row.Cells[1].FindControl("chkBxSelect");
+                CheckBox chkBxHeader = (CheckBox)this.gvInvoiceData.HeaderRow.FindControl("chkBxHeader");
+                chkBxSelect.Attributes["onclick"] = string.Format
+                (
+                    "javascript:ChildClick(this,'{0}');",
+                    chkBxHeader.ClientID
+                );
+                trStatusUpdate.Visible = true;
+            }
+        }
+
+        protected void btnStatusupdate_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void ddNewStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddNewStatus.SelectedIndex != 0)
+            {
+                if (ddNewStatus.SelectedValue == "Billed")
+                {
+                    lblInvoiceNumber.Visible = true;
+                    txbInvoiceNumber.Text = string.Empty;
+                    txbInvoiceNumber.Visible = true;
+                    txbInvoiceNumber.Focus();
+                    btnStatusupdate.Visible = false;
+                }
+                else
+                {
+                    lblInvoiceNumber.Visible = false;
+                    txbInvoiceNumber.Visible = false;
+                    btnStatusupdate.Visible = true;
+                }
+                
+            }
+            else
+            {
+                btnStatusupdate.Visible = false;
+                lblInvoiceNumber.Visible = false;
+                txbInvoiceNumber.Visible = false;
+            }
+        }
+
+        protected void txbInvoiceNumber_TextChanged(object sender, EventArgs e)
+        {
+            if ((txbInvoiceNumber.Text.Length) > 0)
+            {
+                btnStatusupdate.Visible = true;
+            }
+            else
+            {
+                btnStatusupdate.Visible = false;
+            }
+        }
+        protected void gvInvoiceData_SelectedIndexChanged(Object sender, EventArgs e)
+        {
+            gvInvoiceData.Rows[gvInvoiceData.SelectedIndex].BackColor = System.Drawing.Color.Yellow;
+        }
+
+        protected void gvInvoiceData_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+ 
+        }
+
+        protected void chkBxSelect_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chkStatus = (CheckBox)sender;
+            GridViewRow gvrow = (GridViewRow)chkStatus.NamingContainer;
+            bool status = chkStatus.Checked;
+            if (gvrow.RowIndex > -1)
+            { 
+                if (status)//this is checkbox is unchecked then set backcolor to Gray
+                {
+                    gvrow.BackColor = System.Drawing.Color.LightGray;
+                }
+                else
+                {
+                    gvrow.BackColor = System.Drawing.Color.White;
+                }
+            }
         }
     }
 }

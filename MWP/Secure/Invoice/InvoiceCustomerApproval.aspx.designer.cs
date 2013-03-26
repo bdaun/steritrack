@@ -139,6 +139,51 @@ namespace MWP.Secure.Invoice {
         protected global::System.Web.UI.WebControls.Button btnCancelSearch;
         
         /// <summary>
+        /// trStatusUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trStatusUpdate;
+        
+        /// <summary>
+        /// ddNewStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddNewStatus;
+        
+        /// <summary>
+        /// lblInvoiceNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblInvoiceNumber;
+        
+        /// <summary>
+        /// txbInvoiceNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbInvoiceNumber;
+        
+        /// <summary>
+        /// btnStatusupdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnStatusupdate;
+        
+        /// <summary>
         /// gvInvoiceData control.
         /// </summary>
         /// <remarks>
