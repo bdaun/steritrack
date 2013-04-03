@@ -23,7 +23,6 @@ using System.Configuration;
         public string[] GetOrderNums(string prefixText)
         {
             DataSet dtst = new DataSet();
-            //SqlConnection sqlCon = new SqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             String strSql = "SELECT DISTINCT OrderNumber FROM [RcvHdr] WHERE OrderNumber Like '" + prefixText + "%'";
@@ -57,7 +56,7 @@ using System.Configuration;
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            String strSql = "IMDB_Receive_OrderNumbers_Sel";
+            String strSql = "IMDB_Receive_Gano_OrderNum_Sel";
             SqlCommand sqlComd = new SqlCommand(strSql, sqlCon);
             sqlComd.CommandType = CommandType.StoredProcedure;
             sqlCon.Open();
@@ -121,7 +120,6 @@ using System.Configuration;
         [WebMethod]
         public string[] GetBrandCodes(string prefixText)
         {
-            //prefixText = prefixText + "%";
             DataSet dtst = new DataSet();
             SqlConnection sqlCon = new SqlConnection();
             sqlCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
