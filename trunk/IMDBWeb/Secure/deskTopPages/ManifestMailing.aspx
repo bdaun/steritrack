@@ -9,7 +9,7 @@
 <table>
 <tr><td>I would like to:</td><td></td></tr>
 <tr><td><asp:RadioButtonList ID="rbList1" runat="server" AutoPostBack="True" onselectedindexchanged="rbList1_SelectedIndexChanged">
-<asp:ListItem>See all overdue manifests for mailing</asp:ListItem>
+<asp:ListItem>See all unmailed manifests by Age</asp:ListItem>
 <asp:ListItem>Manage manifest mailing by Truck Tag</asp:ListItem>
 <asp:ListItem>Manage manifest mailing by Manifest Number</asp:ListItem>
 </asp:RadioButtonList></td><td></td></tr>
@@ -99,7 +99,7 @@ Set all rows to &quot;Mailed&quot; with a Mailed Date of
         <asp:TemplateField HeaderText="Date Failed" SortExpression="DateFailed">
         <EditItemTemplate>
         <asp:TextBox ID="DateFailed" runat="server" Text='<%# Bind("DateFailed","{0:MM/dd/yyyy}") %>' Width="100px" />
-        <ajaxToolKit:CalendarExtender ID="DateFailed_CalEx" runat="server" TargetControlID="DateFailed  " />
+        <ajaxToolKit:CalendarExtender ID="DateFailed_CalEx" runat="server" TargetControlID="DateFailed" />
         </EditItemTemplate>
         <ItemTemplate>
         <asp:Label ID="DateFailed" runat="server" Text='<%# Eval("DateFailed","{0:MM/dd/yyyy}") %>' Width="100px" />
