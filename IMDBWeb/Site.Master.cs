@@ -16,24 +16,20 @@ namespace IMDBWeb
                 MenuItemCollection menuItems = NavigationMenu.Items;
                 MenuItem report = new MenuItem();
                 MenuItem spak = new MenuItem();
-                MenuItem desk = new MenuItem();
-                MenuItem mobile = new MenuItem();
+                MenuItem industrial = new MenuItem();
                 MenuItem super = new MenuItem();
                 foreach (MenuItem menuItem in menuItems)
                 {
                     if (menuItem.Text == "Report Pages")
                         report = menuItem;
-                    else if (menuItem.Text == "SPAK CS Pages")
+                    else if (menuItem.Text == "Retail Pages")
                         spak = menuItem;
-                    else if (menuItem.Text == "Desktop Pages")
-                        desk = menuItem;
-                    else if (menuItem.Text == "Mobile Pages")
-                        mobile = menuItem;
+                    else if (menuItem.Text == "Industrial Pages")
+                        industrial = menuItem;
                     else if (menuItem.Text == "SuperFund")
                         super = menuItem;
                 }
-                menuItems.Remove(mobile);
-                menuItems.Remove(desk);
+                menuItems.Remove(industrial);
                 menuItems.Remove(spak);
                 menuItems.Remove(report);
                 menuItems.Remove(super);
@@ -56,21 +52,17 @@ namespace IMDBWeb
                 MenuItemCollection menuItems = NavigationMenu.Items;
                 MenuItem report = new MenuItem();
                 MenuItem spak = new MenuItem();
-                MenuItem desk = new MenuItem();
-                MenuItem mobile = new MenuItem();
+                MenuItem industrial = new MenuItem();
                 foreach (MenuItem menuItem in menuItems)
                 {
                     if (menuItem.Text == "Report Pages")
                         report = menuItem;
-                    else if (menuItem.Text == "SPAK Pages")
+                    else if (menuItem.Text == "Retail Pages")
                         spak = menuItem;
-                    else if (menuItem.Text == "Desktop Pages")
-                        desk = menuItem;
-                    else if (menuItem.Text == "Mobile Pages")
-                        mobile = menuItem;
+                    else if (menuItem.Text == "Industrial Pages")
+                        industrial = menuItem;
                 }
-                menuItems.Remove(mobile);
-                menuItems.Remove(desk);
+                menuItems.Remove(industrial);
                 menuItems.Remove(spak);
                 menuItems.Remove(report);
             }
