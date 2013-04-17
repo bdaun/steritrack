@@ -226,13 +226,27 @@ namespace MWP.Secure.Invoice
                     "javascript:ChildClick(this,'{0}');",
                     chkBxHeader.ClientID
                 );
-                trStatusUpdate.Visible = true;
+ //               trStatusUpdate.Visible = true;
             }
         }
 
         protected void btnStatusupdate_Click(object sender, EventArgs e)
         {
-            
+            if (ddNewStatus.SelectedIndex ==0) // No value selected
+            { 
+                WebMsgBox.Show("You must select a New Status from the dropdown!");
+            }
+            else if (ddNewStatus.SelectedIndex == 1 || ddNewStatus.SelectedIndex == 2) // either Unapproved or Approved Selected
+            {
+                WebMsgBox.Show("Just testing... deleteme");
+            }
+            else if (ddNewStatus.SelectedIndex==3) // Billed is Selected
+            {
+                if ((string.IsNullOrEmpty(txbInvoiceNumber.Text) || string.IsNullOrWhiteSpace(txbInvoiceNumber.Text)))
+                {
+                    WebMsgBox.Show("You must enter a valid Invoice Number!");
+                }
+            }
         }
 
         protected void ddNewStatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -271,7 +285,16 @@ namespace MWP.Secure.Invoice
             }
             else
             {
-                btnStatusupdate.Visible = false;
+                if (btnStatusupdate.Visible)
+                {
+                    WebMsgBox.Show("You must enter a valid Invoice Number");
+                    btnStatusupdate.Visible = false;
+                }
+                else
+                {
+                    btnStatusupdate.Visible = false;
+                }
+                
             }
         }
         protected void gvInvoiceData_SelectedIndexChanged(Object sender, EventArgs e)
@@ -286,19 +309,42 @@ namespace MWP.Secure.Invoice
 
         protected void chkBxSelect_CheckedChanged(object sender, EventArgs e)
         {
+            // Set the background color of row depending on the checkbox status of the row
             CheckBox chkStatus = (CheckBox)sender;
             GridViewRow gvrow = (GridViewRow)chkStatus.NamingContainer;
             bool status = chkStatus.Checked;
             if (gvrow.RowIndex > -1)
             { 
-                if (status)//this is checkbox is unchecked then set backcolor to Gray
+                if (status)
                 {
-                    gvrow.BackColor = System.Drawing.Color.LightGray;
+                    gvrow.BackColor = System.Drawing.Color.WhiteSmoke;
                 }
                 else
                 {
                     gvrow.BackColor = System.Drawing.Color.White;
                 }
+            }
+
+            // If any checkboxes are checked, show the trUpdateStatus option
+
+            int Counter = 0;
+            CheckBox chkBx = new CheckBox();
+            for (int i = 0; i < gvInvoiceData.Rows.Count; ++i)
+            {
+                chkBx = (CheckBox)gvInvoiceData.Rows[i].FindControl("chkBxSelect");
+
+                if (chkBx.Checked == true)
+                {
+                    Counter = Counter + 1;
+                }
+            }
+            if (Counter > 0)
+            {
+                trStatusUpdate.Visible = true;
+            }
+            else
+            {
+                trStatusUpdate.Visible = false;
             }
         }
     }

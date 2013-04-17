@@ -26,20 +26,20 @@ function HeaderClick(CheckBox) {
     Counter = CheckBox.checked ? TotalChkBx : 0;
 }
 
-function ChildClick(CheckBox, HCheckBox) {
-    //get target control.
-    var HeaderCheckBox = document.getElementById(HCheckBox);
-    //Modifiy Counter; 
-    if (CheckBox.checked && Counter < TotalChkBx)
-        Counter++;
-    else if (Counter > 0)
-        Counter--;
-    //Change state of the header CheckBox.
-    if (Counter < TotalChkBx)
-        HeaderCheckBox.checked = false;
-    else if (Counter == TotalChkBx)
-        HeaderCheckBox.checked = true;
-}
+    function ChildClick(CheckBox, HCheckBox) {
+        //get target control.
+        var HeaderCheckBox = document.getElementById(HCheckBox);
+        //Modifiy Counter; 
+        if (CheckBox.checked && Counter < TotalChkBx)
+            Counter++;
+        else if (Counter > 0)
+            Counter--;
+        //Change state of the header CheckBox.
+        if (Counter < TotalChkBx)
+            HeaderCheckBox.checked = false;
+        else if (Counter == TotalChkBx)
+            HeaderCheckBox.checked = true;
+    }
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -138,9 +138,11 @@ function ChildClick(CheckBox, HCheckBox) {
         <asp:BoundField DataField="Datasource" HeaderText="Datasource" SortExpression="Datasource" />
         <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" />
         <asp:BoundField DataField="RateLevel" HeaderText="RateLevel" SortExpression="RateLevel" />
-        <asp:BoundField DataField="PostageAffixed" HeaderText="Postage Affixed" SortExpression="PostageAffixed" HeaderStyle-Wrap="true" HeaderStyle-Width="65px" />
-        <asp:BoundField DataField="PostageClaimed" HeaderText="Postage Claimed" SortExpression="PostageClaimed" HeaderStyle-Wrap="true" HeaderStyle-Width="65px" />
-        <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" />
+        <asp:BoundField DataField="PostageAffixed" HeaderText="Postage Affixed" SortExpression="PostageAffixed" ItemStyle-HorizontalAlign="Right"
+            HeaderStyle-Wrap="true" HeaderStyle-Width="65px" DataFormatString="{0:c2}" />
+        <asp:BoundField DataField="PostageClaimed" HeaderText="Postage Claimed" SortExpression="PostageClaimed" ItemStyle-HorizontalAlign="Right"
+            HeaderStyle-Wrap="true" HeaderStyle-Width="65px" DataFormatString="{0:c2}" />
+        <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" ItemStyle-HorizontalAlign="Center" />
         <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" DataFormatString="{0:MM-dd-yyyy}" />
         <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
         <asp:BoundField DataField="InvoiceNumber" HeaderText="Invoice" SortExpression="InvoiceNumber" />
