@@ -206,6 +206,13 @@
     <Compile Include="admin\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Class\GridViewExport.cs" />
+    <Compile Include="Class\GridViewGroup.cs" />
+    <Compile Include="Class\GridViewGroupList.cs" />
+    <Compile Include="Class\GridViewHelper.cs" />
+    <Compile Include="Class\GridViewSummary.cs" />
+    <Compile Include="Class\GridViewSummaryList.cs" />
+    <Compile Include="Class\PrinterHelper.cs" />
     <Compile Include="Secure\Customer\CustomerTranslationTableMgt.aspx.cs">
       <DependentUpon>CustomerTranslationTableMgt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

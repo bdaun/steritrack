@@ -285,5 +285,36 @@ namespace MWP.Secure.MailData
                 ddDataSource.SelectedIndex = 1;
             }
         }
+
+        protected void btnExport_Click(object sender, EventArgs e)
+        {
+            GridViewExportUtil.Export("TechData.xls", this.gvExport);
+        }
+
+        protected void btnPBImport_Click(object sender, EventArgs e)
+        {
+            string spPBImport = "DataMgt_MailDataPBImport_Ins";
+            SqlConnection Con = new SqlConnection();
+            Con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MPS_SQL"].ConnectionString;
+            SqlCommand Cmd = new SqlCommand(spPBImport, Con);
+            Cmd.CommandType = CommandType.StoredProcedure;
+            Con.Open();
+            using (Cmd)
+            {
+                try
+                {
+                    Cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                }
+                finally
+                {
+                    Con.Close();
+                }
+            }
+        }
     }
 }

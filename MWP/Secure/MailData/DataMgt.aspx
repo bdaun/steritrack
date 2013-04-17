@@ -3,7 +3,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="AjaxSM" runat="server" EnablePageMethods="true" />
-    <h2>Data Management</h2>
+    <h2>Data Management</h2><p style="text-align:right">
+        BegDate:&nbsp;<asp:TextBox ID="BegDate" runat="server" Width="100" />&nbsp;&nbsp;
+        EndDate:&nbsp;<asp:TextBox ID="EndDate" runat="server" Width="100" />
+        <asp:Button ID="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />&nbsp;&nbsp;
+        <asp:Button ID="btnPBImport" runat="server" Text="PBImport" OnClick="btnPBImport_Click" />
+                            </p>
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table id="tblSearch" runat="server">
 <tr><td colspan="2" style="font-style:italic">Enter your search criteria and click "Search"</td><td></td><td></td></tr>
@@ -197,6 +202,34 @@
         <asp:BoundField DataField="Username" HeaderText="Username" SortExpression="Username" Visible="false" />
     </Columns>
     </asp:GridView>
+    <asp:GridView ID="gvExport" runat="server" AutoGenerateColumns="False" DataSourceID="sdsGridviewExport" Visible="false" Font-Size="XX-Small">
+        <Columns>
+            <asp:BoundField DataField="MailID" HeaderText="MailID" InsertVisible="False" ReadOnly="True" SortExpression="MailID" />
+            <asp:BoundField DataField="Datasource" HeaderText="Datasource" SortExpression="Datasource" />
+            <asp:BoundField DataField="CustomerDeptName" HeaderText="CustomerDeptName" SortExpression="CustomerDeptName" />
+            <asp:BoundField DataField="CustomerDeptID" HeaderText="CustomerDeptID" SortExpression="CustomerDeptID" />
+            <asp:BoundField DataField="Weight" HeaderText="Weight" SortExpression="Weight" />
+            <asp:BoundField DataField="WeightUnit" HeaderText="WeightUnit" SortExpression="WeightUnit" />
+            <asp:BoundField DataField="MailType" HeaderText="MailType" SortExpression="MailType" />
+            <asp:BoundField DataField="RateLevel" HeaderText="RateLevel" SortExpression="RateLevel" />
+            <asp:BoundField DataField="RateAffixed" HeaderText="RateAffixed" SortExpression="RateAffixed" />
+            <asp:BoundField DataField="RateClaimed" HeaderText="RateClaimed" SortExpression="RateClaimed" />
+            <asp:BoundField DataField="PostageClaimed" HeaderText="PostageClaimed" SortExpression="PostageClaimed" />
+            <asp:BoundField DataField="MailQty" HeaderText="MailQty" SortExpression="MailQty" />
+            <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" />
+            <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" />
+            <asp:BoundField DataField="InvoiceNumber" HeaderText="InvoiceNumber" SortExpression="InvoiceNumber" />
+            <asp:BoundField DataField="CreateDate" HeaderText="CreateDate" SortExpression="CreateDate" />
+            <asp:BoundField DataField="ModDate" HeaderText="ModDate" SortExpression="ModDate" />
+            <asp:BoundField DataField="Username" HeaderText="Username" SortExpression="Username" />
+        </Columns>
+    </asp:GridView>
+    <asp:SqlDataSource ID="sdsGridviewExport" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" SelectCommand="DataMgt_MailDataExport_Sel" SelectCommandType="StoredProcedure">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="BegDate" Name="BegDate" PropertyName="Text" Type="DateTime" />
+            <asp:ControlParameter ControlID="EndDate" Name="EndDate" PropertyName="Text" Type="DateTime" />
+        </SelectParameters>
+    </asp:SqlDataSource>
     <asp:SqlDataSource ID="sdsTicket" runat="server" ConnectionString="<%$ ConnectionStrings:MPS_SQL %>" 
         SelectCommand="DataMgt_TicketData_Sel" SelectCommandType="StoredProcedure">
         <SelectParameters>
