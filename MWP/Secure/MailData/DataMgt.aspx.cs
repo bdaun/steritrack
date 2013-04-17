@@ -118,7 +118,7 @@ namespace MWP.Secure.MailData
                     Cmd.Parameters.AddWithValue("@CustomerDeptID", ddDeptAdd.SelectedValue.ToString());
                     Cmd.Parameters.AddWithValue("@MailType", ddEntryType.SelectedItem.ToString());
                     Cmd.Parameters.AddWithValue("@MailQty", txbPcCnt.Text);
-                    Cmd.Parameters.AddWithValue("@RateClaimed", txbAmt.Text);
+                    Cmd.Parameters.AddWithValue("@PostageClaimed", txbAmt.Text);
                     Cmd.Parameters.AddWithValue("@DataDate", txbDataDate.Text);
                     Cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                     Cmd.ExecuteNonQuery();
@@ -278,7 +278,6 @@ namespace MWP.Secure.MailData
             lblResultTx.Visible = false;
             btnSubmitTx.Focus();
         }
-
         protected void ddDept_SelectedIndexChanged(object sender, EventArgs e)
         {
             if((ddCustomer.SelectedIndex != 0) && (ddDept.SelectedIndex != 0) && (ddDataSource.SelectedIndex == 0))
