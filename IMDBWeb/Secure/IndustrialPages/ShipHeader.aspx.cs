@@ -6,7 +6,7 @@ using System.Data;
 using System.Text;
 using System.Web.UI;
 
-namespace IMDBWeb.Secure.deskTopPages
+namespace IMDBWeb.Secure.IndustrialPages
 {
     public partial class ShipHeader : System.Web.UI.Page
     {
