@@ -496,3 +496,59 @@ td.details
     color: Gray;
 }
     
+/*---------------------------------------
+ Grid view
+-----------------------------------------*/
+.grid
+{
+}
+.grid td, .grid th
+{
+    padding:2px;
+}
+.grid_header
+{
+    background-color:#FFCC66;
+    font-weight:bold;
+    color:#333333;
+    text-align:center;
+}
+.grid_row td
+{
+    /*border-bottom:solid 0px silver;*/
+}
+.grid_alternating
+{
+    background-color:blue;
+}
+.grid_alternating td
+{
+    border-bottom:solid 1px silver;
+}
+.grid_pager
+{
+    background-color:#666666;
+    color: White;
+}
+.grid a
+{
+    text-decoration:underline;  
+    color:#006699
+}
+.CodeTitleGrid td
+{
+    border-bottom:solid 1px whitesmoke;
+    border-right: solid 1px whitesmoke;
+}
+.CodeTitleGrid a
+{
+    text-decoration: none;
+    color: #003399;
+}
+.CodeTitleGrid a:hover
+{
+    text-decoration: underline;
+}
+/*---------------------------------------
+ END Grid view */
+ 
