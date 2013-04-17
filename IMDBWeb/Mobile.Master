@@ -17,7 +17,7 @@
             <asp:ContentPlaceHolder ID="pagename" runat="server"></asp:ContentPlaceHolder>
             </div>            
             <div class="loginDisplay">
-                <asp:LinkButton ID="btnMobile" runat="server" Font-Size="x-Small" PostBackUrl="~/secure/mobilepages/mobilepages.aspx" 
+                <asp:LinkButton ID="btnMobile" runat="server" Font-Size="x-Small" PostBackUrl="~/secure/IndustrialPages/IndustrialPages.aspx" 
                     ForeColor="#666666">MobileMenu</asp:LinkButton>&nbsp&nbsp
                 <asp:LinkButton ID="btnHome" runat="server" Font-Size="x-Small" PostBackUrl="~/secure/home.aspx" 
                     ForeColor="#666666">Home</asp:LinkButton>
