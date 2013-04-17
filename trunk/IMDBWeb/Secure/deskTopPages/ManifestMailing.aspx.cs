@@ -124,14 +124,6 @@ namespace IMDBWeb.Secure.deskTopPages
         {
             e.Command.Parameters["@User"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
-        protected void gvManifestMail_Update_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Edit")
-            {
-                lblErrMsg.Visible = true;
-                lblErrMsg.Text = e.ToString();
-            }
-        }
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
