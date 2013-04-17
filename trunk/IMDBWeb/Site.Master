@@ -34,12 +34,11 @@
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
                         <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
-                        <asp:MenuItem NavigateUrl="~/Secure/mobilepages/mobilePages.aspx" Text="Mobile Pages"/>
-                        <asp:MenuItem NavigateUrl="~/Secure/desktoppages/desktoppages.aspx" Text="Desktop Pages"/>
-                        <asp:MenuItem NavigateUrl="~/secure/spakpages/spakpages.aspx" Text="SPAK CS Pages" />
+                        <asp:MenuItem NavigateUrl="~/Secure/Industrialpages/IndustrialPages.aspx" Text="Industrial Pages"/>
+                        <asp:MenuItem NavigateUrl="~/secure/spakpages/spakpages.aspx" Text="Retail Pages" />
                         <asp:MenuItem NavigateUrl="~/secure/Reports/reportpages.aspx" Text="Report Pages"/>
                         <asp:MenuItem NavigateUrl="~/secure/Superfundpages/superfundpages.aspx" Text="SuperFund" />
-                        <asp:MenuItem NavigateUrl="~/secure/deskTopPages/About.aspx" Text="About"/>
+                        <asp:MenuItem NavigateUrl="~/secure/CommonPages/About.aspx" Text="About"/>
                         <asp:MenuItem NavigateUrl="~/Admin/AdminMenu.aspx" Text="Admin"/>
                     </Items>
                 </asp:Menu>
@@ -50,7 +49,7 @@
         </div>
     <div class="clear">
         <hr style="color:Green" />
-        <asp:HyperLink ID="hypIdea" runat="server" NavigateUrl="./secure/desktoppages/improvements.aspx" ForeColor="DarkGreen"
+        <asp:HyperLink ID="hypIdea" runat="server" NavigateUrl="./secure/CommonPages/improvements.aspx" ForeColor="DarkGreen"
             Font-Bold="true" Font-Size="Smaller" Font-Names="Comic Sans MS" Text="I&I" ToolTip="Issues & Ideas" />
         <asp:ContentPlaceHolder ID="Clear" runat="server" /></div>
     </div>
