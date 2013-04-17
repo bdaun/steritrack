@@ -173,6 +173,7 @@
         <asp:BoundField DataField="RateLevel" HeaderText="Rate Level" SortExpression="RateLevel" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="RateAffixed" HeaderText="Rate Affixed" SortExpression="RateAffixed" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="RateClaimed" HeaderText="Rate Claimed" SortExpression="RateClaimed" ReadOnly="true" ItemStyle-Wrap="true" />
+        <asp:BoundField DataField="PostageClaimed" HeaderText="PostageClaimed" SortExpression="PostageClaimed" ReadOnly="true" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="MailQty" HeaderText="Mail Qty" SortExpression="MailQty" ItemStyle-Wrap="true" />
         <asp:BoundField DataField="DataDate" HeaderText="DataDate" SortExpression="DataDate" ReadOnly="true" DataFormatString="{0:MM-dd-yyyy}" />
         <asp:BoundField DataField="Status" HeaderText="Status" SortExpression="Status" ReadOnly="true" Visible="false" />
