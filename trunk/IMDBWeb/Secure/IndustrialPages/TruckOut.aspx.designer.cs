@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IMDBWeb.Secure.deskTopPages {
+namespace IMDBWeb.Secure.IndustrialPages {
     
     
     public partial class TruckOut {
