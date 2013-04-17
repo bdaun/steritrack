@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Web.UI;
 
-namespace IMDBWeb.Secure.deskTopPages
+namespace IMDBWeb.Secure.IndustrialPages
 {
     public partial class TruckOut : System.Web.UI.Page
     {
