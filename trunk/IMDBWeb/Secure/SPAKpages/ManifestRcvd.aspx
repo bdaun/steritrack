@@ -31,7 +31,7 @@
                 ValidationExpression="(\d\d[-]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d" 
                 ErrorMessage="Please use a TruckID format of XX-mm/dd/yy-##X" Font-Bold="true" ForeColor="Red" CssClass="failureNotification" /></td>
                 <td style="vertical-align:top; text-align:right"><asp:Button ID="btnClose" 
-                        runat="server" Text="Done" onclick="btnClose_Click" /></td>
+                        runat="server" Text="Done" onclick="btnClose_Click" CausesValidation="false" /></td>
         <td>&nbsp;</td>
     </tr>
     <tr><td colspan="4"><h5>Recent Manifests Received</h5></td></tr>
