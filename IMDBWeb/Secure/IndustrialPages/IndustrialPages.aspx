@@ -4,7 +4,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <h3>Industrial Menu Options</h3>
 <hr />
-<table border="2" cellpadding="10" style="background-color:#f1f1f1">
+<table border="2" cellpadding="10" style="background-color:#f9f9f9">
     <tr style="text-align:center;font-size:x-large;font-weight:bold;color:#003300">
         <td>Mobile Menu</td>
         <td>Desktop Menu</td>
