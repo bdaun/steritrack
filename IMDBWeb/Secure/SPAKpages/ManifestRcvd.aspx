@@ -40,6 +40,7 @@
         AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="id" 
         DataSourceID="sdsManifestRcvd">
         <Columns>
+            <asp:CommandField ShowDeleteButton="True" />
             <asp:BoundField DataField="id" HeaderText="id" InsertVisible="False" ReadOnly="True" SortExpression="id" />
             <asp:BoundField DataField="TruckID" HeaderText="TruckID" SortExpression="TruckID" />
             <asp:BoundField DataField="inboundDocNo" HeaderText="inboundDocNo" SortExpression="inboundDocNo" />
@@ -52,11 +53,11 @@
             <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
             <SelectedRowStyle BackColor="#FFFF99"></SelectedRowStyle>
     </asp:GridView>
-
-    <asp:SqlDataSource ID="sdsManifestRcvd" runat="server" 
-        ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-        SelectCommand="SPAK_ManifestRcvd_Sel" SelectCommandType="StoredProcedure">
-    </asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsManifestRcvd" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+    SelectCommand="SPAK_ManifestRcvd_Sel" SelectCommandType="StoredProcedure"
+    DeleteCommand="SPAK_ManifestRcvd_Del" DeleteCommandType="StoredProcedure">
+</asp:SqlDataSource>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server">
 </asp:Content>
