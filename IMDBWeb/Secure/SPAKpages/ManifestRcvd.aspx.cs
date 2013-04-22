@@ -71,19 +71,54 @@ namespace IMDBWeb.Secure.SPAKPages
                     String SiteName = String.Empty;
                     String TSDF = String.Empty;
                     Boolean found = false;
+                    Boolean TSDFExists = false;
                     String spSite = "SPAK_ManifestRcvd_Site_Sel";
                     String spTSDF = "SPAK_ManifestRcvd_TSDF_Sel";
                     String spExist = "SPAK_ManifestRcvd_Exist";
+                    String spAlert = "SPAK_ManifestRcvd_Alert_Sel";
+
                     SqlConnection con = new SqlConnection();
                     con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    
                     SqlCommand spCmdSite = new SqlCommand(spSite, con);
                     SqlCommand spCmdTSDF = new SqlCommand(spTSDF, con);
                     SqlCommand spCmdExist = new SqlCommand(spExist, con);
+                    SqlCommand spCmdAlert = new SqlCommand(spAlert, con);
+
                     spCmdSite.CommandType = CommandType.StoredProcedure;
                     spCmdTSDF.CommandType = CommandType.StoredProcedure;
                     spCmdExist.CommandType = CommandType.StoredProcedure;
+                    spCmdAlert.CommandType = CommandType.StoredProcedure;
+                    
                     con.Open();
+                    using (spCmdAlert)
+                    {
+                        try
+                        {
+                            spCmdAlert.Parameters.AddWithValue("@InboundDocNo", txbInboundDocNo.Text);
+                            SqlDataReader rdrAlert = spCmdAlert.ExecuteReader();
+                            if (rdrAlert.HasRows)
+                            {
+                                while (rdrAlert.Read())
+                                {
+                                    String AlertComment = rdrAlert["Comment"].ToString();
+                                    WebMsgBox.Show("This manifest has an alert associated with it.  The alert message is '" + AlertComment + "'");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.ToString();
+                        }
+                        finally
+                        {
+                            con.Close();
+                        }
+                    }
 
+
+                    con.Open();
                     using (spCmdTSDF)  //Get the TSDFCompany Name from manifest table
                     {
                         try
@@ -94,8 +129,14 @@ namespace IMDBWeb.Secure.SPAKPages
                             {
                                 while (rdrTSDF.Read())
                                 { 
+                                    TSDFExists = true;
                                     TSDF = rdrTSDF["TSDFCompany"].ToString();
                                 }   
+                            }
+                            else
+                            {
+                                WebMsgBox.Show("This manifest was NOT found in SteriTrack.  You may still be able enter it in the system, but please bring the manifest to your supervisor.");
+                                TSDFExists = false;
                             }
                         }
                         catch (Exception ex)
@@ -136,11 +177,14 @@ namespace IMDBWeb.Secure.SPAKPages
                         }
                     }
 
-                    if(!TSDF.Contains(SiteName))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                    if(TSDFExists)  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
                     {
-                        Is10day = true;
-                        WebMsgBox.Show("The manifest you scanned does not have this facility as the TSDF, please place this manifest separate " +
-                            "from the TSDF Manifests and treat this manifest and associated waste as 10 Day Waste unless otherwise directed.");
+                        if (!TSDF.Contains(SiteName))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                        {
+                            Is10day = true;
+                            WebMsgBox.Show("The manifest you scanned does not have this facility as the TSDF, please place this manifest separate " +
+                                "from the TSDF Manifests and treat this manifest and associated waste as 10 Day Waste unless otherwise directed.");
+                        }                    
                     }
 
                     con.Open();
@@ -161,13 +205,13 @@ namespace IMDBWeb.Secure.SPAKPages
                                 }
                                 if (found == true)
                                 {
-                                    WebMsgBox.Show("This manifest has already been received at this site.  You cannot re-enter it");
+                                    WebMsgBox.Show("This manifest has already been received at this site.  You cannot re-enter it.");
                                     btnOverride.Visible = false;
                                     txbInboundDocNo.Text = string.Empty;
                                     Session["ManifestWarning"] = null;
                                     txbInboundDocNo.Focus();
                                 }
-                                else if(found==false && !Is10day)
+                                else
                                 {
                                     WebMsgBox.Show("Note that this manifest has already been received at another site and has now also been entered for this site.");
                                 }
