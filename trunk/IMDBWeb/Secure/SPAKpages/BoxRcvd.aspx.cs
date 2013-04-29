@@ -443,6 +443,10 @@ namespace IMDBWeb.Secure.SPAKpages
                                     {  
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
                                     }
+                                    else if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreName"].ToString().Contains("CVS"))
+                                    {
+                                        WebMsgBox.Show("This box from CVS contains pharmaceuticals.  Please place it on a pallet designated for CVS Processing");
+                                    }
                                     break;
                                 default:
                                     break;
