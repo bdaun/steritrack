@@ -29,6 +29,25 @@ namespace IMDBWeb.Secure.SPAKpages
             Response.Redirect("~/secure/SPAKPages/SPAKPages.aspx");
         }
 
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            txbTruckCntrID.Text = string.Empty;
+            txbBoxCntrID.Text = string.Empty;
+            txbPalletCntrID.Text = string.Empty;
+            lblFacilityName.Text = string.Empty;
+            lblProfileName.Text = string.Empty;
+            lblTruckCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+            lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+            lblPalletCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+            chkCntrl.Checked = false;
+            ddProfile.SelectedIndex = 0;
+            ddStore.SelectedIndex = 0;
+            trBoxNotFound.BgColor = "White";
+            tblBoxNotFound.Visible = false;
+            gvBoxData.DataBind();
+            txbTruckCntrID.Focus();
+        }
+
         protected void txbTruckCntrID_TextChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txbTruckCntrID.Text) && !string.IsNullOrWhiteSpace(txbTruckCntrID.Text))
@@ -593,25 +612,6 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                 }
             }
-        }
-
-        protected void btnReset_Click(object sender, EventArgs e)
-        {
-            txbTruckCntrID.Text = string.Empty;
-            txbBoxCntrID.Text = string.Empty;
-            txbPalletCntrID.Text = string.Empty;
-            lblFacilityName.Text = string.Empty;
-            lblProfileName.Text = string.Empty;
-            lblTruckCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
-            lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
-            lblPalletCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
-            chkCntrl.Checked = false;
-            ddProfile.SelectedIndex = 0;
-            ddStore.SelectedIndex = 0;
-            trBoxNotFound.BgColor = "White";
-            tblBoxNotFound.Visible = false;
-            gvBoxData.DataBind();
-            txbTruckCntrID.Focus();
         }
     }
 }
