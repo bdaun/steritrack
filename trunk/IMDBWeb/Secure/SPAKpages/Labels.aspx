@@ -53,6 +53,8 @@
                     </td></tr>
                 <tr>
                     <td colspan="2" align="right">
+                    <asp:Label ID="lblCreateMsg" runat="server" Visible="false" Text="Labels Created!" 
+                        ForeColor="Green" Font-Bold="true" Font-Size="Large" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnCreateLabel" runat="server" Text="Create" 
                             onclick="btnCreateLabel_Click" /></td></tr>
             </table>
