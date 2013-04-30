@@ -67,6 +67,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.TextBox txbNumberContainers;
         
         /// <summary>
+        /// truckrow1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow truckrow1;
+        
+        /// <summary>
         /// ddSiteSelect control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.DropDownList ddSiteSelect;
         
         /// <summary>
+        /// truckrow2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow truckrow2;
+        
+        /// <summary>
         /// txbTruckDate control.
         /// </summary>
         /// <remarks>
@@ -83,6 +101,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbTruckDate;
+        
+        /// <summary>
+        /// truckrow3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow truckrow3;
         
         /// <summary>
         /// txbTruckSeqNumber control.

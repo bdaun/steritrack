@@ -11,19 +11,21 @@
     </tr>
     <tr>
         <td colspan="2" align="center">Select Type of Label to Create&nbsp;
-            <asp:DropDownList ID="ddCreateItems" runat="server">
+            <asp:DropDownList ID="ddCreateItems" runat="server" AutoPostBack="True" Font-Size="X-Large" 
+                onselectedindexchanged="ddCreateItems_SelectedIndexChanged">
                 <asp:ListItem Text="Select an Option" Value="None" />
-                <asp:ListItem Text="Truck Tag" Value="Truck" />
-                <asp:ListItem Text="Process Tag" Value="Process" />
-                <asp:ListItem Text="PassThru Tag" Value="PassThru" />
+                <asp:ListItem Text="Truck Tag" Value="TruckTag" />
+                <asp:ListItem Text="Process Tag" Value="ProcessTag" />
+                <asp:ListItem Text="PassThru Tag" Value="PassThruTag" />
             </asp:DropDownList>
         </td>
         <td colspan="2" align="center">Select Type of Label to Print&nbsp;
-            <asp:DropDownList ID="ddPrintItems" runat="server">
+            <asp:DropDownList ID="ddPrintItems" runat="server" AutoPostBack="true" Font-Size="X-Large"  
+                onselectedindexchanged="ddPrintItems_SelectedIndexChanged">
                 <asp:ListItem Text="Select an Option" Value="None" />
-                <asp:ListItem Text="Truck Tag" Value="Truck" />
-                <asp:ListItem Text="Process Tag" Value="Process" />
-                <asp:ListItem Text="PassThru Tag" Value="PassThru" />
+                <asp:ListItem Text="Truck Tag" Value="TruckTag" />
+                <asp:ListItem Text="Process Tag" Value="ProcessTag" />
+                <asp:ListItem Text="PassThru Tag" Value="PassThruTag" />
             </asp:DropDownList>
         </td>
     </tr>
@@ -34,18 +36,18 @@
                     <asp:TextBox ID="txbNumberContainers" runat="server" Width="50px" AutoPostBack="true" style="text-align:right" 
                         ontextchanged="txbNumberContainers_TextChanged" Font-Size="X-Large" />
                     </td></tr>
-                <tr><td align="right">Truck Receiving Site</td><td>
+                <tr id="truckrow1" runat="server"><td align="right">Truck Receiving Site</td><td>
                     <asp:DropDownList ID="ddSiteSelect" runat="server" AppendDataBoundItems="True" 
                         AutoPostBack="True" DataSourceID="sdsSiteSelect" DataTextField="SiteName" Font-Size="X-Large" 
                         DataValueField="SiteCode">
                         <asp:ListItem Text="Select a Site" />
                     </asp:DropDownList>
                     </td></tr>
-                <tr><td align="right" style="border-top-width:1; border-right:1">Date Truck arrived at Site (mm/dd/yy)</td><td>
+                <tr id="truckrow2" runat="server"><td align="right" style="border-top-width:1; border-right:1">Date Truck arrived at Site (mm/dd/yy)</td><td>
                     <asp:TextBox ID="txbTruckDate" runat="server" autopostback="true" Width="100px" style="text-align:right"
                         ontextchanged="txbTruckDate_TextChanged" Font-Size="X-Large"/>
                     </td></tr>
-                <tr><td align="right" style="border-top-width:1; border-right:1">Truck Sequence Number</td><td>
+                <tr id="truckrow3" runat="server"><td align="right" style="border-top-width:1; border-right:1">Truck Sequence Number</td><td>
                     <asp:TextBox ID="txbTruckSeqNumber" runat="server" Width="50px" Text="001" Font-Size="x-large" style="text-align:right"
                         ontextchanged="txbTruckSeqNumber_TextChanged"></asp:TextBox>
                     </td></tr>
