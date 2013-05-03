@@ -42,6 +42,7 @@ namespace IMDBWeb.Secure.SPAKpages
             chkCntrl.Checked = false;
             ddProfile.SelectedIndex = 0;
             ddStore.SelectedIndex = 0;
+            txbManifest.Text = string.Empty;
             trBoxNotFound.BgColor = "White";
             tblBoxNotFound.Visible = false;
             gvBoxData.DataBind();
@@ -101,7 +102,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     lblTruckCntrID.ForeColor = System.Drawing.Color.Red;
                 }
 
-                if (!Regex.IsMatch(txbTruckCntrID.Text, @"^\d\d[-](0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d-?\d?\d?$"))
+                if (!Regex.IsMatch(txbTruckCntrID.Text, @"^\d\d[-](0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d-\d\d?$"))
                 {
                     WebMsgBox.Show("Please use the format of XX-mm/dd/yy-###-@@ where XX is a valid SiteCode, ### is the truck sequence number, and @@ is the TruckTag pallet ID");
                     txbTruckCntrID.Focus();
@@ -238,6 +239,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     Session["CurHazCode"] = string.Empty;
                     Session["CurStoreState"] = string.Empty;
                     Session["CurStoreNumber"] = string.Empty;
+                    Session["CurCustomerNumber"] = string.Empty;
 
                     String spBoxInfo = "SPAK_BoxRcvd_ManifestInfo_Sel";
                     SqlCommand spCmdBoxInfo = new SqlCommand(spBoxInfo, con);
@@ -261,6 +263,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     Session["CurHazCode"] = rdrBoxInfo["HazCode"].ToString();
                                     Session["CurStoreState"] = rdrBoxInfo["StoreState"].ToString();
                                     Session["CurStoreNumber"] = rdrBoxInfo["StoreNumber"].ToString();
+                                    Session["CurCustomerNumber"] = rdrBoxInfo["CustomerNumber"].ToString().Trim();
                                 }
                                 lblFacilityName.Text = Session["CurTSDFCompany"].ToString();
                                 lblProfileName.Text = Session["CurProfileName"].ToString();
@@ -443,7 +446,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     {  
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
                                     }
-                                    else if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreName"].ToString().Contains("CVS"))
+                                    else if (Session["CurCustomerNumber"].ToString() == "AL20090641") //CVS NonReg Pharma
                                     {
                                         WebMsgBox.Show("This box from CVS contains pharmaceuticals.  Please place it on a pallet designated for CVS Processing");
                                     }
@@ -460,7 +463,7 @@ namespace IMDBWeb.Secure.SPAKpages
                         {
                             if(Session["CurProfileName"].ToString().Contains("Flammable Solid"))
                             {
-                                WebMsgBox.Show("This is an Explosive material.  Please place on an Outbound Pallet AS IS to EEI.  Boxes should not be mixed with any Stericycle product");
+                                WebMsgBox.Show("This is a flammable solid. Please place on a outbound pallet with only other flammable solids");
                             }
                         }
                         #endregion
@@ -608,6 +611,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             chkCntrl.Checked = false;
                             ddProfile.SelectedIndex = 0;
                             ddStore.SelectedIndex = 0;
+                            txbManifest.Text = string.Empty;
                             trBoxNotFound.BgColor = "White";
                             tblBoxNotFound.Visible = false;
                             gvBoxData.DataBind();
