@@ -21,6 +21,13 @@ namespace IMDBWeb.Secure.SPAKpages
                 truckrow2.Visible = false;
                 truckrow3.Visible = false;
                 lblCreateMsg.Visible = false;
+                ddCreateItems.SelectedIndex = 0;
+                ddSiteSelect.SelectedIndex = 0;
+                txbNumberContainers.Text = string.Empty;
+                txbTruckDate.Text = string.Empty;
+                txbTruckSeqNumber.Text = "001";
+                btnPrintLabel.Visible = false;
+//                pnlLblPreview.Visible = false;
             }
         }
 
@@ -73,7 +80,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 }
                 else
                 {
-                //Create labels
+                    //Create labels
 
                     int lblCounter = 1;
                     int initLblCnt = 0;
@@ -139,13 +146,11 @@ namespace IMDBWeb.Secure.SPAKpages
                                 spCmdLblIns.Parameters.Clear();
                                 con.Close();
                                 lblCreateMsg.Visible = true;
-  
+                                btnCreateLabel.Visible = false;
+                                btnPrintLabel.Visible = true;
+
                             }
                         }
-                        txbNumberContainers.Text = string.Empty;
-                        ddSiteSelect.SelectedIndex = 0;
-                        txbTruckDate.Text = string.Empty;
-                        txbTruckSeqNumber.Text = "001";
                     }
                 }
             }
@@ -205,7 +210,7 @@ namespace IMDBWeb.Secure.SPAKpages
                         int TagCounter = 1;
                         int TagValue = 100000000 + TagCount + TagCounter;  // Adding in the 100000000 creates consistent Tag length (for a while anyway)
                         while (TagCounter <= Convert.ToInt32(txbNumberContainers.Text))
-                        { 
+                        {
                             String CntrID = TagType + "-" + TagValue;
                             con.Open();
                             try
@@ -228,17 +233,14 @@ namespace IMDBWeb.Secure.SPAKpages
                                 spCmdTagIns.Parameters.Clear();
                                 con.Close();
                                 lblCreateMsg.Visible = true;
+                                btnCreateLabel.Visible = false;
+                                btnPrintLabel.Visible = true;
                             }
                         }
-                        txbNumberContainers.Text = string.Empty;
-                        ddSiteSelect.SelectedIndex = 0;
-                        txbTruckDate.Text = string.Empty;
-                        txbTruckSeqNumber.Text = "001";
                     }
-                }  
+                }
             }
         }
-
         protected void txbTruckSeqNumber_TextChanged(object sender, EventArgs e)
         {
             lblCreateMsg.Visible = false;
@@ -280,9 +282,16 @@ namespace IMDBWeb.Secure.SPAKpages
             }
         }
 
-        protected void ddPrintItems_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnPrintLabel_Click(object sender, EventArgs e)
         {
-
+            pnlLblPreview.Visible = true;
+            Session["ctrl"] = pnlLblPreview;
+            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=300px,width=300px,scrollbars=1');</script>");
+            ddCreateItems.SelectedIndex = 0;
+            ddSiteSelect.SelectedIndex = 0;
+            txbNumberContainers.Text = string.Empty;
+            txbTruckDate.Text = string.Empty;
+            txbTruckSeqNumber.Text = "001";
         }
     }
 }
