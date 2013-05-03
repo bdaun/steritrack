@@ -40,15 +40,6 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.DropDownList ddCreateItems;
         
         /// <summary>
-        /// ddPrintItems control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddPrintItems;
-        
-        /// <summary>
         /// tblCreateLabels control.
         /// </summary>
         /// <remarks>
@@ -139,13 +130,22 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Button btnCreateLabel;
         
         /// <summary>
-        /// tblPrintLabels control.
+        /// btnPrintLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tblPrintLabels;
+        protected global::System.Web.UI.WebControls.Button btnPrintLabel;
+        
+        /// <summary>
+        /// pnlLblPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLblPreview;
         
         /// <summary>
         /// sdsSiteSelect control.
