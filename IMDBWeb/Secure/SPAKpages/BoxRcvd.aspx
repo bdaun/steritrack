@@ -16,35 +16,6 @@
         <td><asp:TextBox ID="txbBoxCntrID" runat="server" Font-Size="XX-Large" AutoPostBack="true" ontextchanged="txbBoxCntrID_TextChanged" /></td>
         <td><asp:TextBox ID="txbPalletCntrID" runat="server" Font-Size="XX-Large" AutoPostBack="true" ontextchanged="txbPalletCntrID_TextChanged" /></td>
     </tr>
-        <%--<tr>
-        <td>
-            <asp:RequiredFieldValidator ID="rfvTxbTruckCntrID" runat="server" 
-                ControlToValidate="txbTruckCntrID" CssClass="failureNotification" Font-Bold="true"
-                ErrorMessage="TruckCntrID is required." />
-            <br />
-            <asp:RegularExpressionValidator ID="revTxbTruckCntrID" runat="server" 
-                ControlToValidate="txbTruckCntrID" SetFocusOnError="true"
-                ValidationExpression="^(\d\d[-]0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d-?\d?\d?$" 
-                ErrorMessage="Required format is XX-mm/dd/yy-###-@@" 
-                Font-Bold="true" ForeColor="Red" CssClass="failureNotification" />
-        </td>
-        <td style="vertical-align:top">
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                ControlToValidate="txbBoxCntrID" CssClass="failureNotification" Font-Bold="true"
-                ErrorMessage="BoxCntrID is required." />      
-        </td>
-        <td style="vertical-align:top">
-           <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                ControlToValidate="txbPalletCntrID" CssClass="failureNotification" Font-Bold="true"
-                ErrorMessage="PalletCntrID is required." />
-            <br />
-            <asp:RegularExpressionValidator ID="revTxbPalletCntrID" runat="server" 
-                ControlToValidate="txbPalletCntrID" SetFocusOnError="true"
-                ValidationExpression="^[PT-]\d{9}$" 
-                ErrorMessage="Required format is PT-#########" 
-                Font-Bold="true" ForeColor="Red" CssClass="failureNotification" />
-        </td>
-    </tr>--%>
     <tr>
         <td colspan="3">
             <table>
@@ -100,7 +71,7 @@
 </table>
 <br />
     <asp:GridView ID="gvBoxData" runat="server" AutoGenerateColumns="False" CellPadding="4"
-        DataKeyNames="id" DataSourceID="sdsBoxRcvd" AllowPaging="True" 
+        DataKeyNames="id" DataSourceID="sdsBoxRcvd" 
         AllowSorting="True">
         <Columns>
             <asp:CommandField ShowDeleteButton="True" />
