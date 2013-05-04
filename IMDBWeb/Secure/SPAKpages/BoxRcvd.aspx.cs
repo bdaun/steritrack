@@ -228,7 +228,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 }
                 else
                 {
-                    // Determine if the box is found in Sterise
+                    // Determine if the box is found in SterWise
 
                     #region Box in Steriwise
 
@@ -274,7 +274,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             else
                             {
                                 WebMsgBox.Show("This Box Bar code was not found in SPAK.  Please capture as much information as possible in the additional fields " +
-                                    "Please place this box on and exception pallet and contact your supervisor.");
+                                    "Please place this box on and exception pallet and alert your supervisor.");
                                 lblFacilityName.Text = "UNKNOWN";
                                 lblProfileName.Text = "UNKNOWN";
                                 tblBoxNotFound.Visible = true;
@@ -332,7 +332,8 @@ namespace IMDBWeb.Secure.SPAKpages
                                 {
                                     while (rdrManIMDB.Read())
                                     {
-                                        if (txbTruckCntrID.Text.Substring(0, 2) == rdrManIMDB["TruckID"].ToString().Substring(0, 2))
+                                        // Determine if manifest in IMDB is for the same TruckID
+                                        if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
                                         {
                                             SameManifestIMDB = true;
                                         }
@@ -357,13 +358,13 @@ namespace IMDBWeb.Secure.SPAKpages
                     }
                     #endregion
 
-                    // Determine if manifest in IMDB is for the same TruckID
+                    // Prompt if manifest in IMDB is not for the same TruckID
                     #region SameManifestIMDB
                     if (ManifestInSPAK)
                     {
                         if (!SameManifestIMDB)
                         {
-                            WebMsgBox.Show("There is a manifest in IMDB that matches the SPAK manifest associated with this Box but it is NOT associated with this TruckID.");
+                            WebMsgBox.Show("There is a manifest in IMDB that matches the SPAK manifest associated with this Box but it is NOT associated with this TruckID.  Please alert your supervisor.");
                         }                    
                     }
                     #endregion
@@ -432,7 +433,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     if (BoxInSPAK)
                     {
                         if (txbTruckCntrID.Text.Substring(0, 2) == "01")  // Indy Validation
-                        { 
+                        {
                             switch(Session["CurPharmControl"].ToString())
                             {
                                 case "2":
@@ -442,7 +443,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     WebMsgBox.Show("This is a Level 3-5 Control.  Please Place the box in the control cage.");
                                     break;
                                 case "NonReg":  //NonReg pharma may be hazardous.  If so, must be managed differently from nonhaz pharm
-                                    if(Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreState"].ToString() == "WA")  
+                                    if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreState"].ToString().TrimEnd() == "WA")  
                                     {  
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
                                     }
@@ -456,14 +457,14 @@ namespace IMDBWeb.Secure.SPAKpages
                             }
                             if(Session["CurProfileName"].ToString().Contains("Explosive"))
                             {
-                                WebMsgBox.Show("This is an Explosive material.  Please place on an Outbound Pallet AS IS to EEI.  Boxes should not be mixed with any Stericycle product");
+                                WebMsgBox.Show("This is an EXPLOSIVE MATERIAL.  Please place on an Outbound Pallet AS IS to EEI.  Boxes should not be mixed with any Stericycle product");
                             }
                         }
                         else if (txbTruckCntrID.Text.Substring(0, 2) == "02")  // Veolia Validation
                         {
                             if(Session["CurProfileName"].ToString().Contains("Flammable Solid"))
                             {
-                                WebMsgBox.Show("This is a flammable solid. Please place on a outbound pallet with only other flammable solids");
+                                WebMsgBox.Show("This is a FLAMMABLE SOLID. Please place on a outbound pallet with only other flammable solids.");
                             }
                         }
                         #endregion
