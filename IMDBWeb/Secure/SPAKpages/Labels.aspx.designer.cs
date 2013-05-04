@@ -40,6 +40,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.DropDownList ddCreateItems;
         
         /// <summary>
+        /// trLabelData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trLabelData;
+        
+        /// <summary>
         /// tblCreateLabels control.
         /// </summary>
         /// <remarks>
@@ -119,6 +128,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCreateMsg;
+        
+        /// <summary>
+        /// chkPrintExisting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkPrintExisting;
         
         /// <summary>
         /// btnCreateLabel control.
