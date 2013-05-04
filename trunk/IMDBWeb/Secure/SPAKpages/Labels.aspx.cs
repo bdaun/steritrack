@@ -17,6 +17,7 @@ namespace IMDBWeb.Secure.SPAKpages
             if (!IsPostBack)
             {
                 tblCreateLabels.Visible = false;
+                trLabelData.Visible = false;
                 truckrow1.Visible = false;
                 truckrow2.Visible = false;
                 truckrow3.Visible = false;
@@ -27,6 +28,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 txbTruckDate.Text = string.Empty;
                 txbTruckSeqNumber.Text = "001";
                 btnPrintLabel.Visible = false;
+                chkPrintExisting.Visible = false;
 //                pnlLblPreview.Visible = false;
             }
         }
@@ -148,7 +150,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 lblCreateMsg.Visible = true;
                                 btnCreateLabel.Visible = false;
                                 btnPrintLabel.Visible = true;
-
+                                txbNumberContainers.ReadOnly = true;
                             }
                         }
                     }
@@ -235,6 +237,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 lblCreateMsg.Visible = true;
                                 btnCreateLabel.Visible = false;
                                 btnPrintLabel.Visible = true;
+                                txbNumberContainers.ReadOnly = true;
                             }
                         }
                     }
@@ -259,39 +262,106 @@ namespace IMDBWeb.Secure.SPAKpages
             ddSiteSelect.SelectedIndex = 0;
             txbTruckDate.Text = string.Empty;
             txbTruckSeqNumber.Text = "001";
+            chkPrintExisting.Checked = false;
+            txbNumberContainers.ReadOnly = false;
 
             if (ddCreateItems.SelectedIndex == 0)
             {
                 tblCreateLabels.Visible = false;
+                trLabelData.Visible = false;
+                chkPrintExisting.Visible = false;
             }
             else if (ddCreateItems.SelectedValue == "TruckTag")
             {
                 tblCreateLabels.Visible = true;
+                trLabelData.Visible = true;
                 truckrow1.Visible = true;
                 truckrow2.Visible = true;
                 truckrow3.Visible = true;
+                btnCreateLabel.Visible = true;
+                btnPrintLabel.Visible = false;
+                chkPrintExisting.Visible = true;
                 txbNumberContainers.Focus();
             }
             else if (ddCreateItems.SelectedValue == "ProcessTag" || ddCreateItems.SelectedValue == "PassThruTag")
             {
                 tblCreateLabels.Visible = true;
+                trLabelData.Visible = true;
                 truckrow1.Visible = false;
                 truckrow2.Visible = false;
                 truckrow3.Visible = false;
+                btnCreateLabel.Visible = true;
+                btnPrintLabel.Visible = false;
+                chkPrintExisting.Visible = false;
                 txbNumberContainers.Focus();
             }
         }
 
         protected void btnPrintLabel_Click(object sender, EventArgs e)
         {
-            pnlLblPreview.Visible = true;
-            Session["ctrl"] = pnlLblPreview;
-            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=300px,width=300px,scrollbars=1');</script>");
-            ddCreateItems.SelectedIndex = 0;
-            ddSiteSelect.SelectedIndex = 0;
-            txbNumberContainers.Text = string.Empty;
-            txbTruckDate.Text = string.Empty;
-            txbTruckSeqNumber.Text = "001";
+            String spPreviewIns = string.Empty;
+            if(ddCreateItems.SelectedValue.ToString() == "TruckTag")
+            {
+                spPreviewIns = "SPAK_Labels_PreviewTruckTag_Ins";
+                string CurCntrID = ddSiteSelect.SelectedValue + "-" + txbTruckDate.Text + "-" + txbTruckSeqNumber.Text;
+            }
+            else
+	        {
+                spPreviewIns = "SPAK_Labels_PreviewPalletTag_Ins";
+	        }
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand cmdPreviewIns = new SqlCommand(spPreviewIns, con);
+            cmdPreviewIns.CommandType = CommandType.StoredProcedure;
+            con.Open();
+            using (cmdPreviewIns)
+            {
+                try
+                {
+                    if (ddCreateItems.SelectedValue.ToString() == "TruckTag")
+                    {
+                        string CurCntrID = ddSiteSelect.SelectedValue + "-" + txbTruckDate.Text + "-" + txbTruckSeqNumber.Text;
+                        cmdPreviewIns.Parameters.AddWithValue("@CntrID", CurCntrID);
+                    }
+                    else
+                    {
+                        cmdPreviewIns.Parameters.AddWithValue("@Qty", Convert.ToInt32(txbNumberContainers.Text));
+                        cmdPreviewIns.Parameters.AddWithValue("@Type", ddCreateItems.SelectedValue.ToString());
+                    }
+                    cmdPreviewIns.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.Message;
+                }
+                finally
+                {
+                    ddCreateItems.SelectedIndex = 0;
+                    ddSiteSelect.SelectedIndex = 0;
+                    txbNumberContainers.Text = string.Empty;
+                    txbNumberContainers.ReadOnly = false;
+                    txbTruckDate.Text = string.Empty;
+                    txbTruckSeqNumber.Text = "001";
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=800px,width=800px,scrollbars=1');</script>");
+        }
+
+        protected void chkPrintExisting_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkPrintExisting.Checked)
+            { 
+                btnCreateLabel.Visible = false;
+                btnPrintLabel.Visible = true;
+            }
+            else
+            {
+                btnCreateLabel.Visible = true;
+                btnPrintLabel.Visible = false;
+            }
+            
         }
     }
 }

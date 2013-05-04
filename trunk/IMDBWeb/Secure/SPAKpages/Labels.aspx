@@ -2,12 +2,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+    <asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
 <h3>Lables</h3><hr />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
-<table border="2" cellpadding="10" style="background-color:#f9f9f9" width="70%" >
+<table border="2" cellpadding="10" style="background-color:#f9f9f9" width="50%" >
     <tr style="text-align:center;font-size:large;font-weight:bold;color:#003300">
-        <td colspan="2">Create/Print Labels</td><td colspan="2">&nbsp;</td>
+        <td colspan="2">Create/Print Labels</td>
     </tr>
     <tr>
         <td colspan="2" align="center">Select Type of Label to Create&nbsp;
@@ -19,12 +19,10 @@
                 <asp:ListItem Text="PassThru Tag" Value="PassThruTag" />
             </asp:DropDownList>
         </td>
-        <td colspan="2" align="center">
-        </td>
     </tr>
-    <tr  style="vertical-align:top">
+    <tr id="trLabelData" runat="server" style="vertical-align:top">
         <td colspan="2">
-            <table id="tblCreateLabels" runat="server" border="0" cellpadding="10" cellspacing="0" width="98%">
+            <table id="tblCreateLabels" runat="server" border="0" cellpadding="10" cellspacing="0" width="100%">
                 <tr><td align="right">Number of Pallet Container ID&#39;s to create</td><td>
                     <asp:TextBox ID="txbNumberContainers" runat="server" Width="50px" AutoPostBack="true" style="text-align:right" 
                         ontextchanged="txbNumberContainers_TextChanged" Font-Size="Large" />
@@ -46,14 +44,13 @@
                 <tr>
                     <td colspan="2" align="right">
                     <asp:Label ID="lblCreateMsg" runat="server" Visible="false" Text="Labels Created!" 
-                        ForeColor="Green" Font-Bold="true" Font-Size="Large" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btnCreateLabel" runat="server" Text="Create Labels" 
-                            onclick="btnCreateLabel_Click" />
-                    <asp:Button ID="btnPrintLabel" runat="server" Text="Print Labels" 
-                            onclick="btnPrintLabel_Click" Visible="false" /></td></tr>
+                        ForeColor="Green" Font-Bold="true" Font-Size="Large" />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:CheckBox ID="chkPrintExisting" runat="server" Text="Print Existing Truck Label" 
+                            oncheckedchanged="chkPrintExisting_CheckedChanged" AutoPostBack="true" />&nbsp;&nbsp;
+                    <asp:Button ID="btnCreateLabel" runat="server" Text="Create Labels" onclick="btnCreateLabel_Click" />
+                    <asp:Button ID="btnPrintLabel" runat="server" Text="Print Labels" onclick="btnPrintLabel_Click" Visible="false" />
+                </td></tr>
             </table>
-        </td>
-        <td colspan="2">
         </td>
     </tr>
 </table>
