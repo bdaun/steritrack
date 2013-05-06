@@ -339,6 +339,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 finally
                 {
                     ddCreateItems.SelectedIndex = 0;
+                    tblCreateLabels.Visible = false;
                     ddSiteSelect.SelectedIndex = 0;
                     txbNumberContainers.Text = string.Empty;
                     txbNumberContainers.ReadOnly = false;
@@ -346,7 +347,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     txbTruckSeqNumber.Text = "001";
                 }
             }
-            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=800px,width=800px,scrollbars=1');</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=400px,width=600px,scrollbars=1');</script>");
         }
 
         protected void chkPrintExisting_CheckedChanged(object sender, EventArgs e)
