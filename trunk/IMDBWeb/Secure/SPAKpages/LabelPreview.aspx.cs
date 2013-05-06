@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CrystalDecisions.CrystalReports.Engine;
+
 
 namespace IMDBWeb.Secure.SPAKpages
 {
@@ -14,9 +14,6 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             //Control ctrl = (Control)Session["ctrl"];
             //PrintHelper.PrintWebControl(ctrl);
-            ReportDocument reportdocument = new ReportDocument();
-            reportdocument.Load(Server.MapPath("PreviewLabel.rpt"));
-            crvPreviewLabel.ReportSource = reportdocument;
         }
     }
 }
