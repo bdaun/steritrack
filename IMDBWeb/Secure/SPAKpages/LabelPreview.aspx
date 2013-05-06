@@ -12,9 +12,8 @@
 <body>
 <form id="form1" runat="server">
 <CR:CrystalReportViewer ID="crvPreviewLabel" runat="server" AutoDataBind="True" 
-    GroupTreeImagesFolderUrl="" Height="530px" ReportSourceID="crsPreviewPallet" 
-    ToolbarImagesFolderUrl="" ToolPanelView="None" ToolPanelWidth="200px" 
-    Width="864px" HasRefreshButton="True" />
+    Height="550px" ReportSourceID="crsPreviewPallet" Width="850 px" DisplayToolbar="True" HasDrilldownTabs="False" 
+    HasRefreshButton="True" ShowAllPageIds="True" ToolPanelView="None" />
 <CR:CrystalReportSource ID="crsPreviewPallet" runat="server">
     <Report FileName="PreviewLabel.rpt">
     </Report>
