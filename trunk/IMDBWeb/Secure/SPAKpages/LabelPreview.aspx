@@ -10,17 +10,16 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" 
-        AutoDataBind="True" GroupTreeImagesFolderUrl="" Height="50px" 
-        ReportSourceID="CrystalReportSource1" 
-        ToolbarImagesFolderUrl="" ToolPanelWidth="200px" Width="350px" 
-        ToolPanelView="None" />
-    <CR:CrystalReportSource ID="CrystalReportSource1" runat="server">
-        <Report FileName="PrintLabel.rpt">
-        </Report>
-    </CR:CrystalReportSource>
-    </form>
+<form id="form1" runat="server">
+<CR:CrystalReportViewer ID="crvPreviewLabel" runat="server" AutoDataBind="True" 
+    GroupTreeImagesFolderUrl="" Height="530px" ReportSourceID="crsPreviewPallet" 
+    ToolbarImagesFolderUrl="" ToolPanelView="None" ToolPanelWidth="200px" 
+    Width="864px" HasRefreshButton="True" />
+<CR:CrystalReportSource ID="crsPreviewPallet" runat="server">
+    <Report FileName="PreviewLabel.rpt">
+    </Report>
+</CR:CrystalReportSource>
+</form>
 </body>
 </html>
 

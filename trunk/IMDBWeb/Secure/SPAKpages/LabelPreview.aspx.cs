@@ -15,8 +15,8 @@ namespace IMDBWeb.Secure.SPAKpages
             //Control ctrl = (Control)Session["ctrl"];
             //PrintHelper.PrintWebControl(ctrl);
             ReportDocument reportdocument = new ReportDocument();
-            reportdocument.Load(Server.MapPath("PrintLabel.rpt"));
-            CrystalReportViewer1.ReportSource = reportdocument;
+            reportdocument.Load(Server.MapPath("PreviewLabel.rpt"));
+            crvPreviewLabel.ReportSource = reportdocument;
         }
     }
 }
