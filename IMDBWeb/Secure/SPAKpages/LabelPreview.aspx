@@ -17,13 +17,13 @@
     WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Width="6in" Height="4in">
     <LocalReport ReportPath="Secure\SPAKpages\LabelView.rdlc">
         <DataSources>
-            <rsweb:ReportDataSource DataSourceId="sdsLblPreview" Name="dsLblPreview" />
+            <rsweb:ReportDataSource DataSourceId="sdsLblPreview" Name="DataSet1" />
         </DataSources>
     </LocalReport>
 </rsweb:ReportViewer>
 <asp:SqlDataSource ID="sdsLblPreview" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="SELECT [CntrID] FROM [PreviewLabels] ORDER BY ID"></asp:SqlDataSource>
+    SelectCommand="SELECT ID, [CntrID] FROM [PreviewLabels] ORDER BY ID Asc"></asp:SqlDataSource>
 </form>
 </body>
 </html>
