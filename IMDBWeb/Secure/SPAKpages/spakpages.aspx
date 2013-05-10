@@ -17,6 +17,7 @@
                     <li><a href="BoxRcvd.aspx" style="font-size: large; color: #008000;">SPAK Box Receiving</a></li>
                     <li><a href="AlertItems.aspx" style="font-size: large; color: #008000;">Manage Alert Items</a></li>
                     <li><a href="Labels.aspx" style="font-size: large; color: #008000;">Manage Labels</a></li>
+                    <li><a href="SpakAdminActions.aspx" style="font-size: large; color: #008000;">SPAK Data Admin Actions</a></li>
                 </ul>
             </td>
             <td>
