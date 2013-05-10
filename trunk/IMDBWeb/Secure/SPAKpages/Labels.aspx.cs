@@ -347,7 +347,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     txbTruckSeqNumber.Text = "001";
                 }
             }
-            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintMe','height=400px,width=600px,scrollbars=1');</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintLabels','height=400px,width=600px,scrollbars=1,left=25px');window.open('ScanSheetPreview.aspx','PrintScanSheet','height=800px,width=600px,scrollbars=1,left=610px');</script>");
         }
 
         protected void chkPrintExisting_CheckedChanged(object sender, EventArgs e)
