@@ -3,6 +3,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+<script type="text/javascript">
+    function CommentChanged_Changed() {
+        document.all('ctl00$MainContent$txbPalletCntrID').focus();
+        return false;
+    }
+</script>
 <h3>Box Receiving</h3><hr />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table border="0" cellpadding="0" cellspacing="10">
@@ -57,7 +63,7 @@
             </tr>
             <tr>
                 <td style="font-size:larger; color:Black; text-align:right">Comment:&nbsp;</td>
-                <td colspan="3"><asp:textbox ID="txbComments" runat="server" TextMode="MultiLine" Width="100%" /></td>
+                <td colspan="3"><asp:textbox ID="txbComments" runat="server" TextMode="MultiLine" Width="100%" Onblur="return CommentChanged_Changed()" /></td>
             </tr>
             <tr><td colspan="4">&nbsp;</td></tr>
         </table>

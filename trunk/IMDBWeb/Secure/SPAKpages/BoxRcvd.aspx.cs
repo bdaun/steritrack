@@ -102,7 +102,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     lblTruckCntrID.ForeColor = System.Drawing.Color.Red;
                 }
 
-                if (!Regex.IsMatch(txbTruckCntrID.Text, @"^\d\d[-](0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d-\d\d?$"))
+                if (!Regex.IsMatch(txbTruckCntrID.Text, @"^\d\d[-](0[1-9]|1[012])[/](0[1-9]|[12][0-9]|3[01])[/][01]\d[-]\d\d\d-[1-9]\d?$"))
                 {
                     WebMsgBox.Show("Please use the format of XX-mm/dd/yy-###-@@ where XX is a valid SiteCode, ### is the truck sequence number, and @@ is the TruckTag pallet ID");
                     txbTruckCntrID.Focus();
