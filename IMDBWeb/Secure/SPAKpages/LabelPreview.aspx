@@ -15,7 +15,7 @@
 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
     Font-Size="8pt" InteractiveDeviceInfos="(Collection)" 
     WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Width="6in" Height="4in">
-    <LocalReport ReportPath="Secure\SPAKpages\LabelView.rdlc">
+    <LocalReport ReportPath="Secure/SPAKpages/LabelView.rdlc">
         <DataSources>
             <rsweb:ReportDataSource DataSourceId="sdsLblPreview" Name="DataSet1" />
         </DataSources>
