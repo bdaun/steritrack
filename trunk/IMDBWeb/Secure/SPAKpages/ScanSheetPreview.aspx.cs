@@ -12,8 +12,7 @@ namespace IMDBWeb.Secure.SPAKpages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Control ctrl = (Control)Session["ctrl"];
-            //PrintHelper.PrintWebControl(ctrl);
+
         }
     }
 }
