@@ -839,6 +839,7 @@ namespace IMDBWeb.Secure
                                         InboundPalletWeight = (int)Reader["InboundPalletWeight"];
                                         InboundProfileID = (int)Reader["InboundProfileID"];
                                     }
+                                    Reader.Close();
                                 }
                             }
                             // Sql Insert ProcDetail Statement for new record.
