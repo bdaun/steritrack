@@ -15,7 +15,7 @@
 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
     Font-Size="8pt" InteractiveDeviceInfos="(Collection)" 
     WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Width="8.5in" Height="11in" ShowFindControls="False">
-    <LocalReport ReportPath="Secure/SPAKpages/ScanSheetView.rdlc">
+    <LocalReport ReportPath="Secure\SPAKpages\ScanSheetView.rdlc">
         <DataSources>
             <rsweb:ReportDataSource DataSourceId="sdsLblPreview" Name="dsScanSheet" />
         </DataSources>
