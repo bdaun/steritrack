@@ -2,5 +2,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-Future menu listing of report items
+<br />
+<br />
+    <asp:Button ID="btnSPAKReports" runat="server" Text="SPAK Reports" onclick="btnSPAKReports_Click" />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <asp:Button ID="btnIndustrialReports" runat="server" Text="Industrial Reports" 
+        onclick="btnIndustrialReports_Click" />
 </asp:Content>
