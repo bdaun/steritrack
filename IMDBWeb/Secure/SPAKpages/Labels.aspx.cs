@@ -112,6 +112,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     lblCounter = 1 + initLblCnt;
                                 }
                             }
+                            rdrLblCnt.Close();
                         }
                         catch (Exception ex)
                         {
