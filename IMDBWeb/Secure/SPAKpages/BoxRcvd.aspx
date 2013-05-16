@@ -71,8 +71,10 @@
         <td style="text-align:right"></td>
     </tr>
     <tr><td colspan="2"></td>
-        <td align="right"><asp:Button ID="btnReset" runat="server" Text="Reset" CausesValidation="false" 
-                onclick="btnReset_Click" />&nbsp;&nbsp;
+        <td align="right">
+            <asp:Button ID="btnSubmit" runat="server" Text="Submit" 
+                onclick="btnSubmit_Click" />&nbsp;&nbsp;
+            <asp:Button ID="btnReset" runat="server" Text="Reset" CausesValidation="false" onclick="btnReset_Click" />&nbsp;&nbsp;
             <asp:Button ID="btnClose" runat="server" Text="Done" onclick="btnClose_Click" CausesValidation="false" />&nbsp;</td></tr>
 </table>
 <br />
