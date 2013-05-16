@@ -105,6 +105,7 @@ namespace IMDBWeb.Secure.SPAKPages
                                     WebMsgBox.Show("This manifest has an alert associated with it.  The alert message is '" + AlertComment + "'");
                                 }
                             }
+                            rdrAlert.Close();
                         }
                         catch (Exception ex)
                         {
@@ -138,6 +139,7 @@ namespace IMDBWeb.Secure.SPAKPages
                                 WebMsgBox.Show("This manifest was NOT found in SteriTrack.  You may still be able enter it in the system, but please bring the manifest to your supervisor.");
                                 TSDFExists = false;
                             }
+                            rdrTSDF.Close();
                         }
                         catch (Exception ex)
                         {
@@ -165,6 +167,7 @@ namespace IMDBWeb.Secure.SPAKPages
                                 }
                                 
                             }
+                            rdrSite.Close();
                         }
                         catch (Exception ex)
                         {
@@ -215,6 +218,7 @@ namespace IMDBWeb.Secure.SPAKPages
                                 {
                                     WebMsgBox.Show("Note that this manifest has already been received at another site and has now also been entered for this site.");
                                 }
+                                rdr.Close();
                             }
                         }
                         catch (Exception ex)
