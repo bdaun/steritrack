@@ -16,6 +16,7 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             if (!IsPostBack)
             {
+                Session["CurTruckCntrID"] = string.Empty;
                 tblBoxNotFound.Visible = false;
                 txbTruckCntrID.Focus();
             }
@@ -26,6 +27,7 @@ namespace IMDBWeb.Secure.SPAKpages
             txbTruckCntrID.Text = string.Empty;
             txbBoxCntrID.Text = string.Empty;
             txbPalletCntrID.Text = string.Empty;
+            Session.Clear();
             Response.Redirect("~/secure/SPAKPages/SPAKPages.aspx");
         }
 
@@ -34,6 +36,7 @@ namespace IMDBWeb.Secure.SPAKpages
             txbTruckCntrID.Text = string.Empty;
             txbBoxCntrID.Text = string.Empty;
             txbPalletCntrID.Text = string.Empty;
+            Session.Clear();
             lblFacilityName.Text = string.Empty;
             lblProfileName.Text = string.Empty;
             lblTruckCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
@@ -80,6 +83,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 txbTruckCntrID.Focus();
                             }
                         }
+                        rdrSite.Close();
                     }
                     catch (Exception ex)
                     {
@@ -95,6 +99,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 {
                     txbBoxCntrID.Focus();
                     lblTruckCntrID.ForeColor = System.Drawing.Color.Green;
+                    Session["CurTruckCntrID"] = txbTruckCntrID.Text;
                 }
                 else
                 {
@@ -144,6 +149,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             }
                         }
+                        rdrAlert.Close();
                     }
                     catch (Exception ex)
                     {
@@ -282,6 +288,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 chkCntrl.Focus();
                                 BoxInSPAK = false;
                             }
+                            rdrBoxInfo.Close();
                         }
                         catch (Exception ex)
                         {
@@ -344,6 +351,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 {
                                     ManifestinIMDB = false;
                                 }
+                                rdrManIMDB.Close();
                             }
                             catch (Exception ex)
                             {
@@ -398,6 +406,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 BoxInIMDB = false;
                             }
+                            rdrBoxIMDB.Close();
                         }
                         catch (Exception ex)
                         {
@@ -492,6 +501,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 }
 
                             }
+                            rdrCurSite.Close();
                         }
                         catch (Exception ex)
                         {
@@ -601,12 +611,12 @@ namespace IMDBWeb.Secure.SPAKpages
                         }
                         finally
                         {
-                            txbTruckCntrID.Text = string.Empty;
+                            txbTruckCntrID.Text = Session["CurTruckCntrID"].ToString();
                             txbBoxCntrID.Text = string.Empty;
                             txbPalletCntrID.Text = string.Empty;
                             lblFacilityName.Text = string.Empty;
                             lblProfileName.Text = string.Empty;
-                            lblTruckCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+                            lblTruckCntrID.ForeColor = System.Drawing.Color.Green;
                             lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
                             lblPalletCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
                             chkCntrl.Checked = false;
@@ -616,11 +626,20 @@ namespace IMDBWeb.Secure.SPAKpages
                             trBoxNotFound.BgColor = "White";
                             tblBoxNotFound.Visible = false;
                             gvBoxData.DataBind();
-                            txbTruckCntrID.Focus();
+                            txbBoxCntrID.Focus();
                         }
                     }
                 }
+                else
+                {
+                    WebMsgBox.Show("There is an invalid value in one of your entries.  Please make sure all entries titles are Green or Gold");
+                }
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            txbPalletCntrID_TextChanged(null, null);
         }
     }
 }
