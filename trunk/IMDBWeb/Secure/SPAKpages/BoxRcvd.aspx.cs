@@ -616,6 +616,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             txbPalletCntrID.Text = string.Empty;
                             lblFacilityName.Text = string.Empty;
                             lblProfileName.Text = string.Empty;
+                            lblErrMsg.Visible = false;
                             lblTruckCntrID.ForeColor = System.Drawing.Color.Green;
                             lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
                             lblPalletCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
