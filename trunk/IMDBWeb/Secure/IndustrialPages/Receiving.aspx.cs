@@ -261,14 +261,15 @@ namespace IMDBWeb.Secure.SPAKpages
             spCmd.CommandType = CommandType.StoredProcedure;
             con.Open();
             spCmd.Parameters.AddWithValue("@Product", curCntr);
-            SqlDataReader rdr = spCmd.ExecuteReader();
-            while (rdr.Read())
+            using (SqlDataReader rdr = spCmd.ExecuteReader())
             {
-                ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text = rdr["cid"].ToString();
-                curCntr = rdr["cid"].ToString();
-                ((DropDownList)dvContainerDetail.FindControl("ddProfile")).SelectedValue = rdr["pid"].ToString();
+                while (rdr.Read())
+                {
+                    ((Label)dvContainerDetail.FindControl("lblBrandCodeID")).Text = rdr["cid"].ToString();
+                    curCntr = rdr["cid"].ToString();
+                    ((DropDownList)dvContainerDetail.FindControl("ddProfile")).SelectedValue = rdr["pid"].ToString();
+                }
             }
-            rdr.Close();
             con.Close();
             ((DropDownList)dvContainerDetail.FindControl("ddRecAs")).Focus();
 
@@ -280,20 +281,20 @@ namespace IMDBWeb.Secure.SPAKpages
             spCmd1.CommandType = CommandType.StoredProcedure;
             con1.Open();
             spCmd1.Parameters.AddWithValue("@BrandCodeID", curCntr);
-            SqlDataReader rdr1 = spCmd1.ExecuteReader();
-            while (rdr1.Read())
+            using (SqlDataReader rdr1 = spCmd1.ExecuteReader())
             {
-                curCntr = rdr1["pp"].ToString();
-                
-                if (string.IsNullOrEmpty(curCntr)== true)
+                while (rdr1.Read())
                 {
-                    curCntr = "Select...";
-                }
-                ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).SelectedValue = curCntr;
-            }
-            rdr1.Close();
-            con1.Close();
+                    curCntr = rdr1["pp"].ToString();
 
+                    if (string.IsNullOrEmpty(curCntr) == true)
+                    {
+                        curCntr = "Select...";
+                    }
+                    ((DropDownList)dvContainerDetail.FindControl("ddProcessPlan")).SelectedValue = curCntr;
+                }
+            }
+            con1.Close();
         }
         protected void txbContainerID_OnTextChanged(object sender, EventArgs e)
         {
