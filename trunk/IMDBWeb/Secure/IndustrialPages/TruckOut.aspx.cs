@@ -44,7 +44,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             }
             else
             {
-                if(trAddCntr.Visible==true)
+                if (trAddCntr.Visible == true)
                 {
                     txbNewCntr.Focus();
                 }
@@ -67,7 +67,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             helper.GeneralSummary += new FooterEvent(helper_ManualSummary);
         }
         private void helper_ManualSummary(GridViewRow row)
-        {         
+        {
             GridViewRow newRow = helper.InsertGridRow(row);
             newRow.Cells[0].HorizontalAlign = HorizontalAlign.Right;
             newRow.Cells[0].Text = String.Format("Total: {0:n0} Containers,&nbsp&nbsp&nbsp&nbsp{1:n0} lbs", helper.GeneralSummaries["NumberofCntrs"].Value, helper.GeneralSummaries["TotalWeight"].Value);
@@ -91,7 +91,7 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             e.Command.Parameters["@User"].Value = HttpContext.Current.User.Identity.Name.ToString();
             e.Command.Parameters["@outboundcontainerid"].Value = Session["CurCntrID"];
-            e.Command.Parameters["@ActAggrWt"].Value = Session["CurAggrWt"];  
+            e.Command.Parameters["@ActAggrWt"].Value = Session["CurAggrWt"];
         }
         protected void sdsTruckOut_Updated(object sender, EventArgs e)
         {
@@ -128,7 +128,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             }
             else
             {
-                this.gvContainers.Columns[editColumn].Visible=false;
+                this.gvContainers.Columns[editColumn].Visible = false;
                 this.gvContainers.Columns[removeColumn].Visible = false;
             }
             gvTally.DataBind();
@@ -144,14 +144,14 @@ namespace IMDBWeb.Secure.IndustrialPages
                 trErrMsg.Visible = true;
                 lblErrMsg.Text = "Please remove this container from the truck and place in the Dock area: " + Session["CurCntrID"];
             }
-            else if(e.CommandName=="Update")
+            else if (e.CommandName == "Update")
             {
                 GridViewRow row = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 string Updoutcntrid = ((Label)row.FindControl("outboundcontainerid")).Text;
                 Int32 UpAggrWt = Convert.ToInt32(((TextBox)row.FindControl("ActAggrWt")).Text);
                 Int32 UpAggrQty = Convert.ToInt32(((Label)row.FindControl("AggrQty")).Text);
                 Session["CurCntrID"] = Updoutcntrid;
-                Session["CurAggrWt"] = UpAggrWt/UpAggrQty;
+                Session["CurAggrWt"] = UpAggrWt / UpAggrQty;
                 trErrMsg.Visible = true;
                 lblErrMsg.Text = "The actual ship weight has been updated for container: " + Session["CurCntrID"];
             }
@@ -163,7 +163,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 e.Row.Attributes.Add("onmouseover", "this.previous_color=this.style.backgroundColor;this.style.backgroundColor='#ceedfc'");
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=this.previous_color");
                 e.Row.Attributes.Add("style", "cursor:pointer;");
-                if(DataBinder.Eval(e.Row.DataItem,"Hazardous").ToString()=="True")
+                if (DataBinder.Eval(e.Row.DataItem, "Hazardous").ToString() == "True")
                 {
                     e.Row.ForeColor = System.Drawing.Color.Red;
                     e.Row.Font.Bold = true;
@@ -176,71 +176,72 @@ namespace IMDBWeb.Secure.IndustrialPages
         }
         protected void txbNewCntr_TextChanged(object sender, EventArgs e)
         {
-        //  Deterimine the outbound stream type for the selected outbounddocno
-        //  Determine if scanned cntr is IN or OUT 
+            //  Deterimine the outbound stream type for the selected outbounddocno
+            //  Determine if scanned cntr is IN or OUT 
             //  if OUT:
-                //  Confirm that the cntrID exists in procdetails table.  If not prompt user to contact supervision.
-                //  Check to see if that outbound document has ShipHdr.Complete = 1
-                    //  If yes, then alert user that there is significant error with this container and to contact supervision
-                //  update current procdetail record with new outboundcntrID and shipped='1' for all procDetails with that OUT cntr
+            //  Confirm that the cntrID exists in procdetails table.  If not prompt user to contact supervision.
+            //  Check to see if that outbound document has ShipHdr.Complete = 1
+            //  If yes, then alert user that there is significant error with this container and to contact supervision
+            //  update current procdetail record with new outboundcntrID and shipped='1' for all procDetails with that OUT cntr
             //  if IN:
-                //  Confirm that the CntrID exists in the rcvDetails table.  If not prompt user to receive the container before proceeding.
-                //  Determine if a ProcDetail record exists.  
-                    //  if yes, prompt user to contact Supervision
-                    //  if no, determine if ProcHdr exists (rare case of ProcHdr w no ProcDetails)
-                        //  if yes, create ProcDetail line
-                        //  if no, create procHdr, ProcDetail
+            //  Confirm that the CntrID exists in the rcvDetails table.  If not prompt user to receive the container before proceeding.
+            //  Determine if a ProcDetail record exists.  
+            //  if yes, prompt user to contact Supervision
+            //  if no, determine if ProcHdr exists (rare case of ProcHdr w no ProcDetails)
+            //  if yes, create ProcDetail line
+            //  if no, create procHdr, ProcDetail
 
-                string strSP = "IMDB_TruckOut_Stream_sel";
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand StreamCmd = new SqlCommand(strSP, conn);
-                StreamCmd.CommandType = CommandType.StoredProcedure;
-                conn.Open();
-                using (StreamCmd)
+            string strSP = "IMDB_TruckOut_Stream_sel";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand StreamCmd = new SqlCommand(strSP, conn);
+            StreamCmd.CommandType = CommandType.StoredProcedure;
+            conn.Open();
+            using (StreamCmd)
+            {
+                try
                 {
-                    try
+                    StreamCmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
+                    using (SqlDataReader Reader = StreamCmd.ExecuteReader())
                     {
-                        StreamCmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
-                        using (SqlDataReader Reader = StreamCmd.ExecuteReader())
+                        if (!Reader.HasRows)
                         {
-                            if (!Reader.HasRows)
+                            trErrMsg.Visible = true;
+                            lblErrMsg.Text = "There is no Stream defined for this Vendor.  Please contact the database administrator to update the record.";
+                            Session["OutStream"] = "NotDefined";
+                            return;
+                        }
+                        else  // ProcDetail record exists.  Collect the current information
+                        {
+                            using (Reader)
                             {
-                                trErrMsg.Visible = true;
-                                lblErrMsg.Text = "There is no Stream defined for this Vendor.  Please contact the database administrator to update the record.";
-                                Session["OutStream"] = "NotDefined";
-                                return;
-                            }
-                            else  // ProcDetail record exists.  Collect the current information
-                            {
-                                using (Reader)
+                                try
                                 {
-                                    try
+                                    while (Reader.Read())
                                     {
-                                        while (Reader.Read())
-                                        {
-                                            Session["OutStream"] = Reader["StreamType"].ToString();
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        trErrMsg.Visible = true;
-                                        lblErrMsg.Text = ex.ToString();
+                                        Session["OutStream"] = Reader["StreamType"].ToString();
                                     }
                                 }
+                                catch (Exception ex)
+                                {
+                                    trErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.ToString();
+                                }
+                                Reader.Close();
                             }
                         }
                     }
-                    catch (Exception x)
-                    {
-                        trErrMsg.Visible = true;
-                        lblErrMsg.Text = x.ToString();
-                    }
-                    finally
-                    {
-                        conn.Close();
-                    }
                 }
+                catch (Exception x)
+                {
+                    trErrMsg.Visible = true;
+                    lblErrMsg.Text = x.ToString();
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
             if (txbNewCntr.Text.StartsWith("O"))   //  Case for OUT containers
             {
                 String sp = "IMDB_TruckOut_ChkCmplt";
@@ -281,6 +282,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     trErrMsg.Visible = true;
                                     lblErrMsg.Text = ex.ToString();
                                 }
+                                Reader.Close();
                             }
                         }
                     }
@@ -362,6 +364,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
                                     Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
                                 }
+                                Reader.Close();
                             }
                         }
                     }
@@ -376,7 +379,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 try  // Determine if a procDetail record exists for this IN Cntr
                 {
                     string spProcDetailExists = "IMDB_TruckOut_pdExist";
-                    SqlCommand pdChk = new SqlCommand(spProcDetailExists,con);
+                    SqlCommand pdChk = new SqlCommand(spProcDetailExists, con);
                     pdChk.CommandType = CommandType.StoredProcedure;
                     using (pdChk)
                     {
@@ -399,6 +402,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                         xOutboundContainerID = OutboundContainerID;  // This is the case where an OUT containerID begins w/ IN
                                     }
                                 }
+                                Reader.Close();
                                 if (ProcDetailID == "")  // Need to add record to exising ProcHdr
                                 {
                                     string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
@@ -459,6 +463,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                             }
                             else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
                             {
+                                Reader.Close();
                                 string spInsProcHdr = "IMDB_TruckOUT_ProcHdr_Ins";
                                 string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
                                 SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
@@ -525,4 +530,3 @@ namespace IMDBWeb.Secure.IndustrialPages
         }
     }
 }
- 
