@@ -103,16 +103,17 @@ namespace IMDBWeb.Secure.SPAKpages
                             spCmdLblCnt.Parameters.AddWithValue("@SiteCode", ddSiteSelect.SelectedValue.ToString());
                             spCmdLblCnt.Parameters.AddWithValue("@TruckDate", txbTruckDate.Text);
                             spCmdLblCnt.Parameters.AddWithValue("@TruckSeq", txbTruckSeqNumber.Text);
-                            SqlDataReader rdrLblCnt = spCmdLblCnt.ExecuteReader();
-                            if (rdrLblCnt.HasRows)
+                            using (SqlDataReader rdrLblCnt = spCmdLblCnt.ExecuteReader())
                             {
-                                while (rdrLblCnt.Read())
+                                if (rdrLblCnt.HasRows)
                                 {
-                                    initLblCnt = Convert.ToInt32(rdrLblCnt["lblCount"].ToString());
-                                    lblCounter = 1 + initLblCnt;
+                                    while (rdrLblCnt.Read())
+                                    {
+                                        initLblCnt = Convert.ToInt32(rdrLblCnt["lblCount"].ToString());
+                                        lblCounter = 1 + initLblCnt;
+                                    }
                                 }
                             }
-                            rdrLblCnt.Close();
                         }
                         catch (Exception ex)
                         {

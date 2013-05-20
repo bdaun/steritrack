@@ -42,48 +42,49 @@ namespace IMDBWeb.Secure.SPAKpages
                     try 
 	                {	        
                         CmdBoxes.Parameters.AddWithValue("@TruckCntrID", txbTruckID.Text.Substring(0,15));
-                        SqlDataReader rdrBoxes = CmdBoxes.ExecuteReader();
-                        if(rdrBoxes.HasRows)
+                        using (SqlDataReader rdrBoxes = CmdBoxes.ExecuteReader())
                         {
-                            gvBoxRecon.Visible = true;
-                            while (rdrBoxes.Read())
+                            if (rdrBoxes.HasRows)
                             {
-                                totalBoxes = totalBoxes + 1;
-                                if (Convert.ToInt32(rdrBoxes["Reconciled"]) > 0)
+                                gvBoxRecon.Visible = true;
+                                while (rdrBoxes.Read())
                                 {
-                                    reconBoxes = reconBoxes + 1;
+                                    totalBoxes = totalBoxes + 1;
+                                    if (Convert.ToInt32(rdrBoxes["Reconciled"]) > 0)
+                                    {
+                                        reconBoxes = reconBoxes + 1;
+                                    }
+                                }
+                                trBoxNotFound.Visible = false;
+                                trBoxFound.Visible = true;
+                                lblBoxText1.Text = "You have reconciled";
+                                lblBoxCount1.Text = reconBoxes.ToString();
+                                lblBoxText2.Text = "of";
+                                lblBoxCount2.Text = totalBoxes.ToString();
+                                lblBoxText3.Text = "boxes for TruckID";
+                                lblTruckID.Text = txbTruckID.Text.Substring(0, 15);
+                                if (totalBoxes == reconBoxes)
+                                {
+                                    lblReconErrMsg.Visible = true;
+                                    lblReconErrMsg.Text = "You have Reconciled all the boxes for this TruckID";
+                                    lblReconBox.Visible = false;
+                                    txbReconBox.Visible = false;
+                                    btnReconBox.Visible = false;
+                                }
+                                else
+                                {
+                                    lblReconBox.Visible = true;
+                                    txbReconBox.Visible = true;
+                                    btnReconBox.Visible = true;
                                 }
                             }
-                            trBoxNotFound.Visible = false;
-                            trBoxFound.Visible = true;
-                            lblBoxText1.Text = "You have reconciled";
-                            lblBoxCount1.Text = reconBoxes.ToString();
-                            lblBoxText2.Text = "of";
-                            lblBoxCount2.Text = totalBoxes.ToString();
-                            lblBoxText3.Text = "boxes for TruckID";
-                            lblTruckID.Text = txbTruckID.Text.Substring(0,15);
-                            if (totalBoxes == reconBoxes)
-                            {
-                                lblReconErrMsg.Visible = true;
-                                lblReconErrMsg.Text = "You have Reconciled all the boxes for this TruckID";
-                                lblReconBox.Visible = false;
-                                txbReconBox.Visible = false;
-                                btnReconBox.Visible = false;
-                            }
                             else
-	                        {
-                                lblReconBox.Visible = true;
-                                txbReconBox.Visible = true;
-                                btnReconBox.Visible = true;
-	                        }
-                        }
-		                else
-	                    {
-                            trBoxFound.Visible = false;
-                            trBoxNotFound.Visible = true;
+                            {
+                                trBoxFound.Visible = false;
+                                trBoxNotFound.Visible = true;
 
-	                    }
-                        rdrBoxes.Close();
+                            }
+                        }
 	                }
 	                catch (Exception ex)
 	                {
@@ -154,23 +155,24 @@ namespace IMDBWeb.Secure.SPAKpages
                 try
                 {           
 		            cmdBoxCheck.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                    SqlDataReader rdrInSpak = cmdBoxCheck.ExecuteReader();
-                    if(rdrInSpak.HasRows)
+                    using (SqlDataReader rdrInSpak = cmdBoxCheck.ExecuteReader())
                     {
-                        BoxInSPAK = true;
-                        while (rdrInSpak.Read())
+                        if (rdrInSpak.HasRows)
                         {
-                            if(rdrInSpak["TruckCntrID"].ToString().Substring(0,2)== txbTruckID.Text.Substring(0,2))
+                            BoxInSPAK = true;
+                            while (rdrInSpak.Read())
                             {
-                                BoxInSPAKSameSite = true;
-                            }
-                            if(rdrInSpak["TruckCntrID"].ToString().Substring(0,15)== txbTruckID.Text.Substring(0,15))
-                            {
-                                BoxInSPAKSameTruck = true;
+                                if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 2) == txbTruckID.Text.Substring(0, 2))
+                                {
+                                    BoxInSPAKSameSite = true;
+                                }
+                                if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 15) == txbTruckID.Text.Substring(0, 15))
+                                {
+                                    BoxInSPAKSameTruck = true;
+                                }
                             }
                         }
-	                }
-                    rdrInSpak.Close();
+                    }
                 }
 	            catch (Exception ex)
 	            {
@@ -238,72 +240,72 @@ namespace IMDBWeb.Secure.SPAKpages
                     try
                     {
                         cmdBoxRecon.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                        SqlDataReader rdrBoxRecon = cmdBoxRecon.ExecuteReader();
-                        if (rdrBoxRecon.HasRows)
+                        using (SqlDataReader rdrBoxRecon = cmdBoxRecon.ExecuteReader())
                         {
-                            while (rdrBoxRecon.Read())
+                            if (rdrBoxRecon.HasRows)
                             {
-                                if (Convert.ToInt32(rdrBoxRecon["Reconciled"]) > 0)
+                                while (rdrBoxRecon.Read())
                                 {
-                                    lblReconErrMsg.Visible = true;
-                                    lblReconErrMsg.Text = "This Box has already been reconciled!  Please scan a different Box.";
-                                    txbReconBox.Text = string.Empty;
-                                    txbReconBox.Focus();
-                                }
-                                else
-                                {
-                                    using (cmdReconUpd)
+                                    if (Convert.ToInt32(rdrBoxRecon["Reconciled"]) > 0)
                                     {
-                                        try
-                                        {
-                                            cmdReconUpd.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                                            cmdReconUpd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                            cmdReconUpd.ExecuteNonQuery();
-
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            lblErrMsg.Visible = true;
-                                            lblErrMsg.Text = ex.Message;
-                                        }
-                                        finally
-                                        {
-                                            gvBoxRecon.DataBind();
-                                            txbReconBox.Text = string.Empty;
-                                            txbReconBox.Focus();
-                                        }
+                                        lblReconErrMsg.Visible = true;
+                                        lblReconErrMsg.Text = "This Box has already been reconciled!  Please scan a different Box.";
+                                        txbReconBox.Text = string.Empty;
+                                        txbReconBox.Focus();
                                     }
+                                    else
+                                    {
+                                        using (cmdReconUpd)
+                                        {
+                                            try
+                                            {
+                                                cmdReconUpd.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                                                cmdReconUpd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                                cmdReconUpd.ExecuteNonQuery();
 
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                lblErrMsg.Visible = true;
+                                                lblErrMsg.Text = ex.Message;
+                                            }
+                                            finally
+                                            {
+                                                gvBoxRecon.DataBind();
+                                                txbReconBox.Text = string.Empty;
+                                                txbReconBox.Focus();
+                                            }
+                                        }
+
+                                    }
                                 }
+                                rdrBoxRecon.Close();
                             }
-                            rdrBoxRecon.Close();
-                        }
-                        else
-                        {
-                            rdrBoxRecon.Close();
-                            using (cmdReconIns)
+                            else
                             {
-                                try
+                                using (cmdReconIns)
                                 {
-                                    cmdReconIns.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                                    cmdReconIns.Parameters.AddWithValue("@TruckID", txbTruckID.Text.Substring(0, 15));
-                                    cmdReconIns.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                    cmdReconIns.ExecuteNonQuery();
-                                }
-                                catch (Exception ex)
-                                {
-                                    lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = ex.Message;
-                                }
-                                finally
-                                {
-                                    gvBoxRecon.DataBind();
-                                    txbReconBox.Text = string.Empty;
-                                    txbReconBox.Focus();
+                                    try
+                                    {
+                                        cmdReconIns.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                                        cmdReconIns.Parameters.AddWithValue("@TruckID", txbTruckID.Text.Substring(0, 15));
+                                        cmdReconIns.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                        cmdReconIns.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = ex.Message;
+                                    }
+                                    finally
+                                    {
+                                        gvBoxRecon.DataBind();
+                                        txbReconBox.Text = string.Empty;
+                                        txbReconBox.Focus();
+                                    }
                                 }
                             }
                         }
-                        
                     }
                     catch (Exception ex)
                     {

@@ -67,23 +67,24 @@ namespace IMDBWeb.Secure.SPAKpages
                 {
                     try
                     {
-                        SqlDataReader rdrSite = spCmdSite.ExecuteReader();
-                        if (rdrSite.HasRows)
+                        using (SqlDataReader rdrSite = spCmdSite.ExecuteReader())
                         {
-                            while (rdrSite.Read())
+                            if (rdrSite.HasRows)
                             {
-                                if (!String.IsNullOrEmpty(txbTruckCntrID.Text) && txbTruckCntrID.Text.Substring(0, 2).ToString() == rdrSite["SiteCode"].ToString())
+                                while (rdrSite.Read())
                                 {
-                                    foundit = true;
+                                    if (!String.IsNullOrEmpty(txbTruckCntrID.Text) && txbTruckCntrID.Text.Substring(0, 2).ToString() == rdrSite["SiteCode"].ToString())
+                                    {
+                                        foundit = true;
+                                    }
+                                }
+                                if (!foundit)
+                                {
+                                    WebMsgBox.Show("You have not entered a valid Site Code.  Please check your TruckCntrID.");
+                                    txbTruckCntrID.Focus();
                                 }
                             }
-                            if (!foundit)
-                            {
-                                WebMsgBox.Show("You have not entered a valid Site Code.  Please check your TruckCntrID.");
-                                txbTruckCntrID.Focus();
-                            }
                         }
-                        rdrSite.Close();
                     }
                     catch (Exception ex)
                     {
@@ -139,17 +140,18 @@ namespace IMDBWeb.Secure.SPAKpages
                     try
                     {
                         spCmdAlert.Parameters.AddWithValue("@BoxCntrID", txbBoxCntrID.Text);
-                        SqlDataReader rdrAlert = spCmdAlert.ExecuteReader();
-                        if (rdrAlert.HasRows)
+                        using (SqlDataReader rdrAlert = spCmdAlert.ExecuteReader())
                         {
-                            while (rdrAlert.Read())
+                            if (rdrAlert.HasRows)
                             {
-                                String AlertComment = rdrAlert["Comment"].ToString();
-                                WebMsgBox.Show("This Box has an alert associated with it.  The alert message is '" + AlertComment + "'");
-                                lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
+                                while (rdrAlert.Read())
+                                {
+                                    String AlertComment = rdrAlert["Comment"].ToString();
+                                    WebMsgBox.Show("This Box has an alert associated with it.  The alert message is '" + AlertComment + "'");
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
+                                }
                             }
                         }
-                        rdrAlert.Close();
                     }
                     catch (Exception ex)
                     {
@@ -257,38 +259,39 @@ namespace IMDBWeb.Secure.SPAKpages
                         try
                         {
                             spCmdBoxInfo.Parameters.AddWithValue("@BoxCntrID", txbBoxCntrID.Text);
-                            SqlDataReader rdrBoxInfo = spCmdBoxInfo.ExecuteReader();
-                            if (rdrBoxInfo.HasRows)
+                            using(SqlDataReader rdrBoxInfo = spCmdBoxInfo.ExecuteReader())
                             {
-                                while (rdrBoxInfo.Read())
+                                if (rdrBoxInfo.HasRows)
                                 {
-                                    Session["CurManifest"] = rdrBoxInfo["TrackingNumber"].ToString();
-                                    Session["CurProfileName"] = rdrBoxInfo["ProfileName"].ToString(); 
-                                    Session["CurTSDFCompany"] = rdrBoxInfo["TSDFCompany"].ToString();
-                                    Session["CurPharmControl"] = rdrBoxInfo["PharmControl"].ToString();
-                                    Session["CurHazCode"] = rdrBoxInfo["HazCode"].ToString();
-                                    Session["CurStoreState"] = rdrBoxInfo["StoreState"].ToString();
-                                    Session["CurStoreNumber"] = rdrBoxInfo["StoreNumber"].ToString();
-                                    Session["CurCustomerNumber"] = rdrBoxInfo["CustomerNumber"].ToString().Trim();
+                                    while (rdrBoxInfo.Read())
+                                    {
+                                        Session["CurManifest"] = rdrBoxInfo["TrackingNumber"].ToString();
+                                        Session["CurProfileName"] = rdrBoxInfo["ProfileName"].ToString(); 
+                                        Session["CurTSDFCompany"] = rdrBoxInfo["TSDFCompany"].ToString();
+                                        Session["CurPharmControl"] = rdrBoxInfo["PharmControl"].ToString();
+                                        Session["CurHazCode"] = rdrBoxInfo["HazCode"].ToString();
+                                        Session["CurStoreState"] = rdrBoxInfo["StoreState"].ToString();
+                                        Session["CurStoreNumber"] = rdrBoxInfo["StoreNumber"].ToString();
+                                        Session["CurCustomerNumber"] = rdrBoxInfo["CustomerNumber"].ToString().Trim();
+                                    }
+                                    lblFacilityName.Text = Session["CurTSDFCompany"].ToString();
+                                    lblProfileName.Text = Session["CurProfileName"].ToString();
+                                    tblBoxNotFound.Visible = false;
+                                    trBoxNotFound.BgColor = "White";
+                                    BoxInSPAK = true;
                                 }
-                                lblFacilityName.Text = Session["CurTSDFCompany"].ToString();
-                                lblProfileName.Text = Session["CurProfileName"].ToString();
-                                tblBoxNotFound.Visible = false;
-                                trBoxNotFound.BgColor = "White";
-                                BoxInSPAK = true;
+                                else
+                                {
+                                    WebMsgBox.Show("This Box Bar code was not found in SPAK.  Please capture as much information as possible in the additional fields " +
+                                        "Please place this box on and exception pallet and alert your supervisor.");
+                                    lblFacilityName.Text = "UNKNOWN";
+                                    lblProfileName.Text = "UNKNOWN";
+                                    tblBoxNotFound.Visible = true;
+                                    trBoxNotFound.BgColor = "#fofofo";
+                                    chkCntrl.Focus();
+                                    BoxInSPAK = false;
+                                }
                             }
-                            else
-                            {
-                                WebMsgBox.Show("This Box Bar code was not found in SPAK.  Please capture as much information as possible in the additional fields " +
-                                    "Please place this box on and exception pallet and alert your supervisor.");
-                                lblFacilityName.Text = "UNKNOWN";
-                                lblProfileName.Text = "UNKNOWN";
-                                tblBoxNotFound.Visible = true;
-                                trBoxNotFound.BgColor = "#fofofo";
-                                chkCntrl.Focus();
-                                BoxInSPAK = false;
-                            }
-                            rdrBoxInfo.Close();
                         }
                         catch (Exception ex)
                         {
@@ -334,24 +337,25 @@ namespace IMDBWeb.Secure.SPAKpages
                             try
                             {
                                 spCmdManIMDB.Parameters.AddWithValue("@InboundDocNo", Session["CurManifest"].ToString());
-                                SqlDataReader rdrManIMDB = spCmdManIMDB.ExecuteReader();
-                                if (rdrManIMDB.HasRows)
+                                using(SqlDataReader rdrManIMDB = spCmdManIMDB.ExecuteReader())
                                 {
-                                    while (rdrManIMDB.Read())
+                                    if (rdrManIMDB.HasRows)
                                     {
-                                        // Determine if manifest in IMDB is for the same TruckID
-                                        if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
+                                        while (rdrManIMDB.Read())
                                         {
-                                            SameManifestIMDB = true;
+                                            // Determine if manifest in IMDB is for the same TruckID
+                                            if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
+                                            {
+                                                SameManifestIMDB = true;
+                                            }
                                         }
+                                        ManifestinIMDB = true;
                                     }
-                                    ManifestinIMDB = true;
+                                    else
+                                    {
+                                        ManifestinIMDB = false;
+                                    }
                                 }
-                                else
-                                {
-                                    ManifestinIMDB = false;
-                                }
-                                rdrManIMDB.Close();
                             }
                             catch (Exception ex)
                             {
@@ -389,24 +393,25 @@ namespace IMDBWeb.Secure.SPAKpages
                         try
                         {
                             spCmdBoxIMDB.Parameters.AddWithValue("@BoxCntrID", txbBoxCntrID.Text);
-                            SqlDataReader rdrBoxIMDB = spCmdBoxIMDB.ExecuteReader();
-                            if (rdrBoxIMDB.HasRows)
-                            {
-                                while (rdrBoxIMDB.Read())
+                            using(SqlDataReader rdrBoxIMDB = spCmdBoxIMDB.ExecuteReader())
                                 {
-                                    if (txbTruckCntrID.Text.Substring(0, 2) == rdrBoxIMDB["TruckCntrID"].ToString().Substring(0, 2))
+                                if (rdrBoxIMDB.HasRows)
+                                {
+                                    while (rdrBoxIMDB.Read())
                                     {
-                                        SameBoxInIMDB = true;
-                                    }
+                                        if (txbTruckCntrID.Text.Substring(0, 2) == rdrBoxIMDB["TruckCntrID"].ToString().Substring(0, 2))
+                                        {
+                                            SameBoxInIMDB = true;
+                                        }
 
+                                    }
+                                    BoxInIMDB = true;
                                 }
-                                BoxInIMDB = true;
+                                else
+                                {
+                                    BoxInIMDB = false;
+                                }
                             }
-                            else
-                            {
-                                BoxInIMDB = false;
-                            }
-                            rdrBoxIMDB.Close();
                         }
                         catch (Exception ex)
                         {
@@ -492,16 +497,17 @@ namespace IMDBWeb.Secure.SPAKpages
                         try
                         {
                             spCmdCurSite.Parameters.AddWithValue("@SiteCode", txbTruckCntrID.Text.Substring(0, 2));
-                            SqlDataReader rdrCurSite = spCmdCurSite.ExecuteReader();
-                            if (rdrCurSite.HasRows)
+                            using(SqlDataReader rdrCurSite = spCmdCurSite.ExecuteReader())
                             {
-                                while (rdrCurSite.Read())
+                                if (rdrCurSite.HasRows)
                                 {
-                                    Session["CurProcSite"] = rdrCurSite["SiteName"].ToString();
-                                }
+                                    while (rdrCurSite.Read())
+                                    {
+                                        Session["CurProcSite"] = rdrCurSite["SiteName"].ToString();
+                                    }
 
+                                }
                             }
-                            rdrCurSite.Close();
                         }
                         catch (Exception ex)
                         {

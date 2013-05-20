@@ -481,28 +481,29 @@ namespace IMDBWeb.Secure
                             using (rcvCmd)
                             {
                                 rcvCmd.Parameters.AddWithValue("@inboundcontainerid", cntrID);
-                                SqlDataReader Reader = rcvCmd.ExecuteReader();
-                                if (!Reader.HasRows)
+                                using (SqlDataReader Reader = rcvCmd.ExecuteReader())
                                 {
-                                    lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
-                                        "Please receive the container BEFORE attempting to process.";
-                                    return;
-                                }
-                                else
-                                {
-                                    while (Reader.Read())
+                                    if (!Reader.HasRows)
                                     {
-                                        Session["RcvID"] = (int)Reader["RcvID"];
-                                        Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
-                                        Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
-                                        Session["InboundContainerType"] = Reader["InboundContainertype"];
-                                        Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
-                                        Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
-                                        Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
-                                        Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
+                                            "Please receive the container BEFORE attempting to process.";
+                                        return;
                                     }
-                                    Reader.Close();
+                                    else
+                                    {
+                                        while (Reader.Read())
+                                        {
+                                            Session["RcvID"] = (int)Reader["RcvID"];
+                                            Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
+                                            Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
+                                            Session["InboundContainerType"] = Reader["InboundContainertype"];
+                                            Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
+                                            Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
+                                            Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
+                                            Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -827,9 +828,7 @@ namespace IMDBWeb.Secure
                                 selectCmd.Parameters.Add("@InboundProfileID", SqlDbType.Int, 20, "InboundProfileID");
                                 selectCmd.Parameters["@InboundProfileID"].Direction = ParameterDirection.Output;
 
-                                SqlDataReader Reader = selectCmd.ExecuteReader();
-
-                                using (Reader)
+                                using(SqlDataReader Reader = selectCmd.ExecuteReader())
                                 {
                                     while (Reader.Read())
                                     {
@@ -839,7 +838,6 @@ namespace IMDBWeb.Secure
                                         InboundPalletWeight = (int)Reader["InboundPalletWeight"];
                                         InboundProfileID = (int)Reader["InboundProfileID"];
                                     }
-                                    Reader.Close();
                                 }
                             }
                             // Sql Insert ProcDetail Statement for new record.
