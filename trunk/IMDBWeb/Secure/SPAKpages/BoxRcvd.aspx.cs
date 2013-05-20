@@ -634,6 +634,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             tblBoxNotFound.Visible = false;
                             gvBoxData.DataBind();
                             txbBoxCntrID.Focus();
+                            con.Close();
                         }
                     }
                     con.Close();
