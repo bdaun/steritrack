@@ -636,6 +636,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             txbBoxCntrID.Focus();
                         }
                     }
+                    con.Close();
                 }
                 else
                 {
