@@ -96,16 +96,17 @@ namespace IMDBWeb.Secure.SPAKPages
                         try
                         {
                             spCmdAlert.Parameters.AddWithValue("@InboundDocNo", txbInboundDocNo.Text);
-                            SqlDataReader rdrAlert = spCmdAlert.ExecuteReader();
-                            if (rdrAlert.HasRows)
+                            using (SqlDataReader rdrAlert = spCmdAlert.ExecuteReader())
                             {
-                                while (rdrAlert.Read())
+                                if (rdrAlert.HasRows)
                                 {
-                                    String AlertComment = rdrAlert["Comment"].ToString();
-                                    WebMsgBox.Show("This manifest has an alert associated with it.  The alert message is '" + AlertComment + "'");
+                                    while (rdrAlert.Read())
+                                    {
+                                        String AlertComment = rdrAlert["Comment"].ToString();
+                                        WebMsgBox.Show("This manifest has an alert associated with it.  The alert message is '" + AlertComment + "'");
+                                    }
                                 }
                             }
-                            rdrAlert.Close();
                         }
                         catch (Exception ex)
                         {
@@ -125,21 +126,22 @@ namespace IMDBWeb.Secure.SPAKPages
                         try
                         {
                             spCmdTSDF.Parameters.AddWithValue("@InboundDocNo", txbInboundDocNo.Text);
-                            SqlDataReader rdrTSDF = spCmdTSDF.ExecuteReader();
-                            if (rdrTSDF.HasRows)
+                            using (SqlDataReader rdrTSDF = spCmdTSDF.ExecuteReader())
                             {
-                                while (rdrTSDF.Read())
-                                { 
-                                    TSDFExists = true;
-                                    TSDF = rdrTSDF["TSDFCompany"].ToString();
-                                }   
+                                if (rdrTSDF.HasRows)
+                                {
+                                    while (rdrTSDF.Read())
+                                    {
+                                        TSDFExists = true;
+                                        TSDF = rdrTSDF["TSDFCompany"].ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    WebMsgBox.Show("This manifest was NOT found in SteriTrack.  You may still be able enter it in the system, but please bring the manifest to your supervisor.");
+                                    TSDFExists = false;
+                                }
                             }
-                            else
-                            {
-                                WebMsgBox.Show("This manifest was NOT found in SteriTrack.  You may still be able enter it in the system, but please bring the manifest to your supervisor.");
-                                TSDFExists = false;
-                            }
-                            rdrTSDF.Close();
                         }
                         catch (Exception ex)
                         {
@@ -158,16 +160,17 @@ namespace IMDBWeb.Secure.SPAKPages
                         try
                         {
                             spCmdSite.Parameters.AddWithValue("@SiteCode", txbTruckID.Text.Substring(0, 2));
-                            SqlDataReader rdrSite = spCmdSite.ExecuteReader();
-                            if (rdrSite.HasRows)
+                            using (SqlDataReader rdrSite = spCmdSite.ExecuteReader())
                             {
-                                while (rdrSite.Read())
-                                { 
-                                    SiteName = rdrSite["SiteName"].ToString();
+                                if (rdrSite.HasRows)
+                                {
+                                    while (rdrSite.Read())
+                                    {
+                                        SiteName = rdrSite["SiteName"].ToString();
+                                    }
+
                                 }
-                                
                             }
-                            rdrSite.Close();
                         }
                         catch (Exception ex)
                         {
@@ -196,29 +199,30 @@ namespace IMDBWeb.Secure.SPAKPages
                         try
                         {
                             spCmdExist.Parameters.AddWithValue("@InboundDocNo", txbInboundDocNo.Text);
-                            SqlDataReader rdr = spCmdExist.ExecuteReader();
-                            if (rdr.HasRows)
+                            using (SqlDataReader rdr = spCmdExist.ExecuteReader())
                             {
-                                while (rdr.Read())
+                                if (rdr.HasRows)
                                 {
-                                    if (txbTruckID.Text.Substring(0, 2) == rdr["TruckID"].ToString().Substring(0, 2))
+                                    while (rdr.Read())
                                     {
-                                        found = true;
+                                        if (txbTruckID.Text.Substring(0, 2) == rdr["TruckID"].ToString().Substring(0, 2))
+                                        {
+                                            found = true;
+                                        }
+                                    }
+                                    if (found == true)
+                                    {
+                                        WebMsgBox.Show("This manifest has already been received at this site.  You cannot re-enter it.");
+                                        btnOverride.Visible = false;
+                                        txbInboundDocNo.Text = string.Empty;
+                                        Session["ManifestWarning"] = null;
+                                        txbInboundDocNo.Focus();
+                                    }
+                                    else
+                                    {
+                                        WebMsgBox.Show("Note that this manifest has already been received at another site and has now also been entered for this site.");
                                     }
                                 }
-                                if (found == true)
-                                {
-                                    WebMsgBox.Show("This manifest has already been received at this site.  You cannot re-enter it.");
-                                    btnOverride.Visible = false;
-                                    txbInboundDocNo.Text = string.Empty;
-                                    Session["ManifestWarning"] = null;
-                                    txbInboundDocNo.Focus();
-                                }
-                                else
-                                {
-                                    WebMsgBox.Show("Note that this manifest has already been received at another site and has now also been entered for this site.");
-                                }
-                                rdr.Close();
                             }
                         }
                         catch (Exception ex)
