@@ -347,8 +347,10 @@ namespace IMDBWeb.Secure.SPAKpages
                     txbNumberContainers.ReadOnly = false;
                     txbTruckDate.Text = string.Empty;
                     txbTruckSeqNumber.Text = "001";
+                    con.Close();
                 }
             }
+            con.Close();
             ClientScript.RegisterStartupScript(this.GetType(), "onclick", "<script language=javascript>window.open('LabelPreview.aspx','PrintLabels','height=400px,width=600px,scrollbars=1,left=25px');window.open('ScanSheetPreview.aspx','PrintScanSheet','height=800px,width=600px,scrollbars=1,left=610px');</script>");
         }
 
