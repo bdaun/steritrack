@@ -19,7 +19,7 @@
         </td>
         <td>
             <ul>
-              <li><a href="Receiving2.aspx" style="font-size: large; color: #008000;">Receiving</a></li>
+              <li><a href="Receiving.aspx" style="font-size: large; color: #008000;">Receiving</a></li>
               <li><a href="ShipHeader.aspx" style="font-size: large; color: #008000;">Create Shipping Manifest</a></li>
               <li><a href="Truckout.aspx" style="font-size: large; color: #008000;">Truck Out Containers</a></li>
             </ul>
