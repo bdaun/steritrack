@@ -428,6 +428,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                     ((DropDownList)fvContainerDetail.FindControl("ddProcessPlan")).SelectedValue = SelProcPlan;
                 }
             }
+            con.Close();
             ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
         }
 
@@ -471,6 +472,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                     ((DropDownList)fvDuplicate.FindControl("ddProcessPlan")).SelectedValue = SelProcPlan;
                 }
             }
+            con.Close();
             ((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Focus();
         }
 
@@ -532,6 +534,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                             WebMsgBox.Show("You cannot delete this record because it has downstream processing associated with it.");
                         }
                     }
+                    con.Close();
                     break;
             }
         }
@@ -586,6 +589,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                     args.IsValid = true;
                 }
             }
+            con.Close();
         }
 
         protected void btnSummary_Click(object sender, EventArgs e)
