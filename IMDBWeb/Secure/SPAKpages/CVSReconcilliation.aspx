@@ -32,28 +32,40 @@
         <td>
             <asp:GridView ID="gvBoxRecon" runat="server" AutoGenerateColumns="False" 
                 DataSourceID="sdsBoxesToReconcile" Visible="False"
-             CellPadding="4" Font-Size="Large">
+             CellPadding="4" Font-Size="Large" AllowSorting="True">
                 <Columns>
-                    <asp:BoundField DataField="Manifest" HeaderText="Manifest" SortExpression="Manifest" />
-                    <asp:BoundField DataField="BoxCntrID" HeaderText="BoxCntrID" SortExpression="BoxCntrID" />
+                    <asp:BoundField DataField="Manifest" HeaderText="Manifest" SortExpression="Manifest" HeaderStyle-ForeColor="DarkGreen" />
+                    <asp:BoundField DataField="BoxCntrID" HeaderText="BoxCntrID" SortExpression="BoxCntrID" HeaderStyle-ForeColor="DarkGreen" />
                     <asp:TemplateField HeaderText="Reconciled" SortExpression="Reconciled">
                         <ItemTemplate>
                             <asp:Image runat="Server" ImageUrl='<%# Convert.ToBoolean(Eval("Reconciled")) ? "~/images/check_mark_green.png" : "~/images/x_mark_Red.jpg"%>' Height="28px" />
-                            <asp:CheckBox ID="chkRecon" runat="server" Checked='<%# Bind("Reconciled") %>' Enabled="false" Visible="false" />
-                            <asp:Image ID="imgChecked" runat="server" ImageUrl="~/images/check_mark_green.png" Height="28px" Visible="false" />
-                            <asp:Image ID="imgNotChecked" runat="server" ImageUrl="~/images/x_mark_Red.jpg" Height="28px" Visible="false" />
+                        </ItemTemplate>
+                        <ItemStyle HorizontalAlign="Center" />
+                        <HeaderStyle ForeColor="DarkGreen" />
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+        </td>
+        <td id="tdBoxRecon" runat="server" valign="top" style="padding-left:25px" >
+            <asp:Label ID="lblReconBox" runat="server" Text="Scan/Enter a Box to be reconciled" Font-Size="Large" />&nbsp;&nbsp;
+            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" OnTextChanged="txbReconBox_TextChanged" />&nbsp;&nbsp&nbsp;
+            <asp:Button ID="btnReconBox" runat="server" Text="Submit" OnClick="btnReconBox_Click" /><br />
+            <asp:Label ID="lblReconErrMsg" runat="server" Visible="false" Font-Bold="true" Font-Size="Large" ForeColor="Red" /><br />
+            <asp:Label ID="lblReconMoreBoxes" runat="server" Font-Size="Large" Font-Italic="true" />
+            <asp:Label ID="lblCurReconBox" runat="server" Visible="false" Font-Size="XX-small" />
+            <asp:GridView ID="gvReconMoreBoxes" runat="server" AutoGenerateColumns="False" 
+                DataSourceID="sdsReconMoreBoxes" OnDataBound="sdsReconMoreBoxes_DataBound">
+                <Columns>
+                    <asp:BoundField DataField="BoxCntrID" HeaderText="BoxCntrID" SortExpression="BoxCntrID" />
+                     <asp:TemplateField HeaderText="Reconciled" SortExpression="Reconciled">
+                        <ItemTemplate>
+                            <asp:Image ID="Image1" runat="Server" ImageUrl='<%# Convert.ToBoolean(Eval("Reconciled")) ? "~/images/check_mark_green.png" : "~/images/x_mark_Red.jpg"%>' Height="28px" />
                         </ItemTemplate>
                         <ItemStyle HorizontalAlign="Center" />
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
-        </td>
-        <td valign="top" style="padding-left:25px" >
-            <asp:Label ID="lblReconBox" runat="server" Text="Scan/Enter a Box to be reconciled" Font-Size="Large" />&nbsp;&nbsp;
-            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" OnTextChanged="txbReconBox_TextChanged" />&nbsp;&nbsp&nbsp;
-            <asp:Button ID="btnReconBox" runat="server" Text="Submit" OnClick="btnReconBox_Click" /><br />
-            <asp:Label ID="lblReconErrMsg" runat="server" Visible="false" Font-Bold="true" Font-Size="Large" ForeColor="Red" />
-        </td>
+        &nbsp;</td>
     </tr>
 </table>
 <asp:SqlDataSource ID="sdsBoxesToReconcile" runat="server" 
@@ -63,6 +75,13 @@
         <asp:ControlParameter ControlID="txbTruckID" Name="TruckCntrID" PropertyName="Text" Type="String" />
     </SelectParameters>
 </asp:SqlDataSource>
+    <asp:SqlDataSource ID="sdsReconMoreBoxes" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>"
+        SelectCommand="SPAK_CVSRecon_MoreBoxes_Sel" SelectCommandType="StoredProcedure">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="lblCurReconBox" Name="BoxCntrID" PropertyName="Text" Type="String" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server">
 </asp:Content>

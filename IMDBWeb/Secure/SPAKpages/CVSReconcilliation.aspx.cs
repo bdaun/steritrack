@@ -20,22 +20,18 @@ namespace IMDBWeb.Secure.SPAKpages
                 gvBoxRecon.Visible = false;
                 lblReconErrMsg.Visible = false;
                 lblReconBox.Visible = false;
+                lblCurReconBox.Text = string.Empty;
+                lblReconMoreBoxes.Text = string.Empty;
+                lblReconMoreBoxes.Visible = false;
                 txbReconBox.Visible = false;
                 btnReconBox.Visible = false;
             }
-            else
-            {
-                txbReconBox.Text = txbReconBox.Text;
-            }
-            
         }
 
         protected void txbTruckID_TextChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txbTruckID.Text) && !string.IsNullOrWhiteSpace(txbTruckID.Text))
             {
-                lblReconErrMsg.Text = string.Empty;
-                lblReconErrMsg.Visible = false;
                 lblErrMsg.Visible = false;
                 int totalBoxes = 0;
                 int reconBoxes = 0;
@@ -89,6 +85,14 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 trBoxFound.Visible = false;
                                 trBoxNotFound.Visible = true;
+                                lblCurReconBox.Text = string.Empty;
+                                lblReconErrMsg.Text = string.Empty;
+                                lblReconErrMsg.Visible = false;
+                                lblReconBox.Text = string.Empty;
+                                txbReconBox.Visible = false;
+                                btnReconBox.Visible = false;
+                                lblReconBox.Visible = false;
+                                gvReconMoreBoxes.DataBind();
                             }
                         }
 	                }
@@ -109,6 +113,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 trBoxFound.Visible = false;
                 trBoxNotFound.Visible = false;
                 gvBoxRecon.Visible = false;
+                gvReconMoreBoxes.Visible = true;
             }
         }
 
@@ -240,6 +245,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     lblReconErrMsg.Visible = true;
                     lblReconErrMsg.Text = "This box is not a CVS NonReg pharmaceutical.  Please contact your supervisor";
                     gvBoxRecon.DataBind();
+                    gvReconMoreBoxes.DataBind();
                 }
                 else if (IsCVS)
                 {
@@ -259,6 +265,8 @@ namespace IMDBWeb.Secure.SPAKpages
                                 {
                                     lblReconErrMsg.Visible = true;
                                     lblReconErrMsg.Text = "This Box has already been reconciled!  Please scan a different Box.";
+                                    lblCurReconBox.Text = txbReconBox.Text;
+                                    gvReconMoreBoxes.DataBind();
                                     txbReconBox.Text = string.Empty;
                                     txbReconBox.Focus();
                                 }
@@ -284,6 +292,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                         finally
                                         {
                                             gvBoxRecon.DataBind();
+                                            gvReconMoreBoxes.DataBind();
                                             txbReconBox.Text = string.Empty;
                                             txbReconBox.Focus();
                                             lblReconErrMsg.Visible = false;
@@ -310,7 +319,9 @@ namespace IMDBWeb.Secure.SPAKpages
                                 }
                                 finally
                                 {
+                                    lblCurReconBox.Text = txbReconBox.Text;
                                     gvBoxRecon.DataBind();
+                                    gvReconMoreBoxes.DataBind();
                                     txbReconBox.Text = string.Empty;
                                     txbReconBox.Focus();
                                     lblReconErrMsg.Visible = false;
@@ -348,6 +359,8 @@ namespace IMDBWeb.Secure.SPAKpages
             lblReconErrMsg.Text = string.Empty;
             lblReconErrMsg.Visible = false;
             lblReconBox.Visible = false;
+            lblReconMoreBoxes.Visible = false;
+            lblCurReconBox.Text = string.Empty;
             txbReconBox.Visible = false;
             btnReconBox.Visible = false;
             txbTruckID_TextChanged(null, null);
@@ -357,6 +370,26 @@ namespace IMDBWeb.Secure.SPAKpages
         {
             txbTruckID_TextChanged(null, null);
             gvBoxRecon.DataBind();
+            gvReconMoreBoxes.DataBind();
+        }
+
+        protected void sdsReconMoreBoxes_DataBound(object sender, EventArgs e)
+        {
+            if (gvReconMoreBoxes.Rows.Count == 0)
+            {
+                lblReconMoreBoxes.Visible = false;
+                lblReconMoreBoxes.Text = string.Empty;
+            }
+            else if (gvReconMoreBoxes.Rows.Count <= 1)
+            {
+                lblReconMoreBoxes.Visible = true;
+                lblReconMoreBoxes.Text = "There are no other boxes associated with this manifest";
+            }
+            else
+            {
+                lblReconMoreBoxes.Visible = true;
+                lblReconMoreBoxes.Text = "These boxes are also associated with this manifest:";
+            }
         }
     }
 }
