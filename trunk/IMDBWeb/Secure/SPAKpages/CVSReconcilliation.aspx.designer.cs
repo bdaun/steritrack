@@ -157,6 +157,15 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.GridView gvBoxRecon;
         
         /// <summary>
+        /// tdBoxRecon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell tdBoxRecon;
+        
+        /// <summary>
         /// lblReconBox control.
         /// </summary>
         /// <remarks>
@@ -193,6 +202,33 @@ namespace IMDBWeb.Secure.SPAKpages {
         protected global::System.Web.UI.WebControls.Label lblReconErrMsg;
         
         /// <summary>
+        /// lblReconMoreBoxes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReconMoreBoxes;
+        
+        /// <summary>
+        /// lblCurReconBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurReconBox;
+        
+        /// <summary>
+        /// gvReconMoreBoxes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvReconMoreBoxes;
+        
+        /// <summary>
         /// sdsBoxesToReconcile control.
         /// </summary>
         /// <remarks>
@@ -200,5 +236,14 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsBoxesToReconcile;
+        
+        /// <summary>
+        /// sdsReconMoreBoxes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsReconMoreBoxes;
     }
 }
