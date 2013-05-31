@@ -247,6 +247,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     Session["CurHazCode"] = string.Empty;
                     Session["CurStoreState"] = string.Empty;
                     Session["CurStoreNumber"] = string.Empty;
+                    Session["CurStoreName"] = string.Empty;
                     Session["CurCustomerNumber"] = string.Empty;
 
                     String spBoxInfo = "SPAK_BoxRcvd_ManifestInfo_Sel";
@@ -272,6 +273,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                         Session["CurHazCode"] = rdrBoxInfo["HazCode"].ToString();
                                         Session["CurStoreState"] = rdrBoxInfo["StoreState"].ToString();
                                         Session["CurStoreNumber"] = rdrBoxInfo["StoreNumber"].ToString();
+                                        Session["CurStoreName"] = rdrBoxInfo["SiteName"].ToString();
                                         Session["CurCustomerNumber"] = rdrBoxInfo["CustomerNumber"].ToString().Trim();
                                     }
                                     lblFacilityName.Text = Session["CurTSDFCompany"].ToString();
@@ -347,6 +349,12 @@ namespace IMDBWeb.Secure.SPAKpages
                                             if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
                                             {
                                                 SameManifestIMDB = true;
+                                                Session["ActTruckID"] = string.Empty;
+                                            }
+                                            else
+                                            {
+                                                SameManifestIMDB = false;
+                                                Session["ActTruckID"] = rdrManIMDB["TruckID"].ToString();
                                             }
                                         }
                                         ManifestinIMDB = true;
@@ -369,6 +377,18 @@ namespace IMDBWeb.Secure.SPAKpages
                         }
                     }
                     #endregion
+                    // Prompt if manifest is not in IMDB and exit from routine
+                    #region ManifestinIMDB
+                    if (!ManifestinIMDB)
+                    {
+                        WebMsgBox.Show("The manifest associated with this BoxCntrID is not in IMDB.  You cannot process this box.  Please alert your supervisor.");
+                        txbBoxCntrID.Text = string.Empty;
+                        txbBoxCntrID.Focus();
+                        lblFacilityName.Text = string.Empty;
+                        lblProfileName.Text = string.Empty;
+                        return;
+                    }
+                    #endregion
 
                     // Prompt if manifest in IMDB is not for the same TruckID
                     #region SameManifestIMDB
@@ -376,7 +396,8 @@ namespace IMDBWeb.Secure.SPAKpages
                     {
                         if (!SameManifestIMDB)
                         {
-                            WebMsgBox.Show("There is a manifest in IMDB that matches the SPAK manifest associated with this Box but it is NOT associated with this TruckID.  Please alert your supervisor.");
+                            WebMsgBox.Show("This Box but it is NOT associated with this TruckID.  " +
+                                "This box is associated with " +Session["ActTruckID"] + ".  Please alert your supervisor.");
                         }                    
                     }
                     #endregion
@@ -461,7 +482,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     {  
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
                                     }
-                                    else if (Session["CurCustomerNumber"].ToString() == "AL20090641") //CVS NonReg Pharma
+                                    else if (Session["CurCustomerNumber"].ToString() == "AL20090641" && !Session["curStoreName"].ToString().Contains("Caremark") && !Session["curStoreName"].ToString().Contains("CVS DC")) //CVS NonReg Pharma
                                     {
                                         WebMsgBox.Show("This box from CVS contains pharmaceuticals.  Please place it on a pallet designated for CVS Processing");
                                     }
