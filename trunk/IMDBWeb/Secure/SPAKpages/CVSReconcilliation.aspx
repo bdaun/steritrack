@@ -30,19 +30,28 @@
 <table border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td>
-            <asp:GridView ID="gvBoxRecon" runat="server" AutoGenerateColumns="False" DataSourceID="sdsBoxesToReconcile" Visible="false"
+            <asp:GridView ID="gvBoxRecon" runat="server" AutoGenerateColumns="False" 
+                DataSourceID="sdsBoxesToReconcile" Visible="False"
              CellPadding="4" Font-Size="Large">
                 <Columns>
+                    <asp:BoundField DataField="Manifest" HeaderText="Manifest" SortExpression="Manifest" />
                     <asp:BoundField DataField="BoxCntrID" HeaderText="BoxCntrID" SortExpression="BoxCntrID" />
-                    <asp:CheckBoxField DataField="Reconciled" HeaderText="Reconciled" SortExpression="Reconciled" />
+                    <asp:TemplateField HeaderText="Reconciled" SortExpression="Reconciled">
+                        <ItemTemplate>
+                            <asp:Image runat="Server" ImageUrl='<%# Convert.ToBoolean(Eval("Reconciled")) ? "~/images/check_mark_green.png" : "~/images/x_mark_Red.jpg"%>' Height="28px" />
+                            <asp:CheckBox ID="chkRecon" runat="server" Checked='<%# Bind("Reconciled") %>' Enabled="false" Visible="false" />
+                            <asp:Image ID="imgChecked" runat="server" ImageUrl="~/images/check_mark_green.png" Height="28px" Visible="false" />
+                            <asp:Image ID="imgNotChecked" runat="server" ImageUrl="~/images/x_mark_Red.jpg" Height="28px" Visible="false" />
+                        </ItemTemplate>
+                        <ItemStyle HorizontalAlign="Center" />
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </td>
-        <td id="tdReconBox" runat="server" valign="top">
-            &nbsp;&nbsp;&nbsp;&nbsp;
+        <td valign="top" style="padding-left:25px" >
             <asp:Label ID="lblReconBox" runat="server" Text="Scan/Enter a Box to be reconciled" Font-Size="Large" />&nbsp;&nbsp;
-            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" ontextchanged="txbReconBox_TextChanged" />&nbsp;&nbsp;
-            <asp:Button ID="btnReconBox" runat="server" Text="Submit" onclick="btnReconBox_Click" /><br />&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" OnTextChanged="txbReconBox_TextChanged" />&nbsp;&nbsp&nbsp;
+            <asp:Button ID="btnReconBox" runat="server" Text="Submit" OnClick="btnReconBox_Click" /><br />
             <asp:Label ID="lblReconErrMsg" runat="server" Visible="false" Font-Bold="true" Font-Size="Large" ForeColor="Red" />
         </td>
     </tr>

@@ -13,32 +13,38 @@ namespace IMDBWeb.Secure.SPAKpages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            trBoxNotFound.Visible = false;
-            trBoxFound.Visible = false;
-            gvBoxRecon.Visible = false;
-            lblReconErrMsg.Visible = false;
-            lblReconBox.Visible = false;
-            txbReconBox.Visible = false;
-            btnReconBox.Visible = false;
+            if (!IsPostBack)
+            {
+                trBoxNotFound.Visible = false;
+                trBoxFound.Visible = false;
+                gvBoxRecon.Visible = false;
+                lblReconErrMsg.Visible = false;
+                lblReconBox.Visible = false;
+                txbReconBox.Visible = false;
+                btnReconBox.Visible = false;
+            }
+            else
+            {
+                txbReconBox.Text = txbReconBox.Text;
+            }
+            
         }
 
         protected void txbTruckID_TextChanged(object sender, EventArgs e)
         {
-            
             if (!string.IsNullOrEmpty(txbTruckID.Text) && !string.IsNullOrWhiteSpace(txbTruckID.Text))
             {
+                lblReconErrMsg.Text = string.Empty;
+                lblReconErrMsg.Visible = false;
                 lblErrMsg.Visible = false;
                 int totalBoxes = 0;
                 int reconBoxes = 0;
                 string spCVSBoxes = "SPAK_CVSRecon_Boxes_Sel";
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand CmdBoxes = new SqlCommand(spCVSBoxes, con);
-                CmdBoxes.CommandType = CommandType.StoredProcedure;
-                
-                using(CmdBoxes)
+                using (SqlConnection con = new SqlConnection())
                 { 
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                     con.Open();
+                    SqlCommand CmdBoxes = new SqlCommand(spCVSBoxes, con) {CommandType = CommandType.StoredProcedure};
                     try 
 	                {	        
                         CmdBoxes.Parameters.AddWithValue("@TruckCntrID", txbTruckID.Text.Substring(0,15));
@@ -70,6 +76,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     lblReconBox.Visible = false;
                                     txbReconBox.Visible = false;
                                     btnReconBox.Visible = false;
+                                    return;
                                 }
                                 else
                                 {
@@ -82,7 +89,6 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 trBoxFound.Visible = false;
                                 trBoxNotFound.Visible = true;
-
                             }
                         }
 	                }
@@ -93,7 +99,7 @@ namespace IMDBWeb.Secure.SPAKpages
 	                }
                     finally
                     {
-                        con.Close();   
+                        con.Close();
                     }
                 }  
             }
@@ -103,7 +109,6 @@ namespace IMDBWeb.Secure.SPAKpages
                 trBoxFound.Visible = false;
                 trBoxNotFound.Visible = false;
                 gvBoxRecon.Visible = false;
-
             }
         }
 
@@ -127,93 +132,43 @@ namespace IMDBWeb.Secure.SPAKpages
              * 
              * **************************************************************************************** */
 
-            Boolean BoxInSPAK = false;
-            Boolean BoxInSPAKSameSite = false;
-            Boolean BoxInSPAKSameTruck = false;
-            Boolean IsCVS = false;
-            string spBoxInSPAK = "SPAK_CVSRecon_BoxInSpak_Sel";
-            string spBoxIsCVS = "SPAK_CVSRecon_BoxIsCVS_Sel";
-            string spBoxRecon = "SPAK_CVSRecon_BoxIsRecon_Sel";
-            string spUpdateRecon = "SPAK_CVSRecon_BoxRecon_upd";
-            string spInsertRecon = "SPAK_CVSRecon_BoxRecon_ins";
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand cmdBoxCheck = new SqlCommand(spBoxInSPAK, con);
-            SqlCommand cmdCVSBox = new SqlCommand(spBoxIsCVS, con);
-            SqlCommand cmdBoxRecon = new SqlCommand(spBoxRecon,con);
-            SqlCommand cmdReconUpd = new SqlCommand(spUpdateRecon, con);
-            SqlCommand cmdReconIns = new SqlCommand(spInsertRecon, con);
-            cmdBoxCheck.CommandType = CommandType.StoredProcedure;
-            cmdCVSBox.CommandType = CommandType.StoredProcedure;
-            cmdBoxRecon.CommandType = CommandType.StoredProcedure;
-            cmdReconUpd.CommandType = CommandType.StoredProcedure;
-            cmdReconIns.CommandType = CommandType.StoredProcedure;
+            if (!string.IsNullOrEmpty(txbReconBox.Text) && !string.IsNullOrWhiteSpace(txbReconBox.Text))
+            {
 
-            using(cmdBoxCheck)
-            {
-                con.Open();
-                try
-                {           
-		            cmdBoxCheck.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                    using (SqlDataReader rdrInSpak = cmdBoxCheck.ExecuteReader())
-                    {
-                        if (rdrInSpak.HasRows)
-                        {
-                            BoxInSPAK = true;
-                            while (rdrInSpak.Read())
-                            {
-                                if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 2) == txbTruckID.Text.Substring(0, 2))
-                                {
-                                    BoxInSPAKSameSite = true;
-                                }
-                                if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 15) == txbTruckID.Text.Substring(0, 15))
-                                {
-                                    BoxInSPAKSameTruck = true;
-                                }
-                            }
-                        }
-                    }
-                }
-	            catch (Exception ex)
-	            {
-                    lblErrMsg.Visible = true;
-                    lblErrMsg.Text = ex.Message;
-	            }
-                finally
+                Boolean BoxInSPAK = false;
+                Boolean BoxInSPAKSameSite = false;
+                Boolean BoxInSPAKSameTruck = false;
+                Boolean IsCVS = false;
+                string spBoxInSPAK = "SPAK_CVSRecon_BoxInSpak_Sel";
+                string spBoxIsCVS = "SPAK_CVSRecon_BoxIsCVS_Sel";
+                string spBoxRecon = "SPAK_CVSRecon_BoxIsRecon_Sel";
+                string spUpdateRecon = "SPAK_CVSRecon_BoxRecon_upd";
+                string spInsertRecon = "SPAK_CVSRecon_BoxRecon_ins";
+                using (SqlConnection con = new SqlConnection())
                 {
-                    con.Close();
-                }
-            }
-            if (!BoxInSPAK)
-            {
-                lblReconErrMsg.Visible = true;
-                lblReconErrMsg.Text = "This Box was not found in Spak.  IMPORTANT!!! Contact your supervisor";
-            }
-            else if(!BoxInSPAKSameSite)
-            {
-                lblReconErrMsg.Visible = true;
-                lblReconErrMsg.Text = "This Box was found in Spak but not for this site.  "+
-                    "IMPORTANT!!! you must receive the box at this site before you can reconcile it.";   
-            }
-            else if (!BoxInSPAKSameTruck)
-            {
-                lblReconErrMsg.Visible = true;
-                lblReconErrMsg.Text = "This Box was found in Spak for this site but not for this TruckID.  " +
-                    "IMPORTANT!!! you must resolve this issue site before you can reconcile the box.";  
-            }
-            else
-            {
-                using (cmdCVSBox)
-                {
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                     con.Open();
+                    SqlCommand cmdBoxCheck = new SqlCommand(spBoxInSPAK, con) { CommandType = CommandType.StoredProcedure };
                     try
                     {
-                        cmdCVSBox.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                        object recordID = new object();
-                        recordID = cmdCVSBox.ExecuteScalar();
-                        if (recordID != null)
+                        cmdBoxCheck.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                        using (SqlDataReader rdrInSpak = cmdBoxCheck.ExecuteReader())
                         {
-                            IsCVS = true;
+                            if (rdrInSpak.HasRows)
+                            {
+                                BoxInSPAK = true;
+                                while (rdrInSpak.Read())
+                                {
+                                    if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 2) == txbTruckID.Text.Substring(0, 2))
+                                    {
+                                        BoxInSPAKSameSite = true;
+                                    }
+                                    if (rdrInSpak["TruckCntrID"].ToString().Substring(0, 15) == txbTruckID.Text.Substring(0, 15))
+                                    {
+                                        BoxInSPAKSameTruck = true;
+                                    }
+                                }
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -226,110 +181,182 @@ namespace IMDBWeb.Secure.SPAKpages
                         con.Close();
                     }
                 }
-            }
-            if(!IsCVS)
-            {
-                lblReconErrMsg.Visible = true;
-                lblReconErrMsg.Text = "This box is not a CVS NonReg pharmaceutical.  Please contact your supervisor";
-            }
-            else
-	        {
-                using (cmdBoxRecon)
+                if (!BoxInSPAK)
                 {
-                    con.Open();
-                    try
+                    lblReconErrMsg.Visible = true;
+                    lblReconErrMsg.Text = "The Box you scanned (" + txbReconBox.Text + ") was not found in SPAK.  IMPORTANT!!! Contact your supervisor.";
+                    txbReconBox.Text = string.Empty;
+                    txbReconBox.Focus();
+                    return;
+                }
+                else if (!BoxInSPAKSameSite)
+                {
+                    lblReconErrMsg.Visible = true;
+                    lblReconErrMsg.Text = "The Box you scanned (" + txbReconBox.Text + ") was found in SPAK but not for this site.  " +
+                        "IMPORTANT!!! you must receive the box at this site before you can reconcile it.";
+                    txbReconBox.Text = string.Empty;
+                    txbReconBox.Focus();
+                    return;
+                }
+                else if (!BoxInSPAKSameTruck)
+                {
+                    lblReconErrMsg.Visible = true;
+                    lblReconErrMsg.Text = "The Box you scanned (" + txbReconBox.Text + ") was found in SPAK for this site but not for this TruckID.  " +
+                        "IMPORTANT!!! you must resolve this issue before you can reconcile the box.";
+                    txbReconBox.Text = string.Empty;
+                    txbReconBox.Focus();
+                    return;
+                }
+                else
+                {
+                    using (SqlConnection con = new SqlConnection())
                     {
-                        cmdBoxRecon.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                        using (SqlDataReader rdrBoxRecon = cmdBoxRecon.ExecuteReader())
+                        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                        con.Open();
+                        SqlCommand cmdCVSBox = new SqlCommand(spBoxIsCVS, con) { CommandType = CommandType.StoredProcedure };
+                        try
                         {
-                            if (rdrBoxRecon.HasRows)
+                            cmdCVSBox.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                            object recordID = new object();
+                            recordID = cmdCVSBox.ExecuteScalar();
+                            if (recordID != null)
                             {
-                                while (rdrBoxRecon.Read())
+                                IsCVS = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.Message;
+                        }
+                        finally
+                        {
+                            con.Close();
+                        }
+                    }
+                }
+                if (!IsCVS)
+                {
+                    lblReconErrMsg.Visible = true;
+                    lblReconErrMsg.Text = "This box is not a CVS NonReg pharmaceutical.  Please contact your supervisor";
+                    gvBoxRecon.DataBind();
+                }
+                else if (IsCVS)
+                {
+                    using (SqlConnection con = new SqlConnection())
+                    {
+                        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                        con.Open();
+                        SqlCommand cmdBoxRecon = new SqlCommand(spBoxRecon, con) { CommandType = CommandType.StoredProcedure };
+                        try
+                        {
+                            cmdBoxRecon.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                            object reconStatus = new object();
+                            reconStatus = cmdBoxRecon.ExecuteScalar();
+                            if (reconStatus != null)
+                            {
+                                if (Convert.ToInt32(reconStatus) > 0)
                                 {
-                                    if (Convert.ToInt32(rdrBoxRecon["Reconciled"]) > 0)
+                                    lblReconErrMsg.Visible = true;
+                                    lblReconErrMsg.Text = "This Box has already been reconciled!  Please scan a different Box.";
+                                    txbReconBox.Text = string.Empty;
+                                    txbReconBox.Focus();
+                                }
+                                else
+                                {
+                                    using (SqlConnection con1 = new SqlConnection())
                                     {
-                                        lblReconErrMsg.Visible = true;
-                                        lblReconErrMsg.Text = "This Box has already been reconciled!  Please scan a different Box.";
-                                        txbReconBox.Text = string.Empty;
-                                        txbReconBox.Focus();
-                                    }
-                                    else
-                                    {
-                                        using (cmdReconUpd)
+                                        con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                                        con1.Open();
+                                        SqlCommand cmdReconUpd = new SqlCommand(spUpdateRecon, con) { CommandType = CommandType.StoredProcedure };
+                                        try
                                         {
-                                            try
-                                            {
-                                                cmdReconUpd.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                                                cmdReconUpd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                                cmdReconUpd.ExecuteNonQuery();
-
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                lblErrMsg.Visible = true;
-                                                lblErrMsg.Text = ex.Message;
-                                            }
-                                            finally
-                                            {
-                                                gvBoxRecon.DataBind();
-                                                txbReconBox.Text = string.Empty;
-                                                txbReconBox.Focus();
-                                            }
+                                            cmdReconUpd.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                                            cmdReconUpd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                            cmdReconUpd.ExecuteNonQuery();
                                         }
-
+                                        catch (Exception ex)
+                                        {
+                                            lblErrMsg.Visible = true;
+                                            lblErrMsg.Text = ex.Message;
+                                            con.Close();
+                                        }
+                                        finally
+                                        {
+                                            gvBoxRecon.DataBind();
+                                            txbReconBox.Text = string.Empty;
+                                            txbReconBox.Focus();
+                                            lblReconErrMsg.Visible = false;
+                                            lblErrMsg.Visible = false;
+                                            con1.Close();
+                                        }
                                     }
                                 }
-                                rdrBoxRecon.Close();
                             }
                             else
                             {
-                                using (cmdReconIns)
+                                SqlCommand cmdReconIns = new SqlCommand(spInsertRecon, con) { CommandType = CommandType.StoredProcedure };
+                                try
                                 {
-                                    try
-                                    {
-                                        cmdReconIns.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
-                                        cmdReconIns.Parameters.AddWithValue("@TruckID", txbTruckID.Text.Substring(0, 15));
-                                        cmdReconIns.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                        cmdReconIns.ExecuteNonQuery();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        lblErrMsg.Visible = true;
-                                        lblErrMsg.Text = ex.Message;
-                                    }
-                                    finally
-                                    {
-                                        gvBoxRecon.DataBind();
-                                        txbReconBox.Text = string.Empty;
-                                        txbReconBox.Focus();
-                                    }
+                                    cmdReconIns.Parameters.AddWithValue("@BoxCntrID", txbReconBox.Text);
+                                    cmdReconIns.Parameters.AddWithValue("@TruckID", txbTruckID.Text.Substring(0, 15));
+                                    cmdReconIns.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                    cmdReconIns.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.Message;
+                                }
+                                finally
+                                {
+                                    gvBoxRecon.DataBind();
+                                    txbReconBox.Text = string.Empty;
+                                    txbReconBox.Focus();
+                                    lblReconErrMsg.Visible = false;
+                                    lblErrMsg.Visible = false;
+                                    con.Close();
                                 }
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        lblErrMsg.Visible = true;
-                        lblErrMsg.Text = ex.Message;
-                    }
-                    finally
-                    {
-                        con.Close();
-                        txbTruckID_TextChanged(null, null);
+                        catch (Exception ex)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.Message;
+                        }
+                        finally
+                        {
+                            con.Close();
+                            txbTruckID_TextChanged(null, null);
+                        }
                     }
                 }
-	        }
-        }
-
-        protected void btnReconBox_Click(object sender, EventArgs e)
-        {
-            txbReconBox_TextChanged(null, null);
+            }
+            else
+            {
+                lblReconErrMsg.Visible = true;
+                lblReconErrMsg.Text = "You must scan or enter a BoxCntrID first!";
+                txbReconBox.Focus();
+            }
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
             txbTruckID.Text = string.Empty;
+            lblErrMsg.Text = string.Empty;
+            lblErrMsg.Visible = false;
+            lblReconErrMsg.Text = string.Empty;
+            lblReconErrMsg.Visible = false;
+            lblReconBox.Visible = false;
+            txbReconBox.Visible = false;
+            btnReconBox.Visible = false;
             txbTruckID_TextChanged(null, null);
+        }
+
+        protected void btnReconBox_Click(object sender, EventArgs e)
+        {
+            txbTruckID_TextChanged(null, null);
+            gvBoxRecon.DataBind();
         }
     }
 }
