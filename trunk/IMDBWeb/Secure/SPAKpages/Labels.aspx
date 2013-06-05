@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
-<h3>Lables</h3><hr />
+<h3>Labels</h3><hr />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table border="2" cellpadding="10" style="background-color:#f9f9f9" width="50%" >
     <tr style="text-align:center;font-size:large;font-weight:bold;color:#003300">
