@@ -267,7 +267,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CntrID.Value</Value>
+                              <Value>="*"+Fields!CntrID.Value+"*"</Value>
                               <Style>
                                 <FontFamily>SKANDATA C39</FontFamily>
                                 <FontSize>48pt</FontSize>
