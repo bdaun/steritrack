@@ -48,8 +48,7 @@
         </td>
         <td id="tdBoxRecon" runat="server" valign="top" style="padding-left:25px" >
             <asp:Label ID="lblReconBox" runat="server" Text="Scan/Enter a Box to be reconciled" Font-Size="Large" />&nbsp;&nbsp;
-            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" OnTextChanged="txbReconBox_TextChanged" />&nbsp;&nbsp&nbsp;
-            <asp:Button ID="btnReconBox" runat="server" Text="Submit" OnClick="btnReconBox_Click" /><br />
+            <asp:TextBox ID="txbReconBox" runat="server" Font-Size="X-Large" AutoPostBack="true" OnTextChanged="txbReconBox_TextChanged" /><br />
             <asp:Label ID="lblReconErrMsg" runat="server" Visible="false" Font-Bold="true" Font-Size="Large" ForeColor="Red" /><br />
             <asp:Label ID="lblReconMoreBoxes" runat="server" Font-Size="Large" Font-Italic="true" />
             <asp:Label ID="lblCurReconBox" runat="server" Visible="false" Font-Size="XX-small" />
