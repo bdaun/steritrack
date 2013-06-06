@@ -24,7 +24,6 @@ namespace IMDBWeb.Secure.SPAKpages
                 lblReconMoreBoxes.Text = string.Empty;
                 lblReconMoreBoxes.Visible = false;
                 txbReconBox.Visible = false;
-                btnReconBox.Visible = false;
             }
         }
 
@@ -71,14 +70,12 @@ namespace IMDBWeb.Secure.SPAKpages
                                     lblReconErrMsg.Text = "You have Reconciled all the boxes for this TruckID";
                                     lblReconBox.Visible = false;
                                     txbReconBox.Visible = false;
-                                    btnReconBox.Visible = false;
                                     return;
                                 }
                                 else
                                 {
                                     lblReconBox.Visible = true;
                                     txbReconBox.Visible = true;
-                                    btnReconBox.Visible = true;
                                 }
                             }
                             else
@@ -90,7 +87,6 @@ namespace IMDBWeb.Secure.SPAKpages
                                 lblReconErrMsg.Visible = false;
                                 lblReconBox.Text = string.Empty;
                                 txbReconBox.Visible = false;
-                                btnReconBox.Visible = false;
                                 lblReconBox.Visible = false;
                                 gvReconMoreBoxes.DataBind();
                             }
@@ -362,15 +358,7 @@ namespace IMDBWeb.Secure.SPAKpages
             lblReconMoreBoxes.Visible = false;
             lblCurReconBox.Text = string.Empty;
             txbReconBox.Visible = false;
-            btnReconBox.Visible = false;
             txbTruckID_TextChanged(null, null);
-        }
-
-        protected void btnReconBox_Click(object sender, EventArgs e)
-        {
-            txbTruckID_TextChanged(null, null);
-            gvBoxRecon.DataBind();
-            gvReconMoreBoxes.DataBind();
         }
 
         protected void sdsReconMoreBoxes_DataBound(object sender, EventArgs e)
