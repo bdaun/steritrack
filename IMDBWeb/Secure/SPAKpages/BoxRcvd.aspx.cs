@@ -290,6 +290,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                     lblProfileName.Text = "UNKNOWN";
                                     tblBoxNotFound.Visible = true;
                                     trBoxNotFound.BgColor = "#fofofo";
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     chkCntrl.Focus();
                                     BoxInSPAK = false;
                                 }
@@ -314,6 +315,7 @@ namespace IMDBWeb.Secure.SPAKpages
                         if (string.IsNullOrEmpty(Session["CurManifest"].ToString()))
                         {
                             WebMsgBox.Show("There was no corresponding manifest found in Steriwise associated with this barcode.");
+                            lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             ManifestInSPAK = false;
                         }
                         else
@@ -379,13 +381,15 @@ namespace IMDBWeb.Secure.SPAKpages
                     #endregion
                     // Prompt if manifest is not in IMDB and exit from routine
                     #region ManifestinIMDB
-                    if (!ManifestinIMDB)
+                    if (!ManifestinIMDB && ManifestInSPAK)
                     {
                         WebMsgBox.Show("The manifest associated with this BoxCntrID is not in IMDB.  You cannot process this box.  Please alert your supervisor.");
                         txbBoxCntrID.Text = string.Empty;
                         txbBoxCntrID.Focus();
+                        lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
                         lblFacilityName.Text = string.Empty;
                         lblProfileName.Text = string.Empty;
+                        trBoxNotFound.Visible = false;
                         return;
                     }
                     #endregion
@@ -473,18 +477,22 @@ namespace IMDBWeb.Secure.SPAKpages
                             {
                                 case "2":
                                     WebMsgBox.Show("This is a Level 2 Control.  Please affix the appropriate label and place the box in the control cage.");
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     break;
                                 case "3-5":
                                     WebMsgBox.Show("This is a Level 3-5 Control.  Please Place the box in the control cage.");
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     break;
                                 case "NonReg":  //NonReg pharma may be hazardous.  If so, must be managed differently from nonhaz pharm
                                     if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreState"].ToString().TrimEnd() == "WA")  
                                     {  
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
+                                        lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     }
                                     else if (Session["CurCustomerNumber"].ToString() == "AL20090641" && !Session["curStoreName"].ToString().Contains("Caremark") && !Session["curStoreName"].ToString().Contains("CVS DC")) //CVS NonReg Pharma
                                     {
                                         WebMsgBox.Show("This box from CVS contains pharmaceuticals.  Please place it on a pallet designated for CVS Processing");
+                                        lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     }
                                     break;
                                 default:
@@ -493,6 +501,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             if(Session["CurProfileName"].ToString().Contains("Explosive"))
                             {
                                 WebMsgBox.Show("This is an EXPLOSIVE MATERIAL.  Please place on an Outbound Pallet AS IS to EEI.  Boxes should not be mixed with any Stericycle product");
+                                lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             }
                         }
                         else if (txbTruckCntrID.Text.Substring(0, 2) == "02")  // Veolia Validation
@@ -500,6 +509,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             if(Session["CurProfileName"].ToString().Contains("Flammable Solid"))
                             {
                                 WebMsgBox.Show("This is a FLAMMABLE SOLID. Please place on a outbound pallet with only other flammable solids.");
+                                lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             }
                         }
                         #endregion
@@ -651,6 +661,7 @@ namespace IMDBWeb.Secure.SPAKpages
                             ddProfile.SelectedIndex = 0;
                             ddStore.SelectedIndex = 0;
                             txbManifest.Text = string.Empty;
+                            txbComments.Text = string.Empty;
                             trBoxNotFound.BgColor = "White";
                             tblBoxNotFound.Visible = false;
                             gvBoxData.DataBind();
