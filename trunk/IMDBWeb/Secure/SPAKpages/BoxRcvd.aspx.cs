@@ -219,7 +219,8 @@ namespace IMDBWeb.Secure.SPAKpages
                 Boolean BoxInSPAK = false;
                 Boolean ManifestInSPAK = false;
                 Boolean ManifestinIMDB = false;
-                Boolean SameManifestIMDB = false;
+                Boolean SameManifestSite = false;
+                Boolean SameTruckID = false;
                 Boolean BoxInIMDB = false;
                 Boolean SameBoxInIMDB = false;
                 Boolean Is10day = false;
@@ -345,25 +346,27 @@ namespace IMDBWeb.Secure.SPAKpages
                                 {
                                     if (rdrManIMDB.HasRows)
                                     {
+                                        ManifestinIMDB = true;  // The manifest exists in IMDB and therefore the record has the potential to be added
+
                                         while (rdrManIMDB.Read())
                                         {
-                                            // Determine if manifest in IMDB is for the same TruckID
-                                            if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
+                                            // Determine if the manifest exists for the same site
+                                            if (txbTruckCntrID.Text.Substring(0, 2) == rdrManIMDB["TruckID"].ToString().Substring(0,2))
                                             {
-                                                SameManifestIMDB = true;
-                                                Session["ActTruckID"] = string.Empty;
-                                            }
-                                            else
-                                            {
-                                                SameManifestIMDB = false;
-                                                Session["ActTruckID"] = rdrManIMDB["TruckID"].ToString();
+                                                SameManifestSite = true;
+                                                // Determine if manifest in IMDB is for the same TruckID
+                                                if (txbTruckCntrID.Text.Substring(0, 15) == rdrManIMDB["TruckID"].ToString())
+                                                {
+                                                    SameTruckID = true;  // This is the expected result
+                                                    Session["ActTruckID"] = string.Empty;
+                                                }
+                                                else
+                                                {
+                                                    SameTruckID = false;  // Record will not be added with error msg "Already at this site but with different TruckID"
+                                                    Session["ActTruckID"] = rdrManIMDB["TruckID"].ToString();
+                                                }
                                             }
                                         }
-                                        ManifestinIMDB = true;
-                                    }
-                                    else
-                                    {
-                                        ManifestinIMDB = false;
                                     }
                                 }
                             }
@@ -395,13 +398,25 @@ namespace IMDBWeb.Secure.SPAKpages
                     #endregion
 
                     // Prompt if manifest in IMDB is not for the same TruckID
-                    #region SameManifestIMDB
+                    #region SameTruckID
                     if (ManifestInSPAK)
                     {
-                        if (!SameManifestIMDB)
+                        if (SameManifestSite)
                         {
-                            WebMsgBox.Show("This Box but it is NOT associated with this TruckID.  " +
-                                "This box is associated with " +Session["ActTruckID"] + ".  Please alert your supervisor.");
+                            if (!SameTruckID)
+                            {
+
+                                WebMsgBox.Show("The manifest associated with this box has been received at this site but it is NOT associated with this TruckID.  " +
+                                "This box is associated with " +Session["ActTruckID"] + ".  You cannot process this box.  Please alert your supervisor.");
+
+                                txbBoxCntrID.Text = string.Empty;
+                                txbBoxCntrID.Focus();
+                                lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+                                lblFacilityName.Text = string.Empty;
+                                lblProfileName.Text = string.Empty;
+                                trBoxNotFound.Visible = false;
+                                return;
+                            }
                         }                    
                     }
                     #endregion
