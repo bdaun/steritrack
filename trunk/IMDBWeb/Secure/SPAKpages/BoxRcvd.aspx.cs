@@ -401,14 +401,28 @@ namespace IMDBWeb.Secure.SPAKpages
                     #region SameTruckID
                     if (ManifestInSPAK)
                     {
-                        if (SameManifestSite)
+                        if (ManifestinIMDB)
                         {
-                            if (!SameTruckID)
+                            if (SameManifestSite)
                             {
+                                if (!SameTruckID)
+                                {
 
-                                WebMsgBox.Show("The manifest associated with this box has been received at this site but it is NOT associated with this TruckID.  " +
-                                "This box is associated with " +Session["ActTruckID"] + ".  You cannot process this box.  Please alert your supervisor.");
+                                    WebMsgBox.Show("The manifest associated with this box has been received at this site but it is NOT associated with this TruckID.  " +
+                                    "This box is associated with " + Session["ActTruckID"] + ".  You cannot process this box.  Please alert your supervisor.");
 
+                                    txbBoxCntrID.Text = string.Empty;
+                                    txbBoxCntrID.Focus();
+                                    lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+                                    lblFacilityName.Text = string.Empty;
+                                    lblProfileName.Text = string.Empty;
+                                    trBoxNotFound.Visible = false;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                WebMsgBox.Show("The manifest associated with this BoxCntrID is not in IMDB for this site.  You cannot process this box.  Please alert your supervisor.");
                                 txbBoxCntrID.Text = string.Empty;
                                 txbBoxCntrID.Focus();
                                 lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
@@ -417,7 +431,18 @@ namespace IMDBWeb.Secure.SPAKpages
                                 trBoxNotFound.Visible = false;
                                 return;
                             }
-                        }                    
+                        }
+                        else
+                        {
+                            WebMsgBox.Show("The manifest associated with this BoxCntrID is not in IMDB.  You cannot process this box.  Please alert your supervisor.");
+                            txbBoxCntrID.Text = string.Empty;
+                            txbBoxCntrID.Focus();
+                            lblBoxCntrID.ForeColor = System.Drawing.ColorTranslator.FromHtml("#696969");
+                            lblFacilityName.Text = string.Empty;
+                            lblProfileName.Text = string.Empty;
+                            trBoxNotFound.Visible = false;
+                            return;
+                        }
                     }
                     #endregion
 
