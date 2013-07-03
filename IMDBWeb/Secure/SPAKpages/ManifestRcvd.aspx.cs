@@ -218,10 +218,6 @@ namespace IMDBWeb.Secure.SPAKPages
                                         Session["ManifestWarning"] = null;
                                         txbInboundDocNo.Focus();
                                     }
-                                    else
-                                    {
-                                        WebMsgBox.Show("Note that this manifest has already been received at another site and has now also been entered for this site.");
-                                    }
                                 }
                             }
                         }
