@@ -344,10 +344,8 @@
   </Body>
   <Width>6.01667in</Width>
   <Page>
-    <LeftMargin>1in</LeftMargin>
-    <RightMargin>1in</RightMargin>
-    <TopMargin>1in</TopMargin>
-    <BottomMargin>1in</BottomMargin>
+    <PageHeight>4in</PageHeight>
+    <PageWidth>6in</PageWidth>
     <Style />
   </Page>
   <rd:ReportID>114e554e-e047-4ac3-8038-40b1cc65fd29</rd:ReportID>
