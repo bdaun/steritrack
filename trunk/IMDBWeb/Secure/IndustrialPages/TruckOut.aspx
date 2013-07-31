@@ -3,6 +3,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"> 
 <h3>Truck Out Management</h3><hr />
+<table><tr>
+<td>
 <table><tr><td align="left"><asp:DropDownList ID="ddDocList" runat="server" AppendDataBoundItems="true" 
         AutoPostBack="True" DataSourceID="sdsOutBoundDocNo" 
         DataTextField="OutboundDocNo" DataValueField="outboundDocNo" 
@@ -11,23 +13,41 @@
     </td><td>
     <asp:RadioButtonList ID="rblFilter" runat="server" onselectedindexchanged="rblFilter_SelectedIndexChanged" AutoPostBack="True">
         <asp:ListItem Selected="True" Text="Show 'Not Completed' Outbound Documents only" Value="0" />
-        <asp:ListItem Text="Show All" Value="1" />
+        <asp:ListItem Text="Show Completed" Value="1" />
     </asp:RadioButtonList>
-    </td><td></td></tr>
+    </td></tr>
     <tr id="trAddCntr" runat="server"><td colspan="2">Scan/Enter New Container:&nbsp&nbsp
     <asp:TextBox ID="txbNewCntr" runat="server" ontextchanged="txbNewCntr_TextChanged" AutoPostBack="True" />
     <asp:RegularExpressionValidator ID="valCheck" ControlToValidate="txbNewCntr" runat="server" ForeColor="Red" Font-Bold="true" 
         ErrorMessage="This is not a Valid Container ID" ValidationExpression="^[IiOo][UuNn][Tt]?[-](\d{6})*$" SetFocusOnError="True" />
-    </td><td></td><td></td></tr>
-    <tr id="trErrMsg" runat="server"><td colspan="3"><asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" 
-            ForeColor="Red" /></td><td></td><td></td></tr>
+    </td></tr>
+    <tr id="trErrMsg" runat="server"><td colspan="2"><asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" 
+            ForeColor="Red" /></td></tr>
 </table>
-<asp:Button ID="btnPrint" runat="server" Text="Print" OnClientClick="javascript:window.print();" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" /><br />
+</td>
+<td>
+</td></tr></table>
+<asp:Button ID="btnPrint" runat="server" Text="Print" OnClientClick="javascript:window.print();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" /><br /><br />
 <asp:Panel ID="Panel1" runat="server">
-<table><tr valign="top">
-<td><asp:gridview ID="gvContainers" runat="server" AutoGenerateColumns="False" DataSourceID="sdsTruckOut" 
+<table>
+<tr><td colspan="2">
+    <i>Shipment Info</i>
+    <asp:GridView ID="gvShipHdr" runat="server" AutoGenerateColumns="False" 
+        DataSourceID="sdsShipHdr" CellPadding="3" DataKeyNames="ID">
+        <Columns>
+            <asp:CommandField ShowEditButton="True" />
+            <asp:BoundField DataField="ID" Visible="false" />
+            <asp:BoundField DataField="TrailerNumber" HeaderText="Trailer Number" />
+            <asp:BoundField DataField="Shippingdock" HeaderText="Dock" />
+            <asp:BoundField DataField="Destination" HeaderText="Destination" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+            <asp:BoundField DataField="ShipDate" HeaderText="ShipDate"  DataFormatString="{0:d}" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+            <asp:BoundField DataField="Carrier" HeaderText="Carrier" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+        </Columns>
+    </asp:GridView>
+</td></tr>
+<tr valign="top">
+<td><br /><i>Outbound Container Info</i><asp:gridview ID="gvContainers" runat="server" AutoGenerateColumns="False" DataSourceID="sdsTruckOut" 
         onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
         OnRowDataBound="gvContainers_RowDatabound" CellPadding="3" DataKeyNames="outboundcontainerid" >
     <Columns>
@@ -124,7 +144,7 @@
     </Columns>
     <HeaderStyle HorizontalAlign="Center" />
 </asp:gridview></td>
-<td>
+<td><br /><i>Outbound Summary Info</i>
 <asp:GridView ID="gvTally" runat="server" DataSourceID="sdsTally" AutoGenerateColumns="false" cellpadding="3" EnableViewState="False">
     <Columns>
         <asp:BoundField DataField="Name" HeaderText="Profile" SortExpression="Name" />
@@ -172,6 +192,17 @@
     <FilterParameters>
     <asp:ControlParameter ControlID="rblFilter" PropertyName="SelectedValue" />
 </FilterParameters>
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsShipHdr" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" OnUpdating="sdsShipHdr_OnUpdating" 
+    SelectCommand="IMDB_TruckOut_ShipHdr_Sel" SelectCommandType="StoredProcedure"
+    UpdateCommand="IMDB_TruckOut_ShipHdr_Upd" UpdateCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="ddDocList" Name="outbounddocno" PropertyName="SelectedValue" Type="String" />
+    </SelectParameters>
+    <UpdateParameters>
+        <asp:Parameter Name="UserName" Type="String" />
+    </UpdateParameters>
 </asp:SqlDataSource>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Clear" runat="server"></asp:Content>
