@@ -103,6 +103,15 @@ namespace IMDBWeb.Secure.IndustrialPages {
         protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
+        /// gvShipHdr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvShipHdr;
+        
+        /// <summary>
         /// gvContainers control.
         /// </summary>
         /// <remarks>
@@ -146,5 +155,14 @@ namespace IMDBWeb.Secure.IndustrialPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsTruckOut;
+        
+        /// <summary>
+        /// sdsShipHdr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsShipHdr;
     }
 }

@@ -14,6 +14,7 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             if (!IsPostBack)
             {
+                Panel1.Visible = false;
                 sdsOutBoundDocNo.FilterExpression = "Completed = {0}";
                 trAddCntr.Visible = false;
                 trErrMsg.Visible = false;
@@ -80,6 +81,9 @@ namespace IMDBWeb.Secure.IndustrialPages
             ddDocList.Items.Clear();
             ddDocList.Items.Add("Select a Document");
             ddDocList.DataBind();
+            btnExport.Visible = false;
+            btnPrint.Visible = false;
+            Panel1.Visible = false;
             trAddCntr.Visible = false;
             trErrMsg.Visible = false;
         }
@@ -103,19 +107,38 @@ namespace IMDBWeb.Secure.IndustrialPages
             e.Command.Parameters["@outboundcontainerID"].Value = Session["CurCntrID"];
             e.Command.Parameters["@User"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
+        protected void sdsShipHdr_OnUpdating(Object sender, SqlDataSourceCommandEventArgs e)
+        {
+            e.Command.Parameters["@UserName"].Value = HttpContext.Current.User.Identity.Name.ToString();
+        }
         protected void ddDocList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (rblFilter.SelectedValue == "0")
+            if (ddDocList.SelectedIndex == 0)
             {
-                trAddCntr.Visible = true;
-                txbNewCntr.Focus();
+                trAddCntr.Visible = false;
+                Panel1.Visible = false;
+                btnExport.Visible = false;
+                btnPrint.Visible = false;
             }
             else
             {
-                trAddCntr.Visible = false;
+                Panel1.Visible = true;
+                if (rblFilter.SelectedValue == "0")
+                {
+                    trAddCntr.Visible = true;
+                    txbNewCntr.Focus();
+                    btnExport.Visible = true;
+                    btnPrint.Visible = true;
+                }
+                else
+                {
+                    trAddCntr.Visible = false;
+                    btnExport.Visible = true;
+                    btnPrint.Visible = true;
+                }
+                trErrMsg.Visible = false;
+                gvTally.DataBind();
             }
-            trErrMsg.Visible = false;
-            gvTally.DataBind();
         }
         protected void gvContainers_onDataBound(object sender, EventArgs e)
         {
