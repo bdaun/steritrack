@@ -22,7 +22,8 @@ namespace IMDBWeb.Secure.Reports
 
         protected void btnIndustrialReports_Click(object sender, EventArgs e)
         {
-            WebMsgBox.Show("We're still working on these!  Check back soon.");
+            string url = "http://ganosql01/Reports/Pages/Folder.aspx?ItemPath=%2fIndustrial+Reports&ViewMode=Detail";
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "RedirectTo", "window.open('" + url + "?random=' + Math.random())", true);
         }
     }
 }
