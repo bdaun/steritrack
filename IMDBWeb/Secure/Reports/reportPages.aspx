@@ -6,6 +6,5 @@
 <br />
     <asp:Button ID="btnSPAKReports" runat="server" Text="SPAK Reports" onclick="btnSPAKReports_Click" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <asp:Button ID="btnIndustrialReports" runat="server" Text="Industrial Reports" 
-        onclick="btnIndustrialReports_Click" />
+    <asp:Button ID="btnIndustrialReports" runat="server" Text="Industrial Reports" onclick="btnIndustrialReports_Click" />
 </asp:Content>
