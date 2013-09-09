@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace IMDBWeb.Secure
 {
@@ -13,6 +14,8 @@ namespace IMDBWeb.Secure
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //ddProcessPlan.Visible = false;
+            //lblProcessPlan.Visible = false;
             txbNewLocation.Visible = false;
             lblNewLocation.Visible = false;
             lblOutCntr.Visible = false;
@@ -33,6 +36,8 @@ namespace IMDBWeb.Secure
             // Based on strCntr value, set control visibility  strCntr = txbCntrID.Text;                       
             if (txbCntrID.Text == "")
             {
+                //ddProcessPlan.Visible = false;
+                //lblProcessPlan.Visible = false;
                 txbNewLocation.Visible = false;
                 lblNewLocation.Visible = false;
                 FormView1.Visible = true;
@@ -61,10 +66,13 @@ namespace IMDBWeb.Secure
                             {
                                 lblErrMsg.Visible = true;
                                 txbNewLocation.Visible = false;
+                                //ddProcessPlan.Visible = false;
                                 return;
                             }
                             else
                             {
+                                //ddProcessPlan.Visible = true;
+                                //lblProcessPlan.Visible = true;
                                 txbNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
                                 txbNewLocation.Text = string.Empty;
@@ -95,11 +103,14 @@ namespace IMDBWeb.Secure
                                 //  this is the case where the inbound container did not have a related inbound record
                                 lblErrMsg.Visible = true;
                                 txbNewLocation.Visible = false;
+                                //ddProcessPlan.Visible = false;
                                 return;
                             }
                             else
                             {
                                 //  inbound record has been found.  Therefore, present the user with new location options
+                                //ddProcessPlan.Visible = true;
+                                //lblProcessPlan.Visible = true;
                                 txbNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
                                 txbNewLocation.Text = string.Empty;
@@ -111,6 +122,8 @@ namespace IMDBWeb.Secure
                 }
                 else  // this is the catch-all for scanned containers that do not meet the std convention for container naming
                 {
+                    //ddProcessPlan.Visible = false;
+                    //lblProcessPlan.Visible = false;
                     txbNewLocation.Visible = false;
                     lblNewLocation.Visible = false;
                     txbCntrID.Text = "";
@@ -132,6 +145,8 @@ namespace IMDBWeb.Secure
                    
             if (txbCntrID.Text == "")
             {
+                //ddProcessPlan.Visible = false;
+                //lblProcessPlan.Visible = false;
                 txbNewLocation.Visible = false;
                 lblNewLocation.Visible = false;
                 FormView1.Visible = true;
@@ -160,10 +175,13 @@ namespace IMDBWeb.Secure
                             {
                                 lblErrMsg.Visible = true;
                                 txbNewLocation.Visible = false;
+                                //ddProcessPlan.Visible = false;
                                 return;
                             }
                             else
                             {
+                                //ddProcessPlan.Visible = true;
+                                //lblProcessPlan.Visible = true;
                                 txbNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
                                 txbNewLocation.Text = string.Empty;
@@ -194,11 +212,14 @@ namespace IMDBWeb.Secure
                                 //  this is the case where the inbound container did not have a related inbound record
                                 lblErrMsg.Visible = true;
                                 txbNewLocation.Visible = false;
+                                //ddProcessPlan.Visible = false;
                                 return;
                             }
                             else
                             {
                                 //  inbound record has been found.  Therefore, present the user with new location options
+                                //ddProcessPlan.Visible = true;
+                                //lblProcessPlan.Visible = true;
                                 txbNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
                                 txbNewLocation.Text = string.Empty;
@@ -210,6 +231,8 @@ namespace IMDBWeb.Secure
                 }
                 else  // this is the catch-all for scanned containers that do not meet the std convention for container naming
                 {
+                    //ddProcessPlan.Visible = false;
+                    //lblProcessPlan.Visible = false;
                     txbNewLocation.Visible = false;
                     lblNewLocation.Visible = false;
                     txbCntrID.Text = "";
@@ -621,7 +644,7 @@ namespace IMDBWeb.Secure
                     //Create Command object
                     SqlConnection thisConnection = new SqlConnection();
                     thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+       //  delete?             SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     try
                     {
                         // Open Connection
@@ -664,7 +687,7 @@ namespace IMDBWeb.Secure
                     //Create Command object
                     SqlConnection thisConnection = new SqlConnection();
                     thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+    //  delete?                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     try
                     {
                         // Open Connection
@@ -757,7 +780,7 @@ namespace IMDBWeb.Secure
                         // Perform the location update to the RecDetails table
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                        SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+    //  delete?                        SqlCommand nonqueryCommand = thisConnection.CreateCommand();
 
                         try
                         {
@@ -915,7 +938,7 @@ namespace IMDBWeb.Secure
                         // Perform the location update to the ProcDetails table
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                        SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+   //  delete?                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                         
                         try
                         {
@@ -967,6 +990,47 @@ namespace IMDBWeb.Secure
                     }
 	            }
             }
+        }
+
+        protected void ddProcessPlan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update the Receive record with the new process plan
+            
+            SqlConnection ProcPlanCon = new SqlConnection();
+            ProcPlanCon.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+
+            try
+            {
+                // Open Connection
+                ProcPlanCon.Open();
+
+                string updateSQL = string.Empty;
+                updateSQL = "IMDB_LocChange_ProcPlan_Upd";
+                SqlCommand UpdateCmd = new SqlCommand(updateSQL, ProcPlanCon);
+                UpdateCmd.CommandType = CommandType.StoredProcedure;
+                
+                UpdateCmd.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
+                UpdateCmd.Parameters.AddWithValue("@ProcPlan", ((DropDownList)fvProcPlan.FindControl("ddProcessPlan")).SelectedValue.ToString());
+                UpdateCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+
+                UpdateCmd.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                // Display error
+                lblErrMsg.Text = ex.ToString();
+                lblErrMsg.Visible = true;
+                ProcPlanCon.Close();
+            }
+            finally
+            { 
+                ProcPlanCon.Close();
+                lblNewLocation.Visible = true;
+                txbNewLocation.Visible = true;
+                //lblProcessPlan.Visible = true;
+                //ddProcessPlan.Visible = true;
+            }
+            
         }
     }
 }

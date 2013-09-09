@@ -13,6 +13,15 @@ namespace IMDBWeb.Secure {
     public partial class LocationChange {
         
         /// <summary>
+        /// lblTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTitle;
+        
+        /// <summary>
         /// txbCntrID control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace IMDBWeb.Secure {
         protected global::System.Web.UI.WebControls.Label lblErrMsg;
         
         /// <summary>
+        /// fvProcPlan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView fvProcPlan;
+        
+        /// <summary>
         /// lblNewLocation control.
         /// </summary>
         /// <remarks>
@@ -110,6 +128,24 @@ namespace IMDBWeb.Secure {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbOutCntr;
+        
+        /// <summary>
+        /// sdsProcPlan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsProcPlan;
+        
+        /// <summary>
+        /// sdsProcPlanSelected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsProcPlanSelected;
         
         /// <summary>
         /// RcvDetailSQL control.
