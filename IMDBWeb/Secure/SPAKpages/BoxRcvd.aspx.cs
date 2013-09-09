@@ -555,52 +555,57 @@ namespace IMDBWeb.Secure.SPAKpages
                         #endregion
 
                     //Check for 10Day Status
+                    //NOTE: As of v002017, this check will not be done for Site 02
                     #region Check10Day
 
-                    Session["CurProcSite"] = string.Empty;
-                    String spCurSite = "SPAK_BoxRcvd_Site_Sel";
-                    SqlCommand spCmdCurSite = new SqlCommand(spCurSite, con);
-                    spCmdCurSite.CommandType = CommandType.StoredProcedure;
+                    if (txbTruckCntrID.Text.Substring(0, 2) != "02")
+                    { 
+                        Session["CurProcSite"] = string.Empty;
+                        String spCurSite = "SPAK_BoxRcvd_Site_Sel";
+                        SqlCommand spCmdCurSite = new SqlCommand(spCurSite, con);
+                        spCmdCurSite.CommandType = CommandType.StoredProcedure;
 
-                    con.Open();
-                    using (spCmdCurSite)  //Get the name of the receiving site from the TruckID
-                    {
-                        try
+                        con.Open();
+                        using (spCmdCurSite)  //Get the name of the receiving site from the TruckID
                         {
-                            spCmdCurSite.Parameters.AddWithValue("@SiteCode", txbTruckCntrID.Text.Substring(0, 2));
-                            using(SqlDataReader rdrCurSite = spCmdCurSite.ExecuteReader())
+                            try
                             {
-                                if (rdrCurSite.HasRows)
+                                spCmdCurSite.Parameters.AddWithValue("@SiteCode", txbTruckCntrID.Text.Substring(0, 2));
+                                using(SqlDataReader rdrCurSite = spCmdCurSite.ExecuteReader())
                                 {
-                                    while (rdrCurSite.Read())
+                                    if (rdrCurSite.HasRows)
                                     {
-                                        Session["CurProcSite"] = rdrCurSite["SiteName"].ToString();
-                                    }
+                                        while (rdrCurSite.Read())
+                                        {
+                                            Session["CurProcSite"] = rdrCurSite["SiteName"].ToString();
+                                        }
 
+                                    }
                                 }
                             }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
+                            }
+                            finally
+                            {
+                                con.Close();
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            lblErrMsg.Visible = true;
-                            lblErrMsg.Text = ex.ToString();
-                        }
-                        finally
-                        {
-                            con.Close();
-                        }
-                    }
 
-                    if (!String.IsNullOrEmpty(Session["CurTSDFCompany"].ToString()))  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
-                    {
-                        if (!Session["CurTSDFCompany"].ToString().Contains(Session["CurProcSite"].ToString()))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                        if (!String.IsNullOrEmpty(Session["CurTSDFCompany"].ToString()))  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
                         {
-                            Is10day = true;
-                            WebMsgBox.Show("The BoxCntrID you scanned does not have this facility as the TSDF, please place this Box on a separate pallet " +
-                                " and treat this Box and associated waste as 10 Day Waste unless otherwise directed.");
+                            if (!Session["CurTSDFCompany"].ToString().Contains(Session["CurProcSite"].ToString()))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                            {
+                                Is10day = true;
+                                WebMsgBox.Show("The BoxCntrID you scanned does not have this facility as the TSDF, please place this Box on a separate pallet " +
+                                    " and treat this Box and associated waste as 10 Day Waste unless otherwise directed.");
+                            }
                         }
-                    }
+                    }    
                 }
+                    
                 #endregion
                 }
             }
