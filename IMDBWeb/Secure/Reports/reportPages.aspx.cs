@@ -16,13 +16,13 @@ namespace IMDBWeb.Secure.Reports
 
         protected void btnSPAKReports_Click(object sender, EventArgs e)
         {
-            string url = "http://ganosql01/Reports/Pages/Folder.aspx?ItemPath=%2fSPAKReports&ViewMode=Detail";
+            string url = "http://vganosql01/Reports/Pages/Folder.aspx?ItemPath=%2fSPAKReports&ViewMode=Detail";
             ScriptManager.RegisterStartupScript(this, typeof(Page), "RedirectTo", "window.open('" + url + "?random=' + Math.random())", true);
         }
 
         protected void btnIndustrialReports_Click(object sender, EventArgs e)
         {
-            string url = "http://ganosql01/Reports/Pages/Folder.aspx?ItemPath=%2fIndustrial+Reports&ViewMode=Detail";
+            string url = "http://vganosql01/Reports/Pages/Folder.aspx?ItemPath=%2fIndustrial+Reports&ViewMode=Detail";
             ScriptManager.RegisterStartupScript(this, typeof(Page), "RedirectTo", "window.open('" + url + "?random=' + Math.random())", true);
         }
     }
