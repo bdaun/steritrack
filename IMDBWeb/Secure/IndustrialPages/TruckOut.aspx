@@ -40,9 +40,9 @@
             <asp:BoundField DataField="ID" Visible="false" />
             <asp:BoundField DataField="TrailerNumber" HeaderText="Trailer Number" />
             <asp:BoundField DataField="Shippingdock" HeaderText="Dock" />
-            <asp:BoundField DataField="Destination" HeaderText="Destination" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
-            <asp:BoundField DataField="ShipDate" HeaderText="ShipDate"  DataFormatString="{0:d}" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
-            <asp:BoundField DataField="Carrier" HeaderText="Carrier" ReadOnly="true" ItemStyle-ForeColor="GrayText" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+            <asp:BoundField DataField="Destination" HeaderText="Destination" ReadOnly="true" ItemStyle-ForeColor="Black" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+            <asp:BoundField DataField="ShipDate" HeaderText="ShipDate"  DataFormatString="{0:d}" ReadOnly="true" ItemStyle-ForeColor="Black" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
+            <asp:BoundField DataField="Carrier" HeaderText="Carrier" ReadOnly="true" ItemStyle-ForeColor="Black" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
         </Columns>
     </asp:GridView>
 </td></tr>
