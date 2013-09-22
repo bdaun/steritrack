@@ -23,6 +23,7 @@ namespace IMDBWeb.Secure
                 lblDots.Visible = false;
                 btnInsCntr.Visible = false;
                 btnInsBale.Visible = false;
+                btnInsPallet.Visible = false;
                 btnInsCompact.Visible = false;
                 btnDone.Visible = false;
                 lblErrMsg.Visible = false;
@@ -146,6 +147,7 @@ namespace IMDBWeb.Secure
                         btnInsCntr.Visible = true;
                         btnInsCompact.Visible = true;
                         btnInsBale.Visible = true;
+                        btnInsPallet.Visible = true;
                         btnDone.Visible = true;
                         btnInsCntr.Focus();
                     }
@@ -187,6 +189,7 @@ namespace IMDBWeb.Secure
                             btnInsCntr.Visible = true;
                             btnInsCompact.Visible = true;
                             btnInsBale.Visible = true;
+                            btnInsPallet.Visible = true;
                             btnDone.Visible = true;
                             btnInsCntr.Focus();
                         }
@@ -285,6 +288,7 @@ namespace IMDBWeb.Secure
                     btnInsCntr.Visible = true;
                     btnInsCompact.Visible = true;
                     btnInsBale.Visible = true;
+                    btnInsPallet.Visible = true;
                     btnDone.Visible = true;
                     btnInsCntr.Focus();
                 }
@@ -632,6 +636,140 @@ namespace IMDBWeb.Secure
                 con.Close();
             }
 
+        }
+        protected void btnIns_Pallet_Click(object sender, EventArgs e)
+        {
+            // This button only visible when process record exists
+            // Confirm that a pallet record doesn't already exist
+            // Insert new pallet record
+
+            ddPalletAction.Visible = true;
+        }
+
+        protected void ddPalletAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(ddPalletAction.SelectedIndex != 0)
+            {
+                btnInsPallet.Visible = false;
+
+                string processmethod = "";
+                string palletweight = "";
+                string palletprofile = "";
+
+                
+                switch (ddPalletAction.SelectedIndex)
+                { 
+                    case 1:
+                        palletprofile = "27";
+                        palletweight = "42";
+                        processmethod = "PalletRemoved";
+                        break;
+                    case 2:
+                        palletprofile = "26";
+                        palletweight = "66";
+                        processmethod = "PalletRemoved";
+                        break;
+                    case 3:
+                        palletprofile = "25";
+                        palletweight = "24";
+                        processmethod = "CHEP2GMA";
+                        break;
+                }
+
+                String sp = "IMDB_Processing_InsPallet";
+                String spChk = "IMDB_Processing_insPallet_Exist";
+                Boolean ChkResult = false;
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand spCmd = new SqlCommand(sp, con);
+                SqlCommand spChkCmd = new SqlCommand(spChk, con);
+                spCmd.CommandType = CommandType.StoredProcedure;
+                spChkCmd.CommandType = CommandType.StoredProcedure;
+                using (con)
+                {
+                    try
+                    {
+                        con.Open();
+                        #region Check Pallet Exist
+                        using (spChkCmd)
+                        {
+                            try
+                            {
+                                spChkCmd.Parameters.AddWithValue("@ProcHdrID", Session["ProcHdrID"]);
+                                object hasCmptRecord = new object();
+                                hasCmptRecord = spChkCmd.ExecuteScalar();
+                                if (hasCmptRecord != null)
+                                {
+                                    ChkResult = true;
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = "There is already a Pallet Record. Click 'Submit' to re-enter the record.";
+                                    lblProcDetails.Visible = true;
+                                    lblHeader.Visible = true;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                lblErrMsg.Visible = true;
+                                lblErrMsg.Text = ex.ToString();
+                            }
+                        }
+                        #endregion
+
+                        if (ChkResult == false)
+                        {
+                            //  Insert new ProcDetail
+                            #region Insert ProcDetail Record
+
+                            using (spCmd)
+                            {
+                                try
+                                {
+                                    spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                                    spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                    spCmd.Parameters.AddWithValue("@OutboundStreamProfile", palletprofile);
+                                    spCmd.Parameters.AddWithValue("@ProcessMethod", processmethod);
+                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", palletweight);
+                                    spCmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    lblErrMsg.Visible = true;
+                                    lblErrMsg.Text = ex.ToString();
+                                }
+                                finally
+                                {
+                                    con.Close();
+                                }
+                            }
+                            #endregion                    
+                        }
+                        else
+                        {
+                            con.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Display error
+                        lblErrMsg.Text = ex.ToString();
+                        lblErrMsg.Visible = true;
+                    }
+                    finally
+                    {
+                        con.Close();
+                        ddPalletAction.Visible = false;
+                        btnInsPallet.Visible = true;
+                        gvProcDetails.DataBind();
+                        lblProcDetails.Visible = true;
+                        lblHeader.Visible = true;
+                    }
+                }
+            }
+            else
+            {
+                ddPalletAction.Visible = false;
+                btnInsPallet.Visible = true;
+            }
         }
     }
 }

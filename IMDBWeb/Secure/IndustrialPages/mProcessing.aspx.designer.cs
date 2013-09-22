@@ -85,6 +85,24 @@ namespace IMDBWeb.Secure {
         protected global::System.Web.UI.WebControls.Button btnInsBale;
         
         /// <summary>
+        /// btnInsPallet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnInsPallet;
+        
+        /// <summary>
+        /// ddPalletAction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddPalletAction;
+        
+        /// <summary>
         /// btnDone control.
         /// </summary>
         /// <remarks>
