@@ -191,6 +191,11 @@ namespace IMDBWeb.Secure.IndustrialPages
                     e.Row.ForeColor = System.Drawing.Color.Red;
                     e.Row.Font.Bold = true;
                 }
+                else if (DataBinder.Eval(e.Row.DataItem, "Name").ToString() == "Add Profile")
+                {
+                    e.Row.ForeColor = System.Drawing.Color.DarkOrange;
+                    e.Row.Font.Bold = true;
+                }
             }
         }
         protected void btnExport_Click(object sender, EventArgs e)
