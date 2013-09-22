@@ -214,6 +214,10 @@ namespace IMDBWeb.Secure.IndustrialPages
             //  if yes, create ProcDetail line
             //  if no, create procHdr, ProcDetail
 
+
+            // Clear any existing error messages
+            lblErrMsg.Visible = false;
+
             string strSP = "IMDB_TruckOut_Stream_sel";
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
