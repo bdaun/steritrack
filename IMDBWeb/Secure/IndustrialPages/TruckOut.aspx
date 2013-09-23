@@ -28,7 +28,8 @@
 <td>
 </td></tr></table>
 <asp:Button ID="btnPrint" runat="server" Text="Print" OnClientClick="javascript:window.print();" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" /><br /><br />
+<asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<asp:Button ID="btnCompleteTruck" runat="server" Text="Close Out Truck" onclick="btnCompleteTruck_Click" /><br /><br />
 <asp:Panel ID="Panel1" runat="server">
 <table>
 <tr><td colspan="2">
@@ -44,8 +45,9 @@
             <asp:BoundField DataField="ShipDate" HeaderText="ShipDate"  DataFormatString="{0:d}" ReadOnly="true" ItemStyle-ForeColor="Black" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
             <asp:BoundField DataField="Carrier" HeaderText="Carrier" ReadOnly="true" ItemStyle-ForeColor="Black" ItemStyle-Font-Italic="true" ItemStyle-BackColor="LightGray" />
         </Columns>
-    </asp:GridView>
-</td></tr>
+    </asp:GridView>  
+</td>
+</tr>
 <tr valign="top">
 <td><br /><i>Outbound Container Info</i><asp:gridview ID="gvContainers" runat="server" AutoGenerateColumns="False" DataSourceID="sdsTruckOut" 
         onDataBound="gvContainers_onDataBound" OnRowCommand="gvContainers_onRowCommand" 
@@ -194,7 +196,7 @@
 </FilterParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsShipHdr" runat="server" 
-    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" OnUpdating="sdsShipHdr_OnUpdating" 
+    ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" OnUpdating="sdsShipHdr_OnUpdating"
     SelectCommand="IMDB_TruckOut_ShipHdr_Sel" SelectCommandType="StoredProcedure"
     UpdateCommand="IMDB_TruckOut_ShipHdr_Upd" UpdateCommandType="StoredProcedure">
     <SelectParameters>
@@ -202,6 +204,7 @@
     </SelectParameters>
     <UpdateParameters>
         <asp:Parameter Name="UserName" Type="String" />
+        <asp:Parameter Name="Completed" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
 </asp:Content>

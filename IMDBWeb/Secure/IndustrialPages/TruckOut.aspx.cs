@@ -20,6 +20,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 trErrMsg.Visible = false;
                 btnExport.Visible = false;
                 btnPrint.Visible = false;
+                btnCompleteTruck.Visible = false;
                 string strSP = "IMDB_Truckout_ActShipWt_upd";
                 SqlConnection con1 = new SqlConnection();
                 con1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
@@ -53,11 +54,13 @@ namespace IMDBWeb.Secure.IndustrialPages
                 {
                     btnPrint.Visible = false;
                     btnExport.Visible = false;
+                    btnCompleteTruck.Visible = false;
                 }
                 else
                 {
                     btnExport.Visible = true;
                     btnPrint.Visible = true;
+                    btnCompleteTruck.Visible = true;
                 }
             }
             helper = new GridViewHelper(gvTally);
@@ -83,6 +86,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             ddDocList.DataBind();
             btnExport.Visible = false;
             btnPrint.Visible = false;
+            btnCompleteTruck.Visible = false;
             Panel1.Visible = false;
             trAddCntr.Visible = false;
             trErrMsg.Visible = false;
@@ -119,6 +123,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 Panel1.Visible = false;
                 btnExport.Visible = false;
                 btnPrint.Visible = false;
+                btnCompleteTruck.Visible = false;
             }
             else
             {
@@ -129,12 +134,14 @@ namespace IMDBWeb.Secure.IndustrialPages
                     txbNewCntr.Focus();
                     btnExport.Visible = true;
                     btnPrint.Visible = true;
+                    btnCompleteTruck.Visible = true;
                 }
                 else
                 {
                     trAddCntr.Visible = false;
                     btnExport.Visible = true;
                     btnPrint.Visible = true;
+                    btnCompleteTruck.Visible = false;
                 }
                 trErrMsg.Visible = false;
                 gvTally.DataBind();
@@ -557,6 +564,34 @@ namespace IMDBWeb.Secure.IndustrialPages
                     txbNewCntr.Text = "";
                     txbNewCntr.Focus();
                     Session.Abandon();
+                }
+            }
+        }
+        protected void btnCompleteTruck_Click(object sender, EventArgs e)
+        {
+            string strSP = "IMDB_Truckout_CloseOutTruck_upd";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand CloseOut = new SqlCommand(strSP, con);
+            CloseOut.CommandType = CommandType.StoredProcedure;
+            using (con)
+            {
+                con.Open();
+                try
+                {
+                    CloseOut.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedValue.ToString());
+                    CloseOut.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                    CloseOut.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+                    Response.Redirect("TruckOut.aspx");
                 }
             }
         }
