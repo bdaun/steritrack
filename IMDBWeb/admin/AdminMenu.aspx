@@ -6,5 +6,6 @@ You can perform the following administrative options:<br />
 <ul>
     <li><a href="PasswordReset.aspx">Quick PasswordReset</a></li>
     <li><a href="access/users.aspx">User Management</a></li>
+    <li><a href="../Secure/SPAKpages/ProcessSite.aspx">SPAK Site Management</a></li>
 </ul>
 </asp:Content>
