@@ -68,6 +68,7 @@ namespace IMDBWeb.Secure.SPAKPages
 	                **************************************************************************************** */
 
                     Boolean Is10day = false;
+                    Boolean MngAs10day = true;
                     String SiteName = String.Empty;
                     String TSDF = String.Empty;
                     Boolean found = false;
@@ -155,7 +156,7 @@ namespace IMDBWeb.Secure.SPAKPages
                     }
 
                     con.Open();
-                    using (spCmdSite)  //Get the name of the receiving site from the TruckID
+                    using (spCmdSite)  //Get the name and MngAs10d status of the receiving site using the TruckID
                     {
                         try
                         {
@@ -167,8 +168,8 @@ namespace IMDBWeb.Secure.SPAKPages
                                     while (rdrSite.Read())
                                     {
                                         SiteName = rdrSite["SiteName"].ToString();
+                                        MngAs10day = (Boolean)rdrSite["MngAs10d"];
                                     }
-
                                 }
                             }
                         }
@@ -183,14 +184,17 @@ namespace IMDBWeb.Secure.SPAKPages
                         }
                     }
 
-                    if(TSDFExists)  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
+                    if (MngAs10day)  // only check for 10Day situation if the current site is to set to alert for 10Day
                     {
-                        if (!TSDF.Contains(SiteName))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                        if (TSDFExists)  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
                         {
-                            Is10day = true;
-                            WebMsgBox.Show("The manifest you scanned does not have this facility as the TSDF, please place this manifest separate " +
-                                "from the TSDF Manifests and treat this manifest and associated waste as 10 Day Waste unless otherwise directed.");
-                        }                    
+                            if (!TSDF.Contains(SiteName))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                            {
+                                Is10day = true;
+                                WebMsgBox.Show("The manifest you scanned does not have this facility as the TSDF, please place this manifest separate " +
+                                    "from the TSDF Manifests and treat this manifest and associated waste as 10 Day Waste unless otherwise directed.");
+                            }
+                        }
                     }
 
                     con.Open();
