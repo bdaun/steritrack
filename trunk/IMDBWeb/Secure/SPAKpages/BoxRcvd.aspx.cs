@@ -224,6 +224,7 @@ namespace IMDBWeb.Secure.SPAKpages
                 Boolean BoxInIMDB = false;
                 Boolean SameBoxInIMDB = false;
                 Boolean Is10day = false;
+                Boolean MngAs10day = true;
 
                 // Check if the BoxCntrID is a consolidation container
                 if (txbBoxCntrID.Text.Substring(0, 3) == "999")
@@ -574,8 +575,8 @@ namespace IMDBWeb.Secure.SPAKpages
                                     while (rdrCurSite.Read())
                                     {
                                         Session["CurProcSite"] = rdrCurSite["SiteName"].ToString();
+                                        MngAs10day = (Boolean)rdrCurSite["MngAs10d"];
                                     }
-
                                 }
                             }
                         }
@@ -590,19 +591,22 @@ namespace IMDBWeb.Secure.SPAKpages
                         }
                     }
 
-                    if (!String.IsNullOrEmpty(Session["CurTSDFCompany"].ToString()))  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
+                    if (MngAs10day)
                     {
-                        if (!Session["CurTSDFCompany"].ToString().Contains(Session["CurProcSite"].ToString()))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                        if (!String.IsNullOrEmpty(Session["CurTSDFCompany"].ToString()))  // Only check for TSDF/10Day situation if the TSDFCompany was found in Sterwise
                         {
-                            Is10day = true;
-                            WebMsgBox.Show("The BoxCntrID you scanned does not have this facility as the TSDF, please place this Box on a separate pallet " +
-                                " and treat this Box and associated waste as 10 Day Waste unless otherwise directed.");
+                            if (!Session["CurTSDFCompany"].ToString().Contains(Session["CurProcSite"].ToString()))  //If SiteName is not part of the TSDF company, it is a 10Day manifest.
+                            {
+                                Is10day = true;
+                                WebMsgBox.Show("The BoxCntrID you scanned does not have this facility as the TSDF, please place this Box on a separate pallet " +
+                                    " and treat this Box and associated waste as 10 Day Waste unless otherwise directed.");
+                            }
+                            else
+                            {
+                                Is10day = false;
+                            }
                         }
-                        else
-                        {
-                            Is10day = false;
-                        }
-                    } 
+                    }
                 }
                     
                 #endregion
