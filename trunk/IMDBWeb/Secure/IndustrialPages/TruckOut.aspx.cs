@@ -172,6 +172,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 string Rmvoutcntrid = ((Label)selectedRow.FindControl("outboundcontainerid")).Text;
                 Session["CurCntrID"] = Rmvoutcntrid;
                 trErrMsg.Visible = true;
+                lblErrMsg.Visible = true;
                 lblErrMsg.Text = "Please remove this container from the truck and place in the Dock area: " + Session["CurCntrID"];
             }
             else if (e.CommandName == "Update")
@@ -183,6 +184,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 Session["CurCntrID"] = Updoutcntrid;
                 Session["CurAggrWt"] = UpAggrWt / UpAggrQty;
                 trErrMsg.Visible = true;
+                lblErrMsg.Visible = true;
                 lblErrMsg.Text = "The actual ship weight has been updated for container: " + Session["CurCntrID"];
             }
         }
@@ -246,6 +248,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                         if (!Reader.HasRows)
                         {
                             trErrMsg.Visible = true;
+                            lblErrMsg.Visible = true;
                             lblErrMsg.Text = "There is no Stream defined for this Vendor.  Please contact the database administrator to update the record.";
                             Session["OutStream"] = "NotDefined";
                             return;
@@ -264,6 +267,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 catch (Exception ex)
                                 {
                                     trErrMsg.Visible = true;
+                                    lblErrMsg.Visible = true;
                                     lblErrMsg.Text = ex.ToString();
                                 }
                                 Reader.Close();
@@ -274,6 +278,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 catch (Exception x)
                 {
                     trErrMsg.Visible = true;
+                    lblErrMsg.Visible = true;
                     lblErrMsg.Text = x.ToString();
                 }
                 finally
@@ -301,6 +306,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                         if (!Reader.HasRows)
                         {
                             trErrMsg.Visible = true;
+                            lblErrMsg.Visible = true;
                             lblErrMsg.Text = "This container does not exist in the Process Detail table.  Please contact your supervisor.";
                             return;
                         }
@@ -319,6 +325,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 catch (Exception ex)
                                 {
                                     trErrMsg.Visible = true;
+                                    lblErrMsg.Visible = true;
                                     lblErrMsg.Text = ex.ToString();
                                 }
                                 Reader.Close();
@@ -330,6 +337,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 if (completed.ToString() == "True") // You cannot update an container that has already shipped.
                 {
                     trErrMsg.Visible = true;
+                    lblErrMsg.Visible = true;
                     lblErrMsg.Text = "This container is associated with an OutboundDoc (" + Curoutbounddocno + ") that has already Shipped.  Please contact Supervision Immediately!";
                     txbNewCntr.Text = "";
                     txbNewCntr.Focus();
@@ -355,6 +363,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                         catch (Exception ex)
                         {
                             trErrMsg.Visible = true;
+                            lblErrMsg.Visible = true;
                             lblErrMsg.Text = ex.ToString();
                         }
 
@@ -385,6 +394,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                             if (!Reader.HasRows)
                             {
                                 trErrMsg.Visible = true;
+                                lblErrMsg.Visible = true;
                                 lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
                                     "Please receive the container BEFORE putting on the Truck. " + "<br/>" +
                                     "This container has NOT been added to the outbound document!";
@@ -412,6 +422,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 {
                     // Display error
                     trErrMsg.Visible = true;
+                    lblErrMsg.Visible = true;
                     lblErrMsg.Text = ex.ToString();
                 }
 
@@ -487,6 +498,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                             catch (Exception ex)
                                             {
                                                 trErrMsg.Visible = true;
+                                                lblErrMsg.Visible = true;
                                                 lblErrMsg.Text = ex.ToString();
                                             }
 
@@ -496,6 +508,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     else
                                     {
                                         trErrMsg.Visible = true;
+                                        lblErrMsg.Visible = true;
                                         lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
                                     }
                                 }
@@ -544,6 +557,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 catch (Exception ex)
                                 {
                                     trErrMsg.Visible = true;
+                                    lblErrMsg.Visible = true;
                                     lblErrMsg.Text = ex.ToString();
                                 }
                             }
@@ -553,6 +567,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 catch (Exception ex)
                 {
                     trErrMsg.Visible = true;
+                    lblErrMsg.Visible = true;
                     lblErrMsg.Text = ex.ToString();
                 }
                 finally
