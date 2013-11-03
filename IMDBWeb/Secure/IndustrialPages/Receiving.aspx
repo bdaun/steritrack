@@ -454,7 +454,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller" AutoPostBack="true" OnSelectedIndexChanged="ddRcvdAs_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -478,8 +478,8 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     <asp:ListItem>DF</asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
-            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
-                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' DataSourceID="sdsGetLocations" 
+                    DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList>
             </td>
@@ -540,7 +540,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAs_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -564,8 +564,8 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     <asp:ListItem>DF</asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
-            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
-                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' DataSourceID="sdsGetLocations" 
+                     DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList>
             </td>
@@ -618,7 +618,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
     <td id="tdContainerEdit" runat="server" visible="false" >
     <br />
     <asp:FormView ID="fvContainerDetail" runat="server" DataKeyNames="RcvDetailID" DataSourceID="sdsContainerDetail" 
-        Font-Size="Small" OnDataBound="fvDuplicate_DataBound" DefaultMode="Edit" >
+        Font-Size="Small" OnDataBound="fvContainerDetail_DataBound" DefaultMode="Edit" >
         <EditItemTemplate>
         <table>
         <tr>
@@ -671,7 +671,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAs_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -695,8 +695,8 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     <asp:ListItem>DF</asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
-            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
-                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' DataSourceID="sdsGetLocations"
+                    DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList>
             </td>
@@ -761,7 +761,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAs_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -785,8 +785,8 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     <asp:ListItem>DF</asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="InboundContainerQtyTextBox" runat="server" Text='<%# Bind("InboundContainerQty") %>' Width="25px" Font-Size="Smaller" /></td>
-            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' 
-                    DataSourceID="sdsGetLocation" DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
+            <td><asp:DropDownList ID="ddLocation" runat="server" Width="75px" SelectedValue='<%# bind("InventoryLocation") %>' DataSourceID="sdsGetLocations"
+                     DataTextField="LocationName" DataValueField="LocationName" AppendDataBoundItems="True" Font-Size="Smaller">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList>
             </td>
@@ -885,7 +885,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
 </asp:SqlDataSource>       
     <asp:SqlDataSource ID="sdsContainerDetail" runat="server" 
         ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-        SelectCommand="IMDB_Receive_Container_Sel" SelectCommandType="StoredProcedure">
+        SelectCommand="IMDB_Receive_Container_Sel" SelectCommandType="StoredProcedure" >
         <SelectParameters>
             <asp:Parameter Name="DetailID" Type="Int32" />
         </SelectParameters>
@@ -899,7 +899,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsContainer_Edit" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="IMDB_Receive_Container_Sel" SelectCommandType="StoredProcedure">
+    SelectCommand="IMDB_Receive_Container_Sel" SelectCommandType="StoredProcedure" >
     <SelectParameters>
         <asp:SessionParameter Name="RcvDetailID" SessionField="CurDetailID" Type="Int32" />
     </SelectParameters>
@@ -938,9 +938,6 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
 <asp:SqlDataSource ID="sdsGetProcPlan" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_ProcessPlan_Sel" SelectCommandType="StoredProcedure">
 </asp:SqlDataSource>
-<asp:SqlDataSource ID="sdsGetLocation" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-    SelectCommand="IMDB_Receive_Location_Sel" SelectCommandType="StoredProcedure">
-</asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsNewTruck" runat="server" 
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     InsertCommand="IMDB_Receive_Hdr_Ins" InsertCommandtype="StoredProcedure"
@@ -963,6 +960,13 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsGetUsers" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_User_Sel" SelectCommandType="StoredProcedure">
+</asp:SqlDataSource>
+<asp:SqlDataSource ID="sdsGetLocations" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
+    SelectCommand="IMDB_Receive_Location_Sel" SelectCommandType="StoredProcedure">
+    <SelectParameters>
+        <asp:Parameter Name="RcvdAs" Type="String" DefaultValue="Select..." />
+        <asp:Parameter Name="LocationType" Type="String" DefaultValue="All" />
+    </SelectParameters>
 </asp:SqlDataSource>
 <asp:SqlDataSource ID="sdsRcvSummary" runat="server" ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_Receive_Summary_Sel" SelectCommandType="StoredProcedure">
