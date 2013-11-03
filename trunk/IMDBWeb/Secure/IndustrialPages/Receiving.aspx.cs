@@ -24,6 +24,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 tblBegin.Visible = true;
                 trContainerDetails.Visible = false;
             }
+
             helper = new GridViewHelper(gvSummary);
             GridViewSummary s = helper.RegisterSummary("NumberContainers", SummaryOperation.Sum);
             s.Automatic = false;
@@ -375,6 +376,40 @@ namespace IMDBWeb.Secure.IndustrialPages
             {
                 ctrl.Focus();
             }
+            if (((DropDownList)fvContainerDetail.FindControl("ddLocation")) != null)
+            {
+
+                string curLocation = ((DropDownList)fvContainerDetail.FindControl("ddLocation")).SelectedValue;
+                // Get the current location type from the location value
+
+
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                String spLocationType = "IMDB_Receive_LocationByProfile_Sel";
+                SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+                spCmd2.CommandType = CommandType.StoredProcedure;
+                spCmd2.Parameters.AddWithValue("@Profile", ((DropDownList)fvContainerDetail.FindControl("ddProfile")).SelectedValue.ToString());
+                spCmd2.Parameters.AddWithValue("@RcvdAs", ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue.ToString());
+                con.Open();
+                using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+                {
+                    ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
+                    ListItem newItem = new ListItem();
+                    newItem.Text = "Select";
+                    newItem.Value = "0";
+                    ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
+
+                    while (rdr2.Read())
+                    {
+                        ListItem newItem1 = new ListItem();
+                        newItem1.Text = rdr2["LocationName"].ToString();
+                        newItem1.Value = rdr2["LocationName"].ToString();
+                        ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
+                    }
+                }
+                con.Close();
+                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).SelectedValue = curLocation;
+            }
         }
 
         protected void fvDuplicate_DataBound(object sender, EventArgs e)
@@ -386,12 +421,48 @@ namespace IMDBWeb.Secure.IndustrialPages
                 txb1.Attributes.Add("Onfocus", "this.select()");
                 txb1.Focus();
             }
+            if (((DropDownList)fvDuplicate.FindControl("ddLocation")) != null)
+            {
+
+                string curLocation = ((DropDownList)fvDuplicate.FindControl("ddLocation")).SelectedValue ;
+                // Get the current location type from the location value
+
+
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                String spLocationType = "IMDB_Receive_LocationByProfile_Sel";
+                SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+                spCmd2.CommandType = CommandType.StoredProcedure;
+                spCmd2.Parameters.AddWithValue("@Profile", ((DropDownList)fvDuplicate.FindControl("ddProfile")).SelectedValue.ToString());
+                spCmd2.Parameters.AddWithValue("@RcvdAs", ((DropDownList)fvDuplicate.FindControl("ddRcvdAs")).SelectedValue.ToString());
+                con.Open();
+                using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+                {
+                    ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Clear();
+                    ListItem newItem = new ListItem();
+                    newItem.Text = "Select";
+                    newItem.Value = "0";
+                    ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Add(newItem);
+
+                    while (rdr2.Read())
+                    {
+                        ListItem newItem1 = new ListItem();
+                        newItem1.Text = rdr2["LocationName"].ToString();
+                        newItem1.Value = rdr2["LocationName"].ToString();
+                        ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Add(newItem1);
+                    }
+                }
+                con.Close();
+                ((DropDownList)fvDuplicate.FindControl("ddLocation")).SelectedValue = curLocation;
+            }
         }
 
         protected void txbBrandCodes_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Session["curLocationType"] = "ALL";
             string SelBCName = ((TextBox)fvContainerDetail.FindControl("txbBrandCodes")).Text;
             string SelBCID = string.Empty;
+            string SelLocationType = string.Empty;
 
             String spBCID = "IMDB_Receive_GetBrandCodeIDs_Sel";
             SqlConnection con = new SqlConnection();
@@ -404,6 +475,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             {
                 while (rdr.Read())
                 {
+                    Session["curLocationType"] = rdr["LocationType"].ToString();
                     ((Label)fvContainerDetail.FindControl("lblBrandCodeID")).Text = rdr["BCID"].ToString();
                     SelBCID = rdr["BCID"].ToString();
                     ((DropDownList)fvContainerDetail.FindControl("ddProfile")).SelectedValue = rdr["Profileid"].ToString();
@@ -428,14 +500,43 @@ namespace IMDBWeb.Secure.IndustrialPages
                     ((DropDownList)fvContainerDetail.FindControl("ddProcessPlan")).SelectedValue = SelProcPlan;
                 }
             }
-            con.Close();
+
+
+            //  Populate Location dropdown items based on RcvdAs status and Profile
+
+            Session["curRcvdAs"] = ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue;
+            String spLocationType = "IMDB_Receive_Location_Sel";
+            SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+            spCmd2.CommandType = CommandType.StoredProcedure;
+            spCmd2.Parameters.AddWithValue("@LocationType", Session["curLocationType"].ToString());
+            spCmd2.Parameters.AddWithValue("@RcvdAs", Session["curRcvdAs"].ToString());
+            using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+            {
+                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
+                ListItem newItem = new ListItem();
+                newItem.Text = "Select";
+                newItem.Value = "0";
+                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
+
+                while (rdr2.Read())
+                {
+                    ListItem newItem1 = new ListItem();
+                    newItem1.Text = rdr2["LocationName"].ToString();
+                    newItem1.Value = rdr2["LocationName"].ToString();
+                    ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
+                }
+            }
+
             ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
+            con.Close();
         }
 
         protected void txbBrandCodes_SelectedIndexChanged_Dup(object sender, EventArgs e)
         {
+            Session["curLocationType"] = "ALL";
             string SelBCName = ((TextBox)fvDuplicate.FindControl("txbBrandCodes")).Text;
             string SelBCID = string.Empty;
+            string SelLocationType = string.Empty;
 
             String spBCID = "IMDB_Receive_GetBrandCodeIDs_Sel";
             SqlConnection con = new SqlConnection();
@@ -448,6 +549,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             {
                 while (rdr.Read())
                 {
+                    Session["curLocationType"] = rdr["LocationType"].ToString();
                     ((Label)fvDuplicate.FindControl("lblBrandCodeID")).Text = rdr["BCID"].ToString();
                     SelBCID = rdr["BCID"].ToString();
                     ((DropDownList)fvDuplicate.FindControl("ddProfile")).SelectedValue = rdr["Profileid"].ToString();
@@ -472,8 +574,33 @@ namespace IMDBWeb.Secure.IndustrialPages
                     ((DropDownList)fvDuplicate.FindControl("ddProcessPlan")).SelectedValue = SelProcPlan;
                 }
             }
+            //  Populate Location dropdown items based on RcvdAs status and Profile
+
+            Session["curRcvdAs"] = ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue;
+            String spLocationType = "IMDB_Receive_Location_Sel";
+            SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+            spCmd2.CommandType = CommandType.StoredProcedure;
+            spCmd2.Parameters.AddWithValue("@LocationType", Session["curLocationType"].ToString());
+            spCmd2.Parameters.AddWithValue("@RcvdAs", Session["curRcvdAs"].ToString());
+            using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+            {
+                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
+                ListItem newItem = new ListItem();
+                newItem.Text = "Select";
+                newItem.Value = "0";
+                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
+
+                while (rdr2.Read())
+                {
+                    ListItem newItem1 = new ListItem();
+                    newItem1.Text = rdr2["LocationName"].ToString();
+                    newItem1.Value = rdr2["LocationName"].ToString();
+                    ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
+                }
+            }
+
+            ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
             con.Close();
-            ((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Focus();
         }
 
         protected void gvContainers_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -611,5 +738,42 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             e.Command.Parameters["@Username"].Value = HttpContext.Current.User.Identity.Name.ToString();
         }
+
+        protected void ddRcvdAs_Changed(object sender, EventArgs e)
+        {
+            txbBrandCodes_SelectedIndexChanged(null, null);
+        }
+
+        //protected void sdsContainer_Edit_Selecting(object sender, EventArgs e)
+        //{
+        //    if (((DropDownList)fvContainerDetail.FindControl("ddLocation")) != null)
+        //    {
+        //        SqlConnection con = new SqlConnection();
+        //        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+        //        String spLocationType = "IMDB_Receive_Location_Sel";
+        //        SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+        //        spCmd2.CommandType = CommandType.StoredProcedure;
+        //        spCmd2.Parameters.AddWithValue("@LocationType", ((DropDownList)fvContainerDetail.FindControl("ddLocation")).SelectedValue);
+        //        spCmd2.Parameters.AddWithValue("@RcvdAs", ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue);
+        //        con.Open();
+        //        using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+        //        {
+        //            ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
+        //            ListItem newItem = new ListItem();
+        //            newItem.Text = "Select";
+        //            newItem.Value = "0";
+        //            ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
+
+        //            while (rdr2.Read())
+        //            {
+        //                ListItem newItem1 = new ListItem();
+        //                newItem1.Text = rdr2["LocationName"].ToString();
+        //                newItem1.Value = rdr2["LocationName"].ToString();
+        //                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
+        //            }
+        //        }
+        //        con.Close();
+        //    }
+        //}
     }
 }

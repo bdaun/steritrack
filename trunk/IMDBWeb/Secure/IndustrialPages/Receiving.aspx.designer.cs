@@ -436,15 +436,6 @@ namespace IMDBWeb.Secure.IndustrialPages {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsGetProcPlan;
         
         /// <summary>
-        /// sdsGetLocation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetLocation;
-        
-        /// <summary>
         /// sdsNewTruck control.
         /// </summary>
         /// <remarks>
@@ -461,6 +452,15 @@ namespace IMDBWeb.Secure.IndustrialPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsGetUsers;
+        
+        /// <summary>
+        /// sdsGetLocations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsGetLocations;
         
         /// <summary>
         /// sdsRcvSummary control.
