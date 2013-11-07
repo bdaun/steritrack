@@ -14,9 +14,7 @@ namespace IMDBWeb.Secure
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //ddProcessPlan.Visible = false;
-            //lblProcessPlan.Visible = false;
-            txbNewLocation.Visible = false;
+            ddNewLocation.Visible = false;
             lblNewLocation.Visible = false;
             lblOutCntr.Visible = false;
             txbOutCntr.Visible = false;
@@ -36,7 +34,7 @@ namespace IMDBWeb.Secure
             // Based on strCntr value, set control visibility  strCntr = txbCntrID.Text;                       
             if (txbCntrID.Text == "")
             {
-                txbNewLocation.Visible = false;
+                ddNewLocation.Visible = false;
                 lblNewLocation.Visible = false;
                 FormView1.Visible = true;
                 lblCntrErr.Visible = false;
@@ -63,15 +61,15 @@ namespace IMDBWeb.Secure
                             if (isValid == null)
                             {
                                 lblErrMsg.Visible = true;
-                                txbNewLocation.Visible = false;
+                                ddNewLocation.Visible = false;
                                 return;
                             }
                             else
                             {
-                                txbNewLocation.Visible = true;
+                                ddNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
-                                txbNewLocation.Text = string.Empty;
-                                txbNewLocation.Focus();
+                                ddNewLocation.SelectedIndex = 0;
+                                ddNewLocation.Focus();
                             }
                         }
                         CntrConnect.Close();
@@ -97,16 +95,16 @@ namespace IMDBWeb.Secure
                             {
                                 //  this is the case where the inbound container did not have a related inbound record
                                 lblErrMsg.Visible = true;
-                                txbNewLocation.Visible = false;
+                                ddNewLocation.Visible = false;
                                 return;
                             }
                             else
                             {
                                 //  inbound record has been found.  Therefore, present the user with new location options
-                                txbNewLocation.Visible = true;
+                                ddNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
-                                txbNewLocation.Text = string.Empty;
-                                txbNewLocation.Focus();
+                                ddNewLocation.SelectedIndex = 0;
+                                ddNewLocation.Focus();
                             }
                         }
                         CntrConnect.Close();
@@ -114,7 +112,7 @@ namespace IMDBWeb.Secure
                 }
                 else  // this is the catch-all for scanned containers that do not meet the std convention for container naming
                 {
-                    txbNewLocation.Visible = false;
+                    ddNewLocation.Visible = false;
                     lblNewLocation.Visible = false;
                     txbCntrID.Text = "";
                     txbCntrID.Focus();
@@ -135,7 +133,7 @@ namespace IMDBWeb.Secure
                    
             if (txbCntrID.Text == "")
             {
-                txbNewLocation.Visible = false;
+                ddNewLocation.Visible = false;
                 lblNewLocation.Visible = false;
                 FormView1.Visible = true;
                 lblCntrErr.Visible = false;
@@ -162,15 +160,15 @@ namespace IMDBWeb.Secure
                             if (isValid == null)
                             {
                                 lblErrMsg.Visible = true;
-                                txbNewLocation.Visible = false;
+                                ddNewLocation.Visible = false;
                                 return;
                             }
                             else
                             {
-                                txbNewLocation.Visible = true;
+                                ddNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
-                                txbNewLocation.Text = string.Empty;
-                                txbNewLocation.Focus();
+                                ddNewLocation.SelectedIndex = 0;
+                                ddNewLocation.Focus();
                             }
                         }
                         CntrConnect.Close();
@@ -196,16 +194,17 @@ namespace IMDBWeb.Secure
                             {
                                 //  this is the case where the inbound container did not have a related inbound record
                                 lblErrMsg.Visible = true;
-                                txbNewLocation.Visible = false;
+                                ddNewLocation.Visible = true;
                                 return;
                             }
                             else
                             {
                                 //  inbound record has been found.  Therefore, present the user with new location options
-                                txbNewLocation.Visible = true;
+
+                                ddNewLocation.Visible = true;
                                 lblNewLocation.Visible = true;
-                                txbNewLocation.Text = string.Empty;
-                                txbNewLocation.Focus();
+                                ddNewLocation.SelectedIndex = 0;
+                                ddNewLocation.Focus();
                             }
                         }
                         CntrConnect.Close();
@@ -213,7 +212,7 @@ namespace IMDBWeb.Secure
                 }
                 else  // this is the catch-all for scanned containers that do not meet the std convention for container naming
                 {
-                    txbNewLocation.Visible = false;
+                    ddNewLocation.Visible = false;
                     lblNewLocation.Visible = false;
                     txbCntrID.Text = "";
                     txbCntrID.Focus();
@@ -222,59 +221,64 @@ namespace IMDBWeb.Secure
                 }
             }
         }
+
+        protected void FormView1_OnDataBound(object sender, EventArgs e)
+        {
+            if (((Label)FormView1.FindControl("lblLocation")) != null)
+            {
+                string curLocation = ((Label)FormView1.FindControl("lblLocation")).Text;
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                String spLocationType = "IMDB_LocChange_LocationByProfile_Sel";
+                SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+                spCmd2.CommandType = CommandType.StoredProcedure;
+                spCmd2.Parameters.AddWithValue("@Profile", ((Label)FormView1.FindControl("lblProfileID")).Text.ToString());
+                spCmd2.Parameters.AddWithValue("@RcvdAs", ((Label)FormView1.FindControl("lblRcvdAs")).Text.ToString());
+                con.Open();
+                using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+                {
+                    ddNewLocation.Items.Clear();
+                    ListItem newItem = new ListItem();
+                    newItem.Text = "Select...";
+                    newItem.Value = "0";
+                    ddNewLocation.Items.Add(newItem);
+
+                    while (rdr2.Read())
+                    {
+                        ListItem newItem1 = new ListItem();
+                        newItem1.Text = rdr2["LocationName"].ToString();
+                        newItem1.Value = rdr2["LocationName"].ToString();
+                        ddNewLocation.Items.Add(newItem1);
+                    }
+                }
+                con.Close();
+                ddNewLocation.SelectedValue = curLocation;
+            }
+        }
         protected void btnClear_Click(object sender, EventArgs e)
         {
             // Reset page
             txbCntrID.Text = "";
             Response.Redirect(Request.RawUrl);
         }
-        protected void txbNewLocation_TextChanged(object sender, EventArgs e)
+
+        protected void ddNewLocation_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             /*  ********************************** Algorithm ************************************************
                 When user selects a new location, system does the following:
-                1. Check if the location that was entered is a valid location
-                2. Check if the new location is a loc2loc move, an aggrcntr process, or a truck out process
-                3. If new location isL
+                1. Check if the new location is a loc2loc move, an aggrcntr process, or a truck out process
+                2. If new location isL
                     a. Truck:  prompt for TruckID,
                     b. AggrCntr:  create and/or update the process record with the aggrcntr value and name
                     c. Loc2Loc:  Update the location
 
                 ********************************************************************************************** */
 
-            // Check to see if the New Location is a valid location
-            #region CheckLocation valid
-
-            string checklocation = "IMDB_LocChange_Location_Sel";
-            SqlConnection LocConnect = new SqlConnection();
-            LocConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand LocCmd = new SqlCommand(checklocation, LocConnect);
-            LocCmd.CommandType = CommandType.StoredProcedure;
-            LocConnect.Open();
-
-            using (LocCmd)
-            {
-                LocCmd.Parameters.AddWithValue("@locationname", txbNewLocation.Text);
-                object hasLoc = new object();
-                hasLoc = LocCmd.ExecuteScalar();
-                if (hasLoc == null)
-                {
-                    lblErrMsg.Visible = true;
-                    lblErrMsg.Text = "This is not a valid Location.";
-                    txbNewLocation.Visible = true;
-                    txbNewLocation.Text = string.Empty;
-                    txbNewLocation.Focus();
-                    return;
-                }
-            }
-            LocConnect.Close();
-
-            #endregion
-
             // Determine type of move.  If it is Truck user must supply the shipping information.
             #region Type of Move and Location Updates
 
             string[] args = { "COMPACTOR", "TRUCK", "BALER", "TANK 1", "TANK 2" };
-            string value = txbNewLocation.Text.ToUpper();
+            string value = ddNewLocation.SelectedValue;
             string found = Array.Find(args, item => item.Contains(value));
             if (!string.IsNullOrEmpty(found))  //new location is Aggregate Container or Truck
             {
@@ -393,7 +397,7 @@ namespace IMDBWeb.Secure
                     String spIns = string.Empty;
                     String spPallet = string.Empty;
                     //  Use switch to set storedprocedure values depending on new location
-                    switch (txbNewLocation.Text.ToUpper())
+                    switch (ddNewLocation.SelectedValue)
                     {
                         case "COMPACTOR":
                             spChk = "IMDB_Processing_InsCompact_Exist";
@@ -438,7 +442,7 @@ namespace IMDBWeb.Secure
                             {
                                 ChkResult = true;
                                 lblErrMsg.Visible = true;
-                                lblErrMsg.Text = "There is already a " + txbNewLocation.Text + " Record. Please contact your supervisor";
+                                lblErrMsg.Text = "There is already an Aggregate record for this container.  Please contact your supervisor";
                             }
                         }
                         catch (Exception ex)
@@ -455,7 +459,8 @@ namespace IMDBWeb.Secure
                         {
                             try
                             {
-                                String cntrname = txbNewLocation.Text;
+                                String cntrname = string.Empty;
+                                cntrname = ddNewLocation.SelectedValue;
                                 Session["curCntr"] = "";
                                 spAggrCmd.Parameters.AddWithValue("@cntrname", cntrname);
                                 object objCntr = new object();
@@ -640,7 +645,7 @@ namespace IMDBWeb.Secure
                         UpdateCmd.Parameters.Add("@InboundContainerID", SqlDbType.NVarChar, 20, "InboundContainerID");
                         UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
                         UpdateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
-                        UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                        UpdateCmd.Parameters["@NewLocation"].Value = ddNewLocation.SelectedValue;
                         UpdateCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
 
                         UpdateCmd.ExecuteNonQuery();
@@ -683,7 +688,7 @@ namespace IMDBWeb.Secure
                         UpdateCmd.Parameters.Add("@outboundcontainerid", SqlDbType.NVarChar, 20, "OutboundContainerID");
                         UpdateCmd.Parameters.Add("@NewLocation", SqlDbType.NVarChar, 50, "NewLocation");
                         UpdateCmd.Parameters["@outboundcontainerid"].Value = txbCntrID.Text;
-                        UpdateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                        UpdateCmd.Parameters["@NewLocation"].Value = ddNewLocation.SelectedValue;
                         UpdateCmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                         UpdateCmd.ExecuteNonQuery();
                     }
@@ -755,12 +760,11 @@ namespace IMDBWeb.Secure
                 //  This is the case for "IN" container being moved to TRUCK
                 {
                     string strCntr1 = txbOutCntr.Text.ToUpper();
-                    if (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")
+                    if(inTblChk == true && ddNewLocation.SelectedValue == "TRUCK")
                     {
                         // Perform the location update to the RecDetails table
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-    //  delete?                        SqlCommand nonqueryCommand = thisConnection.CreateCommand();
 
                         try
                         {
@@ -779,7 +783,7 @@ namespace IMDBWeb.Secure
                                 updateCmd.Parameters.Add("@processplan", SqlDbType.NVarChar, 20, "ProcessPlan");
                                 updateCmd.Parameters["@processplan"].Value = "Truck";
                                 updateCmd.Parameters["@InboundContainerID"].Value = txbCntrID.Text;
-                                updateCmd.Parameters["@NewLocation"].Value = txbNewLocation.Text;
+                                updateCmd.Parameters["@NewLocation"].Value = ddNewLocation.SelectedValue;
                                 updateCmd.Parameters.AddWithValue("@Username", HttpContext.Current.User.Identity.Name.ToString());
 
                                 updateCmd.ExecuteNonQuery();
@@ -844,7 +848,7 @@ namespace IMDBWeb.Secure
                                 }
                             }
                             // Sql Insert ProcDetail Statement for new record.
-                            string OutboundLocation = txbNewLocation.Text.ToUpper();
+                            string OutboundLocation = ddNewLocation.SelectedValue;
                             string insertSQL2 = "";
                             int palletwt = 0;
                             int productwt = 0;
@@ -872,7 +876,7 @@ namespace IMDBWeb.Secure
                                 insertCmd2.ExecuteNonQuery();
                             }
 
-                            txbNewLocation.Text = string.Empty;
+                            ddNewLocation.SelectedIndex = 0;
                         }
                         catch (SqlException ex)
                         {
@@ -913,12 +917,11 @@ namespace IMDBWeb.Secure
                 //  This is the case for "OUT" containers that are being loaded on a Truck
 	            {
                     string strCntr1 = txbOutCntr.Text.ToUpper();
-                    if (inTblChk == true && txbNewLocation.Text.ToUpper() == "TRUCK")
+                    if(inTblChk == true && ddNewLocation.SelectedValue == "TRUCK")
                     {
                         // Perform the location update to the ProcDetails table
                         SqlConnection thisConnection = new SqlConnection();
                         thisConnection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-   //  delete?                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                         
                         try
                         {
@@ -940,7 +943,7 @@ namespace IMDBWeb.Secure
 
                             UpdateCmd.ExecuteNonQuery();           
                             
-                            txbNewLocation.Text = string.Empty;
+                            ddNewLocation.SelectedIndex = 0;
                         }
                         catch (SqlException ex)
                         {
@@ -1006,11 +1009,10 @@ namespace IMDBWeb.Secure
             { 
                 ProcPlanCon.Close();
                 lblNewLocation.Visible = true;
-                txbNewLocation.Visible = true;
-                //lblProcessPlan.Visible = true;
-                //ddProcessPlan.Visible = true;
+                ddNewLocation.Visible = true;
             }
             
         }
+
     }
 }

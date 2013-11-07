@@ -8,7 +8,7 @@
 <asp:Button ID="BtnSubmit" runat="server" Text="Submit" onclick="BtnSubmit_Click" style="font-size: small" />
 <asp:Button ID="btnClear" runat="server" Text="Clear" onclick="btnClear_Click" style="font-size: small" /><br />
 <asp:Label ID="lblCntrErr" runat="server" Text="CntrErrMsg" ForeColor="#FF3300" Visible="False" style="font-size: medium" Font-Size="XX-Small" Font-Bold="true"></asp:Label>
-<asp:FormView ID="FormView1" runat="server" CellPadding="4" DataSourceID="RcvDetailSQL" ForeColor="#333333" Width="237px">
+<asp:FormView ID="FormView1" runat="server" CellPadding="4" DataSourceID="RcvDetailSQL" ForeColor="#333333" Width="237px" OnDataBound="FormView1_OnDataBound">
 <EditItemTemplate>
     US_Brand_Code:
     <asp:TextBox ID="US_Brand_CodeTextBox" runat="server" Text='<%# Bind("US_Brand_Code") %>' /><br />
@@ -30,10 +30,12 @@
         <td><asp:Label ID="ProductNameLabel" runat="server" Text='<%# Bind("ProductName") %>' /></td>
     </tr>    
     <tr><td align="right" style="font-size: x-small; font-weight: bold">Profile:  </td>
-        <td><asp:Label ID="ProfileNameLabel" runat="server" Text='<%# Bind("ProfileName") %>' /></td>
+        <td><asp:Label ID="ProfileNameLabel" runat="server" Text='<%# Bind("ProfileName") %>' />
+            <asp:Label ID="lblProfileID" runat="server" Text='<%# Bind("ProfileID") %>' Visible="false" /></td>
     </tr>
     <tr><td align="right" style="font-size: x-small; font-weight: bold">Location:  </td>
-        <td><asp:Label ID="Label1" runat="server" Text='<%# Bind("LocationName") %>' /></td>
+        <td><asp:Label ID="lblLocation" runat="server" Text='<%# Bind("LocationName") %>' />
+            <asp:Label ID="lblRcvdAs" runat="server" Text='<%# Bind("RcvdAs") %>' Visible="false"/></td>
     </tr>
     </table>
     </ItemTemplate>
@@ -92,13 +94,12 @@
     </ItemTemplate>
 </asp:formview>
 <table border="0" cellpadding="0" cellspacing="0">
-<%--<tr><td><asp:Label ID="lblProcessPlan" runat="server" Text="Process Plan:" Font-Size="XX-Small" Visible="False" /></td></tr>
-<tr><td><asp:DropDownList ID="ddProcessPlan" runat="server" DataSourceID="sdsProcPlan" DataTextField="ProcessPlan" DataValueField="ProcessPlan" /></td></tr>--%>
 <tr><td>
-    <asp:Label ID="lblNewLocation" runat="server" Text="Please enter a new location" Visible="False" />
-</td></tr>
-<tr><td>
-    <asp:TextBox ID="txbNewLocation" runat="server" AutoPostBack="True" ontextchanged="txbNewLocation_TextChanged" />
+    <asp:Label ID="lblNewLocation" runat="server" Text="Please enter a new location" Visible="False" /><br />
+    <asp:DropDownList ID="ddNewLocation" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddNewLocation_OnSelectedIndexChanged" AppendDataBoundItems="true">
+        <asp:ListItem Text="Select..." />
+        <asp:ListItem Text="TRUCK" />
+    </asp:DropDownList>
 </td></tr>
 <tr><td>
     <asp:Label ID="lblOutCntr" runat="server" Text="Please scan the New Location ID" Font-Size="XX-Small" />
@@ -121,7 +122,7 @@
     </asp:SqlDataSource>
 <asp:SqlDataSource ID="RcvDetailSQL" runat="server"
         ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
-        SelectCommand="IMDB_LocChange_Sel" SelectCommandType="StoredProcedure">
+        SelectCommand="IMDB_LocChange_Sel" SelectCommandType="StoredProcedure" >
         <SelectParameters>
             <asp:ControlParameter ControlID="txbCntrID" DefaultValue="NULL" Name="param" 
                 PropertyName="Text" />
