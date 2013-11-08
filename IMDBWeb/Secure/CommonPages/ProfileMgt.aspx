@@ -36,7 +36,7 @@
         <tr><td>Location Type:</td><td><asp:DropDownList ID="ddLocationType" runat="server" SelectedValue='<%# Bind("LocationType") %>'>
             <asp:ListItem Text="Select from List" Value = "Select" />
             <asp:ListItem Text="Hazardous Flammable" />
-            <asp:ListItem Text="Hazardous Non-Flammable" />
+            <asp:ListItem Text="Hazardous NonFlammable" />
             <asp:ListItem Text="NonHazardous" />
             <asp:ListItem Text="Aerosol" />
         </asp:DropDownList></td></tr>
@@ -80,7 +80,7 @@
         <tr><td>Location Type:</td><td><asp:DropDownList ID="ddLocationType" runat="server" SelectedValue='<%# Bind("LocationType") %>'>
             <asp:ListItem Text="Select from List" Value = "Select" />
             <asp:ListItem Text="Hazardous Flammable" />
-            <asp:ListItem Text="Hazardous Non-Flammable" />
+            <asp:ListItem Text="Hazardous NonFlammable" />
             <asp:ListItem Text="NonHazardous" />
             <asp:ListItem Text="Aerosol" />
         </asp:DropDownList>
