@@ -5,7 +5,7 @@
 <script type="text/javascript">    function setHeight(txtdesc) { txtdesc.style.height = txtdesc.scrollHeight + "px"; }</script>
 <asp:UpdatePanel ID="udpMailGV" runat="server" UpdateMode="Conditional">
 <ContentTemplate>
-<asp:ScriptManager ID="sm1" runat="server" />
+<ajaxToolkit:ToolkitScriptManager ID="sm" runat="server" />
 <table>
 <tr><td>I would like to:</td><td></td></tr>
 <tr><td><asp:RadioButtonList ID="rbList1" runat="server" AutoPostBack="True" onselectedindexchanged="rbList1_SelectedIndexChanged">
