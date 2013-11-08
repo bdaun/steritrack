@@ -57,7 +57,7 @@
 <table>
 <tr valign="top">
 <td>
-<asp:ScriptManager ID="sm" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
+<ajaxToolkit:ToolkitScriptManager ID="sm" runat="server" EnablePartialRendering="true" />
 <asp:UpdatePanel ID="udpGridView" runat="server">
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="btnGO" EventName="Click" />

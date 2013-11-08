@@ -4,7 +4,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">    function setHeight(txtdesc) { txtdesc.style.height = txtdesc.scrollHeight + "px"; }</script>
-<asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+<ajaxToolkit:ToolkitScriptManager ID="sm" runat="server" EnablePageMethods="true" />
 <h3>Receiving</h3><hr />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" />
 <table id="tblBegin" runat="server">

@@ -13,13 +13,13 @@ namespace IMDBWeb.Secure.IndustrialPages {
     public partial class ShipHeader {
         
         /// <summary>
-        /// sm1 control.
+        /// sm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager sm1;
+        protected global::AjaxControlToolkit.ToolkitScriptManager sm;
         
         /// <summary>
         /// trSubNav control.
