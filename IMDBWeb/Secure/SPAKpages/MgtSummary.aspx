@@ -139,7 +139,7 @@
 </table>
 <hr id="hr1" runat="server" />
 <asp:Button ID="btnExport" runat="server" onclick="btnExport_Click" Text="Export to Excel" />
-<asp:ScriptManager ID="sm" runat="server" EnablePartialRendering="True"></asp:ScriptManager>
+<ajaxToolkit:ToolkitScriptManager ID="sm" runat="server" EnablePartialRendering="True" />
 <asp:UpdatePanel ID="udpGridView" runat="server">
 <Triggers>
     <asp:PostBackTrigger ControlID="ddCustomerRep"  />

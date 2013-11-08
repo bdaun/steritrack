@@ -19,7 +19,7 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager SM1;
+        protected global::AjaxControlToolkit.ToolkitScriptManager SM1;
         
         /// <summary>
         /// lblErrMsg control.

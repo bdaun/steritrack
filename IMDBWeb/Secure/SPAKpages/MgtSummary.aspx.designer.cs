@@ -253,7 +253,7 @@ namespace IMDBWeb.Secure.SPAKpages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager sm;
+        protected global::AjaxControlToolkit.ToolkitScriptManager sm;
         
         /// <summary>
         /// udpGridView control.
