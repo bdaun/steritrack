@@ -15,6 +15,7 @@
                     <li><a href="ManifestRcvd.aspx" style="font-size: large; color: #008000;">Manifest Receiving</a></li>
                     <li><a href="ManifestMailing.aspx" style="font-size: large; color: #008000;">Manage Manifest Mailing</a></li>
                     <li><a href="BoxRcvd.aspx" style="font-size: large; color: #008000;">SPAK Box Receiving</a></li>
+                    <li><a href="mBoxRcvd.aspx" style="font-size: large; color: #008000;">Mobile SPAK Box Receiving</a></li>
                     <li><a href="AlertItems.aspx" style="font-size: large; color: #008000;">Manage Alert Items</a></li>
                     <li><a href="Labels.aspx" style="font-size: large; color: #008000;">Manage Labels</a></li>
                     <li><a href="CVSReconciliation.aspx" style="font-size: large; color: #008000;">CVS Reconciliation</a></li>
