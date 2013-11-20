@@ -179,7 +179,7 @@ namespace IMDBWeb.Secure
                         //  Confirm that the container id that was scanned is associated with an inbound container
 
                         string chkValidCntr = "IMDB_LocChange_OutboundContainer_Exist";
-                        lblErrMsg.Text = "This outbound container has not been assoicated with an inbound container.  Please use the processing page to associate this container with an inbound container";
+                        lblErrMsg.Text = "This outbound container has not been associated with an inbound container.  Please use the processing page to associate this container with an inbound container";
                         SqlConnection CntrConnect = new SqlConnection();
                         CntrConnect.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
                         SqlCommand CntrCmd = new SqlCommand(chkValidCntr, CntrConnect);
@@ -194,7 +194,7 @@ namespace IMDBWeb.Secure
                             {
                                 //  this is the case where the inbound container did not have a related inbound record
                                 lblErrMsg.Visible = true;
-                                ddNewLocation.Visible = true;
+                                ddNewLocation.Visible = false;
                                 return;
                             }
                             else
@@ -253,6 +253,35 @@ namespace IMDBWeb.Secure
                 }
                 con.Close();
                 ddNewLocation.SelectedValue = curLocation;
+            }
+            else
+            {
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                String spLocationType = "IMDB_LocChange_LocationByProfile_Sel";
+                SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
+                spCmd2.CommandType = CommandType.StoredProcedure;
+                spCmd2.Parameters.AddWithValue("@Profile", "0");  // Parameter is required by SP but will not be used for this case
+                spCmd2.Parameters.AddWithValue("@RcvdAs", "ProcessingResult");  // Will cause the SP to return all values
+                con.Open();
+                using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
+                {
+                    ddNewLocation.Items.Clear();
+                    ListItem newItem = new ListItem();
+                    newItem.Text = "Select...";
+                    newItem.Value = "0";
+                    ddNewLocation.Items.Add(newItem);
+
+                    while (rdr2.Read())
+                    {
+                        ListItem newItem1 = new ListItem();
+                        newItem1.Text = rdr2["LocationName"].ToString();
+                        newItem1.Value = rdr2["LocationName"].ToString();
+                        ddNewLocation.Items.Add(newItem1);
+                    }
+                }
+                con.Close();
+                ddNewLocation.SelectedIndex = 0;
             }
         }
         protected void btnClear_Click(object sender, EventArgs e)
