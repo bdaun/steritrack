@@ -9,7 +9,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="pagename" runat="server"><div class="pagename">Mobile Box Received</div></asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-<ajaxToolkit:ToolkitScriptManager ID="SM1" runat="server" EnablePageMethods="true" />
+<asp:ScriptManager ID="SM1" runat="server" EnablePageMethods="true" />
 <script type="text/javascript">
     function CommentChanged_Changed() {
         document.all('ctl00$MainContent$txbPalletCntrID').focus();

@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<ajaxToolkit:ToolkitScriptManager ID="sm1" runat="server" />
+<asp:ScriptManager ID="sm1" runat="server" />
 <h3>CVS Reconciliation Page</h3><hr /><br />
 <asp:Label ID="lblErrMsg" runat="server" Font-Bold="True" Font-Size="Large" ForeColor="Red" /><br />
 <asp:Label ID="lblEnterTruckID" runat="server" Text="Please scan/Enter a TruckID to begin:" Font-Size="Large" />&nbsp;&nbsp;
