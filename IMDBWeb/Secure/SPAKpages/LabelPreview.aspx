@@ -11,7 +11,7 @@
 </head>
 <body>
 <form id="form1" runat="server">
-<ajaxToolkit:ToolkitScriptManager ID="sm1" runat="server" />
+<asp:ScriptManager ID="sm1" runat="server" />
 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
     Font-Size="8pt" InteractiveDeviceInfos="(Collection)" 
     WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Width="6in" Height="4in">
