@@ -98,7 +98,6 @@
     <asp:Label ID="lblNewLocation" runat="server" Text="Please enter a new location" Visible="False" /><br />
     <asp:DropDownList ID="ddNewLocation" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddNewLocation_OnSelectedIndexChanged" AppendDataBoundItems="true">
         <asp:ListItem Text="Select..." />
-        <asp:ListItem Text="TRUCK" />
     </asp:DropDownList>
 </td></tr>
 <tr><td>
