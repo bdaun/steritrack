@@ -541,6 +541,11 @@ namespace IMDBWeb.Secure.SPAKpages
                                 WebMsgBox.Show("This is an EXPLOSIVE MATERIAL.  Please place on an Outbound Pallet AS IS to EEI.  Boxes should not be mixed with any Stericycle product");
                                 lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             }
+                            if (Session["CurProfileName"].ToString().Contains("NON-HAZARDOUS FUEL FILTERS"))
+                            {
+                                WebMsgBox.Show("This box contains Fuel Filters and must be sent to Hazardous Waste Facility for disposal. Please place on appropriate outbound pallet");
+                                lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
+                            }
                         }
                         else if (txbTruckCntrID.Text.Substring(0, 2) == "02")  // Veolia Validation
                         {
