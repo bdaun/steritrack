@@ -2,18 +2,25 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <br />
+<h3>Industrial Pages</h3>
     <ul>
     <li>
-    <asp:HyperLink ID="hypInLocChng" runat="server" NavigateUrl="~/secure/mobilepages/mlocationchange.aspx">
+    <asp:HyperLink ID="hypInLocChng" runat="server" NavigateUrl="~/secure/IndustrialPages/mlocationchange.aspx">
     Inbound Location Change</asp:HyperLink><br />
     </li>
     <li>
-    <asp:HyperLink ID="hypProc" runat="server" NavigateUrl="~/secure/mobilepages/mProcessing.aspx">
+    <asp:HyperLink ID="hypProc" runat="server" NavigateUrl="~/secure/IndustrialPages/mProcessing.aspx">
     Processing</asp:HyperLink><br />
     </li>
     <li>
-    <asp:HyperLink ID="hypAggregate" runat="server" NavigateUrl="~/secure/mobilepages/mAggregateContainer.aspx">Manage Aggregate Containers</asp:HyperLink>
+    <asp:HyperLink ID="hypAggregate" runat="server" NavigateUrl="~/secure/IndustrialPages/mAggregateContainer.aspx">Manage Aggregate Containers</asp:HyperLink>
+    </li>
+    </ul>
+<h3>SPAK Pages</h3>
+    <ul>
+    <li>
+    <asp:HyperLink ID="hlSpakBox" runat="server" NavigateUrl="~/secure/SpakPages/mBoxRcvd.aspx">
+    SPAK Box Receiving</asp:HyperLink><br />
     </li>
     </ul>
 </asp:Content>
