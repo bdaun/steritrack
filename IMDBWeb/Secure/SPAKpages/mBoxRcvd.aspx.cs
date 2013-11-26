@@ -284,7 +284,7 @@ namespace IMDBWeb.Secure.SPAKpages
                                 else
                                 {
                                     WebMsgBox.Show("This Box Bar code was not found in SPAK.  Please capture as much information as possible in the additional fields. " +
-                                        "Please place this box on and exception pallet and alert your supervisor.");
+                                        "Please place this box on an exception pallet and alert your supervisor.");
                                     lblFacilityName.Text = "UNKNOWN";
                                     lblProfileName.Text = "UNKNOWN";
                                     tblBoxNotFound.Visible = true;
