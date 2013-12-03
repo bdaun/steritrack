@@ -13,7 +13,7 @@
         <td>
             <ul>
               <li><a href="mAggregateContainer.aspx" style="font-size: large; color: #008000;">Manage Aggregate Containers</a></li>
-              <li><a href="mLocationChange.aspx" style="font-size: large; color: #008000;">Inbound Location Change</a></li>
+              <li><a href="mLocationChange.aspx" style="font-size: large; color: #008000;">Location Change</a></li>
               <li><a href="mProcessing.aspx" style="font-size: large; color: #008000;">Processing</a></li>
             </ul>
         </td>
