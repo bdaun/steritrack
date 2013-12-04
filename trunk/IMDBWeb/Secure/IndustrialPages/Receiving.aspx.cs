@@ -743,37 +743,5 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             txbBrandCodes_SelectedIndexChanged(null, null);
         }
-
-        //protected void sdsContainer_Edit_Selecting(object sender, EventArgs e)
-        //{
-        //    if (((DropDownList)fvContainerDetail.FindControl("ddLocation")) != null)
-        //    {
-        //        SqlConnection con = new SqlConnection();
-        //        con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-        //        String spLocationType = "IMDB_Receive_Location_Sel";
-        //        SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
-        //        spCmd2.CommandType = CommandType.StoredProcedure;
-        //        spCmd2.Parameters.AddWithValue("@LocationType", ((DropDownList)fvContainerDetail.FindControl("ddLocation")).SelectedValue);
-        //        spCmd2.Parameters.AddWithValue("@RcvdAs", ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue);
-        //        con.Open();
-        //        using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
-        //        {
-        //            ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
-        //            ListItem newItem = new ListItem();
-        //            newItem.Text = "Select";
-        //            newItem.Value = "0";
-        //            ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
-
-        //            while (rdr2.Read())
-        //            {
-        //                ListItem newItem1 = new ListItem();
-        //                newItem1.Text = rdr2["LocationName"].ToString();
-        //                newItem1.Value = rdr2["LocationName"].ToString();
-        //                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
-        //            }
-        //        }
-        //        con.Close();
-        //    }
-        //}
     }
 }
