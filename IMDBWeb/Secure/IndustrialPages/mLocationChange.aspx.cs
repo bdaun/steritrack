@@ -433,7 +433,17 @@ namespace IMDBWeb.Secure
                             spIns = "IMDB_Processing_InsCompact";
                             spPallet = "IMDB_Processing_Pallet_Ins";
                             break;
+                        case "Compactor":
+                            spChk = "IMDB_Processing_InsCompact_Exist";
+                            spIns = "IMDB_Processing_InsCompact";
+                            spPallet = "IMDB_Processing_Pallet_Ins";
+                            break;
                         case "BALER":
+                            spChk = "IMDB_Processing_InsBale_Exist";
+                            spIns = "IMDB_processing_InsBale";
+                            spPallet = "IMDB_Processing_Pallet_Ins";
+                            break;
+                        case "Baler":
                             spChk = "IMDB_Processing_InsBale_Exist";
                             spIns = "IMDB_processing_InsBale";
                             spPallet = "IMDB_Processing_Pallet_Ins";
