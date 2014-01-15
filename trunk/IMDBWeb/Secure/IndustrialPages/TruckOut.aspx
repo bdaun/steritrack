@@ -3,6 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server"> 
 <h3>Truck Out Management</h3><hr />
+<ajaxToolkit:ToolkitScriptManager ID="SM" runat="server" />
 <table><tr>
 <td>
 <table><tr><td align="left"><asp:DropDownList ID="ddDocList" runat="server" AppendDataBoundItems="true" 
@@ -159,6 +160,54 @@
 </td>
 </tr></table> 
 </asp:Panel>
+<asp:HiddenField ID="hdnOUTPlaceHolder" runat="server" />
+<asp:HiddenField ID="hdnINPlaceHolder" runat="server" />
+<asp:HiddenField ID="hdnINChangePlaceHolder" runat="server" />
+<ajaxToolkit:ModalPopupExtender ID="mpeOUTCHEP" runat="server"  
+	targetcontrolid="hdnOUTPlaceHolder" popupcontrolid="pnlOUTCHEPPopup" popupdraghandlecontrolid="PopupHeaderOUT" drag="true" backgroundcssclass="ModalPopupBG">
+</ajaxToolkit:ModalPopupExtender>
+<ajaxToolkit:ModalPopupExtender ID="mpeINCHEP" runat="server" 
+	targetcontrolid="hdnINPlaceHolder" popupcontrolid="pnlINCHEPPopup" popupdraghandlecontrolid="PopupHeaderIN" drag="true" backgroundcssclass="ModalPopupBG">
+</ajaxToolkit:ModalPopupExtender>
+<ajaxToolkit:ModalPopupExtender ID="mpeINChange" runat="server"  
+	targetcontrolid="hdnINChangePlaceHolder" popupcontrolid="pnlINNoChange" popupdraghandlecontrolid="PopupHeaderInChange" drag="true" backgroundcssclass="ModalPopupBG">
+</ajaxToolkit:ModalPopupExtender>
+<asp:panel id="pnlINCHEPPopup" style="display: none" runat="server">
+	<div class="ChepCheckdPopup">
+                <div class="PopupHeader" id="PopupHeaderIN">Warning!</div>
+                <div class="PopupBody">
+                    <p>This container was originally shipped on a CHEP pallet. Has the pallet been changed to GMA?</p>
+                </div>
+                <div class="Controls">
+                    <asp:Button ID="btnINChanged" runat="server" Text="Yes" onclick="INYesChanged" CausesValidation="false" />
+                    <asp:Button ID="btnINNotChanged" runat="server" Text="No" onclick="INNotChanged" CausesValidation="false" />
+		</div>
+        </div>
+</asp:panel>
+<asp:panel id="pnlINNoChange" style="display: none" runat="server">
+	<div class="ChepCheckdPopup">
+                <div class="PopupHeader" id="PopupHeaderInChange">Warning!</div>
+                <div class="PopupBody">
+                    <p>This container is on a CHEP pallet.  Do not add to the truck wihtout Supervisor approval</p>
+                </div>
+                <div class="Controls">
+                    <asp:Button ID="btnINOK" runat="server" Text="I have approval" OnClick="INwApproval" CausesValidation="false" />
+                    <asp:Button ID="btnINCancel" runat="server" Text="Cancel" OnClick="INCancel" CausesValidation="false" />
+		        </div>
+        </div>
+</asp:panel>
+<asp:panel id="pnlOUTCHEPPopup" style="display: none" runat="server">
+	<div class="ChepCheckdPopup">
+                <div class="PopupHeader" id="PopupHeaderOUT">Warning!</div>
+                <div class="PopupBody">
+                    <p>This container is on a CHEP pallet.  Do not add to the truck wihtout Supervisor approval</p>
+                </div>
+                <div class="Controls">
+                    <asp:Button ID="btnOUTOk" runat="server" Text="I have approval" OnClick="OUTwApproval" CausesValidation="false" />
+                    <asp:Button ID="btnOUTCancel" runat="server" Text="Cancel" OnClick="OUTCancel" CausesValidation="false" />
+		        </div>
+        </div>
+</asp:panel>
 <asp:SqlDataSource ID="sdsOutBoundDocNo" runat="server" DataSourceMode="DataSet" EnableCaching="false"
     ConnectionString="<%$ ConnectionStrings:IMDB_SQL %>" 
     SelectCommand="IMDB_TruckOut_OutBoundDoc_Sel" SelectCommandType="StoredProcedure" FilterExpression="Completed = '0'" >
