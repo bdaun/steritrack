@@ -19,7 +19,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
     <InsertItemTemplate>
     <table>
     <tr><td style="font-weight:bold">OrderNumber:</td>
-        <td><asp:TextBox ID="txbNewOrderNumber" runat="server" Width="100px"  Text='<%# Bind("OrderNumber") %>' />
+        <td><asp:TextBox ID="txbNewOrderNumber" runat="server" Width="200px"  Text='<%# Bind("OrderNumber") %>' />
         <ajaxToolkit:AutoCompleteExtender
             ID="txbOrderNum_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
             TargetControlID="txbNewOrderNumber" ServicePath="myAutoComplete.asmx" ServiceMethod="GetNewOrderNums"
@@ -102,7 +102,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
     <ItemTemplate>
     <table>
     <tr><td style="font-weight:bold">OrderNumber:</td>
-        <td><asp:TextBox ID="txbNewOrderNumber" runat="server" Width="100px"  Text='<%# Bind("OrderNumber") %>' />
+        <td><asp:TextBox ID="txbNewOrderNumber" runat="server" Width="200px"  Text='<%# Bind("OrderNumber") %>' />
         <ajaxToolkit:AutoCompleteExtender
             ID="txbOrderNum_AutoCompleteExtender" runat="server" Enabled="True" CompletionInterval="50"
             TargetControlID="txbNewOrderNumber" ServicePath="myAutoComplete.asmx" ServiceMethod="GetNewOrderNums"
