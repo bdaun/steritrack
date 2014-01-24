@@ -511,7 +511,7 @@ namespace IMDBWeb.Secure.SPAKpages
                     {
                         if (txbTruckCntrID.Text.Substring(0, 2) == "01")  // Indy Validation
                         {
-                            switch(Session["CurPharmControl"].ToString())
+                            switch (Session["CurPharmControl"].ToString())
                             {
                                 case "2":
                                     WebMsgBox.Show("This is a Level 2 Control.  Please affix the appropriate label and place the box in the control cage.");
@@ -522,8 +522,8 @@ namespace IMDBWeb.Secure.SPAKpages
                                     lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     break;
                                 case "NonReg":  //NonReg pharma may be hazardous.  If so, must be managed differently from nonhaz pharm
-                                    if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreState"].ToString().TrimEnd() == "WA")  
-                                    {  
+                                    if (Session["CurHazCode"].ToString().Length > 0 && Session["CurStoreState"].ToString().TrimEnd() == "WA")
+                                    {
                                         WebMsgBox.Show("This is a WASHINGTON HAZARDOUS pharmaceutical.  Please place on an appropriate pallet for incineration.");
                                         lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     }
@@ -533,7 +533,11 @@ namespace IMDBWeb.Secure.SPAKpages
                                         lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     }
                                     break;
+                                case "NA":
+                                    break;
                                 default:
+                                    WebMsgBox.Show("The box you have scanned has a non standard Pharma Control value.  Please set it aside for your supervisor for verification and next steps.");
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     break;
                             }
                             if(Session["CurProfileName"].ToString().Contains("Explosive"))
