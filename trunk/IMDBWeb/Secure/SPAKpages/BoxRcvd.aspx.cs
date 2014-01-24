@@ -534,7 +534,11 @@ namespace IMDBWeb.Secure.SPAKpages
                                         lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     }
                                     break;
+                                case "NA":
+                                    break;
                                 default:
+                                    WebMsgBox.Show("The box you have scanned has a non standard Pharma Control value.  Please set it aside for your supervisor for verification and next steps.");
+                                    lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                                     break;
                             }
                             if(Session["CurProfileName"].ToString().Contains("Explosive"))
