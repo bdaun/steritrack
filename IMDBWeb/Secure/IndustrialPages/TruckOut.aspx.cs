@@ -14,6 +14,7 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             if (!IsPostBack)
             {
+                txbNewCntr.Text = string.Empty;
                 Panel1.Visible = false;
                 sdsOutBoundDocNo.FilterExpression = "Completed = {0}";
                 trAddCntr.Visible = false;
@@ -117,6 +118,9 @@ namespace IMDBWeb.Secure.IndustrialPages
         }
         protected void ddDocList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            txbNewCntr.Text = string.Empty;
+            lblErrMsg.Visible = false;
+            lblErrMsg.Text = string.Empty;
             if (ddDocList.SelectedIndex == 0)
             {
                 trAddCntr.Visible = false;
@@ -229,8 +233,13 @@ namespace IMDBWeb.Secure.IndustrialPages
             //  if no, create procHdr, ProcDetail
 
 
-            // Clear any existing error messages
+            // Clear any existing error messages and set default session value for pallet type
             lblErrMsg.Visible = false;
+            Session["OutboundPalletType"] = string.Empty;
+            if(string.IsNullOrEmpty(txbNewCntr.Text))
+            {
+                return;
+            }
 
             string strSP = "IMDB_TruckOut_Stream_sel";
             SqlConnection conn = new SqlConnection();
@@ -351,6 +360,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                     if (curPalletType.ToString().ToUpper() == "CHEP")
                     {
                         this.mpeOUTCHEP.Show();
+                        return;
                     }
                     else
                     {
@@ -439,103 +449,131 @@ namespace IMDBWeb.Secure.IndustrialPages
                     lblErrMsg.Text = ex.ToString();
                 }
 
-                if (Session["InboundPalletType"].ToString().ToUpper() == "CHEP")
+                try  // Determine if a procDetail record exists for this IN Cntr
                 {
-                    con.Close();
-                    this.mpeINCHEP.Show();
-                }
-                else
-                {
-                    try  // Determine if a procDetail record exists for this IN Cntr
+                    string spProcDetailExists = "IMDB_TruckOut_pdExist";
+                    SqlCommand pdChk = new SqlCommand(spProcDetailExists, con);
+                    pdChk.CommandType = CommandType.StoredProcedure;
+                    using (pdChk)
                     {
-                        string spProcDetailExists = "IMDB_TruckOut_pdExist";
-                        SqlCommand pdChk = new SqlCommand(spProcDetailExists, con);
-                        pdChk.CommandType = CommandType.StoredProcedure;
-                        using (pdChk)
+                        String ProcHdrID = string.Empty;
+                        String ProcDetailID = string.Empty;
+                        String OutboundContainerID = string.Empty;
+                        String xOutboundContainerID = string.Empty;
+                        String OutboundPalletType = string.Empty;
+                        pdChk.Parameters.AddWithValue("@CntrID", txbNewCntr.Text);
+                        using (SqlDataReader Reader = pdChk.ExecuteReader())
                         {
-                            String ProcHdrID = string.Empty;
-                            String ProcDetailID = string.Empty;
-                            String OutboundContainerID = string.Empty;
-                            String xOutboundContainerID = string.Empty;
-                            pdChk.Parameters.AddWithValue("@CntrID", txbNewCntr.Text);
-                            using (SqlDataReader Reader = pdChk.ExecuteReader())
+                            if (Reader.HasRows) // Meaning there is a prochdr and possibly a proc detail
                             {
-                                if (Reader.HasRows) // Meaning there is a prochdr and possibly a proc detail
+                                while (Reader.Read())
                                 {
-                                    while (Reader.Read())
+                                    ProcHdrID = Reader["prochdrID"].ToString();
+                                    ProcDetailID = Reader["procdetailID"].ToString();
+                                    OutboundContainerID = Reader["OutboundContainerID"].ToString();
+                                    OutboundPalletType = Reader["OutboundPalletType"].ToString();
+                                    if (OutboundContainerID == txbNewCntr.Text)
                                     {
-                                        ProcHdrID = Reader["prochdrID"].ToString();
-                                        ProcDetailID = Reader["procdetailID"].ToString();
-                                        OutboundContainerID = Reader["OutboundContainerID"].ToString();
-                                        if (OutboundContainerID == txbNewCntr.Text)
+                                        xOutboundContainerID = OutboundContainerID;  // This is the case where an OUT containerID begins w/ IN
+                                        Session["OutboundPalletType"] = OutboundPalletType;
+                                        if (OutboundPalletType.ToString().ToUpper() == "CHEP")
                                         {
-                                            xOutboundContainerID = OutboundContainerID;  // This is the case where an OUT containerID begins w/ IN
-                                        }
-                                    }
-                                    Reader.Close();
-                                    if (ProcDetailID == "")  // Need to add record to exising ProcHdr
-                                    {
-                                        string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
-                                        SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
-                                        insProcDetail.CommandType = CommandType.StoredProcedure;
-                                        using (insProcDetail)
-                                        {
-                                            insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
-                                            insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                            insProcDetail.Parameters.AddWithValue("@ProchdrID", ProcHdrID);
-                                            insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
-                                            insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
-                                            insProcDetail.Parameters.AddWithValue("@OutboundPalletType", Session["inboundpallettype"]);
-                                            insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
-                                            insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
-                                            insProcDetail.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedItem.ToString());
-                                            insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
-
-                                            insProcDetail.ExecuteNonQuery();
-                                        }
-                                    }
-                                    else  //  A ProcDetail record exists.  
-                                    //  If the scanned container is in procdetail table, update the procdetail line for truck out.  
-                                    //  If not, prompt user to scan the OUT cntr ID from the process detail record
-                                    {
-
-                                        //  First, test to see if the txbNewCntr value exists in the ProcDetail table.  If yes, update record.
-                                        if (xOutboundContainerID == txbNewCntr.Text)
-                                        {
-                                            String spUpdate = "IMDB_TruckOut_UpdOutboundDocNo";
-                                            SqlCommand cmd = new SqlCommand(spUpdate, con);
-                                            using (cmd)
-                                            {
-                                                try
-                                                {
-                                                    cmd.CommandType = CommandType.StoredProcedure;
-                                                    cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
-                                                    cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
-                                                    cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
-                                                    cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
-                                                    cmd.ExecuteNonQuery();
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    trErrMsg.Visible = true;
-                                                    lblErrMsg.Visible = true;
-                                                    lblErrMsg.Text = ex.ToString();
-                                                }
-
-                                                con.Close();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            trErrMsg.Visible = true;
-                                            lblErrMsg.Visible = true;
-                                            lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
+                                            con.Close();
+                                            this.mpeINCHEP.Show();
+                                            return;
                                         }
                                     }
                                 }
-                                else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
+                                Reader.Close();
+                                if (ProcDetailID == "")  // Need to add record to exising ProcHdr
                                 {
-                                    Reader.Close();
+                                    //  Check to see if the inboundPalletType is CHEP- if so, exit routine and prompt user
+                                    if (Session["InboundPalletType"].ToString().ToUpper() == "CHEP")
+                                    {
+                                        con.Close();
+                                        this.mpeINCHEP.Show();
+                                        return;
+                                    }
+
+                                    string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
+                                    SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
+                                    insProcDetail.CommandType = CommandType.StoredProcedure;
+                                    using (insProcDetail)
+                                    {
+                                        insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
+                                        insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                        insProcDetail.Parameters.AddWithValue("@ProchdrID", ProcHdrID);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundPalletType", Session["inboundpallettype"]);
+                                        insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedItem.ToString());
+                                        insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
+
+                                        insProcDetail.ExecuteNonQuery();
+                                    }
+                                }
+                                else  //  A ProcDetail record exists. 
+                                //  NOTE:  No need to check for CHEP here since was already done when check was done to determine if procDetail record exists
+                                //  If the scanned container is in procdetail table, update the procdetail line for truck out.  
+                                //  If not, prompt user to scan the OUT cntr ID from the process detail record
+                                {
+
+                                    //  First, test to see if the txbNewCntr value exists in the ProcDetail table.  If yes, update record.
+                                    if (xOutboundContainerID == txbNewCntr.Text)
+                                    {
+                                        String spUpdate = "IMDB_TruckOut_UpdOutboundDocNo";
+                                        SqlCommand cmd = new SqlCommand(spUpdate, con);
+                                        using (cmd)
+                                        {
+                                            try
+                                            {
+                                                cmd.CommandType = CommandType.StoredProcedure;
+                                                cmd.Parameters.AddWithValue("@outboundcontainerID", txbNewCntr.Text);
+                                                cmd.Parameters.AddWithValue("@outbounddocno", ddDocList.SelectedItem.ToString());
+                                                cmd.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
+                                                cmd.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                                cmd.ExecuteNonQuery();
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                trErrMsg.Visible = true;
+                                                lblErrMsg.Visible = true;
+                                                lblErrMsg.Text = ex.ToString();
+                                            }
+                                            finally
+                                            {
+                                                con.Close();
+                                                gvContainers.DataBind();
+                                                gvTally.DataBind();
+                                                txbNewCntr.Focus();
+                                                Session.Abandon();
+                                                txbNewCntr.Text = string.Empty;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        trErrMsg.Visible = true;
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
+                                    }
+                                }
+                            }
+                            else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
+                            {
+                                Reader.Close();  //  Close the open reader from the initial check for procHdr
+
+                                //  Determine if the inbound pallet is a CHEP
+                                if (Session["InboundPalletType"].ToString().ToUpper() == "CHEP")
+                                {
+                                    con.Close();
+                                    this.mpeINCHEP.Show();
+                                    return;
+                                }
+                                else
+                                {
                                     string spInsProcHdr = "IMDB_TruckOUT_ProcHdr_Ins";
                                     string spInsProcDetail = "IMDB_TruckOut_ProcDetail_Ins";
                                     SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
@@ -580,20 +618,23 @@ namespace IMDBWeb.Secure.IndustrialPages
                                         lblErrMsg.Visible = true;
                                         lblErrMsg.Text = ex.ToString();
                                     }
-                                }
+                                } 
                             }
                         }
                     }
-                    catch (Exception ex)
+                }
+                catch (Exception ex)
+                {
+                    trErrMsg.Visible = true;
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                }
+                finally
+                {
+                    //close up connection
+                    con.Close();
+                    if ((Session["InboundPalletType"].ToString().ToUpper() != "CHEP") || (Session["OutboundPalletType"].ToString().ToUpper() == "CHEP"))
                     {
-                        trErrMsg.Visible = true;
-                        lblErrMsg.Visible = true;
-                        lblErrMsg.Text = ex.ToString();
-                    }
-                    finally
-                    {
-                        //close up connection
-                        con.Close();
                         gvContainers.DataBind();
                         gvTally.DataBind();
                         txbNewCntr.Text = "";
@@ -674,6 +715,7 @@ namespace IMDBWeb.Secure.IndustrialPages
         }
         protected void INYesChanged(object sender, EventArgs e)  // This is case where IN was scanned and OUT will be created with 2 process lines
         {
+
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
             con.Open();
@@ -715,10 +757,10 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
                                     insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                                     insProcDetail.Parameters.AddWithValue("@ProchdrID", ProcHdrID);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
-                                    insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["Inboundprofileid"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["Inboundcontainertype"]);
+                                    insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["Inboundpalletweight"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedItem.ToString());
                                     insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
 
@@ -794,10 +836,10 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
                                     insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                                     insProcDetail.Parameters.AddWithValue("@ProchdrID", lastID);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
-                                    insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
-                                    insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["Inboundprofileid"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["Inboundcontainertype"]);
+                                    insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["Inboundpalletweight"]);
+                                    insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["Inboundcontainerqty"]);
                                     insProcDetail.Parameters.AddWithValue("@OutboundDocNo", ddDocList.SelectedItem.ToString());
                                     insProcDetail.Parameters.AddWithValue("@OutStream", Session["OutStream"]);
 
