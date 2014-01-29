@@ -7,11 +7,16 @@
         ontextchanged="txbCntrID_TextChanged" Width="100px"></asp:TextBox>&nbsp;
     <asp:Button ID="btnSubmit" runat="server" Font-Size="x-Small" Text="Submit" onclick="btnSubmit_Click" />&nbsp;
     <asp:Button ID="btnClear" runat="server" Font-Size="x-Small" onclick="btnClear_Click" Text="Clear" /><br />
-    <asp:Label ID="lblErrMsg" runat="server" Text="ErrMsg" ForeColor="Red"></asp:Label>
-    <asp:Button ID="btnInsCntr" runat="server" Font-Size="x-Small" onclick="btnInsCntr_Click" Text="Cntr" />&nbsp&nbsp
-    <asp:Button ID="btnInsCompact" runat="server" Font-Size="x-Small" onclick="btnIns_Compact_Click" Text="Cmpct" />&nbsp&nbsp
-    <asp:Button ID="btnInsBale" runat="server" Font-Size="x-Small" onclick="btnIns_Bale_Click" Text="Bale" />&nbsp&nbsp
-    <asp:Button ID="btnInsPallet" runat="server" Font-Size="x-Small" onclick="btnIns_Pallet_Click" Text="Pallet" />&nbsp&nbsp
+    <asp:Label ID="lblErrMsg" runat="server" Text="ErrMsg" ForeColor="Red"></asp:Label><br />
+    <asp:Button ID="btnInsCntr" runat="server" Font-Size="x-Small" onclick="btnInsCntr_Click" Text="Cntr" />
+    <asp:Button ID="btnInsCompact" runat="server" Font-Size="x-Small" 
+        onclick="btnIns_Compact_Click" Text="Cmpct" />
+    <asp:Button ID="btnInsBale" runat="server" Font-Size="x-Small" 
+        onclick="btnIns_Bale_Click" Text="Bale"  />
+    <asp:Button ID="btnInsPallet" runat="server" Font-Size="x-Small" 
+        onclick="btnIns_Pallet_Click" Text="Pallet" />
+    <asp:Button ID="btnDone" runat="server" Font-Size="X-Small" 
+        onclick="btnDone_Click" Text="Done" />
     <asp:DropDownList ID="ddPalletAction" runat="server" Font-Size="X-Small" AutoPostBack="true"
         Visible="false" onselectedindexchanged="ddPalletAction_SelectedIndexChanged">
         <asp:ListItem Text="Select" Value="None" />
@@ -19,7 +24,7 @@
         <asp:ListItem Text="CHEP" Value="CHEP" />
         <asp:ListItem Text="CHEP2GMA" Value="CHEP2GMA" />
     </asp:DropDownList>
-    <asp:Button ID="btnDone" runat="server" Font-Size="X-Small" onclick="btnDone_Click" Text="Done" /><br />
+    <br />
     <asp:Label ID="lblOutCntr" runat="server" Font-Size="X-Small" CssClass="bold" Text="New CntrID: "></asp:Label>
     <asp:TextBox ID="txbOutCntr" runat="server" ontextchanged="txbOutCntr_TextChanged" AutoPostBack="True"></asp:TextBox><br />
     <asp:Label ID="lblDots" runat="server" Text="..........................................................." /><br />

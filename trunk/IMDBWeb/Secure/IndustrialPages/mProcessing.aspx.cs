@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace IMDBWeb.Secure
 {
@@ -252,16 +253,16 @@ namespace IMDBWeb.Secure
             else
             {
                 txbOutCntr.Text = txbOutCntr.Text.ToUpper();
-                if (!((txbOutCntr.Text.StartsWith("OUT")) || (txbOutCntr.Text.StartsWith("ROP"))))
+                if (!Regex.IsMatch(txbOutCntr.Text, @"^[O][U][T]?[-](\d{6})*$"))
                 {
-                    lblErrMsg.Text = "You must use an OUT or ROPAK container";
+                    lblErrMsg.Text = "You must use an OUT container in the format of OUT-######";
                     lblErrMsg.Visible = true;
                     lblOutCntr.Visible = true;
                     txbOutCntr.Visible = true;
                     txbOutCntr.Text = string.Empty;
                     txbOutCntr.Focus();
                     return;
-                }
+                }                
             } 
             #endregion
 
@@ -303,6 +304,8 @@ namespace IMDBWeb.Secure
                 insConnect1.Close();
                 txbOutCntr.Visible = true;
                 txbOutCntr.Focus();
+                lblErrMsg.Visible = false;
+                lblErrMsg.Text = string.Empty;
             } 
             #endregion
         }
