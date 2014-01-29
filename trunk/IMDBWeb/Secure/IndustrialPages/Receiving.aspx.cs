@@ -200,6 +200,17 @@ namespace IMDBWeb.Secure.IndustrialPages
                 tblBegin.Visible = true;
                 lblErrMsg.Text = string.Empty;
                 lblErrMsg.Visible = false;
+                ((TextBox)fvNewTruck.FindControl("txbNewOrderNumber")).Text = string.Empty;
+                ((TextBox)fvNewTruck.FindControl("WorkOrderTextBox")).Text = string.Empty;
+                ((DropDownList)fvNewTruck.FindControl("ddClient")).SelectedIndex = 0;
+                ((DropDownList)fvNewTruck.FindControl("ddTSDF")).SelectedIndex = 0;
+                ((DropDownList)fvNewTruck.FindControl("ddRcvBy")).SelectedIndex = 0;
+                ((DropDownList)fvNewTruck.FindControl("ddRcvDock")).SelectedIndex = 0;
+                ((DropDownList)fvNewTruck.FindControl("ddCarrier")).SelectedIndex = 0;
+                ((TextBox)fvNewTruck.FindControl("Trailer_NumberTextBox")).Text = string.Empty;
+                ((TextBox)fvNewTruck.FindControl("ReceiveDateTextBox")).Text = string.Empty;
+                ((TextBox)fvNewTruck.FindControl("ShipDateTextBox")).Text = string.Empty;
+                ((TextBox)fvNewTruck.FindControl("MemoTextBox")).Text = string.Empty;
             }
         }
 
@@ -671,6 +682,17 @@ namespace IMDBWeb.Secure.IndustrialPages
             tblBegin.Visible = false;
             tblNewTruck.Visible = true;
             fvNewTruck.ChangeMode(FormViewMode.Insert);
+            ((TextBox)fvNewTruck.FindControl("txbNewOrderNumber")).Text = string.Empty;
+            ((TextBox)fvNewTruck.FindControl("WorkOrderTextBox")).Text = string.Empty;
+            ((DropDownList)fvNewTruck.FindControl("ddClient")).SelectedIndex = 0;
+            ((DropDownList)fvNewTruck.FindControl("ddTSDF")).SelectedIndex = 0;
+            ((DropDownList)fvNewTruck.FindControl("ddRcvBy")).SelectedIndex = 0;
+            ((DropDownList)fvNewTruck.FindControl("ddRcvDock")).SelectedIndex = 0;
+            ((DropDownList)fvNewTruck.FindControl("ddCarrier")).SelectedIndex = 0;
+            ((TextBox)fvNewTruck.FindControl("Trailer_NumberTextBox")).Text = string.Empty;
+            ((TextBox)fvNewTruck.FindControl("ReceiveDateTextBox")).Text = string.Empty;
+            ((TextBox)fvNewTruck.FindControl("ShipDateTextBox")).Text = string.Empty;
+            ((TextBox)fvNewTruck.FindControl("MemoTextBox")).Text = string.Empty;
         }
 
         protected void sdsNewTruck_Inserting(Object sender, SqlDataSourceCommandEventArgs e)
