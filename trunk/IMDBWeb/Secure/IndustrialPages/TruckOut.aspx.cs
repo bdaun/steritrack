@@ -728,6 +728,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 using (pdChk)
                 {
                     String ProcHdrID = string.Empty;
+                    Decimal ProcLaborHr = 0.000M;
                     String ProcDetailID = string.Empty;
                     String OutboundContainerID = string.Empty;
                     String xOutboundContainerID = string.Empty;
@@ -740,6 +741,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                             {
                                 ProcHdrID = Reader["prochdrID"].ToString();
                                 ProcDetailID = Reader["procdetailID"].ToString();
+                                ProcLaborHr = Convert.ToDecimal(Reader["ProcessingLaborHr"].ToString());
                                 OutboundContainerID = Reader["OutboundContainerID"].ToString();
                                 if (OutboundContainerID == txbNewCntr.Text)
                                 {
@@ -747,13 +749,15 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 }
                             }
                             Reader.Close();
-                            if (ProcDetailID == "")  // Need to add record to exising ProcHdr
+                            if (ProcDetailID == "")  // Need to add record to exising ProcHdr and add 0.25 labor hours to the current labor hrs
                             {
+                                ProcLaborHr = ProcLaborHr + 0.2500M;
                                 string spInsProcDetail = "IMDB_TruckOut_ProcDetailCHEP_Ins";
                                 SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
                                 insProcDetail.CommandType = CommandType.StoredProcedure;
                                 using (insProcDetail)
                                 {
+                                    insProcDetail.Parameters.AddWithValue("@ProcessingLaborHr", ProcLaborHr);
                                     insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
                                     insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                                     insProcDetail.Parameters.AddWithValue("@ProchdrID", ProcHdrID);
@@ -833,6 +837,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 }
                                 using (insProcDetail)
                                 {
+                                    insProcDetail.Parameters.AddWithValue("@ProcessingLaborHr", 0.250);
                                     insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbNewCntr.Text);
                                     insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                                     insProcDetail.Parameters.AddWithValue("@ProchdrID", lastID);
