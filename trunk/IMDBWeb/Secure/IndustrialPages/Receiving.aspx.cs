@@ -537,8 +537,22 @@ namespace IMDBWeb.Secure.IndustrialPages
                     ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
                 }
             }
-
-            ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
+            if (((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Text == "")
+            {
+                ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
+            }
+            else
+            {
+                if (((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedIndex == 0)
+                { 
+                    ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).Focus();
+                }
+                else
+                {
+                    ((DropDownList)fvContainerDetail.FindControl("ddPalletType")).Focus();
+                }
+                
+            }
             con.Close();
         }
 
@@ -587,7 +601,7 @@ namespace IMDBWeb.Secure.IndustrialPages
             }
             //  Populate Location dropdown items based on RcvdAs status and Profile
 
-            Session["curRcvdAs"] = ((DropDownList)fvContainerDetail.FindControl("ddRcvdAs")).SelectedValue;
+            Session["curRcvdAs"] = ((DropDownList)fvDuplicate.FindControl("ddRcvdAs")).SelectedValue;
             String spLocationType = "IMDB_Receive_Location_Sel";
             SqlCommand spCmd2 = new SqlCommand(spLocationType, con);
             spCmd2.CommandType = CommandType.StoredProcedure;
@@ -595,22 +609,36 @@ namespace IMDBWeb.Secure.IndustrialPages
             spCmd2.Parameters.AddWithValue("@RcvdAs", Session["curRcvdAs"].ToString());
             using (SqlDataReader rdr2 = spCmd2.ExecuteReader())
             {
-                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Clear();
+                ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Clear();
                 ListItem newItem = new ListItem();
                 newItem.Text = "Select";
                 newItem.Value = "0";
-                ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem);
+                ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Add(newItem);
 
                 while (rdr2.Read())
                 {
                     ListItem newItem1 = new ListItem();
                     newItem1.Text = rdr2["LocationName"].ToString();
                     newItem1.Value = rdr2["LocationName"].ToString();
-                    ((DropDownList)fvContainerDetail.FindControl("ddLocation")).Items.Add(newItem1);
+                    ((DropDownList)fvDuplicate.FindControl("ddLocation")).Items.Add(newItem1);
                 }
             }
+            if (((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Text == "")
+            {
+                ((TextBox)fvDuplicate.FindControl("ManLineTextBox")).Focus();
+            }
+            else
+            {
+                if (((DropDownList)fvDuplicate.FindControl("ddRcvdAs")).SelectedIndex == 0)
+                {
+                    ((DropDownList)fvDuplicate.FindControl("ddRcvdAs")).Focus();
+                }
+                else
+                {
+                    ((DropDownList)fvDuplicate.FindControl("ddPalletType")).Focus();
+                }
 
-            ((TextBox)fvContainerDetail.FindControl("ManLineTextBox")).Focus();
+            }
             con.Close();
         }
 
@@ -764,6 +792,11 @@ namespace IMDBWeb.Secure.IndustrialPages
         protected void ddRcvdAs_Changed(object sender, EventArgs e)
         {
             txbBrandCodes_SelectedIndexChanged(null, null);
+        }
+
+        protected void ddRcvdAsDup_Changed(object sender, EventArgs e)
+        {
+            txbBrandCodes_SelectedIndexChanged_Dup(null, null);
         }
     }
 }
