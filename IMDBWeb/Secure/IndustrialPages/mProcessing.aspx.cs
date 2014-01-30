@@ -235,7 +235,8 @@ namespace IMDBWeb.Secure
              *  This header ID is used when new OUT containers are added as ProcDetail records.
              *  The steps are as follows:
              *      1. Validate the txbOutCntr valcompaue to exist and begin with "OUT"
-             *      2. Create a process detail record with the outbound cntr and the session variable prochdrid.
+             *      2. Confirm that the OUT container has not been shipped
+             *      3. Create a process detail record with the outbound cntr and the session variable prochdrid.
              *          Return the user to the current record allowing additional process detail records to be added.
              *      
                 **************************************************************************************** */
@@ -266,47 +267,94 @@ namespace IMDBWeb.Secure
             } 
             #endregion
 
-            //  2. Create ProcDetail record
+            //  2. Confirm that the OUT container has not been shipped
 
-            #region Create ProcDetail
-            string sqlProcDetailIns = "IMDB_Processing_InsCntr";
-            SqlConnection insConnect1 = new SqlConnection();
-            insConnect1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-            SqlCommand insCmd1 = new SqlCommand(sqlProcDetailIns, insConnect1);
-            insCmd1.CommandType = CommandType.StoredProcedure;
+            #region Check container status
 
+            string sqlCntrCheck = "IMDB_Processing_CntrCheck";
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand cmdCntrCheck = new SqlCommand(sqlCntrCheck, con);
+            cmdCntrCheck.CommandType = CommandType.StoredProcedure;
+            Boolean CntrCheck = false;
             try
             {
-                insConnect1.Open();
-                using (insCmd1)
+                con.Open();
+                using (cmdCntrCheck)
                 {
-                    insCmd1.Parameters.AddWithValue("@prochdrid", Session["ProcHdrID"]);
-                    insCmd1.Parameters.AddWithValue("@outboundcontainerid", txbOutCntr.Text);
-                    insCmd1.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
-                    insCmd1.ExecuteNonQuery();
-                    gvProcDetails.Sort("ID", SortDirection.Ascending);
-                    txbOutCntr.Text = string.Empty;
-                    btnInsCntr.Visible = true;
-                    btnInsCompact.Visible = true;
-                    btnInsBale.Visible = true;
-                    btnInsPallet.Visible = true;
-                    btnDone.Visible = true;
-                    btnInsCntr.Focus();
+                    cmdCntrCheck.Parameters.AddWithValue("@OutboundcontainerID", txbOutCntr.Text);
+                    object CntrShipped = new object();
+                    CntrShipped = cmdCntrCheck.ExecuteScalar();
+                    if (CntrShipped != null)
+                    {
+                        CntrCheck = true;
+                        lblErrMsg.Visible = true;
+                        lblErrMsg.Text = "This container (" + txbOutCntr.Text +") has already shipped out.  You cannot add additional material.  Please notify your supervisor of this error.";
+                        txbOutCntr.Text = string.Empty;
+                        txbOutCntr.Focus();
+                        return;
+                    }
+                    else
+                    {
+                        CntrCheck = false;
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception em)
             {
                 lblErrMsg.Visible = true;
-                lblErrMsg.Text = ex.ToString();
+                lblErrMsg.Text = em.ToString();
             }
             finally
             {
-                insConnect1.Close();
-                txbOutCntr.Visible = true;
-                txbOutCntr.Focus();
-                lblErrMsg.Visible = false;
-                lblErrMsg.Text = string.Empty;
-            } 
+                con.Close();
+            }
+            #endregion
+
+            //  3. Create ProcDetail record
+
+            #region Create ProcDetail
+            if (!CntrCheck)
+            {
+                string sqlProcDetailIns = "IMDB_Processing_InsCntr";
+                SqlConnection insConnect1 = new SqlConnection();
+                insConnect1.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                SqlCommand insCmd1 = new SqlCommand(sqlProcDetailIns, insConnect1);
+                insCmd1.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    insConnect1.Open();
+                    using (insCmd1)
+                    {
+                        insCmd1.Parameters.AddWithValue("@prochdrid", Session["ProcHdrID"]);
+                        insCmd1.Parameters.AddWithValue("@outboundcontainerid", txbOutCntr.Text);
+                        insCmd1.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                        insCmd1.ExecuteNonQuery();
+                        gvProcDetails.Sort("ID", SortDirection.Ascending);
+                        txbOutCntr.Text = string.Empty;
+                        btnInsCntr.Visible = true;
+                        btnInsCompact.Visible = true;
+                        btnInsBale.Visible = true;
+                        btnInsPallet.Visible = true;
+                        btnDone.Visible = true;
+                        btnInsCntr.Focus();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex.ToString();
+                }
+                finally
+                {
+                    insConnect1.Close();
+                    txbOutCntr.Visible = true;
+                    txbOutCntr.Focus();
+                    lblErrMsg.Visible = false;
+                    lblErrMsg.Text = string.Empty;
+                }
+            }
             #endregion
         }
         protected void btnSubmit_Click(object sender, EventArgs e)
