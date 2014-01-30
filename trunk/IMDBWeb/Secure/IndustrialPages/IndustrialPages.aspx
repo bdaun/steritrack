@@ -22,7 +22,6 @@
               <li><a href="Receiving.aspx" style="font-size: large; color: #008000;">Receiving</a></li>
               <li><a href="ShipHeader.aspx" style="font-size: large; color: #008000;">Create Shipping Manifest</a></li>
               <li><a href="Truckout.aspx" style="font-size: large; color: #008000;">Truck Out Containers</a></li>
-              <li><a href="../commonpages/ProfileMgt.aspx" style="font-size: large; color: #008000;">Profile Management</a></li>
             </ul>
         </td>
     </tr>
