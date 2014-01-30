@@ -432,7 +432,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
             <td style="font-weight:bold;font-size:smaller">Qty
                 <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">Location
-                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="0" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
                 <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="txbNewCntrID" runat="server" ForeColor="Red" Font-Bold="true" 
@@ -454,7 +454,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller" AutoPostBack="true" OnSelectedIndexChanged="ddRcvdAs_Changed">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' Font-Size="Smaller" AutoPostBack="true" OnSelectedIndexChanged="ddRcvdAsDup_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -520,7 +520,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
             <td style="font-weight:bold;font-size:smaller">Qty
                 <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">Location
-                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="0" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
                 <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td></tr>
         <tr>
@@ -540,7 +540,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                     DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
-            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAs_Changed">
+            <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAsDup_Changed">
                     <asp:ListItem>Select...</asp:ListItem>
                     <asp:ListItem>Product</asp:ListItem>
                     <asp:ListItem>ShippedNH</asp:ListItem>
@@ -649,7 +649,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
             <td style="font-weight:bold;font-size:smaller">Qty
                 <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">Location
-                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="0" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
                 <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="InboundContainerIDTextBox" runat="server" ForeColor="Red" Font-Bold="true" 
@@ -739,7 +739,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
             <td style="font-weight:bold;font-size:smaller">Qty
                 <asp:RequiredFieldValidator ID="rfvCntrQty" runat="server" ControlToValidate="InboundContainerQtyTextBox" ErrorMessage="Container Qty" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">Location
-                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
+                <asp:RequiredFieldValidator ID="rfvLocation" runat="server" ControlToValidate="ddLocation" InitialValue="0" ErrorMessage="Location" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <td style="font-weight:bold;font-size:smaller">ProcessPlan
                 <asp:RequiredFieldValidator ID="rfvProcessPlan" runat="server" ControlToValidate="ddProcessPlan" InitialValue="Select..." ErrorMessage="Process Plan" Font-Bold="true" ForeColor="Red" Text="*" /></td>
             <asp:RegularExpressionValidator ID="revCntrID" ControlToValidate="InboundContainerIDTextBox" runat="server" ForeColor="Red" Font-Bold="true" 
