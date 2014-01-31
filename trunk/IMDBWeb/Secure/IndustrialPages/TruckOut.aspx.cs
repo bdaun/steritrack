@@ -186,7 +186,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                 Int32 UpAggrWt = Convert.ToInt32(((TextBox)row.FindControl("ActAggrWt")).Text);
                 Int32 UpAggrQty = Convert.ToInt32(((Label)row.FindControl("AggrQty")).Text);
                 Session["CurCntrID"] = Updoutcntrid;
-                Session["CurAggrWt"] = UpAggrWt / UpAggrQty;
+                Session["CurAggrWt"] = UpAggrWt;
                 trErrMsg.Visible = true;
                 lblErrMsg.Visible = true;
                 lblErrMsg.Text = "The actual ship weight has been updated for container: " + Session["CurCntrID"];
