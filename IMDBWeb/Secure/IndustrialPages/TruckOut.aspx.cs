@@ -829,7 +829,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     processHeaderIdParameter.Direction = ParameterDirection.Output;
                                     insProcHdr.Parameters.Add(processHeaderIdParameter);
                                     insProcHdr.Parameters.AddWithValue("@CntrID", txbNewCntr.Text);
-                                    insProcHdr.Parameters.AddWithValue("@ProcessorName", HttpContext.Current.User.Identity.Name.ToString());   // made change here
+                                    insProcHdr.Parameters.AddWithValue("@ProcessorName", HttpContext.Current.User.Identity.Name.ToString());
 
                                     insProcHdr.ExecuteNonQuery();
                                     lastID = (int)processHeaderIdParameter.Value;
