@@ -95,7 +95,51 @@ namespace IMDBWeb.Secure
                 rcvConnect.Close();
             }
 
+            //  Determine the type of processing location
+
+            string ProcType = "IMDB_Processing_ProcessType_Sel";
+            SqlConnection conProcType = new SqlConnection();
+            conProcType.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+            SqlCommand cmdProcType = new SqlCommand(ProcType, conProcType);
+            cmdProcType.CommandType = CommandType.StoredProcedure;
+            conProcType.Open();
+            using (cmdProcType)
+            {
+                try
+                {
+                    cmdProcType.Parameters.AddWithValue("@inboundContainerID", txbCntrID.Text);
+                    using (SqlDataReader Reader = cmdProcType.ExecuteReader())
+                    {
+                        if (!Reader.HasRows)
+                        {
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = "There is no location associated with this profile. Please contact your supervisor";
+                            return;
+                        }
+                        else
+                        {
+                            while (Reader.Read())
+                            {
+                                Session["ProcessType"] = Reader["ProcessType"].ToString();
+                            }
+                            Reader.Close();
+                        }
+                    }
+                    
+                }
+                catch (Exception ex1)
+                {
+                    lblErrMsg.Visible = true;
+                    lblErrMsg.Text = ex1.ToString();
+                }
+                finally
+                {
+                    conProcType.Close();
+                }
+            }
             //  The inbound container location will be set to 'Processing'
+
+
 
             string setlocation = "IMDB_Processing_Location_Upd";
             SqlConnection rcvConnect1 = new SqlConnection();
@@ -107,6 +151,7 @@ namespace IMDBWeb.Secure
             {
                 using (rcvCmd1)
                 {
+                    rcvCmd1.Parameters.AddWithValue("@ProcessType", Session["ProcessType"].ToString());
                     rcvCmd1.Parameters.AddWithValue("@inboundContainerID", txbCntrID.Text);
                     rcvCmd1.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
                     rcvCmd1.ExecuteNonQuery();
@@ -696,7 +741,6 @@ namespace IMDBWeb.Secure
 
             ddPalletAction.Visible = true;
         }
-
         protected void ddPalletAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(ddPalletAction.SelectedIndex != 0)
@@ -706,7 +750,7 @@ namespace IMDBWeb.Secure
                 string processmethod = "";
                 string palletweight = "";
                 string palletprofile = "";
-
+                Boolean C2GCheck = false;
                 
                 switch (ddPalletAction.SelectedIndex)
                 { 
@@ -714,107 +758,281 @@ namespace IMDBWeb.Secure
                         palletprofile = "27";
                         palletweight = "42";
                         processmethod = "PalletRemoved";
+                        C2GCheck = false;
                         break;
                     case 2:
                         palletprofile = "26";
                         palletweight = "66";
                         processmethod = "PalletRemoved";
+                        C2GCheck = false;
                         break;
                     case 3:
                         palletprofile = "25";
                         palletweight = "24";
                         processmethod = "CHEP2GMA";
+                        C2GCheck = true;
                         break;
                 }
-
-                String sp = "IMDB_Processing_InsPallet";
-                String spChk = "IMDB_Processing_insPallet_Exist";
-                Boolean ChkResult = false;
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
-                SqlCommand spCmd = new SqlCommand(sp, con);
-                SqlCommand spChkCmd = new SqlCommand(spChk, con);
-                spCmd.CommandType = CommandType.StoredProcedure;
-                spChkCmd.CommandType = CommandType.StoredProcedure;
-                using (con)
+                if (C2GCheck)
                 {
-                    try
+                    String spRcvDetail = "IMDB_Processing_RcvDetail_Sel";
+                    SqlConnection con = new SqlConnection();
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand rcvCmd = new SqlCommand(spRcvDetail, con);
+                    rcvCmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (rcvCmd)    //  Determine if the entered value exists in the rcvdetail table.  If existing, get current values.
                     {
-                        con.Open();
-                        #region Check Pallet Exist
-                        using (spChkCmd)
+                        try
                         {
-                            try
+                            rcvCmd.Parameters.AddWithValue("@inboundcontainerid", txbCntrID.Text);
+                            using (SqlDataReader Reader = rcvCmd.ExecuteReader())
                             {
-                                spChkCmd.Parameters.AddWithValue("@ProcHdrID", Session["ProcHdrID"]);
-                                object hasCmptRecord = new object();
-                                hasCmptRecord = spChkCmd.ExecuteScalar();
-                                if (hasCmptRecord != null)
+                                if (!Reader.HasRows)
                                 {
-                                    ChkResult = true;
                                     lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = "There is already a Pallet Record. Click 'Submit' to re-enter the record.";
-                                    lblProcDetails.Visible = true;
-                                    lblHeader.Visible = true;
+                                    lblErrMsg.Text = "This container has not been received in the system. " + "<br/>" +
+                                        "Please receive the container BEFORE putting on the Truck. " + "<br/>" +
+                                        "This container has NOT been added to the outbound document!";
+                                    return;
+                                }
+                                else
+                                {
+                                    while (Reader.Read())
+                                    {
+                                        Session["RcvID"] = (int)Reader["RcvID"];
+                                        Session["RcvHdrID"] = (int)Reader["RcvHdrID"];
+                                        Session["InboundProfileID"] = (int)Reader["inboundprofileid"];
+                                        Session["InboundContainerType"] = Reader["InboundContainertype"];
+                                        Session["InboundPalletType"] = Reader["InboundPalletType"].ToString();
+                                        Session["InboundPalletweight"] = (int)Reader["InboundPalletWeight"];
+                                        Session["Inboundcontainerqty"] = (int)Reader["InboundContainerQty"];
+                                        Session["Inboundcontainerid"] = Reader["InboundContainerID"].ToString();
+                                        Session["InventoryLocation"] = Reader["InventoryLocation"].ToString();
+                                    }
+                                    Reader.Close();
                                 }
                             }
-                            catch (Exception ex)
+                        }
+                        catch (Exception ex)
+                        {
+                            // Display error
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex.ToString();
+                        }
+                    }
+                    string spProcDetailExists = "IMDB_Processing_pdExist";
+                    SqlCommand pdChk = new SqlCommand(spProcDetailExists, con);
+                    pdChk.CommandType = CommandType.StoredProcedure;
+                    using (pdChk)
+                    {
+                        try
+                        {
+                            String ProcHdrID = string.Empty;
+                            Decimal ProcLaborHr = 0.000M;
+                            String ProcDetailID = string.Empty;
+                            String OutboundContainerID = string.Empty;
+                            String xOutboundContainerID = string.Empty;
+                            pdChk.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
+                            using (SqlDataReader Reader = pdChk.ExecuteReader())
                             {
-                                lblErrMsg.Visible = true;
-                                lblErrMsg.Text = ex.ToString();
+                                if (Reader.HasRows) // Meaning there is a prochdr and possibly a proc detail
+                                {
+                                    while (Reader.Read())
+                                    {
+                                        ProcHdrID = Reader["prochdrID"].ToString();
+                                        ProcDetailID = Reader["procdetailID"].ToString();
+                                        ProcLaborHr = Convert.ToDecimal(Reader["ProcessingLaborHr"].ToString());
+                                    }
+                                    Reader.Close();
+                                    ProcLaborHr = ProcLaborHr + 0.2500M;
+                                    string spInsProcDetail = "IMDB_Processing_CHEP_Ins";
+                                    SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
+                                    insProcDetail.CommandType = CommandType.StoredProcedure;
+                                    using (insProcDetail)
+                                    {
+                                        insProcDetail.Parameters.AddWithValue("@ProcessingLaborHr", ProcLaborHr);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbCntrID.Text);
+                                        insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                        insProcDetail.Parameters.AddWithValue("@ProchdrID", ProcHdrID);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
+                                        insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
+                                        insProcDetail.Parameters.AddWithValue("@OutboundDocNo", "Not Shipped");
+                                        insProcDetail.Parameters.AddWithValue("@OutStream", DBNull.Value);
+                                        insProcDetail.Parameters.AddWithValue("@InventoryLocation", Session["InventoryLocation"]);
+
+                                        insProcDetail.ExecuteNonQuery();
+                                    }
+                                }
+                                else  // There is no ProcHdr.  Must create ProcHdr and ProcDetail record
+                                {
+                                    Reader.Close();
+                                    string spInsProcHdr = "IMDB_Processing_ProcHdr_Ins";
+                                    string spInsProcDetail = "IMDB_Processing_CHEP_Ins";
+                                    SqlCommand insProcHdr = new SqlCommand(spInsProcHdr, con);
+                                    SqlCommand insProcDetail = new SqlCommand(spInsProcDetail, con);
+                                    insProcHdr.CommandType = CommandType.StoredProcedure;
+                                    insProcDetail.CommandType = CommandType.StoredProcedure;
+                                    int lastID;  //  will be used to capture newly created prochdr for inserts into procdetail table
+
+                                    try
+                                    {
+                                        using (insProcHdr)
+                                        {
+                                            SqlParameter processHeaderIdParameter = new SqlParameter("@ProcHdrID", SqlDbType.Int);
+                                            processHeaderIdParameter.Direction = ParameterDirection.Output;
+                                            insProcHdr.Parameters.Add(processHeaderIdParameter);
+                                            insProcHdr.Parameters.AddWithValue("@CntrID", txbCntrID.Text);
+                                            insProcHdr.Parameters.AddWithValue("@ProcessorName", HttpContext.Current.User.Identity.Name.ToString());
+                                            insProcHdr.Parameters.AddWithValue("@ProcessingLaborHr", 0.250);
+
+                                            insProcHdr.ExecuteNonQuery();
+                                            lastID = (int)processHeaderIdParameter.Value;
+                                            Session["ProcHdrID"] = lastID;   // will use this value if new process detail record is added
+                                        }
+                                        using (insProcDetail)
+                                        {
+                                            insProcDetail.Parameters.AddWithValue("@OutboundcontainerID", txbOutCntr.Text);
+                                            insProcDetail.Parameters.AddWithValue("@UserName", HttpContext.Current.User.Identity.Name.ToString());
+                                            insProcDetail.Parameters.AddWithValue("@ProchdrID", lastID);
+                                            insProcDetail.Parameters.AddWithValue("@OutboundStreamProfile", Session["inboundprofileid"]);
+                                            insProcDetail.Parameters.AddWithValue("@OutboundContainerType", Session["inboundcontainertype"]);
+                                            insProcDetail.Parameters.AddWithValue("@Outboundstreamweight", Session["inboundpalletweight"]);
+                                            insProcDetail.Parameters.AddWithValue("@OutboundCntrQty", Session["inboundcontainerqty"]);
+                                            insProcDetail.Parameters.AddWithValue("@OutboundDocNo", "Not Shipped");
+                                            insProcDetail.Parameters.AddWithValue("@OutStream", DBNull.Value);
+                                            insProcDetail.Parameters.AddWithValue("@InventoryLocation", Session["InventoryLocation"]);
+
+                                            insProcDetail.ExecuteNonQuery();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = ex.ToString();
+                                    }
+                                    finally
+                                    {
+                                        con.Close();
+                                        ddPalletAction.Visible = false;
+                                        btnInsPallet.Visible = true;
+                                        gvProcDetails.DataBind();
+                                        lblProcDetails.Visible = true;
+                                        lblHeader.Visible = true;
+                                    }
+                                }
                             }
                         }
-                        #endregion
-
-                        if (ChkResult == false)
+                        catch (Exception ex1)
                         {
-                            //  Insert new ProcDetail
-                            #region Insert ProcDetail Record
-
-                            using (spCmd)
+                            lblErrMsg.Visible = true;
+                            lblErrMsg.Text = ex1.ToString();
+                        }
+                        finally
+                        {
+                            con.Close();
+                            ddPalletAction.Visible = false;
+                            btnInsPallet.Visible = true;
+                            gvProcDetails.DataBind();
+                            lblProcDetails.Visible = true;
+                            lblHeader.Visible = true;
+                        }
+                    }
+                }
+                else
+                {
+                    String sp = "IMDB_Processing_InsPallet";
+                    String spChk = "IMDB_Processing_insPallet_Exist";
+                    Boolean ChkResult = false;
+                    SqlConnection con = new SqlConnection();
+                    con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IMDB_SQL"].ConnectionString;
+                    SqlCommand spCmd = new SqlCommand(sp, con);
+                    SqlCommand spChkCmd = new SqlCommand(spChk, con);
+                    spCmd.CommandType = CommandType.StoredProcedure;
+                    spChkCmd.CommandType = CommandType.StoredProcedure;
+                    using (con)
+                    {
+                        try
+                        {
+                            con.Open();
+                            #region Check Pallet Exist
+                            using (spChkCmd)
                             {
                                 try
                                 {
-                                    spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
-                                    spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
-                                    spCmd.Parameters.AddWithValue("@OutboundStreamProfile", palletprofile);
-                                    spCmd.Parameters.AddWithValue("@ProcessMethod", processmethod);
-                                    spCmd.Parameters.AddWithValue("@OutboundStreamWeight", palletweight);
-                                    spCmd.ExecuteNonQuery();
+                                    spChkCmd.Parameters.AddWithValue("@ProcHdrID", Session["ProcHdrID"]);
+                                    object hasCmptRecord = new object();
+                                    hasCmptRecord = spChkCmd.ExecuteScalar();
+                                    if (hasCmptRecord != null)
+                                    {
+                                        ChkResult = true;
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = "There is already a Pallet Record. Click 'Submit' to re-enter the record.";
+                                        lblProcDetails.Visible = true;
+                                        lblHeader.Visible = true;
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
                                     lblErrMsg.Visible = true;
                                     lblErrMsg.Text = ex.ToString();
                                 }
-                                finally
-                                {
-                                    con.Close();
-                                }
                             }
-                            #endregion                    
+                            #endregion
+
+                            if (ChkResult == false)
+                            {
+                                //  Insert new ProcDetail
+                                #region Insert ProcDetail Record
+
+                                using (spCmd)
+                                {
+                                    try
+                                    {
+                                        spCmd.Parameters.AddWithValue("@User", HttpContext.Current.User.Identity.Name.ToString());
+                                        spCmd.Parameters.AddWithValue("@ProchdrID", Session["ProcHdrID"]);
+                                        spCmd.Parameters.AddWithValue("@OutboundStreamProfile", palletprofile);
+                                        spCmd.Parameters.AddWithValue("@ProcessMethod", processmethod);
+                                        spCmd.Parameters.AddWithValue("@OutboundStreamWeight", palletweight);
+                                        spCmd.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        lblErrMsg.Visible = true;
+                                        lblErrMsg.Text = ex.ToString();
+                                    }
+                                    finally
+                                    {
+                                        con.Close();
+                                    }
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                con.Close();
+                            }
                         }
-                        else
+                        catch (Exception ex)
+                        {
+                            // Display error
+                            lblErrMsg.Text = ex.ToString();
+                            lblErrMsg.Visible = true;
+                        }
+                        finally
                         {
                             con.Close();
+                            ddPalletAction.Visible = false;
+                            btnInsPallet.Visible = true;
+                            gvProcDetails.DataBind();
+                            lblProcDetails.Visible = true;
+                            lblHeader.Visible = true;
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        // Display error
-                        lblErrMsg.Text = ex.ToString();
-                        lblErrMsg.Visible = true;
-                    }
-                    finally
-                    {
-                        con.Close();
-                        ddPalletAction.Visible = false;
-                        btnInsPallet.Visible = true;
-                        gvProcDetails.DataBind();
-                        lblProcDetails.Visible = true;
-                        lblHeader.Visible = true;
-                    }
                 }
+                
             }
             else
             {
