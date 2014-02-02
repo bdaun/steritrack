@@ -557,7 +557,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                     {
                                         trErrMsg.Visible = true;
                                         lblErrMsg.Visible = true;
-                                        lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
+                                        lblErrMsg.Text = "There is an existing proc detail record for this container.  Please scan the OutboundContainerID.";
                                     }
                                 }
                             }
@@ -806,7 +806,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 {
                                     trErrMsg.Visible = true;
                                     lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
+                                    lblErrMsg.Text = "There is an existing proc detail record for this container.  Please scan the OutboundContainerID.";
                                 }
                             }
                         }
@@ -971,7 +971,7 @@ namespace IMDBWeb.Secure.IndustrialPages
                                 {
                                     trErrMsg.Visible = true;
                                     lblErrMsg.Visible = true;
-                                    lblErrMsg.Text = "There is an exising proc detail record for this container.  Please scan the OutboundContainerID.";
+                                    lblErrMsg.Text = "There is an existing proc detail record for this container.  Please scan the OutboundContainerID.";
                                 }
                             }
                         }
