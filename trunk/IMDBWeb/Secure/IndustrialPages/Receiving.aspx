@@ -758,7 +758,7 @@ Inherits="IMDBWeb.Secure.IndustrialPages.Receiving" EnableEventValidation="false
                 <asp:Label ID="lblBrandCodeID" runat="server" Text='<%# Bind("BrandCode") %>' Visible="false" /></td>
             <td><asp:TextBox ID="ManLineTextBox" runat="server" Text='<%# Bind("ManLine") %>' Width="20px" Font-Size="Smaller" /></td>
             <td><asp:DropDownList ID="ddProfile" runat="server" DataSourceID="sdsGetProfile"  DataTextField="Name" Font-Size="Smaller"
-                    DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True">
+                    DataValueField="ID" SelectedValue='<%# bind("InboundProfileID") %>' Width="150px" AppendDataBoundItems="True" >
                     <asp:ListItem Text="Select..." Value = "" />
                 </asp:DropDownList></td>
             <td><asp:DropDownList ID="ddRcvdAs" runat="server"  width="50px" SelectedValue='<%# bind("RcvdAs") %>' AutoPostBack="true" Font-Size="Smaller" OnSelectedIndexChanged="ddRcvdAs_Changed">

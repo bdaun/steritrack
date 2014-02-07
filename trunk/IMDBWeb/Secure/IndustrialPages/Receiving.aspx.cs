@@ -798,5 +798,6 @@ namespace IMDBWeb.Secure.IndustrialPages
         {
             txbBrandCodes_SelectedIndexChanged_Dup(null, null);
         }
+
     }
 }
