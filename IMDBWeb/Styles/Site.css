@@ -13,12 +13,12 @@ body
 
 a:link, a:visited
 {
-    color: #034af3;
+    color: #003300;
 }
 
 a:hover
 {
-    color: #1d60ff;
+    color: #009900;
     text-decoration: none;
 }
 
@@ -370,11 +370,11 @@ table.gnav tr td a:hover {
 	text-decoration: underline;
 }
 table.webparts tr th {
-	background-color: #009;
+	background-color: #ffff99;
 	padding: 5px;
-	color: #FFF;
+	color: #003300;
 	font-size: 130%;
-	border: 1px solid #009;
+	border: 1px solid #003300;
 }
 
 td.details div table tr td, td.details div table tr td.detailheader
@@ -400,7 +400,7 @@ td.details div table tr td.detailitem
 }
 td.details
 {
-	border: 2px solid #009;
+	border: 2px solid #003300;
 	padding: 10px;
 	background-color:#EEE;
 }
