@@ -551,10 +551,10 @@ namespace IMDBWeb.Secure.SPAKpages
                                 WebMsgBox.Show("This box contains Fuel Filters and must be sent to Hazardous Waste Facility for disposal. Please place on appropriate outbound pallet");
                                 lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
                             }
-                            if ((Session["CurProfileName"].ToString().ToUpper().Contains("NH SOLIDIFIED ACIDIC")) ||
-                                (Session["CurProfileName"].ToString().ToUpper().Contains("NH SOLIDIFIED BASIC")) ||
-                                (Session["CurProfileName"].ToString().ToUpper().Contains("STATE REGULATED ACIDIC")) ||
-                                (Session["CurProfileName"].ToString().ToUpper().Contains("STATE REGULATED BASIC")) )
+                            if ((Session["CurProfileName"].ToString().ToUpper().Contains("SOLIDIFIED SPILL CLEAN-UP (NON-HAZ) - ACIDIC")) ||
+                                (Session["CurProfileName"].ToString().ToUpper().Contains("SOLIDIFIED SPILL CLEAN-UP (NON-HAZ) - BASIC")) ||
+                                (Session["CurProfileName"].ToString().ToUpper().Contains("SOLIDIFIED SPILL CLEAN-UP - ACIDIC")) ||
+                                (Session["CurProfileName"].ToString().ToUpper().Contains("SOLIDIFIED SPILL CLEAN-UP - BASIC")))
                             {
                                 WebMsgBox.Show("SOLIDIFIED CORROSIVE WASTE. Please mark this container for appropriate outbound sort.");
                                 lblBoxCntrID.ForeColor = System.Drawing.Color.Goldenrod;
