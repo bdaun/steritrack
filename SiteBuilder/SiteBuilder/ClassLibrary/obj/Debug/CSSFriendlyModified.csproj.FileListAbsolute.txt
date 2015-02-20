@@ -1,0 +1,5 @@
+C:\Users\Bill\Desktop\menucss\CSSFriendlyMenu\CSSFriendlyModified\bin\Debug\CSSFriendlyModified.dll
+C:\Users\Bill\Desktop\menucss\CSSFriendlyMenu\CSSFriendlyModified\bin\Debug\CSSFriendlyModified.pdb
+C:\Users\Bill\Desktop\menucss\CSSFriendlyMenu\CSSFriendlyModified\obj\Debug\CSSFriendlyModified.csprojResolveAssemblyReference.cache
+C:\Users\Bill\Desktop\menucss\CSSFriendlyMenu\CSSFriendlyModified\obj\Debug\CSSFriendlyModified.dll
+C:\Users\Bill\Desktop\menucss\CSSFriendlyMenu\CSSFriendlyModified\obj\Debug\CSSFriendlyModified.pdb

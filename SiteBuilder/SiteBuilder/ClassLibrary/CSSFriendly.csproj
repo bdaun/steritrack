@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A76C4F8-F0CD-4169-8159-E557CC6457DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClassLibrary</RootNamespace>
+    <AssemblyName>ClassLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChangePasswordAdapter.cs" />
+    <Compile Include="CompositeDataBoundControlAdapter.cs" />
+    <Compile Include="CreateUserWizardAdapter.cs" />
+    <Compile Include="DataListAdapter.cs" />
+    <Compile Include="DetailsViewAdapter.cs" />
+    <Compile Include="FormViewAdapter.cs" />
+    <Compile Include="GridViewAdapter.cs" />
+    <Compile Include="LoginAdapter.cs" />
+    <Compile Include="LoginStatusAdapter.cs" />
+    <Compile Include="MenuAdapter.cs" />
+    <Compile Include="PasswordRecoveryAdapter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeViewAdapter.cs" />
+    <Compile Include="WebControlAdapterExtender.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CSSFriendlyModified.dll" />
+    <Content Include="bin\Debug\CSSFriendlyModified.pdb" />
+    <Content Include="CSSFriendlyModified.csproj" />
+    <Content Include="CSS\BrowserSpecific\IEMenu6.css" />
+    <Content Include="CSS\DetailsView.css" />
+    <Content Include="CSS\Menu.css" />
+    <Content Include="CSS\TreeView.css" />
+    <Content Include="JavaScript\AdapterUtils.js" />
+    <Content Include="JavaScript\MenuAdapter.js" />
+    <Content Include="JavaScript\TreeViewAdapter.js" />
+    <Content Include="obj\Debug\CSSFriendlyModified.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\CSSFriendlyModified.dll" />
+    <Content Include="obj\Debug\CSSFriendlyModified.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\CSSFriendlyModified.csprojResolveAssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
