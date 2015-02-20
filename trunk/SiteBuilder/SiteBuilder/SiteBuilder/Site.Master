@@ -1,0 +1,92 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="SiteBuilder.SiteMaster" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" /> 
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <asp:PlaceHolder runat="server">        
+        <script src="<%: ResolveUrl("~/Scripts/modernizr-2.6.2.js") %>"></script>
+    </asp:PlaceHolder>
+    <meta name="viewport" content="width=device-width" />
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</head>
+<body>
+    <form runat="server">
+    <asp:ScriptManager runat="server">
+        <Scripts>
+            <asp:ScriptReference Name="jquery" />
+            <asp:ScriptReference Name="jquery.ui.combined" />
+        </Scripts>
+    </asp:ScriptManager>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">
+                    <asp:Image ID="imgLogo" runat="server" ImageUrl="~/Images/logo.gif" style="height: 45px; width: 35px" />
+                    Teleios SiteBuilder
+                </p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul>
+                                <li><a id="registerLink" runat="server" href="~/Account/Register">Register</a></li>
+                                <li><a id="loginLink" runat="server" href="~/Account/Login">Log in</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <p>
+                                Hello, <a runat="server" class="username" href="~/Account/Manage" title="Manage your account">
+                                    <asp:LoginName runat="server" CssClass="username" />
+                                </a>!
+                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                            </p>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </section>
+            <div class="clear hideSkiplink">
+<%--                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/secure/home.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="~/secure/SiteAdmin/SiteAdmin.aspx" Text="DataMgt" />
+                        <asp:MenuItem NavigateUrl="~/Contact.aspx" Text="Contact"/>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/UserAdmin/AdminMenu.aspx" Text="Admin"/>
+                    </Items>
+                </asp:Menu>--%>
+                 <!-- Main navigation menu -->
+                <div class="headLinksBar">
+                    <asp:Menu ID="mainMenu" runat="server" Orientation="Horizontal" DataSourceID="SiteMapMain"
+                        MaximumDynamicDisplayLevels="0" StaticItemFormatString="|&nbsp;&nbsp; {0} &nbsp;&nbsp; "
+                        StaticMenuItemStyle-CssClass="menuItem" StaticSelectedStyle-CssClass="menuItemSelected">
+                    </asp:Menu>            
+                        <asp:ContentPlaceHolder ID="blankSublinks" runat="server"></asp:ContentPlaceHolder>
+                </div>
+                <asp:SiteMapDataSource ID="SiteMapMain" runat="server" ShowStartingNode="False" />
+                <asp:SiteMapDataSource ID="SiteMapAdminMenu" runat="server" ShowStartingNode="False" StartingNodeUrl="~/secure/SiteAdminMenu.aspx" />
+                <%-- <asp:SiteMapDataSource ID="SiteMapProgram" runat="server" ShowStartingNode="False" StartingNodeUrl="~/Program.aspx" />--%>
+            </div>
+            </div>
+        </div>
+        <div class="headLinksBar">
+        </div>
+    </header>
+    <div id="body">
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+        <section class="content-wrapper main-content clear-fix">
+            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+            </div>
+        </div>
+    </footer>
+    </form>
+</body>
+</html>

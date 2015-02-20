@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+<siteMapNode url="" title="DummyNode"  description="">
+  <siteMapNode url="~/secure/home.aspx" title="Home"  description="" />
+  <siteMapNode url="~/secure/siteAdminMenu.aspx" title="SiteAdminMenu"  description="" >
+    <siteMapNode url="~/secure/Community/CommunityAdmin.aspx" title="CommunityAdmin"  description="" />
+    <siteMapNode url="~/secure/Nutrition/NutritionAdmin.aspx" title="NutritionAdmin"  description="" />
+    <siteMapNode url="~/secure/Education/EducationAdmin.aspx" title="EducationAdmin"  description="" />
+    <siteMapNode url="~/secure/SpiritualGrowth/SpiritualGrowthAdmin.aspx" title="SpritualGrowthAdmin"  description="" />
+  </siteMapNode>
+  <siteMapNode url="About.aspx" title="About"  description="" />
+  <siteMapNode url="Contact.aspx" title="Contact"  description="" />
+</siteMapNode>
+</siteMap>
